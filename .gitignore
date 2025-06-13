@@ -1,0 +1,5 @@
+_archive
+.DS_Store
+.env
+up.sh
+up.bat
