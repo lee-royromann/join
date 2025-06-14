@@ -18,7 +18,7 @@
     /* Colors */
     --header-color-bg: #ffffff;
     --header-color-text: #333333;
-    --header-color-shadow: rgba(0, 0, 0, 0.15);
+    --header-color-shadow: rgba(0, 0, 0, 0.2);
     --header-color-bg-user: #ffffff;
     --header-color-text-user: #28abe2;
     --header-color-border-user: #2a3647;
@@ -57,7 +57,7 @@
     padding-left: var(--header-padding-left);
     padding-right: var(--header-padding-right);
     background-color: var(--header-color-bg);
-    box-shadow: 1px 1px 10px var(--header-color-shadow-shadow);
+    box-shadow: 1px 1px 10px var(--header-color-shadow);
 }
 
 .header__title {
