@@ -12,22 +12,70 @@
 </head>
 <body>
     <div class="content">
-        <div class="navbar">
+        <div class="card">
 
-        </div>
-        <div class="board">
-            <!-- Achtung: Standard-Gruppenheader nutzen -->
-            <div class="header">
-                <h1>Figma Board</h1>
+            <div class="navbar">
+                <div class="navbar__logo">
+                    <img class="logo2" src="../assets/img/logo/join_2.svg" alt="Logo">
+                </div>
+                <div class="navbar_selection">
+                   <div class="selection">
+                        <img class="img_selection" src="../assets/img/icon/summary.svg" alt="Logo">
+                        <span class="selection_text">Summary</span>
+                    </div>
+                    <div class="selection">
+                        <img class="img_selection" src="../assets/img/icon/add_task.svg" alt="Logo">
+                        <span class="selection_text">Add Task</span>
+                    </div>
+                    <div class="selection">
+                        <img class="img_selection" src="../assets/img/icon/board.svg" alt="Logo">
+                        <span class="selection_text">Board</span>
+                    </div>
+                    <div class="selection">
+                        <img class="img_selection" src="../assets/img/icon/contacts.svg" alt="Logo">
+                        <span class="selection_text">Contacts</span>
+                    </div>
+                </div>
+                <div class="navbar_legal">
+                    <span class="selection_text">Privacy Policy</span>   <!-- Achtung es müssen links werden -->
+                    <span class="selection_text">Legal notice</span>    <!-- Achtung es müssen links werden -->
+                </div>
             </div>
-            <div class="board-header">
 
+            <div class="board">
+                <div class="header"> Kanban Project</div>  <!-- wird bereit gestellt -->
+                <div class="board__header">
+                    <h1 class="board__title">Board</h1>
+                    <input type="text" class="find_task" placeholder="find_task">  <!-- Hier noch die Lupe -->
+                    <button class="board__add-task-btn">Add Task +</button>
+                </div>
+                <div class="board-body">
+                    <div class="board-column">
+                        <h2 class="board-column__title">To Do</h2>  <!--Hier noch Pluszeichen für add Task-->
+                        <div class="board-column__tasks">
+                            <!-- Tasks will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div class="board-column">
+                        <h2 class="board-column__title">In Progress</h2> <!--Hier noch Pluszeichen für add Task-->
+                        <div class="board-column__tasks">
+                            <!-- Tasks will be dynamically added here --> 
+                        </div>
+                    </div>
+                    <div class="board-column">
+                        <h2 class="board-column__title">Await feedback</h2> <!--Hier noch Pluszeichen für add Task-->
+                        <div class="board-column__tasks">
+                            <!-- Tasks will be dynamically added here --> 
+                        </div>
+                    </div>
+                    <div class="board-column">
+                        <h2 class="board-column__title">Done</h2>
+                        <div class="board-column__tasks">
+                            <!-- Tasks will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="board-body">
-                <!-- Hier müssen die 4 Taskspalten rein, die dann die Tasks enthalten. -->
-            </div>
-
-
     </div>
     
 </body>
