@@ -1,0 +1,32 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+html, body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-size: 24px;
+}
+
+body {
+    font-family: 'Fredoka';
+    background-color: #46575d;
+    color: white;
+    font-size: 16px;
+} 
+
+.d-none {
+    display: none !important;
+}
+
+.content {
+    position: relative;
+    max-width: 1440px;
+    width: 100%;
+    margin: auto;
+    padding: 0 24px;
+}

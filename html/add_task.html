@@ -1,0 +1,130 @@
+<!--
+=============================================================================================
+
+* Host: © 2024 Developer Akademie GmbH
+* Modul 10: Gruppenarbeit mit Git
+* Projekt: Join - Kanban Project Management Tool
+* Page: Add Task
+* Creator: Lee-Roy Romann
+* Discord: appleecation
+* Kontext: Weiterbildung Fullstack Developer
+
+=============================================================================================
+
+* Lizenziformationen
+
+- Google Fonts: Inter / SIL Open Font License 1.1 / https://fonts.google.com/attribution
+- Icons: © 2024 Developer Akademie GmbH / Copied from Figma
+- Favicon: © 2024 Developer Akademie GmbH / Copied from Figma
+- Logos: © 2024 Developer Akademie GmbH / Copied from Figma
+
+=============================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join | Add Task</title>
+
+    <!-- Favicon -->
+    <!-- Filepath needs to be changed for the webserver! ./ -->
+    <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
+
+    <!-- CSS -->
+    <!-- Filepath needs to be changed for the webserver! ./ -->
+    <link rel="stylesheet" href="../css/add_task.css">
+
+    <!-- JS -->
+    <!-- Filepath needs to be changed for the webserver! ./ -->
+    <script src="../js/add_task.js" defer></script>
+</head>
+
+<body onload="initAddTask()">
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="app__sidebar" id="sidebar">
+            <p>Sidebar coming soon...</p>
+            <p>Mechthild Rölfing</p>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main app__main">
+
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header__title">Kanban Project Management Tool</h1>
+                <div class="header__user">
+                    <div class="header__avatar">LR</div>
+                </div>
+            </header>
+
+            <!-- Task Form -->
+            <section class="task-form">
+                <h2 class="task-form__heading">Add Task</h2>
+
+                <form class="task-form__form">
+
+                    <!-- Column Left -->
+                    <div class="task-form__column task-form__column--left">
+                        <label class="task-form__label" for="title">Title<span>*</span></label>
+                        <input type="text" id="title" name="title" class="task-form__input" placeholder="Enter a title" required/>
+
+                        <label class="task-form__label" for="description">Description</label>
+                        <textarea id="description" name="description" class="task-form__textarea"></textarea>
+
+                        <label class="task-form__label" for="due-date">Due date<span>*</span></label>
+                        <input type="date" id="due-date" name="due-date" class="task-form__input" required/>
+                    </div>
+
+                    <!-- Column Right -->
+                    <div class="task-form__column task-form__column--right">
+                        <div class="task-form__priority">
+                            <label class="task-form__label">Priority</label>
+                            <div class="task-form__priority-options">
+                                <button type="button" class="task-form__priority-button task-form__priority-button--urgent">Urgent</button>
+                                <button type="button" class="task-form__priority-button task-form__priority-button--medium">Medium</button>
+                                <button type="button" class="task-form__priority-button task-form__priority-button--low">Low</button>
+                            </div>
+                        </div>
+
+                        <label class="task-form__label" for="assigned-to">Assigned to</label>
+                        <select name="assigned-to" id="assigned-to" class="task-form__select">
+                            <option value="" disabled selected>Select contacts to assign</option>
+                            <option value="user1">Contact 1</option>
+                            <option value="user2">Contact 2</option>
+                            <option value="user3">Contact 3</option>
+                            <!-- Options will be rendered dynamically later... -->
+                        </select>
+
+                        <label class="task-form__label" for="task-category">Category<span>*</span></label>
+                        <select name="task-category" id="task-category" required>
+                            <option value="" disabled selected>Select task category</option>
+                            <option value="development">Technical Task</option>
+                            <option value="design">User story</option>
+                            <!-- Options will be rendered dynamically later... -->
+                        </select>
+
+                        <label class="task-form__label" for="subtasks">Subtasks</label>
+                        <div class="task-form__subtasks">
+                            <input type="text" id="subtasks" name="subtasks" class="task-form__input task-form__input--subtask" placeholder="Add new subtask"/>
+                            <button type="button" class="task-form__subtask-button">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="task-form__actions">
+                        <button type="submit" class="task-form__button task-form__button--clear">Clear</button>
+                        <button type="reset" class="task-form__button task-form__button--create">Create Task</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+    </div>
+</body>
+</html>
