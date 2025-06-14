@@ -1,0 +1,140 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter_28pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter_28pt-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  
+}
+
+body {
+  background-color: #f5f6fa;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 40px;
+}
+
+.header__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.subtitle {
+  color: #6b7280;
+}
+
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  color: #29ABE2;
+}
+
+
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.icon {
+  margin-bottom: 10px;
+    width: 50px;
+  height: 50px;
+  background-color: #2A3647; 
+  border-radius: 50%;        
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.icon img {
+  width: 24px;
+  height: 24px;
+}
+
+
+
+.number {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.label {
+  color: #6b7280;
+}
+
+.urgent-card .urgent-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.urgent-icon {
+       width: 50px;
+  height: 50px;
+  background: #FF3D00;
+border-radius: 50%;
+    display: flex;
+  font-size: 22px;
+  margin-bottom: 10px;
+   align-items: center;
+  justify-content: center;
+}
+
+.urgent-icon img {
+  width: 30px;
+  height: 30px;
+}
+
+.deadline {
+  font-size: 12px;
+  color: #9ca3af;
+}
