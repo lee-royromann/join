@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join-Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/animation.css">
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/animation.css">
+    <link rel="icon" type="image/x-icon" href="/assets/img/icon/logo_favicon.svg">
+    <script defer src="/script/login.js"></script>
+    <script defer src="/script.js"></script>
+    <script defer src="/script/register.js"></script>
+    <script src="/script/db.js"></script>
+</head>
+
+<body>
+    <div id="rotate-warning-placeholder"></div>
+    <div class="cover-container">
+        <img class="cover" src="./assets/img/logo/cover_join.svg" alt="">
+        <img class="cover cover-white" src="./assets/img/logo/cover_join_white.svg" alt="">
+    </div>
+    <div class="dpl-fl-colu background">
+        <img id="logoImg" class="logo d-none" src="./assets/img/logo/cover_join.svg" alt="">
+        <div class="sign-up-container">
+            <p>Not a Join user?</p>
+            <form action="html/sign_up.html">
+                <button type="submit">Sign up</button>
+            </form>
+        </div>
+        <form onsubmit="login(); return false" class="dpl-fl-colu login-content">
+            <h2>Log in</h2>
+            <div class="dpl-fl-colu input-container">
+                <label id="labelEmail" class="input-field">
+                    <div class="input-content">
+                        <input id="email" type="text" placeholder="E-mail" onkeyup="correctedInput('labelEmail', 'email')" onblur="finishTheCorrection('labelEmail')">
+                        <img class="input-icon" src="./assets/img/icon/mail.svg" alt="">
+                    </div>
+                </label>
+                <div class="dpl-fl-colu gap-small">
+                    <label id="labelPassword" class="input-field">
+                        <div class="input-content">
+                            <input id="password" type="password" placeholder="Password" oninput="updatePasswdIcon()" onkeyup="correctedInput('labelPassword', 'password')" onblur="finishTheCorrection('labelPassword')">
+                            <img id="passwdIcon" class="input-icon" src="./assets/img/icon/lock.svg" alt="" onclick="togglePasswordVisibility()">
+                        </div>
+                    </label>
+                    <p id="poppin" class="poppins opacity"></p>
+                </div>
+            </div>
+            <div id="loginArea" class="submit-container d-none">
+                <button id="logIn" type="submit">Log In</button>
+                <button id="guestLogIn" type="button" onclick="guestLogin(event)">Guest Log In</button>
+            </div>
+        </form>
+        <div class="info-pri-pol-container">
+            <a href="#" class="privacy-legal-index"
+                onclick="setLayoutAndRedirect('extern', '/html/privacy_policy.html')">Privacy Policy</a>
+            <a href="#" class="privacy-legal-index"
+                onclick="setLayoutAndRedirect('extern', '/html/legal_notice.html')">Legal Notice</a>
+        </div>
+        <div id="cookieBanner" class="cookie-banner d-none">
+            <p>This website uses cookies to ensure you get the best experience. <a href="#">Learn more</a></p>
+            <button id="acceptCookiesBtn">Accept</button>
+        </div>
+        <div id="spinnerOverLay" class="spinner-overlay d-none">
+            <div class="spinner-container spinner-login-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
