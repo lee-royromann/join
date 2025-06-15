@@ -1,0 +1,400 @@
+/* To Do's:
+    - Add global variables for colors, paddings, margins, etc.
+    - Link global variables to all texts
+    - Delete all unused classes
+    - Delete all unused variables
+    - Delete all unused properties
+    - Delete .sidebar class once the sidebar is finished by (MR)
+*/
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter_28pt-Light.ttf') format('truetype');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter_28pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter_28pt-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    /* Colors */
+    --main-bg-color: #f6f7f8;
+    --main-color-text: #2a3647;
+
+    /* Paddings & Margins */
+    --task-form-padding-top: 100px;
+    --task-form-padding-bottom: 100px;
+    --task-form-padding-left: 80px;
+    --task-form-padding-right: 80px;
+}
+
+.page {
+    display: flex;
+    flex-direction: row;
+    max-width: 1440px;
+    /* max-height: 1024px; */
+    width: 100%;
+    margin: 0 auto;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--main-bg-color);
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--task-form-padding-left);
+    padding-right: var(--task-form-padding-right);
+    padding-top: var(--task-form-padding-top);
+    padding-bottom: var(--task-form-padding-bottom);
+    width: 100%;
+    gap: 40px;
+}
+
+.task-form__header {
+    font-family: 'Inter', sans-serif;
+    font-size: 61px;
+    font-weight: 700;
+}
+
+.task-form__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 100px;
+}
+
+.task-form__columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-form__column {
+    display: flex;
+    flex-direction: column;
+    max-width: 440px;
+    width: 100%;
+    gap: 30px;
+}
+
+.task-form__input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-form__label {
+    font-size: 20px;
+    font-weight: 300;
+    color: #2a3647;
+}
+
+.task-form__input-field {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 21px;
+    padding-right: 21px;
+    font-size: 20px;
+    font-weight: 300;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+    /* color: #2a3647; */
+    /* box-sizing: border-box; */
+}
+
+.task-form__textarea {
+    min-height: 120px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-left: 16px;
+    padding-right: 0px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    resize: vertical;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    /* box-sizing: border-box; */
+}
+
+.task-form__input-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-form__input-field::placeholder,
+.task-form__textarea::placeholder,
+.task-form__dropdown-field::placeholder {
+    color: #d1d1d1;
+    font-size: 20px;
+}
+
+.task-form__input-field:focus,
+.task-form__textarea:focus,
+.task-form__dropdown-field:focus,
+.task-form__dropdown-search:focus {
+    border: 1px solid #28abe2;
+    outline: none;
+}
+
+.task-form__input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    right: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 18px;
+}
+
+.task-form__separator {
+    min-width: 1px;
+    background-color: #d1d1d1;
+    margin: 0 40px;
+}
+
+.task-form__priority {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task-form__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    height: 56px;
+    max-width: 136px;
+    width: 100%;
+    gap: 8px;
+}
+
+.task-form__button:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+}
+
+.task-form__button svg {
+    width: 20px;
+}
+
+.task-form__priority-button--low svg {
+    color: #7ae229;
+}
+
+.task-form__priority-button--medium svg {
+    color: #ffa700;
+}
+
+.task-form__priority-button--urgent svg {
+    color: #ff3e01;
+}
+
+.task-form__dropdown {
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    gap: 0;
+}
+
+.task-form__dropdown-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 21px;
+    padding-right: 21px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+.task-form__dropdown-wrapper {
+    position: absolute;
+    overflow-y: auto;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 330px;
+    border-radius: 10px;
+    padding-top: 26px;
+    padding-bottom: 12px;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    transform: translateY(-10px);
+    z-index: 1;
+}
+
+.task-form__dropdown-search {
+    width: calc(100% - 24px);
+    margin: 0 12px 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.task-form__dropdown-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 12px;
+    list-style: none;
+    gap: 2px;
+}
+
+.task-form__dropdown-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-radius: 10px;
+}
+
+.task-form__dropdown-contact:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.task-form__dropdown-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.task-form__dropdown-name {
+    flex-grow: 1;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.task-form__dropdown-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #2a2a2a;
+    margin-right: 10px;
+}
+
+.task-form__dropdown-checkbox--checked {
+    background-color: #2a3547;
+    color: white;
+}
+
+.task-form__dropdown-checkbox--checked:hover {
+    background-color: #081831;
+}
+
+.task-form__dropdown-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.task-form__dropdown-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.task-form__dropdown-wrapper::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+.task-form__dropdown-wrapper::-webkit-scrollbar-button {
+  height: 10px;
+  background-color: #ddd;
+}
+
+.task-form__actions {
+
+}
+
+.task-form__button--clear {
+
+}
+
+.task-form__button--create {
+
+}
+
+.task-form__input--subtask {
+
+}
+
+.task-form__select {
+
+}
+
+.task-form__subtask-button {
+
+}
+
+.task-form__subtasks {
+
+}
+
+.required {
+    color: #ff8190;
+    margin-left: 5px;
+}
+
+.d_none {
+    display: none;
+}
