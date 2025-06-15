@@ -1,5 +1,3 @@
-
-/* Im Nachgang zentral auslagern */
 @font-face {
     font-family: "Inter";
     src: url("../assets/fonts/Inter_28pt-Regular.ttf") format("truetype");
@@ -7,8 +5,6 @@
     font-style: normal;
     font-size: 28px;
 }
-
-
 
 * {
     box-sizing: border-box;
@@ -25,26 +21,114 @@ html, body {
 }
 
 body {
-    font-family: 'Inter';  
-    /* Achtung muss noch angepasst werden */
+    font-family: 'Inter';
     background: #c6dcf1;
     font-size: 16px;
-} 
+}
 
-.content {
+.board-page {
     position: relative;
     max-width: 1440px;
     width: 100%;
     margin: auto;
 }
 
-.card {
+.board-page__card {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     position: relative;
-    width: 100%;;
+    width: 100%;
     height: 1024px;
     margin: auto;
     background-color: #F6F7F8;
 }
+
+.kanban {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 1208px;
+    height: 100%;
+}
+
+.kanban__header {
+    position: relative;
+    width: 100%;
+    height: 232px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.kanban__headline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 1056px;
+    z-index: 2;
+}
+
+.kanban__title {
+    font-size: 61px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.kanban__tools {
+    display: flex;
+    gap: 32px;
+}
+
+.kanban__search {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.kanban__add-button {
+    padding: 8px 16px;
+    background-color: #2A3647;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.kanban__add-button:hover {
+    background-color: #1f2937;
+}
+
+.kanban__subtitle-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.kanban__subtitle {
+    font-size: 16px;
+    color: #555;
+}
+
+.kanban__columns {
+    display: flex;
+    gap: 24px;
+    padding: 32px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.kanban__column {
+    flex: 1;
+    min-width: 240px;
+    background-color: #fff;
+    border

@@ -52,6 +52,7 @@
     justify-content: space-between;
     align-items: center;
     height: var(--header-height);
+    width: 100%;
     padding-top: var(--header-padding-top);
     padding-bottom: var(--header-padding-bottom);
     padding-left: var(--header-padding-left);

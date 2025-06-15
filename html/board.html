@@ -1,83 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Figma-Board</title>
 
-    <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../css/board.css">
-    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/board.css" />
+    </head>
 
+    <body>
+        <div class="board-page">
+            <div class="board-page__card">
 
-</head>
-<body>
-    <div class="content">
-        <div class="card">
+                <nav class="sidebar">
+                    <div class="sidebar__logo">
+                        <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo">
+                    </div>
+                    <div class="sidebar__menu">
+                        <div class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary">
+                            <a href="#" class="sidebar__text">Summary</a>
+                        </div>
+                        <div class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task">
+                            <a href="#" class="sidebar__text">Add Task</a>
+                        </div>
+                        <div class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board">
+                            <a href="#" class="sidebar__text">Board</a>
+                        </div>
+                        <div class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts">
+                            <a href="#" class="sidebar__text">Contacts</a>
+                        </div>
+                    </div>
+                    <div class="sidebar__legal">
+                        <a href="#" class="sidebar__text">Privacy Policy</a>
+                        <a href="#" class="sidebar__text">Legal notice</a>
+                    </div>
+                </nav>
 
-            <div class="navbar">
-                <div class="navbar_logo">
-                    <img class="logo2" src="../assets/img/logo/join_2.svg" alt="Logo">
-                </div>
-                <div class="navbar_selection">
-                   <div class="selection">
-                        <img class="img_selection" src="../assets/img/icon/summary.svg" alt="Logo">
-                       <a href="#" class="selection_text">Summary</a>
+                <div class="kanban">
+                    <header class="header">
+                        <h1 class="header__title">Kanban Project Management Tool</h1>
+                        <div class="header__container">
+                            <div class="header__help">?</div>    
+                            <div class="header__user">SM</div>
+                        </div>
+                    </header>
+
+                    <div class="kanban__header">
+                        <div class="kanban__headline">
+                            <span class="kanban__title">Board</span>
+                            <div class="kanban__tools">
+                                <input type="text" class="kanban__search" placeholder="find_task">
+                                <button class="kanban__add-button">Add Task +</button>
+                            </div>
+                        </div>
+                        <div class="kanban__subtitle-wrapper">
+                            <p class="kanban__subtitle">Drag and drop tasks between columns to update their status.</p>
+                        </div>
                     </div>
-                    <div class="selection">
-                        <img class="img_selection" src="../assets/img/icon/add_task.svg" alt="Logo">
-                        <a href="#" class="selection_text">Add Task</a>
-                    </div>
-                    <div class="selection">
-                        <img class="img_selection" src="../assets/img/icon/board.svg" alt="Logo">
-                        <a href="#" class="selection_text">Board</a>
-                    </div>
-                    <div class="selection">
-                        <img class="img_selection" src="../assets/img/icon/contacts.svg" alt="Logo">
-                        <a href="#" class="selection_text">Contacts</a>
-                    </div>
-                </div>
-               <div class="navbar_legal">
-                    <a href="#" class="selection_text">Privacy Policy</a>
-                    <a href="#" class="selection_text">Legal notice</a>
+
+                    <main class="kanban__columns">
+                        <div class="kanban__column" id="todo"></div>
+                        <div class="kanban__column" id="in_progress"></div>
+                        <div class="kanban__column" id="await_feedback"></div>
+                        <div class="kanban__column" id="done"></div>
+                    </main>
                 </div>
             </div>
-
-            <div class="board">
-                <div class="header"> Kanban Project</div>  <!-- wird bereit gestellt -->
-                <div class="board__header">
-                    <h1 class="board__title">Board</h1>
-                    <input type="text" class="find_task" placeholder="find_task">  <!-- Hier noch die Lupe -->
-                    <button class="board__add-task-btn">Add Task +</button>
-                </div>
-                <div class="board-body">
-                    <div class="board-column">
-                        <h2 class="board-column__title">To Do</h2>  <!--Hier noch Pluszeichen für add Task-->
-                        <div class="board-column__tasks">
-                            <!-- Tasks will be dynamically added here -->
-                        </div>
-                    </div>
-                    <div class="board-column">
-                        <h2 class="board-column__title">In Progress</h2> <!--Hier noch Pluszeichen für add Task-->
-                        <div class="board-column__tasks">
-                            <!-- Tasks will be dynamically added here --> 
-                        </div>
-                    </div>
-                    <div class="board-column">
-                        <h2 class="board-column__title">Await feedback</h2> <!--Hier noch Pluszeichen für add Task-->
-                        <div class="board-column__tasks">
-                            <!-- Tasks will be dynamically added here --> 
-                        </div>
-                    </div>
-                    <div class="board-column">
-                        <h2 class="board-column__title">Done</h2>
-                        <div class="board-column__tasks">
-                            <!-- Tasks will be dynamically added here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
-    
-</body>
+        </div>
+    </body>
 </html>
