@@ -1,10 +1,10 @@
 // The following code is initially used for optical designing.
 // The code will be optimized, once the design is finalized.
 
-const contactSelector = document.getElementById('contact-selector');
-const contactDropdown = document.getElementById('contact-dropdown');
-const contactSearch = document.getElementById('contact-search');
-const contactList = document.getElementById('contact-list');
+const contactSelector = document.getElementById('task-contact-selector');
+const contactDropdown = document.getElementById('task-contact-dropdown');
+const contactSearch = document.getElementById('task-contact-search');
+const contactList = document.getElementById('task-contact-list');
 const contacts = document.querySelectorAll('.task-form__dropdown-contact');
 
 function initAddTask() {
@@ -17,31 +17,61 @@ function loadSidebar() {
 }
 
 function populateContactsToDropdown() {
-    console.log("Populating contacts to dropdown...");
+    console.log("Populating contacts...");
 }
 
-function toggleContactDropdown(event) {
-	contactDropdown.classList.toggle('d_none');
+function stopEventPropagation(event) {
+    event.stopPropagation();
 }
 
-function filterContacts() {
-	const input = document.getElementById('contact-search').value.toLowerCase();
-	const contacts = document.querySelectorAll('.task-form__dropdown-contact');
-	
-	contacts.forEach(item => {
-		const name = item.querySelector('.task-form__dropdown-name').textContent.toLowerCase();
-		item.style.display = input === '' || name.includes(input) ? 'flex' : 'none';
-	});
+function showDropdown(dropdown) {
+    dropdown.classList.remove('d_none');
+}
+
+function hideDropdown(dropdown) {
+    dropdown.classList.add('d_none');
+}
+
+function toggleDropdown(event, inputId, dropdownId) {
+    stopEventPropagation(event);
+
+    const dropdownElement = document.getElementById(dropdownId);
+	const isHidden = dropdownElement.classList.contains('d_none');
+
+    if (isHidden) {
+        showDropdown(dropdownElement);
+    } else {
+        hideDropdown(dropdownElement);
+    }
 }
 
 function selectContact(id) {
-	let checkbox = document.getElementById(`contact-checkbox-${id}`);
-	if (checkbox) {
-		checkbox.checked = !checkbox.checked;
-	}
-	if (checkbox.checked) {
-		checkbox.parentElement.classList.add('task-form__dropdown-checkbox--checked');
-	} else {
-		checkbox.parentElement.classList.remove('task-form__dropdown-checkbox--checked');
-	}
+    const checkbox = document.getElementById('contact-checkbox-' + id);
+
+    if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        checkbox.parentElement.classList.toggle('task-form__dropdown-checkbox--checked', checkbox.checked);
+    }
+}
+
+function filterDropdown(inputId, listSelector) {
+    const value = document.getElementById(inputId).value.toLowerCase();
+    document.querySelectorAll(listSelector).forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(value) ? 'flex' : 'none';
+    });
+}
+
+function selectCategory(id) {
+    const item = document.getElementById('category-id-' + id);
+    const input = document.getElementById('task-category-input');
+    const dropdown = document.getElementById('task-category-dropdown');
+
+    if (item && input) {
+        const category = item.getAttribute('data-category');
+        input.value = category;
+    }
+
+    if (dropdown && !dropdown.classList.contains('d_none')) {
+        dropdown.classList.add('d_none');
+    }
 }
