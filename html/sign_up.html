@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/signup.css">
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+    <script src="../script.js"></script>
+    <script src="../script/register.js"></script>
+    <script src="../script/signup.js" defer></script>
+    <script src="../script/db.js"></script>
+</head>
+
+<body>
+    <div class="dpl-fl-colu background">
+        <a href="../index.html" title="Go to homepage"><img id="logoImg" class="logo" src="../assets/img/logo/cover_join.svg" alt=""></a>
+        <form id="signup" onsubmit="addUser(); return false;" class="dpl-fl-colu signup-content">
+            <a class="img-back-container" href="../index.html" title="Back to homepage"><img class="img-back" src="../assets/img/icon/arrow-left-line.svg" alt=""></a>
+            <h2>Sign up</h2>
+            <div class="dpl-fl-colu input-container-sgup">
+                <label id="labelUsername" class="input-field">
+                    <div class="input-content">
+                        <input type="name" placeholder="Name" id="username" onkeyup="correctedInput('labelUsername', 'username')" onblur="finishTheCorrection('labelUsername')">
+                        <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
+                    </div>
+                </label>
+                <label id="labelEmailSignUp" class="input-field" id="labelEmailSignUp">
+                    <div class="input-content">
+                        <input type="text" placeholder="E-mail" id="emailSignUp" onkeyup="correctedInput('labelEmailSignUp', 'emailSignUp')" onblur="finishTheCorrection('labelEmailSignUp')">
+                        <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
+                    </div>
+                </label>
+                <label id="labelPasswordReg" class="input-field">
+                    <div class="input-content">
+                        <input type="password" placeholder="Password" id="passwordReg" oninput="updateSignupIcon('passwordReg')" onkeyup="correctedInput('labelPasswordReg', 'passwordReg')" onblur="finishTheCorrection('labelPasswordReg')">
+                        <img class="input-icon" id="icon-passwordReg" src="../assets/img/icon/lock.svg" alt="" onclick="toggleSignupVisibility('passwordReg')">
+                    </div>
+                </label>
+                <div class="dpl-fl-colu gap-small">
+                    <label id="labelPasswordConf" class="input-field">
+                        <div class="input-content">
+                            <input type="password" placeholder="Confirm Password" id="passwordConf" oninput="updateSignupIcon('passwordConf')" onkeyup="correctedInput('labelPasswordConf', 'passwordConf')" onblur="finishTheCorrection('labelPasswordConf')">
+                            <img class="input-icon" id="icon-passwordConf" src="../assets/img/icon/lock.svg" alt="" onclick="toggleSignupVisibility('passwordConf')">
+                        </div>
+                    </label>
+                    <p id="errorPoppin" class="poppins opacity">Ups! your password don't match.</p>
+                </div>
+                <label id="labelCheckbox" class="input-chebox" onclick="toggleCheckbox(event)" onmouseover="hoverImage(true, event)"
+                    onmouseout="hoverImage(false, event)">
+                    <img src="../assets/img/icon/rectangle.svg" alt="Unchecked" id="checkboxImg">
+                    <input type="checkbox" id="checkbox">
+                    <p>I accept the <span>Privacy policy</span></p>
+                </label>
+            </div>
+            <div class="submit-container" disabled="true">
+                <button type="submit">Sign up</button>
+            </div>
+        </form>
+        <div class="info-pri-pol-container">
+            <a href="#" onclick="setLayoutAndRedirect('extern', '/html/privacy_policy.html')" class="privacy-legal-index">Privacy Policy</a><a href="#" class="privacy-legal-index" onclick="setLayoutAndRedirect('extern', '/html/legal_notice.html')">Legal Notice</a>
+        </div>
+        <div id="success" class="d-none">
+            <p>You Signed up successfully!</p>
+        </div>
+        <div id="spinnerOverLay" class="spinner-overlay d-none">
+            <div class="spinner-container spinner-login-overlay">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
