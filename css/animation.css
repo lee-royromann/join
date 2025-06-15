@@ -1,0 +1,160 @@
+.cover-container {
+    padding: 0px max(0px, calc(50% - 720px));
+    background-color: white;
+    position: absolute;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
+    animation: contrasts 0.7s ease-out 0.7s forwards;
+}
+
+
+.cover {
+    height: 234px;
+    width: 274px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: cover 0.6s ease-out 0.5s forwards;
+}
+
+
+.cover-white {
+    transform: translate(-50%, -50%);
+    animation: cover-white 0.6s ease-out 0.5s forwards;
+    display: none;
+}
+
+
+@keyframes cover {
+    0% {
+        left: 50%;
+        top: 50%;
+    }
+
+    100% {
+        height: 100px;
+        width: 122px;
+        left: max(138px, calc(50% - 643px));
+        top: 130px;
+    }
+}
+
+
+@keyframes contrasts {
+    0% {
+        background-color: white;
+    }
+
+    100% {
+        background-color: rgba(255, 255, 255, 0);
+        z-index: 0;
+    }
+}
+
+
+@media (max-width: 540px) {
+    @keyframes cover-mobile {
+        0% {
+            left: 50%;
+            top: 50%;
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        100% {
+            height: 78px;
+            width: 64px;
+            top: 76px;
+            left: 70px;
+        }
+    }
+
+    @keyframes cover-white {
+        0% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0;
+        }
+
+        100% {
+            height: 78px;
+            width: 64px;
+            top: 76px;
+            left: 70px;
+            opacity: 0;
+        }
+    }
+
+    @keyframes contrasts-mobile {
+        0% {
+            background-color: #2A3647;
+        }
+
+        100% {
+            background-color: rgba(255, 255, 255, 0.3);
+            z-index: 0;
+        }
+    }
+
+    .cover-container {
+        animation-name: contrasts-mobile;
+        background-color: #2A3647;
+        animation-delay: 0.5s;
+    }
+
+    .cover {
+        animation-name: cover-mobile;
+        position: absolute;
+    }
+
+    .cover-white {
+        display: block;
+        transform: translate(-50%, -50%);
+        animation: cover-white 0.6s ease-out 0.5s forwards;
+    }
+}
+
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 8px solid #eee;
+    border-top: 8px solid #2A3647;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+
+.spinner-overlay {
+    position: absolute;
+    z-index: 150;
+    height: 100vh;
+    width: 100%;
+}
+
+
+.spinner-login-overlay {
+    position: relative;
+    top: 50%;
+}
+
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

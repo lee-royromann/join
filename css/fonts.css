@@ -1,0 +1,12 @@
+@font-face {
+    font-family: Inter;
+    src: url("../assets/fonts/Inter_24pt-Regular.ttf");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Inter;
+    src: url("../assets/fonts/Inter_24pt-Bold.ttf");
+    font-weight: bold;
+}
+
