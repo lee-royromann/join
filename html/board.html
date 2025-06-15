@@ -56,8 +56,17 @@
                         <div class="kanban__headline">
                             <span class="kanban__title">Board</span>
                             <div class="kanban__tools">
-                                <input type="text" class="kanban__search" placeholder="find_task">
-                                <button class="kanban__add-button">Add Task +</button>
+                                <div class="kanban__search-wrapper">
+                                    <input type="text" class="kanban__search-input" placeholder="Find Task">
+                                    <div class="kanban__search-icon-group">
+                                        <div class="kanban__search-separator"></div>
+                                        <img src="../assets/img/icon/search.svg" alt="Search" class="kanban__search-icon">
+                                    </div>
+                                </div>
+                            <button class="kanban__add-button">
+                                <span class="kanban__add-text">Add Task</span>
+                                <img src="../assets/img/icon/add_plus.svg" alt="Add Task" class="kanban__add-icon">    
+                            </button>
                             </div>
                         </div>
                         <div class="kanban__subtitle-wrapper">
