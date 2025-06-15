@@ -1,3 +1,15 @@
+
+/* Im Nachgang zentral auslagern */
+@font-face {
+    font-family: "Inter";
+    src: url("../assets/fonts/Inter_28pt-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-size: 28px;
+}
+
+
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -13,20 +25,105 @@ html, body {
 }
 
 body {
-    font-family: 'Fredoka';
-    background-color: #46575d;
-    color: white;
+    font-family: 'Inter';  
+    /* Achtung muss noch angepasst werden */
+    background: #c6dcf1;
     font-size: 16px;
 } 
 
-.d-none {
-    display: none !important;
-}
-
 .content {
     position: relative;
-    max-width: 1920px;
+    max-width: 1440px;
     width: 100%;
     margin: auto;
-    background-color: green;
+}
+
+.card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    width: 100%;;
+    height: 1024px;
+    margin: auto;
+    background-color: #F6F7F8;
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 232px;
+    height: 100%;
+    background-color: #2A3647;
+    justify-content: space-between;
+    padding: 64px 0px;
+}
+
+.logo2 {
+    align-self: center;
+    width: 100.03px;
+    height: 121.97px;
+}
+
+/* Navigation Items */
+.navbar_selection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 229px;
+  gap: 15px;           
+}
+
+.selection {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  gap: 16px;            /* Icon und Text */
+padding: 8px 56px;
+ 
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.selection:hover {
+  cursor: pointer;
+  background: #2A3D59;
+}
+
+.img_selection {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.selection_text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 120%;
+  color: #CDCDCD;
+}
+
+/* Legal Links unten */
+.navbar_legal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  height: 317px
+}
+
+.navbar_legal .selection_text {
+   opacity: 0.7;
+   text-decoration: none;
+}
+
+.navbar_legal .selection_text:hover {
+  opacity: 1;
+  color: #29ABE2;
+  font-weight: 700;
+  
+
+  
 }
