@@ -169,7 +169,7 @@
                                             oninput="filterDropdown('task-contact-search', '#task-contact-list .task-form__dropdown-contact')"
                                             placeholder="Select contacts to assign"
                                         />
-                                        <div class="task-form__input-icon-assignee">
+                                        <div class="task-form__input-icon-assignee" onclick="toggleDropdown(event, 'task-contact-search', 'task-contact-dropdown')">
                                             <img src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow Down">
                                         </div>
                                     </div>
@@ -270,7 +270,7 @@
                                     <!-- Dropdown Input -->
                                     <div class="task-form__dropdown" id="task-categroy-selector">
                                         <input type="text" class="task-form__input-field" id="task-category-input" onclick="toggleDropdown(event, 'task-category-input', 'task-category-dropdown')" placeholder="Select category"/>
-                                        <div class="task-form__input-icon-category">
+                                        <div class="task-form__input-icon-category" onclick="toggleDropdown(event, 'task-category-input', 'task-category-dropdown')">
                                             <img id="task-form-category-arrow" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow Down">
                                         </div>                                    
                                     </div>
