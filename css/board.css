@@ -155,8 +155,7 @@ body {
 .kanban__add-icon {
     width: 32px;
     height: 32px;
-    fill: #FFFFFF;
-    
+    fill: #FFFFFF;   
 }
 
 .kanban__subtitle-wrapper {
@@ -166,25 +165,47 @@ body {
     width: 100%;
     z-index: 1;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0 64px;
+
 }
 
 .kanban__subtitle {
-    font-size: 16px;
-    color: #555;
-}
-
-.kanban__columns {
     display: flex;
-    gap: 24px;
-    padding: 32px;
+    justify-content: space-between;
+    max-width: 244px;
     width: 100%;
-    overflow-x: auto;
 }
 
-.kanban__column {
-    flex: 1;
-    min-width: 240px;
-    background-color: #fff;
-   
+.kanban__subtitle-text {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.kanban__subtitle-plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    color: #2A3647;
+    font-size: 20px;
+    border: 2px solid #2A3647;
+    border-radius: 8px;  
+}
+
+.kanban__subtitle-plus::before {
+    content: "+";
+    transform: translateY(-1px);  /* Justierung nach unten (oder -1px nach oben) */
+    display: inline-block;
+}
+
+.kanban__subtitle-plus:hover {
+  color: #00BEE8;
+  border-color: #00BEE8;  
+  transition: color 0.2s ease-in-out 0.1s,
+              border-color 0.2s ease-in-out 0.1s;    
 }
