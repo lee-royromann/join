@@ -296,14 +296,14 @@
                                     <input type="text" class="task-form__input-field" id="task-subtask-input" placeholder="Add new subtask"/>
 
                                     <!-- Subtask plus icon -->
-                                    <div class="task-form__wrapper-input-icons" id="task-subtask-icons-1">
+                                    <div class="task-form__wrapper-input-icons d_none" id="task-subtask-icons-1">
                                         <div class="task-form__input-icon-subtask">
                                             <img src="../assets/img/icon/plus.svg" alt="Subtask Icon">
                                         </div>
                                     </div>
 
                                     <!-- Subtask delte / check icons -->
-                                    <div class="task-form__wrapper-input-icons d_none" id="task-subtask-icons-2">
+                                    <div class="task-form__wrapper-input-icons" id="task-subtask-icons-2">
                                         <div class="task-form__input-icon-subtask">
                                             <img src="../assets/img/icon/close.svg" alt="Subtask Icon">
                                         </div>
@@ -320,9 +320,19 @@
                     <!-- Action Buttons -->
                     <div class="task-form__actions">
                         <span><span class="required">* </span>This field is required</span>
-                        <div class="task-form__actions-buttons">
-                            <button type="reset" class="task-form__button-clear">Clear</button>
-                            <button type="submit" class="task-form__button-create">Create Task<img src="../assets/img/icon/done.svg" alt="Button Create"></button>
+                        <div class="task-form__action-buttons">
+                            <button type="reset" class="task-form__button-clear">
+                                <span>Clear</span>
+                                <svg width="15" height="15" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.06917 7.00008L12.3122 12.2431M1.82617 12.2431L7.06917 7.00008L1.82617 12.2431ZM12.3122 1.75708L7.06817 7.00008L12.3122 1.75708ZM7.06817 7.00008L1.82617 1.75708L7.06817 7.00008Z"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                            <button type="submit" class="task-form__button-create">Create Task<img src="../assets/img/icon/done_white.svg" alt="Button Create"></button>
                         </div>
                     </div>
                 </form>
