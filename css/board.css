@@ -125,18 +125,21 @@ body {
 
 .kanban__add-button {
     display: flex;
+    flex-direction: row; /* wichtig für nebeneinander */
     align-items: center;
     justify-content: center;
     max-width: 160px;
     height: 56px;
     padding: 12px 16px;
-    gap: 4px;
+    gap: 4px; /* Abstand zwischen Text und Icon */
     background-color: #2A3647;
     color: white;
     border: 1px solid #2A3647;
     border-radius: 10px;
     cursor: pointer;
+    white-space: nowrap; /* verhindert Zeilenumbruch */
 }
+
 
 .kanban__add-button:hover {
     background-color: #1f2937;
