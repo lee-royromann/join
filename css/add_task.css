@@ -55,7 +55,6 @@
     --figma-color-13: #FFE62B;
     --figma-color-14: #FF4646;
     --figma-color-15: #FFBB2B;
-
     --main-bg-color: #f6f7f8;
     --main-color-text: #2a3647;
 
@@ -369,17 +368,11 @@ body {
     margin: 0 !important;
 }
 
-
-
-
-
 .task-form__icon-separator {
     min-width: 1px;
     background-color: #A8A8A8;
     height: 24px;
 }
-
-
 
 .task-form__button {
     display: flex;
@@ -405,7 +398,7 @@ body {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
-    font-size: 21px;
+    font-size: 22px;
     line-height: 120%;
     max-width: 183px;
     width: 100%;
@@ -419,6 +412,7 @@ body {
 
 .task-form__button-create:hover {
     box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    background-color: #29ABE2;
     cursor: pointer;
 }
 
@@ -454,7 +448,6 @@ body {
     color: #ff3e01;
 }
 
-
 .task-form__input-field::placeholder,
 .task-form__textarea::placeholder,
 .task-form__dropdown-field::placeholder {
@@ -470,9 +463,6 @@ body {
     outline: none;
 }
 
-
-
-
 .task-form__actions {
     display: flex;
     flex-direction: row;
@@ -480,17 +470,44 @@ body {
     align-items: center;
 }
 
-.task-form__actions-buttons {
+.task-form__action-buttons {
     display: flex;
     flex-direction: row;
-    max-width: 300px;
+    justify-content: end;
+    max-width: 440px;
     width: 100%;
     gap: 20px;
 }
 
+.task-form__button-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border-radius: 10px;
+    max-width: 126px;
+    width: 100%;
+    gap: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: #2a3647;
+    cursor: pointer;
+    border: 2px solid #d1d1d1;
+    gap: 8px;
+}
+
+.task-form__button-clear:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border-color: #29ABE2;
+    color: #29ABE2;
+}
+
+.task-form__button-clear:hover svg {
+    color: #29ABE2;
+}
 
 /****** SCROLLBAR STYLINGS ******/
-
 
 .task-form__wrapper-dropdown-list::-webkit-scrollbar,
 .task-form__textarea::-webkit-scrollbar {
@@ -508,9 +525,7 @@ body {
   background-color: #ffffff00;
 }
 
-
 /****** GENERAL ELEMENTS ******/
-
 
 .required {
     color: #ff8190;
