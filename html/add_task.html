@@ -99,22 +99,23 @@
                         <div class="task-form__column">
 
                             <!-- Title -->
-                            <div class="task-form__input-group">
+                            <div class="task-form__group">
                                 <label class="task-form__label" for="task-title">Title<span class="required">*</span></label>
-                                <input type="text" id="task-title" name="title" class="task-form__input-field" placeholder="Enter a title" required/>
+                                <input class="task-form__input-field" id="task-title" type="text" name="title" placeholder="Enter a title" required/>
                             </div>
 
                             <!-- Description -->
-                            <div class="task-form__input-group">
+                            <div class="task-form__group">
                                 <label class="task-form__label" for="task-description">Description</label>
-                                <textarea id="task-description" name="description" class="task-form__input-field task-form__textarea" placeholder="Enter a Description"></textarea>
+                                <textarea class="task-form__input-field task-form__textarea" id="task-description" name="description" placeholder="Enter a Description"></textarea>
                             </div>
 
                             <!-- Due Date -->
-                            <div class="task-form__input-group">
+                            <div class="task-form__group">
                                 <label class="task-form__label" for="task-due-date">Due date<span class="required">*</span></label>
-                                <div class="task-form__input-wrapper"><input type="text" id="task-due-date" name="due-date" class="task-form__input-field" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
-                                    <span class="task-form__input-icon" aria-hidden="true">
+                                <div class="task-form__wrapper-input">
+                                    <input class="task-form__input-field" id="task-due-date" type="text" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
+                                    <span class="task-form__input-icon-calendar" aria-hidden="true">
                                         <img src="../assets/img/icon/calendar.svg" alt="" />
                                     </span>
                                 </div>
@@ -128,9 +129,9 @@
                         <div class="task-form__column">
 
                             <!-- Priority -->
-                            <div class="task-form__input-group">
+                            <div class="task-form__group">
                                 <label class="task-form__label">Priority</label>
-                                <div class="task-form__priority">
+                                <div class="task-form__wrapper-priority">
                                     <button type="button" class="task-form__button task-form__priority-button--urgent">
                                         <span>Urgent</span>
                                         <svg class="my-icon" width="21" height="16" viewBox="0 0 21 16" xmlns="http://www.w3.org/2000/svg">
@@ -156,10 +157,10 @@
                             </div>
 
                             <!-- Assigned To -->
-                            <div class="task-form__input-group">
-                                <label class="task-form__label" for="task-assigned-to">Assigned to</label>
-                                <div class="task-form__dropdown" id="task-assigned-to">
-                                    <div class="task-form__dropdown-input-wrapper" id="task-contact-selector" tabindex="0">
+                            <div class="task-form__group">
+                                <label class="task-form__label" for="task-contact-search">Assigned to</label>
+                                <div>
+                                    <div class="task-form__dropdown" id="task-contact-selector">
                                         <input
                                             type="text"
                                             class="task-form__input-field"
@@ -168,9 +169,11 @@
                                             oninput="filterDropdown('task-contact-search', '#task-contact-list .task-form__dropdown-contact')"
                                             placeholder="Select contacts to assign"
                                         />
-                                        <span class="task-form-dropdown__arrow">▾</span>
+                                        <div class="task-form__input-icon-assignee">
+                                            <img src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow Down">
+                                        </div>
                                     </div>
-                                    <div class="task-form__dropdown-list-wrapper d_none" id="task-contact-dropdown">
+                                    <div class="task-form__wrapper-dropdown-list d_none" id="task-contact-dropdown">
                                         <ul class="task-form__dropdown-list" id="task-contact-list">
                                             <li class="task-form__dropdown-contact"
                                                 id="contact-id-7"
@@ -213,7 +216,7 @@
                                                 data-color="#00BCD4"
                                                 onclick="selectContact(1)">
                                                 <span class="task-form__dropdown-badge" style="background-color: #FF7A00;">LR</span>
-                                                <span class="task-form__dropdown-name">Lee-Roy Romann<small> (You)</small></span>
+                                                <span class="task-form__dropdown-name">Lee-Roy Romann<span class="you"> (You)</span></span>
                                                 <input class="task-form__dropdown-checkbox" id="contact-checkbox-1" type="checkbox" onclick="selectContact(1)" />
                                             </li>
                                             <li class="task-form__dropdown-contact"
@@ -261,24 +264,19 @@
                             </div>
 
                             <!-- Category -->
-                            <div class="task-form__input-group">
-                                <label class="task-form__label" for="task-category">Category<span class="required">*</span></label>
-                                <div class="task-form__dropdown" id="task-category">
-
+                            <div class="task-form__group">
+                                <label class="task-form__label" for="task-category-input">Category<span class="required">*</span></label>
+                                <div>
                                     <!-- Dropdown Input -->
-                                    <div class="task-form__dropdown-input-wrapper" id="task-categroy-selector" tabindex="0">
-                                        <input
-                                            type="text"
-                                            class="task-form__input-field"
-                                            id="task-category-input"
-                                            onclick="toggleDropdown(event, 'task-category-input', 'task-category-dropdown')"
-                                            placeholder="Select category"
-                                        />
-                                        <span class="task-form-dropdown__arrow">▾</span>
+                                    <div class="task-form__dropdown" id="task-categroy-selector">
+                                        <input type="text" class="task-form__input-field" id="task-category-input" onclick="toggleDropdown(event, 'task-category-input', 'task-category-dropdown')" placeholder="Select category"/>
+                                        <div class="task-form__input-icon-category">
+                                            <img id="task-form-category-arrow" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow Down">
+                                        </div>                                    
                                     </div>
 
                                     <!-- Dropdown List -->
-                                    <div class="task-form__dropdown-list-wrapper d_none" id="task-category-dropdown">
+                                    <div class="task-form__wrapper-dropdown-list d_none" id="task-category-dropdown">
                                         <ul class="task-form__dropdown-list" id="task-category-list">
                                             <li class="task-form__dropdown-category" id="category-id-1" data-id="1" data-category="Technical Task" onclick="selectCategory(1)">Technical Task</li>
                                             <li class="task-form__dropdown-category" id="category-id-2" data-id="1" data-category="User Story" onclick="selectCategory(2)">User Story</li>
@@ -288,12 +286,33 @@
                             </div>
 
                             <!-- Subtasks -->
-                            <div class="task-form__input-group">
-                                <label class="task-form__label" for="subtasks">Subtasks</label>
-                                <div class="task-form__subtasks">
-                                    <input type="text" id="task-subtasks" name="subtasks" class="task-form__input-field task-form__input--subtask" placeholder="Add new subtask"/>
-                                    <button type="button" class="task-form__subtask-button">+</button>
-                                </div>
+                            <div class="task-form__group">
+
+                                <label class="task-form__label" for="task-subtask-input">Subtasks</label>
+                               
+                                <!-- Subtasks Input -->
+                                <div class="task-form__wrapper-input">
+
+                                    <input type="text" class="task-form__input-field" id="task-subtask-input" placeholder="Add new subtask"/>
+
+                                    <!-- Subtask plus icon -->
+                                    <div class="task-form__wrapper-input-icons" id="task-subtask-icons-1">
+                                        <div class="task-form__input-icon-subtask">
+                                            <img src="../assets/img/icon/plus.svg" alt="Subtask Icon">
+                                        </div>
+                                    </div>
+
+                                    <!-- Subtask delte / check icons -->
+                                    <div class="task-form__wrapper-input-icons d_none" id="task-subtask-icons-2">
+                                        <div class="task-form__input-icon-subtask">
+                                            <img src="../assets/img/icon/close.svg" alt="Subtask Icon">
+                                        </div>
+                                        <span class="task-form__icon-separator"></span>
+                                        <div class="task-form__input-icon-subtask">
+                                            <img src="../assets/img/icon/done.svg" alt="Subtask Icon">
+                                        </div>
+                                    </div>
+                                </div>                            
                             </div>
                         </div>
                     </div>
@@ -302,8 +321,8 @@
                     <div class="task-form__actions">
                         <span><span class="required">* </span>This field is required</span>
                         <div class="task-form__actions-buttons">
-                            <button type="reset" class="task-form__button task-form__button--clear">Clear</button>
-                            <button type="submit" class="task-form__button task-form__button--create">Create Task</button>
+                            <button type="reset" class="task-form__button-clear">Clear</button>
+                            <button type="submit" class="task-form__button-create">Create Task<img src="../assets/img/icon/done.svg" alt="Button Create"></button>
                         </div>
                     </div>
                 </form>
