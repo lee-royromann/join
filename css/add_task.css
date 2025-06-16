@@ -112,13 +112,14 @@ body {
 .task-form {
     display: flex;
     flex-direction: column;
+    max-width: 960px;
     width: 100%;
-    gap: 65px;
+    gap: 120px;
 }
 
 .task-form__columns {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .task-form__column {
@@ -530,6 +531,12 @@ body {
 .required {
     color: #ff8190;
     margin-left: 5px;
+    font-size: 20px;
+}
+
+.required-text {
+    font-size: 20px;
+    font-weight: 300;
 }
 
 .d_none {
