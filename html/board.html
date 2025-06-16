@@ -60,7 +60,9 @@
                                     <input type="text" class="kanban__search-input" placeholder="Find Task">
                                     <div class="kanban__search-icon-group">
                                         <div class="kanban__search-separator"></div>
-                                        <img src="../assets/img/icon/search.svg" alt="Search" class="kanban__search-icon">
+                                        <div class="kanban__search-icon-frame">
+                                            <img src="../assets/img/icon/search.svg" alt="Search" class="kanban__search-icon">
+                                        </div>
                                     </div>
                                 </div>
                             <button class="kanban__add-button">
@@ -70,7 +72,21 @@
                             </div>
                         </div>
                         <div class="kanban__subtitle-wrapper">
-                            <p class="kanban__subtitle">Drag and drop tasks between columns to update their status.</p>
+                            <div class="kanban__subtitle">
+                                <span class="kanban__subtitle-text">To do</span>
+                                <span class="kanban__subtitle-plus"></span>
+                            </div>
+                            <div class="kanban__subtitle">
+                                <span class="kanban__subtitle-text">In progress</span>
+                                <span class="kanban__subtitle-plus"></span>
+                            </div>
+                            <div class="kanban__subtitle">
+                                <span class="kanban__subtitle-text">Await feedback</span>
+                                <span class="kanban__subtitle-plus"></span>
+                            </div>
+                            <div class="kanban__subtitle">
+                                <span class="kanban__subtitle-text">Done</span>
+                            </div>
                         </div>
                     </div>
 
