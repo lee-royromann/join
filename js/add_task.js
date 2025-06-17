@@ -1,12 +1,6 @@
 // The following code is initially used for optical designing.
 // The code will be optimized, once the design is finalized.
 
-const contactSelector = document.getElementById('task-contact-selector');
-const contactDropdown = document.getElementById('task-contact-dropdown');
-const contactSearch = document.getElementById('task-contact-search');
-const contactList = document.getElementById('task-contact-list');
-const contacts = document.querySelectorAll('.task-form__dropdown-contact');
-
 function initAddTask() {
     loadSidebar();
     populateContactsToDropdown();
@@ -62,9 +56,9 @@ function filterDropdown(inputId, listSelector) {
 }
 
 function selectCategory(id) {
-    const item = document.getElementById('category-id-' + id);
-    const input = document.getElementById('task-category-input');
-    const dropdown = document.getElementById('task-category-dropdown');
+    const item = document.getElementById(`category-id-${id}`);
+    const input = document.getElementById('category-input');
+    const dropdown = document.getElementById('category-list');
 
     if (item && input) {
         const category = item.getAttribute('data-category');
@@ -74,4 +68,9 @@ function selectCategory(id) {
     if (dropdown && !dropdown.classList.contains('d_none')) {
         dropdown.classList.add('d_none');
     }
+}
+
+function addSubtask() {
+    console.log("Adding subtask...");
+    
 }
