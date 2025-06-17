@@ -59,10 +59,10 @@
     --main-color-text: #2a3647;
 
     /* Paddings & Margins */
-    --task-form-padding-top: 80px;
-    --task-form-padding-bottom: 80px;
-    --task-form-padding-left: 80px;
-    --task-form-padding-right: 80px;
+    --content-padding-top: 80px;
+    --content-padding-bottom: 80px;
+    --content-padding-left: 80px;
+    --content-padding-right: 80px;
 }
 
 body {
@@ -83,7 +83,7 @@ body {
     margin: 0 auto;
     height: 100vh;
     background-color: #fff;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .main {
@@ -93,23 +93,23 @@ body {
     background-color: var(--main-bg-color);
 }
 
-.task {
+.content {
     display: flex;
     flex-direction: column;
-    padding-left: var(--task-form-padding-left);
-    padding-right: var(--task-form-padding-right);
-    padding-top: var(--task-form-padding-top);
+    padding-left: var(--content-padding-left);
+    padding-right: var(--content-padding-right);
+    padding-top: var(--content-padding-top);
     width: 100%;
     gap: 40px;
 }
 
-.task__header {
+.title {
     font-family: 'Inter', sans-serif;
     font-size: 61px;
     font-weight: 700;
 }
 
-.task-form {
+.form {
     display: flex;
     flex-direction: column;
     max-width: 960px;
@@ -117,12 +117,12 @@ body {
     gap: 120px;
 }
 
-.task-form__columns {
+.form__columns {
     display: flex;
     justify-content: center;
 }
 
-.task-form__column {
+.form__column {
     display: flex;
     flex-direction: column;
     max-width: 440px;
@@ -130,28 +130,27 @@ body {
     gap: 30px;
 }
 
-.task-form__separator {
+.form__separator {
     min-width: 1px;
     background-color: #d1d1d1;
     margin: 0 40px;
 }
 
-.task-form__group {
+.form__group {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.task-form__label {
+.form__label {
     font-size: 20px;
     font-weight: 300;
     color: #2a3647;
 }
 
-.task-form__input-field { 
-    /* relative parent for:
-        .task-form__wrapper-input-icons
-    */
+/* FIELDS */
+
+.form__input { 
     position: relative;
     width: 100%;
     padding-top: 12px;
@@ -167,19 +166,57 @@ body {
     cursor: pointer;
 }
 
-/* WRAPPERS */
-
-.task-form__wrapper-input {
-    /* relative parent for:
-        .task-form__wrapper-input-icons
-    */
+.form__textarea {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    width: 100%;
+    min-height: 120px;
+    max-height: 240px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    padding-left: 16px;
+    padding-right: 0px;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    background-color: #ffffff;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    overflow-x: hidden;
+    overflow-y: auto;
+    resize: vertical;
+    scroll-behavior: smooth;
+    cursor: pointer;
 }
 
-.task-form__wrapper-input-icons {
+.form__input::placeholder,
+.form__textarea::placeholder {
+    color: #d1d1d1;
+    font-size: 20px;
+}
+
+.form__input:focus,
+.form__textarea:focus {
+    border: 1px solid #28abe2;
+    outline: none;
+}
+
+/* WRAPPERS */
+
+.form__wrapper-input,
+.form__wrapper-date,
+.form__wrapper-assignee,
+.form__wrapper-category {
+    position: relative;
+}
+
+.form__wrapper-priority {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form__wrapper-subtask-icons {
     position: absolute;
     right: 16px;
     top: 50%;
@@ -188,31 +225,25 @@ body {
     gap: 8px;
 }
 
-.task-form__wrapper-priority {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.task-form__wrapper-dropdown-list {
-    overflow-y: auto;
-    width: 100%;
+.form__wrapper-list {
     max-height: 265px;
+    width: 100%;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     background: white;
-    box-shadow: 0 0px 16px rgba(0,0,0,0.05);
-    transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 300;
+    box-shadow: 0 0px 16px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    overflow-y: auto;
 }
 
-/* INPUT FIELDS */
+/* ICONS */
 
-.task-form__input-icon-assignee,
-.task-form__input-icon-category,
-.task-form__input-icon-calendar {
+.form__icon-contact,
+.form__icon-category,
+.form__icon-calendar {
     position: absolute;
     right: 16px;
     top: 50%;
@@ -225,7 +256,7 @@ body {
     cursor: pointer;
 }
 
-.task-form__input-icon-subtask {
+.form__icon-subtask {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -234,57 +265,16 @@ body {
     cursor: pointer;
 }
 
-.task-form__input-icon-assignee:hover,
-.task-form__input-icon-category:hover,
-.task-form__input-icon-subtask:hover {
+.form__icon-contact:hover,
+.form__icon-category:hover,
+.form__icon-subtask:hover {
     background-color: #eeeeee;
     border-radius: 50%;
 }
 
-/* TEXTAREA FIELD */
+/* CONTACT */
 
-.task-form__textarea {
-    min-height: 120px;
-    max-height: 240px;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    padding-left: 16px;
-    padding-right: 0px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    resize: vertical;
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 300;
-    scroll-behavior: smooth;
-}
-
-/* DROPDOWNS FIELDS */
-
-/* .task-form__dropdown {
-    position: relative;
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 300;
-    gap: 0;
-} */
-
-.task-form__dropdown {
-    position: relative;
-    /* width: 100%; */
-    /* z-index: 2; */
-}
-
-.task-form__dropdown-list {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    gap: 2px;
-}
-
-.task-form__dropdown-contact {
+.form__contact {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -294,12 +284,12 @@ body {
     border-radius: 10px;
 }
 
-.task-form__dropdown-contact:hover {
+.form__contact:hover {
     background-color: #eeeeee;
     cursor: pointer;
 }
 
-.task-form__dropdown-badges {
+.form__contact-badges {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -307,75 +297,51 @@ body {
     gap: 12px;
 }
 
-.task-form__dropdown-badge {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
+.form__contact-badge {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    color: white;
+    font-weight: bold;
     font-size: 12px;
     font-weight: 300;
+    /* cursor: pointer; */
 }
 
-.task-form__dropdown-name {
+.form__contact-name {
     flex-grow: 1;
     font-size: 18px;
     font-weight: 300;
 }
 
-.task-form__dropdown-checkbox {
+.form__contact-checkbox {
     width: 18px;
     height: 18px;
     accent-color: #2a2a2a;
     margin-right: 16px;
 }
 
-.task-form__dropdown-checkbox--checked {
+.form__contact-checkbox--checked {
     background-color: #2a3547;
     color: white;
 }
 
-.task-form__dropdown-checkbox--checked:hover {
+.form__contact-checkbox--checked:hover {
     background-color: #081831;
 }
 
-.task-form__dropdown-category {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 16px;
-    padding-right: 16px;
-    border-radius: 10px;
-}
-
-.task-form__dropdown-category:hover {
-    background-color: #eeeeee;
-    cursor: pointer;
-}
-
-#task-contact-search {
+#contact-search {
     padding-right: 40px;
     color: #2a3647;
 }
 
-#task-category-dropdown {
-    gap: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
+/* PRIORITY */
 
-.task-form__icon-separator {
-    min-width: 1px;
-    background-color: #A8A8A8;
-    height: 24px;
-}
-
-.task-form__button {
+.form__button-prio {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -392,7 +358,79 @@ body {
     gap: 8px;
 }
 
-.task-form__button-create {
+.form__button-prio:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+}
+
+.form__button-prio svg {
+    width: 20px;
+}
+
+.form__button-prio--urgent svg {
+    color: #ff3e01;
+}
+
+.form__button-prio--medium svg {
+    color: #ffa700;
+}
+
+.form__button-prio--low svg {
+    color: #7ae229;
+}
+
+/* CATEGORY */
+
+.form__category {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+}
+
+.form__category:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+#task-category-dropdown {
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* SUBTASK */
+
+.form__icon-separator {
+    min-width: 1px;
+    background-color: #A8A8A8;
+    height: 24px;
+}
+
+/* ACTIONS > CREATE & CLEAR */
+
+.form__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form__action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    max-width: 440px;
+    width: 100%;
+    gap: 20px;
+}
+
+.form__button-create {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -411,76 +449,17 @@ body {
     gap: 8px;
 }
 
-.task-form__button-create:hover {
+.form__button-create:hover {
     box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
     background-color: #29ABE2;
     cursor: pointer;
 }
 
-.task-form__button-create img {
+.form__button-create img {
     width: 15.5px;
 }
 
-.task-form__button-clear {
-    max-width: 110px;
-    width: 100%;
-    height: 56px;
-}
-
-.task-form__button:hover {
-    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
-    border: none;
-    cursor: pointer;
-}
-
-.task-form__button svg {
-    width: 20px;
-}
-
-.task-form__priority-button--low svg {
-    color: #7ae229;
-}
-
-.task-form__priority-button--medium svg {
-    color: #ffa700;
-}
-
-.task-form__priority-button--urgent svg {
-    color: #ff3e01;
-}
-
-.task-form__input-field::placeholder,
-.task-form__textarea::placeholder,
-.task-form__dropdown-field::placeholder {
-    color: #d1d1d1;
-    font-size: 20px;
-}
-
-.task-form__input-field:focus,
-.task-form__textarea:focus,
-.task-form__dropdown-field:focus,
-.task-form__dropdown-search:focus {
-    border: 1px solid #28abe2;
-    outline: none;
-}
-
-.task-form__actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.task-form__action-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    max-width: 440px;
-    width: 100%;
-    gap: 20px;
-}
-
-.task-form__button-clear {
+.form__button-clear {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -488,6 +467,7 @@ body {
     border-radius: 10px;
     max-width: 126px;
     width: 100%;
+    height: 56px;
     gap: 20px;
     font-family: 'Inter', sans-serif;
     font-size: 22px;
@@ -498,31 +478,34 @@ body {
     gap: 8px;
 }
 
-.task-form__button-clear:hover {
+.form__button-clear:hover {
     box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
     border-color: #29ABE2;
     color: #29ABE2;
 }
 
-.task-form__button-clear:hover svg {
+.form__button-clear:hover svg {
     color: #29ABE2;
 }
 
-/****** SCROLLBAR STYLINGS ******/
+/****** SCROLLBAR ******/
 
-.task-form__wrapper-dropdown-list::-webkit-scrollbar,
-.task-form__textarea::-webkit-scrollbar {
+.form__wrapper-list::-webkit-scrollbar,
+.form__textarea::-webkit-scrollbar,
+.page::-webkit-scrollbar {
   width: 6px;
 }
 
-.task-form__wrapper-dropdown-list::-webkit-scrollbar-thumb,
-.task-form__textarea::-webkit-scrollbar-thumb {
+.form__wrapper-list::-webkit-scrollbar-thumb,
+.form__textarea::-webkit-scrollbar-thumb,
+.page::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
 
-.task-form__wrapper-dropdown-list::-webkit-scrollbar-track,
-.task-form__textarea::-webkit-scrollbar-track {
+.form__wrapper-list::-webkit-scrollbar-track,
+.form__textarea::-webkit-scrollbar-track,
+.page::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
 
