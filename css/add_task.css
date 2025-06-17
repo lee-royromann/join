@@ -40,6 +40,9 @@
 
 :root {
     /* Colors */
+    --main-bg-color: #f6f7f8;
+    --main-color-text: #2a3647;
+
     --figma-color-1: #FF7A00;
     --figma-color-2: #FF5EB3;
     --figma-color-3: #6E52FF;
@@ -55,14 +58,16 @@
     --figma-color-13: #FFE62B;
     --figma-color-14: #FF4646;
     --figma-color-15: #FFBB2B;
-    --main-bg-color: #f6f7f8;
-    --main-color-text: #2a3647;
 
     /* Paddings & Margins */
     --content-padding-top: 80px;
     --content-padding-bottom: 80px;
     --content-padding-left: 80px;
     --content-padding-right: 80px;
+
+    /* Heights & Widths */
+    --page-max-height: 1440px;
+    --page-max-width: 1024px;
 }
 
 body {
@@ -91,6 +96,7 @@ body {
     flex-direction: column;
     flex: 1;
     background-color: var(--main-bg-color);
+    overflow: hidden;
 }
 
 .content {
@@ -110,6 +116,7 @@ body {
 }
 
 .form {
+    position: relative;
     display: flex;
     flex-direction: column;
     max-width: 960px;
@@ -132,11 +139,12 @@ body {
 
 .form__separator {
     min-width: 1px;
-    background-color: #d1d1d1;
     margin: 0 40px;
+    background-color: #d1d1d1;
 }
 
 .form__group {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -163,18 +171,15 @@ body {
     border-radius: 10px;
     background-color: #ffffff;
     transition: border 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
+    cursor: text;
 }
 
 .form__textarea {
-    position: relative;
-    width: 100%;
-    min-height: 120px;
-    max-height: 240px;
+    height: 120px;
     padding-top: 18px;
     padding-bottom: 18px;
     padding-left: 16px;
-    padding-right: 0px;
+    padding-right: 16px;
     font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 300;
@@ -184,14 +189,20 @@ body {
     transition: border 0.2s ease, box-shadow 0.2s ease;
     overflow-x: hidden;
     overflow-y: auto;
-    resize: vertical;
+    resize: none;
     scroll-behavior: smooth;
-    cursor: pointer;
+    cursor: text;
 }
 
 .form__input::placeholder,
 .form__textarea::placeholder {
     color: #d1d1d1;
+    font-size: 20px;
+}
+
+#contact-search::placeholder,
+#category-input::placeholder {
+    color: #2a3647;
     font-size: 20px;
 }
 
@@ -241,18 +252,30 @@ body {
 
 /* ICONS */
 
-.form__icon-contact,
-.form__icon-category,
-.form__icon-calendar {
+.form__description-icon {
     position: absolute;
-    right: 16px;
-    top: 50%;
+    right: 6px;
+    bottom: -6px;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
     height: 24px;
     width: 24px;
+}
+
+.form__icon-contact,
+.form__icon-category,
+.form__icon-calendar {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    transform: translateY(-50%);
     cursor: pointer;
 }
 
@@ -289,6 +312,12 @@ body {
     cursor: pointer;
 }
 
+.form__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .form__contact-badges {
     display: flex;
     flex-direction: row;
@@ -309,7 +338,7 @@ body {
     font-weight: bold;
     font-size: 12px;
     font-weight: 300;
-    /* cursor: pointer; */
+    cursor: pointer;
 }
 
 .form__contact-name {
@@ -337,6 +366,11 @@ body {
 #contact-search {
     padding-right: 40px;
     color: #2a3647;
+}
+
+#contact-you {
+    color: #b3b3b3;
+    font-weight: 400;
 }
 
 /* PRIORITY */
@@ -415,10 +449,12 @@ body {
 /* ACTIONS > CREATE & CLEAR */
 
 .form__actions {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    z-index: 100;
 }
 
 .form__action-buttons {
@@ -526,7 +562,7 @@ body {
     display: none;
 }
 
-.you {
-    color: #b3b3b3;
-    font-weight: 400;
-}
+
+
+/* Archived Classes */
+

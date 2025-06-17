@@ -87,11 +87,11 @@
                 </div>
             </header>
             
-            <!-- Task -->
+            <!-- Content -->
             <section class="content">
                 <h2 class="title">Add Task</h2>
 
-                <!-- Task Form -->
+                <!-- Form -->
                 <form class="form">
                     <div class="form__columns">
 
@@ -106,8 +106,9 @@
 
                             <!-- Description -->
                             <div class="form__group">
-                                <label class="form__label" for="task-description">Description</label>
-                                <textarea class="form__textarea" id="task-description" name="description" placeholder="Enter a Description"></textarea>
+                                <label class="form__label" for="description">Description</label>
+                                <textarea class="form__textarea" id="description" placeholder="Enter a Description"></textarea>
+                                <img src="../assets/img/icon/resize_textarea.svg" alt="Resize Icon" class="form__description-icon">
                             </div>
 
                             <!-- Due Date -->
@@ -174,7 +175,7 @@
                                         </div>
                                     </div>
                                     <div class="form__wrapper-list d_none" id="contact-list">
-                                        <ul id="contact-list">
+                                        <ul class="form__contact-list" id="contact-list">
                                             <li class="form__contact"
                                                 id="contact-id-7"
                                                 data-id="7"
@@ -216,7 +217,7 @@
                                                 data-color="#00BCD4"
                                                 onclick="selectContact(1)">
                                                 <span class="form__contact-badge" style="background-color: #FF7A00;">LR</span>
-                                                <span class="form__contact-name">Lee-Roy Romann<span class="you"> (You)</span></span>
+                                                <span class="form__contact-name">Lee-Roy Romann<span id="contact-you"> (You)</span></span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-1" type="checkbox" onclick="selectContact(1)" />
                                             </li>
                                             <li class="form__contact"
@@ -320,7 +321,7 @@
                     <div class="form__actions">
                         <span class="required-text"><span class="required">* </span>This field is required</span>
                         <div class="form__action-buttons">
-                            <button type="reset" class="form__button-clear">
+                            <button type="reset" class="form__button-clear" onclick="clearForm()">
                                 <span>Clear</span>
                                 <svg width="15" height="15" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.06917 7.00008L12.3122 12.2431M1.82617 12.2431L7.06917 7.00008L1.82617 12.2431ZM12.3122 1.75708L7.06817 7.00008L12.3122 1.75708ZM7.06817 7.00008L1.82617 1.75708L7.06817 7.00008Z"
@@ -338,7 +339,6 @@
             </section>
         </main>
     </div>
-
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 </body>
