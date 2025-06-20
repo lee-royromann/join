@@ -178,6 +178,53 @@ body {
   margin: 0;
 }
 
+.card__urgent .card__number {
+  font-weight: 600;
+  font-size: 64px;
+  margin: 0;
+}
+
+.card__urgent .card__label {
+  color: #6b7280;
+  font-size: 20px;
+  margin-left: 81px;
+}
+
+.card__urgent-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card__urgent-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.card__urgent-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33%;
+}
+
+.card__urgent-seperator {
+  height: 80%;
+  width: 2px;
+  background-color: #D1D1D1;
+  margin: 0 20px;
+}
+
+.card__urgent-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #2A3647;
+  font-size: 14px;
+}
+
 .card__urgent {
   background-color: white;
   padding: 20px;
@@ -198,20 +245,18 @@ body {
 }
 
 .card__urgent-icon {
-  width: 60px;
-  height: 60px;
+  width: 69px;
+  height: 69px;
   background: #FF3D00;
   border-radius: 50%;
   display: flex;
-  font-size: 22px;
-  margin-bottom: 10px;
   align-items: center;
   justify-content: center;
 }
 
 .card__urgent-icon img {
-  width: 34px;
-  height: 25px;
+  width: 29.94px;
+  height: 22.13px;
 }
 
 .card__deadline {
