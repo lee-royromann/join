@@ -91,11 +91,35 @@
                     </div>
 
                     <main class="kanban__columns">
-                        <div class="kanban__column" id="todo">
-                            <div class="kanban__column-no-task">No tasks To do</div>
+                        <div class="kanban__column" id="to_do">
+                            <div class="card--notasks">No tasks To do</div>
                         </div>
                         <div class="kanban__column" id="in_progress">
-                            <div class="kanban__column-to-do"></div>
+                            <div class="card">
+                                <div class="card__content">
+                                    <div class="card__badge">
+                                        <span>User Story</span>
+                                    </div>
+                                    <div class="card__header">
+                                        <div class="card__header--title">Kochwelt Page & Recipe Recommender</div>
+                                        <div class="card__header--description">Build start page with recipe recommendation.</div>
+                                    </div>
+                                    <div class="card__subtasks">
+                                        <div class="card__subtasks-bar">
+                                            <div class="card__subtasks-progress" id="progress-bar" role="progressbar"style="width: 50%;"></div>
+                                        </div>
+                                        <div class="card__subtasks-text">1/2 Subtasks</div>
+                                    </div>
+                                    <div class="card__footer">
+                                        <div class="card__credentile">
+
+                                        </div>
+                                        <div class="card__priority">
+                                            <img src="../assets/img/icon/medium.svg" alt="priority-icon">
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
                         </div>
                         <div class="kanban__column" id="await_feedback"></div>
                         <div class="kanban__column" id="done"></div>
