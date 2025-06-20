@@ -351,3 +351,34 @@ body {
     text-align: right;
     font-weight: 400;
 }
+
+.card__footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card__credentials{
+    display: flex;
+}
+
+.card__credential {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: orange;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card__credential + .card__credential {
+    margin-left: -10px;
+}
+
+.card__credential--color--orange { background: #FF7A00}
+.card__credential--color--purple { background: #9327FF}
+.card__credential--color--pink   { background: #6E52FF} 
