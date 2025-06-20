@@ -1,27 +1,42 @@
 .overlay {
-    /* display: none;  */
+    display: none; 
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(4px);
+    inset: 0;
     background: rgba(0, 0, 0, 0.16);
     justify-content: center;
     align-items: center;
     z-index: 9999; 
 }
 
-.overlay-content {
+/* Sichtbarer Zustand */
+.overlay--visible {
+    display: flex;
+}
+
+/* === Das Panel selbst === */
+.overlay__content {
+    width: 525px;
+    height: 931px;
     background-color: #ffffff;
     border-radius: 30px;
     padding: 48px 40px;
-    gap: 24px;
-    position: relative;
+    box-shadow: 0px 0px 4px 0px #00000029;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 525px;
-    height: auto;
-    box-shadow: 0 2px 16px rgba(244, 250, 255, 0.5);
+    gap: 24px;
+
+    transform: translateX(100vw);
+    transition: transform 2s ease;
+}
+
+/* Wenn Overlay sichtbar, fahre das Panel rein */
+.overlay--visible .overlay__content {
+    transform: translateX(0);
+}
+
+.overlay__badgeframe {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }

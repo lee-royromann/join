@@ -9,7 +9,10 @@
         <link rel="stylesheet" href="../css/header.css" />
         <link rel="stylesheet" href="../css/navbar.css" />
         <link rel="stylesheet" href="../css/board.css" />
+        <link rel="stylesheet" href="../css/board_overlay.css" />
         <link rel="stylesheet" href="../css/fonts.css" />
+
+        <script defer src="../js/board.js"></script>
     </head>
 
     <body>
@@ -128,6 +131,23 @@
                         <div class="kanban__column" id="done"></div>
                     </main>
                 </div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay">
+            <div class="overlay__content">
+                <div class="overlay__badgeframe">
+                    <div class="overlay__badge">
+                        <span>User Story</span>
+                    </div>
+                    <div class="overlay__close-button" onclick="closeOverlay()">
+                        <img src="../assets/img/icon/close.svg" alt="close-icon">
+                    </div>
+                </div>   
+                
+                
+                
+                
             </div>
         </div>
     </body>
