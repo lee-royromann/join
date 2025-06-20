@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/summary.css">
   <link rel="stylesheet" href="../css/navbar.css">
-  <link rel="sytlesheet" href="../script.js">
+  <script src="../script.js"></script>
 </head>
 
 <body>
@@ -63,27 +63,26 @@
 
           <!-- Titel, Untertitel & Greeting -->
           <section class="dashboard">
-            <div class="dashboard-header">
-              <h1 class="dashboard-title">Join 360</h1>
-              <div class="seperator"></div>
-              <p class="dashboard-subtitle">Key Metrics at a Glance</p>
+            <div class="dashboard__header">
+              <h1 class="dashboard__title">Join 360</h1>
+              <div class="dashboard__seperator"></div>
+              <p class="dashboard__subtitle">Key Metrics at a Glance</p>
             </div>
 
 
             <!-- Erste Kartenreihe: To-do & Done -->
             <div class="card-row">
-            <div class="card">
-  <div class="card-header">
-    <div class="icon">
-      <img src="../assets/img/icon/edit.svg" alt="Tasks Icon" />
-    </div>
-    <div class="number-label">
-      <p class="number">1</p>
-      <p class="label">To-do</p>
-    </div>
-  </div>
-</div>
-
+              <div class="card">
+                <div class="card-header">
+                  <div class="icon">
+                    <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon" />
+                  </div>
+                  <div class="number-label">
+                    <p class="number">1</p>
+                    <p class="label">To-do</p>
+                  </div>
+                </div>
+              </div>
 
 
               <div class="card">
@@ -92,54 +91,54 @@
                     <img src="../assets/img/icon/done_white.svg" alt="Done Icon" />
                   </div>
                   <div class="number-label">
-                  <p class="number">1</p>
-                <p class="label">Done</p>
-              </div>
-            </div>
-            </div>
-
-            <!-- Zweite Reihe: Urgent & Greeting rechts -->
-            <div class="card-row">
-              <div class="card-urgent urgent-card">
-                <div class="urgent-top">
-                  <span class="urgent-icon">
-                    <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
-                  </span>
-                  <span class="number">1</span>
-                </div>
-                <p class="label">Urgent</p>
-                <p class="deadline">
-                  October 16, 2022<br />
-                  <small>Upcoming Deadline</small>
-                </p>
-              </div>
-
-              <div class="greeting greeting-inline">
-                <div>
-                  <p class="greetings">Good morning,</p>
-                  <p class="username">Sofia Müller</p>
+                    <p class="number">1</p>
+                    <p class="label">Done</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
+              <!-- Zweite Reihe: Urgent & Greeting rechts -->
+              <div class="card-row">
+                <div class="card-urgent urgent-card">
+                  <div class="urgent-top">
+                    <span class="urgent-icon">
+                      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
+                    </span>
+                    <span class="number">1</span>
+                  </div>
+                  <p class="label">Urgent</p>
+                  <p class="deadline">
+                    October 16, 2022<br />
+                    <small>Upcoming Deadline</small>
+                  </p>
+                </div>
 
-            <!-- Dritte Reihe: Weitere Karten -->
-            <div class="card-row">
-              <div class="card-overview">
-                <p class="number">5</p>
-                <p class="label">Tasks in Board</p>
+                <div class="greeting greeting-inline">
+                  <div>
+                    <p class="greetings">Good morning,</p>
+                    <p class="username">Sofia Müller</p>
+                  </div>
+                </div>
               </div>
 
-              <div class="card-overview">
-                <p class="number">2</p>
-                <p class="label">Tasks In Progress</p>
-              </div>
 
-              <div class="card-overview">
-                <p class="number">2</p>
-                <p class="label">Awaiting Feedback</p>
+              <!-- Dritte Reihe: Weitere Karten -->
+              <div class="card-row">
+                <div class="card-overview">
+                  <p class="number">5</p>
+                  <p class="label">Tasks in Board</p>
+                </div>
+
+                <div class="card-overview">
+                  <p class="number">2</p>
+                  <p class="label">Tasks In Progress</p>
+                </div>
+
+                <div class="card-overview">
+                  <p class="number">2</p>
+                  <p class="label">Awaiting Feedback</p>
+                </div>
               </div>
-            </div>
           </section>
         </main>
         <!-- Ende Layout -->
