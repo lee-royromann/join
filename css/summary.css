@@ -116,7 +116,7 @@ body {
   gap: 15px;
 }
 
-.card-row {
+.card__row {
   display: flex;
   flex-wrap: wrap;
   row-gap: 24px;
@@ -134,14 +134,14 @@ body {
   cursor: pointer;
 }
 
-.card-header {
+.card__header {
   display: flex;
   align-items: center;
   gap: 12px;
   justify-content: center;
 }
 
-.icon {
+.card__icon {
   width: 69px;
   height: 69px;
   background-color: #2A3647;
@@ -151,7 +151,7 @@ body {
   justify-content: center;
 }
 
-.icon img {
+.card__icon img {
   width: 29.943395614624023;
   height: 22.132076263427734;
   top: 23.43px;
@@ -159,26 +159,26 @@ body {
   border-width: 7px;
 }
 
-.number-label {
+.card__number-label {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.number {
+.card__number {
   font-weight: 600;
   font-size: 64px;
   margin: 0;
 }
 
-.label {
+.card__label {
   color: #6b7280;
   font-size: 20px;
   margin: 0;
 }
 
-.card-urgent {
+.card__urgent {
   background-color: white;
   padding: 20px;
   border-radius: 12px;
@@ -189,7 +189,7 @@ body {
   cursor: pointer;
 }
 
-.urgent-card .urgent-top {
+.card__urgent-inline .card__urgent-top {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -197,7 +197,7 @@ body {
   margin-bottom: 10px;
 }
 
-.urgent-icon {
+.card__urgent-icon {
   width: 60px;
   height: 60px;
   background: #FF3D00;
@@ -209,23 +209,23 @@ body {
   justify-content: center;
 }
 
-.urgent-icon img {
+.card__urgent-icon img {
   width: 34px;
   height: 25px;
 }
 
-.deadline {
+.card__deadline {
   font-size: 12px;
   color: #9ca3af;
 }
 
-.greeting {
+.card__greeting {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.greeting-inline {
+.card__greeting-inline {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,14 +235,14 @@ body {
   min-width: 200px;
 }
 
-.greetings {
+.card__greetings-text {
   font-weight: 500;
   font-size: 47px;
   line-height: 120%;
   letter-spacing: 0%;
 }
 
-.username {
+.card__username {
   font-weight: 700;
   font-size: 64px;
   line-height: 120%;
@@ -250,7 +250,7 @@ body {
   color: #29ABE2;
 }
 
-.card-overview {
+.card__overview {
   background-color: white;
   padding: 20px;
   border-radius: 12px;
@@ -261,7 +261,7 @@ body {
   cursor: pointer;
 }
 
-.greeting-card .username {
+.greeting-card .card__username {
   font-size: 24px;
   color: #29ABE2;
   font-weight: bold;
