@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Figma-Board</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Figma-Board</title>
 
-    <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="../css/header.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/board.css" />
+        <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="../css/header.css" />
+        <link rel="stylesheet" href="../css/navbar.css" />
+        <link rel="stylesheet" href="../css/board.css" />
+        <link rel="stylesheet" href="../css/fonts.css" />
     </head>
 
     <body>
@@ -95,7 +96,7 @@
                             <div class="card--notasks">No tasks To do</div>
                         </div>
                         <div class="kanban__column" id="in_progress">
-                            <div class="card">
+                            <div class="card" onclick="openOverlay()">
                                 <div class="card__content">
                                     <div class="card__badge">
                                         <span>User Story</span>
