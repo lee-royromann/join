@@ -173,7 +173,56 @@
 .overlay__subtask img {
     width: 24px;
     height: 24px;
+    border-radius: 3px;
+    padding: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.overlay__subtask img:hover {
+    cursor: pointer;
+    background-color: #d1d1d1;
+    transition: transform 0.2s ease-in-out;
+}
+
+.overlay__subtask:hover {
+   transform: scale(1.01);
+   background-color: #eeeeee;
+   padding: 4px 16px;
+   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.overlay__action {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+.overlay__action--activate {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    fill: #2A3647;
+    color: #2A3647;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.overlay__action--separator {
+    height: 24px;
+    border: 1px solid #D1D1D1;
+}
+
+.overlay__action--activate:hover {
+    color: #29ABE2;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.overlay__action--activate:hover svg path {
+    fill: #29ABE2;
+    transition: fill 0.2s ease-in-out;
 }
