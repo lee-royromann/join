@@ -40,3 +40,140 @@
     display: flex;
     justify-content: space-between;
 }
+
+.overlay__badge {
+    color:#ffffff; 
+    background: #0038FF;
+    border-radius: 8px;    
+    padding: 4px 24px;
+    gap: 10px;
+    font-size: 23px;
+    line-height: 120%;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.overlay__close--button {
+    width: 32px;
+    height: 32px;
+    border-radius: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay__close--button:hover {
+    background: #D9D9D9;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out 0.1s;
+}
+
+.overlay__title {
+    width: 100%;
+    font-size: 61px;
+    line-height: 120%;
+    font-weight: 700;
+    color: #000000;
+}
+
+.overlay__description {
+    width: 100%;
+    font-size: 20px;
+    line-height: 120%;
+    font-weight: 400;
+    color: #000000;
+}
+
+.overlay__parameters {
+    width: 100%;
+    font-size: 20px;
+    line-height: 120%;
+    font-weight: 400;
+    color: #2A3647;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+}
+
+.overlay__priority--status {
+    display: flex;
+    align-items: center;
+    padding: 4px 18px;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.overlay__assigned {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;  
+    font-size: 20px; 
+    color: #2A3647;
+    line-height: 120%;
+    font-weight: 400;
+    width: 100%;
+}
+
+.overlay__credentials {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;  
+    font-size: 19px; 
+   width: 100%;
+}
+
+.overlay__credentials--individual {
+    gap: 16px; 
+    display: flex;
+    align-items: center;
+    padding: 7px 16px;
+}
+.overlay__credential--icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay__subtasks {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px; 
+    color: #2A3647;
+    line-height: 120%;
+    font-weight: 400;
+    gap: 8px;
+}
+
+.overlay__subtasks--frame {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; 
+}
+
+.overlay__subtask {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 6px 16px;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.overlay__subtask img {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
