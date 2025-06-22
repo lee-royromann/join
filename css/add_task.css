@@ -368,6 +368,11 @@ fieldset {
     background-color: #081831;
 }
 
+#contact-arrow-icon,
+#category-arrow-icon {
+    transition: transform 0.3s ease;
+}
+
 #contact-search {
     padding-right: 40px;
     color: #2a3647;
@@ -439,6 +444,18 @@ fieldset {
     color: white;
     font-weight: 700;
     font-size: 21px;
+}
+
+.form__button-prio--urgent:hover,
+.form__button-prio--medium:hover,
+.form__button-prio--low:hover {
+    box-shadow: none;
+}
+
+.form__button-prio--urgent #btn-urgent-icon,
+.form__button-prio--medium #btn-medium-icon,
+.form__button-prio--low #btn-low-icon {
+    color: white;
 }
 
 /* CATEGORY */
@@ -580,6 +597,11 @@ a {
 }
 
 /* CUSTOM ELEMENTS */
+
+.arrow-icon-rotated {
+	transform: rotate(180deg);
+	transition: transform 0.3s ease;
+}
 
 .required {
     color: #ff8190;
