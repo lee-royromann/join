@@ -7,7 +7,7 @@ function openOverlay() {
 
 function closeOverlay() {
     const overlay = document.getElementById("overlay");
-    overlay.classList.remove("d-none");
+    overlay.style.display = "none";
     document.body.style.overflow = '';
 }
 
