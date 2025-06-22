@@ -1,15 +1,7 @@
-/* To Do's:
-    - Add global variables for colors, paddings, margins, etc.
-    - Link global variables to all texts
-    - Delete all unused classes
-    - Delete all unused variables
-    - Delete all unused properties
-*/
-
 @font-face {
     font-family: 'Inter';
     src: url('../assets/fonts/Inter_28pt-Light.ttf') format('truetype');
-    font-weight: 350;
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
 }
@@ -24,8 +16,16 @@
 
 @font-face {
     font-family: 'Inter';
-    src: url('../assets/fonts/Inter_28pt-Bold.ttf') format('truetype');
-    font-weight: 700;
+    src: url('../assets/fonts/Inter_28pt-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'open-sans';
+    src: url('../assets/fonts/OpenSans-Regular.ttf') format('truetype');
+    font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
@@ -143,6 +143,12 @@ body {
     background-color: #d1d1d1;
 }
 
+fieldset {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
 .form__group {
     position: relative;
     display: flex;
@@ -152,7 +158,7 @@ body {
 
 .form__label {
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 400;
     color: #2a3647;
 }
 
@@ -166,7 +172,7 @@ body {
     padding-left: 21px;
     padding-right: 21px;
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 400;
     border: 1px solid #d1d1d1;
     border-radius: 10px;
     background-color: #ffffff;
@@ -180,9 +186,9 @@ body {
     padding-bottom: 18px;
     padding-left: 16px;
     padding-right: 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
-    font-weight: 300;
+    font-family: 'open-sans', sans-serif;
+    font-size: 21px;
+    font-weight: 500;
     background-color: #ffffff;
     border: 1px solid #d1d1d1;
     border-radius: 10px;
@@ -244,7 +250,7 @@ body {
     background: white;
     font-family: 'Inter', sans-serif;
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 400;
     box-shadow: 0 0px 16px rgba(0,0,0,0.05);
     transition: all 0.2s ease;
     overflow-y: auto;
@@ -323,28 +329,27 @@ body {
     flex-direction: row;
     align-items: center;
     padding-top: 4px;
-    gap: 12px;
+    gap: 10px;
 }
 
 .form__contact-badge {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     border: 2px solid #ffffff;
     color: white;
-    font-weight: bold;
     font-size: 12px;
-    font-weight: 300;
+    font-weight: 400;
     cursor: pointer;
 }
 
 .form__contact-name {
     flex-grow: 1;
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .form__contact-checkbox {
@@ -371,6 +376,7 @@ body {
 #contact-you {
     color: #b3b3b3;
     font-weight: 400;
+    font-size: 20px;
 }
 
 /* PRIORITY */
@@ -380,8 +386,8 @@ body {
     align-items: center;
     justify-content: center;
     font-family: 'Inter', sans-serif;
+    font-weight: 400;
     font-size: 20px;
-    font-weight: 300;
     border: none;
     border-radius: 10px;
     box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.25);
@@ -402,16 +408,37 @@ body {
     width: 20px;
 }
 
-.form__button-prio--urgent svg {
+#btn-urgent-icon {
     color: #ff3e01;
 }
 
-.form__button-prio--medium svg {
+#btn-medium-icon {
     color: #ffa700;
 }
 
-.form__button-prio--low svg {
+#btn-low-icon {
     color: #7ae229;
+}
+
+.form__button-prio--urgent {
+    background-color: #ff3e01;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.form__button-prio--medium {
+    background-color: #ffa700;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.form__button-prio--low {
+    background-color: #7ae229;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
 }
 
 /* CATEGORY */
@@ -473,7 +500,7 @@ body {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 21px;
     line-height: 120%;
     max-width: 183px;
     width: 100%;
@@ -506,8 +533,8 @@ body {
     height: 56px;
     gap: 20px;
     font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: 400;
     color: #2a3647;
     cursor: pointer;
     border: 2px solid #d1d1d1;
@@ -524,7 +551,7 @@ body {
     color: #29ABE2;
 }
 
-/****** SCROLLBAR ******/
+/* SCROLLBARS */
 
 .form__wrapper-list::-webkit-scrollbar,
 .form__textarea::-webkit-scrollbar,
@@ -545,7 +572,14 @@ body {
   background-color: #ffffff00;
 }
 
-/****** GENERAL ELEMENTS ******/
+/* GENERAL ELEMENTS */
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* CUSTOM ELEMENTS */
 
 .required {
     color: #ff8190;
@@ -554,15 +588,10 @@ body {
 }
 
 .required-text {
-    font-size: 20px;
-    font-weight: 300;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 .d_none {
     display: none;
 }
-
-
-
-/* Archived Classes */
-
