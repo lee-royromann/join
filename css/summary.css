@@ -82,9 +82,9 @@ body {
   display: flex;
   flex-direction: column;
   padding-left: 48px;
-  padding-top: 60px;
+  padding-top: 30px;
   width: 100%;
-  gap: 24px;
+  gap: 8px;
 }
 
 /* Cards */
@@ -119,7 +119,7 @@ body {
 .card__row {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 24px;
+  row-gap: 20px;
   column-gap: 20px;
 }
 
@@ -137,7 +137,7 @@ body {
 .card__header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
   justify-content: center;
 }
 
@@ -163,8 +163,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 5px;
 }
+
 
 .card__number {
   font-weight: 600;
@@ -182,12 +183,14 @@ body {
   font-weight: 600;
   font-size: 64px;
   margin: 0;
+  text-align: center;
 }
 
 .card__urgent .card__label {
   color: #6b7280;
   font-size: 20px;
-  margin-left: 81px;
+  margin: 0; /* Entferne margin-left */
+  text-align: center;
 }
 
 .card__urgent-inline {
@@ -196,19 +199,26 @@ body {
   justify-content: space-between;
 }
 
-.card__urgent-top {
-  display: flex;
+.card__urgent-left {
+ display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  justify-content: center;
+  width: 33%;
+  padding-left: 49px;
 }
 
-.card__urgent-left {
+.card__urgent-content {
+ display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.card__urgent-number-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 33%;
-  justify-content: center;
+  gap: 5px;
+  
 }
 
 .card__urgent-seperator {
@@ -218,13 +228,24 @@ body {
   margin: 0 20px;
 }
 
+.card__urgent-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
 .card__urgent-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: #2A3647;
   font-size: 14px;
-}
+  margin-right: 40px;
+  gap: 13px;
+  }
 
 .card__urgent {
   background-color: white;
@@ -236,6 +257,7 @@ body {
   height: 168px;
   cursor: pointer;
 }
+
 
 .card__urgent-inline .card__urgent-top {
   display: flex;
@@ -253,6 +275,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .card__urgent-icon img {
@@ -260,10 +283,17 @@ body {
   height: 22.13px;
 }
 
-.card__deadline {
-  font-size: 12px;
-  color: #9ca3af;
+.card__date {
+  font-size: 21px;
+  font-weight: 700;
+  color: #2A3647;
 }
+
+.card__deadline {
+  font-size: 16px;
+  font-weight: 400;
+  color: #2A3647;
+  }
 
 .card__greeting {
   display: flex;
@@ -311,4 +341,74 @@ body {
   font-size: 24px;
   color: #29ABE2;
   font-weight: bold;
+}
+
+.card__link {
+  text-decoration: none;
+  display: block;
+}
+
+
+a:visited .card__number {
+    color: inherit; 
+}
+
+a.card__link {
+    text-decoration: none;
+      display: block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+a.card__link:visited {
+    text-decoration: none;
+}
+
+a.card__link:link,
+a.card__link:visited,
+a.card__link:hover,
+a.card__link:active {
+    color: inherit;
+    text-decoration: none;
+}
+
+.card:hover,
+.card__urgent:hover,
+.card__overview:hover {
+  background-color: #2A3647;
+}
+
+.card:hover .card__icon {
+  background-color: white;
+}
+
+.card:hover .card__number,
+.card__overview:hover .card__number,
+.card__urgent:hover .card__number {
+  color: white;
+}
+
+.card:hover .card__label,
+.card__overview:hover .card__label,
+.card__urgent:hover .card__label,
+.card__urgent:hover .card__date,
+.card__urgent:hover .card__deadline {
+  color: white;
+}
+
+.card:hover .card__icon img,
+.card__overview:hover img {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(9%) saturate(1070%) hue-rotate(169deg) brightness(93%) contrast(91%);
+}
+
+.card__urgent:hover .card__urgent-icon img {
+  filter: none;
+}
+
+.card,
+.card__urgent,
+.card__overview {
+  transition: background-color 0.3s ease, filter 0.3s ease;
+  border-radius: 8px;
 }

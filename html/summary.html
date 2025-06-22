@@ -42,7 +42,7 @@
         </div>
         <div class="sidebar__legal">
           <a href="#" class="sidebar__text">Privacy Policy</a>
-          <a href="#" class="sidebar__text">Legal notice</a>
+          <a href="#" class="sidebar__text">Legal Notice</a>
         </div>
       </nav>
 
@@ -71,20 +71,22 @@
 
 
             <!-- Erste Kartenreihe: To-do & Done -->
-            <div class="card__row">
-              <div class="card">
-                <div class="card__header">
-                  <div class="card__icon">
-                    <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon" />
-                  </div>
-                  <div class="card__number-label">
-                    <p class="card__number">1</p>
-                    <p class="card__label">To-do</p>
+            <a href="board.html" class="card__link">
+              <div class="card__row">
+                <div class="card">
+                  <div class="card__header">
+                    <div class="card__icon">
+                      <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon" />
+                    </div>
+                    <div class="card__number-label">
+                      <p class="card__number">1</p>
+                      <p class="card__label">To-do</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+            </a>
 
-
+            <a href="board.html" class="card__link">
               <div class="card">
                 <div class="card__header">
                   <div class="card__icon">
@@ -96,58 +98,69 @@
                   </div>
                 </div>
               </div>
+            </a>
 
-              <!-- Zweite Reihe: Urgent & Greeting rechts -->
+            <!-- Zweite Reihe: Urgent & Greeting rechts -->
+            <a href="board.html" class="card__link">
               <div class="card__urgent card__urgent-inline">
-                <div class="card__urgent-left">
-                  <div class="card__urgent-top">
-                    <span class="card__urgent-icon">
-                      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
-                    </span>
-                    <span class="card__number">1</span>
-                  </div>
-                  <p class="card__label">Urgent</p>
-                </div>
+           <div class="card__urgent-left">
+  <div class="card__urgent-content">
+    <span class="card__urgent-icon">
+      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
+    </span>
+    <div class="card__urgent-number-label">
+      <span class="card__number">1</span>
+      <p class="card__label">Urgent</p>
+    </div>
+  </div>
+</div>
 
                 <div class="card__urgent-seperator"></div>
 
                 <div class="card__urgent-right">
-                  <p class="card__deadline">
+                  <p class="card__date">
                     October 16, 2022<br />
-                    <small>Upcoming Deadline</small>
+                  <p class="card__deadline">Upcoming Deadline</p>
                   </p>
                 </div>
               </div>
-              <div class="card__greeting card__greeting-inline">
-                <div>
-                  <p class="card__greetings-text">Good morning,</p>
-                  <p class="card__username">Sofia Müller</p>
-                </div>
+            </a>
+            <div class="card__greeting card__greeting-inline">
+              <div>
+                <p class="card__greetings-text">Good morning,</p>
+                <p class="card__username">Sofia Müller</p>
               </div>
             </div>
-
-
-            <!-- Dritte Reihe: Weitere Karten -->
-            <div class="card__row">
-              <div class="card__overview">
-                <p class="card__number">5</p>
-                <p class="card__label">Tasks in Board</p>
-              </div>
-
-              <div class="card__overview">
-                <p class="card__number">2</p>
-                <p class="card__label">Tasks In Progress</p>
-              </div>
-
-              <div class="card__overview">
-                <p class="card__number">2</p>
-                <p class="card__label">Awaiting Feedback</p>
-              </div>
-            </div>
-          </section>
-        </main>
-        <!-- Ende Layout -->
       </div>
+
+
+      <!-- Dritte Reihe: Weitere Karten -->
+      <a href="board.html" class="card__link">
+        <div class="card__row">
+          <div class="card__overview">
+            <p class="card__number">5</p>
+            <p class="card__label">Tasks in Board</p>
+          </div>
+      </a>
+
+      <a href="board.html" class="card__link">
+        <div class="card__overview">
+          <p class="card__number">2</p>
+          <p class="card__label">Tasks In Progress</p>
+        </div>
+      </a>
+
+      <a href="board.html" class="card__link">
+        <div class="card__overview">
+          <p class="card__number">2</p>
+          <p class="card__label">Awaiting Feedback</p>
+        </div>
+      </a>
+    </div>
+    </section>
+    </main>
+    <!-- Ende Layout -->
+  </div>
 
 </body>
 
