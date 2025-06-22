@@ -1,5 +1,5 @@
 .overlay {
-    display: none; 
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.16);
@@ -8,31 +8,34 @@
     z-index: 9999; 
 }
 
-/* Sichtbarer Zustand */
-.overlay--visible {
-    display: flex;
+.d-none {
+    display: none !important;
 }
 
 /* === Das Panel selbst === */
 .overlay__content {
+    position: relative;
     width: 525px;
-    height: 931px;
     background-color: #ffffff;
     border-radius: 30px;
     padding: 48px 40px;
     box-shadow: 0px 0px 4px 0px #00000029;
 
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    transform: translateX(100vw);
-    transition: transform 2s ease;
+    /* transform: translateX(100vw);
+    transition: transform 2s ease; */
 }
 
 /* Wenn Overlay sichtbar, fahre das Panel rein */
-.overlay--visible .overlay__content {
+/* .overlay--visible .overlay__content {
     transform: translateX(0);
+} */
+
+/* === Der Inhalt, der im Editmode ausgeblendet wird === */
+.overlay__story, .overlay__edit{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px !important;
 }
 
 .overlay__badgeframe {
@@ -226,3 +229,11 @@
     fill: #29ABE2;
     transition: fill 0.2s ease-in-out;
 }
+
+.overlay__edit--closewrapper{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
