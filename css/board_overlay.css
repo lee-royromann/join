@@ -265,6 +265,19 @@
     color: #2A3647;
 }
 
+.edit__group--input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edit__required-note {
+    font-size: 12px;
+    line-height: 120%;
+    font-weight: 400;
+    color: #FF8190;
+}
+
 .edit__input {
     width: 100%;
     gap: 10px;
@@ -305,4 +318,50 @@
     width: 24px;
     transform: translateY(-50%);
     cursor: pointer;
+}
+
+.form__wrapper-priority {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.edit__button-prio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 120%;
+    color: #000000;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    padding: 16px 10px;
+    height: 56px;
+    max-width: 137.67px;
+    width: 100%;
+    gap: 8px;
+}
+
+.edit__button-prio:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+}
+
+.edit__button-prio--urgent svg {
+    color: #ff3e01;
+}
+
+.edit__button-prio--medium svg {
+    color: #ffa700;
+}
+
+.edit__button-prio--low svg {
+    color: #7ae229;
 }
