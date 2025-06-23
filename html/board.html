@@ -253,7 +253,7 @@
 
                             <div class="edit__group">
                                 <label class="edit__label">Priority</label>
-                                <div class="form__wrapper-priority">
+                                <div class="edit__wrapper-priority">
                                     <button type="button" class="edit__button-prio edit__button-prio--urgent">
                                         <span>Urgent</span>
                                         <svg width="20" height="14.51" viewBox="0 0 21 16" xmlns="http://www.w3.org/2000/svg">
@@ -282,21 +282,21 @@
                             <div class="edit__group">
                                 <label class="edit__label" for="contact-search">Assigned to</label>
                                 <div>
-                                    <div class="edit__wrapper-assignee" id="#">
+                                    <div class="edit__wrapper-assignee" id="contact-selector">
                                         <input
                                             type="text"
-                                            class="form__input"
-                                            id="contact-search"
-                                            onclick="toggleDropdown(event, 'contact-search', 'contact-list')"
+                                            class="edit__input"
+                                            id="edit-contact-search"
+                                            onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
                                             oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
                                             placeholder="Select contacts to assign"
                                         />
-                                        <div class="edit__icon-contact" onclick="toggleDropdown(event, 'contact-search', 'contact-list')">
-                                            <img src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow Down">
+                                        <div class="edit__icon-contact" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')">
+                                            <img id="edit-contact-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open contact list">
                                         </div>
                                     </div>
-                                    <div class="edit__wrapper-list d_none" id="contact-list">
-                                        <ul class="edit__contact-list" id="contact-list">
+                                    <div class="edit__wrapper-list d-none" id="#">
+                                        <ul class="edit__contact-list" id="edit-contact-list">
                                             <li class="edit__contact"
                                                 id="contact-id-7"
                                                 data-id="7"
@@ -304,9 +304,11 @@
                                                 data-fullname="Alice Wonderland"
                                                 data-color="#eb56f0"
                                                 onclick="selectContact(7)">
-                                                <span class="form__contact-badge" style="background-color: #FF4646;">AW</span>
-                                                <span class="form__contact-name">Alice Wonderland</span>
-                                                <input class="form__contact-checkbox" id="contact-checkbox-7" type="checkbox" onclick="selectContact(7)" />
+                                                <div class="edit__contact-badgename">
+                                                    <span class="edit__contact-badge" style="background-color: #FF4646;">AW</span>
+                                                    <span class="edit__contact-name">Alice Wonderland</span>
+                                                </div>
+                                                <input class="edit__contact-checkbox" id="contact-checkbox-7" type="checkbox" onclick="selectContact(7)" />
                                             </li>
                                             <li class="edit__contact"
                                                 id="contact-id-4"
@@ -315,76 +317,23 @@
                                                 data-fullname="Danny Mensing"
                                                 data-color="#c3624a"
                                                 onclick="selectContact(4)">
-                                                <span class="edit__contact-badge" style="background-color: #0038FF;">DM</span>
-                                                <span class="edit__contact-name">Danny Mensing</span>
+                                                <div class="edit__contact-badgename">
+                                                    <span class="edit__contact-badge" style="background-color: #0038FF;">DM</span>
+                                                    <span class="edit__contact-name">Danny Mensing</span>
+                                                </div>
                                                 <input class="edit__contact-checkbox" id="contact-checkbox-4" type="checkbox" onclick="selectContact(4)" />
                                             </li>
-                                            <li class="edit__contact"
-                                                id="contact-id-6"
-                                                data-id="6"
-                                                data-shortname="JD"
-                                                data-fullname="John Doe"
-                                                data-color="#4c4ac3"
-                                                onclick="selectContact(6)">
-                                                <span class="edit__contact-badge" style="background-color: #FFE62B;">JD</span>
-                                                <span class="edit__contact-name">John Doe</span>
-                                                <input class="edit__contact-checkbox" id="contact-checkbox-6" type="checkbox" onclick="selectContact(6)" />
-                                            </li>
-                                            <li class="edit__contact"
-                                                id="contact-id-1"
-                                                data-id="1"
-                                                data-shortname="LR"
-                                                data-fullname="Lee-Roy Romann"
-                                                data-color="#00BCD4"
-                                                onclick="selectContact(1)">
-                                                <span class="edit__contact-badge" style="background-color: #FF7A00;">LR</span>
-                                                <span class="edit__contact-name">Lee-Roy Romann<span id="contact-you"> (You)</span></span>
-                                                <input class="edit__contact-checkbox" id="contact-checkbox-1" type="checkbox" onclick="selectContact(1)" />
-                                            </li>
-                                            <li class="edit__contact"
-                                                id="contact-id-2"
-                                                data-id="2"
-                                                data-shortname="MR"
-                                                data-fullname="Mechthild Rölfing"
-                                                data-color="#c34ab5"
-                                                onclick="selectContact(2)">
-                                                <span class="edit__contact-badge" style="background-color: #FF5EB3;">MR</span>
-                                                <span class="edit__contact-name">Mechthild Rölfing</span>
-                                                <input class="edit__contact-checkbox" id="contact-checkbox-2" type="checkbox" onclick="selectContact(2)" />
-                                            </li>
-                                            <li class="edit__contact"
-                                                id="contact-id-3"
-                                                data-id="3"
-                                                data-shortname="PN"
-                                                data-fullname="Philipp Novak"
-                                                data-color="#8BC34A"
-                                                onclick="selectContact(3)">
-                                                <span class="edit__contact-badge" style="background-color: #1FD7C1;">PN</span>
-                                                <span class="edit__contact-name">Philipp Novak</span>
-                                                <input class="edit__contact-checkbox" id="contact-checkbox-3" type="checkbox" onclick="selectContact(3)" />
-                                            </li>
-                                            <li class="edit__contact"
-                                                id="contact-id-5"
-                                                data-id="5"
-                                                data-shortname="SN"
-                                                data-fullname="Satoshi Nakamoto"
-                                                data-color="#ed8a20"
-                                                onclick="selectContact(5)">
-                                                <span class="edit__contact-badge" style="background-color: #FFA35E;">SN</span>
-                                                <span class="edit__contact-name">Satoshi Nakamoto</span>
-                                                <input class="edit__contact-checkbox" id="contact-checkbox-5" type="checkbox" onclick="selectContact(5)" />
-                                            </li>
+                                            
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="form__contact-badges">
-                                    <span class="edit__contact-badge" style="background-color: #0038FF;">DM</span>
-                                    <span class="edit__contact-badge" style="background-color: #FF7A00;">LR</span>
-                                    <span class="edit__contact-badge" style="background-color: #FF5EB3;">MR</span>
-                                    <span class="edit__contact-badge" style="background-color: #1FD7C1;">PN</span>
+                                    <span class="form__contact-badge" style="background-color: #0038FF;">DM</span>
+                                    <span class="form__contact-badge" style="background-color: #FF7A00;">LR</span>
+                                    <span class="form__contact-badge" style="background-color: #FF5EB3;">MR</span>
+                                    <span class="form__contact-badge" style="background-color: #1FD7C1;">PN</span>
                                 </div>
                             </div>
-
 
                         </div>
 

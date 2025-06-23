@@ -230,6 +230,9 @@
     transition: fill 0.2s ease-in-out;
 }
 
+
+/* EDIT SECTION */
+
 .overlay__edit--closewrapper{
     width: 100%;
     display: flex;
@@ -303,10 +306,12 @@
     border: 1px solid #D1D1D1;
 }
 
+.edit__wrapper-assignee,
 .edit__wrapper-date {
     position: relative;
 }
 
+.edit__icon-contact,
 .edit__icon-calendar {
     position: absolute;
     right: 16px;
@@ -320,7 +325,7 @@
     cursor: pointer;
 }
 
-.form__wrapper-priority {
+.edit__wrapper-priority {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -365,3 +370,119 @@
 .edit__button-prio--low svg {
     color: #7ae229;
 }
+
+.edit__wrapper-assignee {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edit__input {
+    position: relative;
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 21px;
+    padding-right: 21px;
+    font-size: 20px;
+    font-weight: 400;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    background-color: #ffffff;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+    cursor: text;  
+}
+
+.edit__input::placeholder {
+    color: #000000;
+    font-size: 20px
+}
+
+.edit__wrapper-list {
+    max-height: 265px;
+    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    box-shadow: 0 0px 16px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    overflow-y: auto;
+}
+
+.edit__contact-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edit__contact {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 16px;
+    border-radius: 10px;
+}
+
+.edit__contact:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.edit__contact-badgename {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.edit__contact-badges {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 4px;
+    gap: 10px;
+}
+
+.edit__contact-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.edit__contact-name {
+    flex-grow: 1;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.edit__contact-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #2a2a2a;
+    margin-right: 16px;
+}
+
+.edit__contact-checkbox--checked {
+    background-color: #2a3547;
+    color: white;
+}
+
+.edit__contact-checkbox--checked:hover {
+    background-color: #081831;
+}
+
