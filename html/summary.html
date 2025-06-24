@@ -12,11 +12,11 @@
   <link rel="stylesheet" href="../css/navbar.css">
 
   <script src="../js/summary_templates.js"></script>
-  <script src="../js/summary.js"></script>
+ 
   <script src="../script.js"></script>
 </head>
 
-<body>
+<body onload="init()">
   <div class="layout-page">
     <div class="layout-page__card">
 
@@ -82,7 +82,7 @@
                       <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon" />
                     </div>
                     <div class="card__number-label">
-                      <p class="card__number">1</p>
+                      <p class="card__number" id="count-todo">0</p>
                       <p class="card__label">To-do</p>
                     </div>
                   </div>
@@ -96,7 +96,7 @@
                     <img src="../assets/img/icon/done_white.svg" alt="Done Icon" />
                   </div>
                   <div class="card__number-label">
-                    <p class="card__number">1</p>
+                    <p class="card__number" id="count-done">0</p>
                     <p class="card__label">Done</p>
                   </div>
                 </div>
@@ -112,7 +112,7 @@
       <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
     </span>
     <div class="card__urgent-number-label">
-      <span class="card__number">1</span>
+      <span class="card__number" id="count-urgent">0</span>
       <p class="card__label">Urgent</p>
     </div>
   </div>
@@ -130,8 +130,8 @@
             </a>
             <div class="card__greeting card__greeting-inline">
               <div>
-                <p class="card__greetings-text">Good morning,</p>
-                <p class="card__username">Sofia Müller</p>
+                <p class="card__greetings-text" id="greeting-text">Good morning,</p>
+                <p class="card__username" id="greeting-username">Sofia Müller</p>
               </div>
             </div>
       </div>
@@ -141,21 +141,21 @@
       <a href="board.html" class="card__link">
         <div class="card__row">
           <div class="card__overview">
-            <p class="card__number">5</p>
+            <p class="card__number" id="count-board">0</p>
             <p class="card__label">Tasks in Board</p>
           </div>
       </a>
 
       <a href="board.html" class="card__link">
         <div class="card__overview">
-          <p class="card__number">2</p>
+          <p class="card__number" id="count-progress">0</p>
           <p class="card__label">Tasks In Progress</p>
         </div>
       </a>
 
       <a href="board.html" class="card__link">
         <div class="card__overview">
-          <p class="card__number">2</p>
+          <p class="card__number" id="count-feedback">0</p>
           <p class="card__label">Awaiting Feedback</p>
         </div>
       </a>
@@ -164,7 +164,7 @@
     </main>
     <!-- Ende Layout -->
   </div>
-
+ <script src="../js/summary.js"></script>
 </body>
 
 </html>
