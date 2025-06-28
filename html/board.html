@@ -227,7 +227,7 @@
                             <div class="edit__group">
                                 <label class="edit__label" for="edit-title">Title</label>
                                 <div class="edit__group--input-wrapper">
-                                    <input class="edit__input" id="edit-title" type="text" name="title" value="Kochwelt Page & Recipe Recommender" placeholder="Enter a title" required/>
+                                    <input class="edit__input edit__input--textblack" id="edit-title" type="text" name="title" value="Kochwelt Page & Recipe Recommender" placeholder="Enter a title" required/>
                                     <div class="edit__required-note">This field is required</div>
                                 </div>
                             </div>
@@ -243,7 +243,7 @@
                             <div class="edit__group">
                                 <label class="edit__label" for="edit-due-date">Due date</label>
                                 <div class="edit__wrapper-date">
-                                    <input class="edit__input" id="edit-due-date" type="text" name="due-date" value="10/05/2023" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
+                                    <input class="edit__input edit__input--textblack" id="edit-due-date" type="text" name="due-date" value="10/05/2023" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
                                     <span class="edit__icon-calendar" aria-hidden="true">
                                         <img src="../assets/img/icon/calendar.svg" alt="calendar-icon" />
                                     </span>
@@ -285,7 +285,7 @@
                                     <div class="edit__wrapper-assignee" id="contact-selector">
                                         <input
                                             type="text"
-                                            class="edit__input"
+                                            class="edit__input edit__input--textblack"
                                             id="edit-contact-search"
                                             onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
                                             oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
@@ -335,7 +335,58 @@
                                 </div>
                             </div>
 
+                            <!-- Subtasks -->
+                             <div class="edit__group">
+                                <label class="edit__label" for="task-subtask-input">Subtasks</label>
+
+                                <!-- Subtasks Input -->
+                                <div class="edit__wrapper-input">
+
+                                    <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" placeholder="Add new subtask"/>
+
+                                    <!-- Subtask plus icon -->
+                                    <div class="edit__wrapper-subtask-icons d-none" id="task-subtask-icons-1">
+                                        <div class="edit__icon-subtask edit__icon-add">
+                                            <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
+                                        </div>
+                                    </div>
+
+                                    <!-- Subtask delte / check icons -->
+                                    <div class="edit__wrapper-subtask-icons edit__icon-close" id="task-subtask-icons-2">
+                                        <div class="edit__icon-subtask">
+                                            <img src="../assets/img/icon/close.svg" alt="Subtask icon to delete subtask">
+                                        </div>
+                                        <span class="edit__icon-separator"></span>
+                                        <div class="edit__icon-subtask  edit__icon-done">
+                                            <img src="../assets/img/icon/done.svg" alt="Subtask icon to mark subtask as done">
+                                        </div>
+                                    </div>
+                                </div>   
+
+                                <!-- Tasklist
+                                -->
+                                <ul class="edit__subtasklist">
+                                    <li class="edit__subtask">   
+                                        <span class="edit__subtask-text">Implement Recipe Recommendation</span>
+                                        <div class="edit__subtask-icons">
+                                            <div class="edit__icon-subtasklist">
+                                                <img src="../assets/img/icon/edit.svg" alt="Subtask icon to delete subtask">
+                                            </div>
+                                            <span class="edit__subtask-separator"></span>
+                                            <div class="edit__icon-subtasklist">
+                                                <img src="../assets/img/icon/delete.svg" alt="Subtask icon to mark subtask as done">
+                                            </div>
+                                        </div>   
+                                    </li> 
+                                </ul>   
+
+                            </div>
+
                         </div>
+
+                        <footer class="edit__action-buttons">
+                            <button type="submit" class="edit__button-ok">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
+                        </footer>
 
                     </div>
 

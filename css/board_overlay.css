@@ -245,6 +245,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    flex: 1;
 }
 
 .overlay__edit--selections {
@@ -289,8 +290,16 @@
     font-size: 20px;
     line-height: 120%;
     font-weight: 400;
-    color: #000000;
     border: 1px solid #D1D1D1;
+   
+}
+
+.edit__input--textblack {
+    color: #000000;
+}
+
+.edit__input--textgrey::placeholder {
+   color: #D1D1d1 !important;
 }
 
 .edit__textarea {
@@ -307,12 +316,16 @@
 }
 
 .edit__wrapper-assignee,
-.edit__wrapper-date {
+.edit__wrapper-date,
+.edit__wrapper-input {
     position: relative;
+    display: flex;
+    justify-content: space-between;
 }
 
 .edit__icon-contact,
-.edit__icon-calendar {
+.edit__icon-calendar,
+.edit__wrapper-subtask-icons {
     position: absolute;
     right: 16px;
     top: 50%;
@@ -323,6 +336,38 @@
     width: 24px;
     transform: translateY(-50%);
     cursor: pointer;
+    margin-right: 16px;
+}
+
+.edit__wrapper-subtask-icons { 
+    gap: 4px;
+    
+}
+
+.edit__icon-subtask,
+.edit__icon-subtasklist {
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+}
+
+.edit__icon-contact:hover,
+.edit__icon-calendar:hover,
+.edit__icon-subtask:hover {
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+
+
+.edit__icon-contact:hover,
+.edit__icon-subtask:hover {
+   background-color: #d9d9d9;
+   border-radius: 50%;
+}
+
+.edit__icon-done:hover {
+   transform: scale(1.1) 
 }
 
 .edit__wrapper-priority {
@@ -378,24 +423,9 @@
     gap: 8px;
 }
 
-.edit__input {
-    position: relative;
-    width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 21px;
-    padding-right: 21px;
-    font-size: 20px;
-    font-weight: 400;
-    border: 1px solid #d1d1d1;
-    border-radius: 10px;
-    background-color: #ffffff;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
-    cursor: text;  
-}
+
 
 .edit__input::placeholder {
-    color: #000000;
     font-size: 20px
 }
 
@@ -409,7 +439,7 @@
     font-size: 20px;
     font-weight: 400;
     box-shadow: 0 0px 16px rgba(0,0,0,0.05);
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     overflow-y: auto;
 }
 
@@ -505,4 +535,109 @@
     font-size: 12px;
     font-weight: 400;
     cursor: pointer;
+}
+
+.edit__icon-separator,
+.edit__subtask-separator {
+    min-width: 1px;
+    height: 24px;
+}
+
+.edit__icon-separator {
+    background-color: #d1d1d1;
+}
+
+.edit__subtask-separator {
+    background-color: #A8A8A8;
+}
+
+.edit__subtasklist {
+    width: 100%;
+    list-style-position: none;
+   
+}
+
+.edit__subtask {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px;
+    font-size: 16px;
+    line-height: 120%;
+    font-weight: 400;
+    color: #000000;
+}
+
+.edit__subtask-text::before {
+  content: "•";
+  margin-right: 8px;
+  color: #000;
+  font-size: 18px;
+  display: inline-block;
+  transform: translateY(-1px); /* optional: vertikale Feinjustierung */
+}
+
+.edit__subtask:hover {
+    width: 100%;
+    background-color: #EEEEEE;
+    border-radius: 10px;
+    transition:  background-color 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.edit__subtask-icons{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    gap: 4px;
+    padding-right: 4px; 
+}
+
+.edit__subtask:hover .edit__subtask-icons { 
+    display: flex;
+}
+
+.edit__icon-subtasklist:hover {
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+}
+
+.edit__action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    max-width: 440px;
+    width: 100%;
+    gap: 20px;
+}
+
+.edit__button-ok {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 120%;
+    padding: 16px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2a3647;
+    color: white;
+    gap: 4px;
+}
+
+.edit__button-ok:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    background-color: #29ABE2;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.edit__button-ok img {
+    width: 15.49px;
 }
