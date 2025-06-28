@@ -486,3 +486,23 @@
     background-color: #081831;
 }
 
+.edit__contact-badges {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit__contact-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+}
