@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Figma-Board</title>
+  <title>Join - Summary</title>
 
   <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/summary.css">
   <link rel="stylesheet" href="../css/navbar.css">
-  <link rel="stylesheet" href="../css/fonts.css" />
+  <link rel="stylesheet" href="../css/fonts.css">
 
   <script src="../js/summary_templates.js"></script>
   <script src="../script.js"></script>
@@ -24,23 +24,23 @@
       <!-- Sidebar -->
       <nav class="sidebar">
         <div class="sidebar__logo">
-          <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo" />
+          <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo">
         </div>
         <div class="sidebar__menu">
           <div class="sidebar__item">
-            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary" />
+            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary">
             <a href="#" class="sidebar__text">Summary</a>
           </div>
           <div class="sidebar__item">
-            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task" />
+            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task">
             <a href="#" class="sidebar__text">Add Task</a>
           </div>
           <div class="sidebar__item">
-            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board" />
+            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board">
             <a href="#" class="sidebar__text">Board</a>
           </div>
           <div class="sidebar__item">
-            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts" />
+            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts">
             <a href="#" class="sidebar__text">Contacts</a>
           </div>
         </div>
@@ -50,9 +50,8 @@
         </div>
       </nav>
 
-      <!-- Inhalt rechts von der Sidebar -->
+      <!-- Content Area -->
       <div class="content">
-
         <!-- Header -->
         <header class="header">
           <h1 class="header__title">Kanban Project Management Tool</h1>
@@ -64,8 +63,6 @@
 
         <!-- Main Content -->
         <main class="main">
-
-          <!-- Titel, Untertitel & Greeting -->
           <section class="dashboard">
             <div class="dashboard__header">
               <h1 class="dashboard__title">Join 360</h1>
@@ -73,14 +70,13 @@
               <p class="dashboard__subtitle">Key Metrics at a Glance</p>
             </div>
 
-
-            <!-- Erste Kartenreihe: To-do & Done -->
-            <a href="board.html" class="card__link">
-              <div class="card__row">
+            <!-- First Row: To-do & Done -->
+            <div class="card__row">
+              <a href="board.html" class="card__link">
                 <div class="card">
                   <div class="card__header">
                     <div class="card__icon">
-                      <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon" />
+                      <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon">
                     </div>
                     <div class="card__number-label">
                       <p class="card__number" id="count-todo">0</p>
@@ -88,85 +84,82 @@
                     </div>
                   </div>
                 </div>
-            </a>
+              </a>
 
-            <a href="board.html" class="card__link">
-              <div class="card">
-                <div class="card__header">
-                  <div class="card__icon">
-                    <img src="../assets/img/icon/done_white.svg" alt="Done Icon" />
-                  </div>
-                  <div class="card__number-label">
-                    <p class="card__number" id="count-done">0</p>
-                    <p class="card__label">Done</p>
-                  </div>
-                </div>
-              </div>
-            </a>
-
-            <!-- Zweite Reihe: Urgent & Greeting rechts -->
-            <a href="board.html" class="card__link">
-              <div class="card__urgent card__urgent-inline">
-                <div class="card__urgent-left">
-                  <div class="card__urgent-content">
-                    <span class="card__urgent-icon">
-                      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
-                    </span>
-                    <div class="card__urgent-number-label">
-                      <span class="card__number" id="count-urgent">0</span>
-                      <p class="card__label">Urgent</p>
+              <a href="board.html" class="card__link">
+                <div class="card">
+                  <div class="card__header">
+                    <div class="card__icon">
+                      <img src="../assets/img/icon/done_white.svg" alt="Done Icon">
+                    </div>
+                    <div class="card__number-label">
+                      <p class="card__number" id="count-done">0</p>
+                      <p class="card__label">Done</p>
                     </div>
                   </div>
                 </div>
+              </a>
+            </div>
 
-                <div class="card__urgent-seperator"></div>
+            <!-- Second Row: Urgent & Greeting -->
+            <div class="card__row">
+              <a href="board.html" class="card__link">
+                <div class="card__urgent card__urgent-inline">
+                  <div class="card__urgent-left">
+                    <div class="card__urgent-content">
+                      <span class="card__urgent-icon">
+                        <img src="../assets/img/icon/urgent_white.svg" alt="Urgent">
+                      </span>
+                      <div class="card__urgent-number-label">
+                        <span class="card__number" id="count-urgent">0</span>
+                        <p class="card__label">Urgent</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card__urgent-seperator"></div>
+                  <div class="card__urgent-right">
+                    <p class="card__date" id="upcoming-deadline-date">October 16, 2022</p>
+                    <p class="card__deadline">Upcoming Deadline</p>
+                  </div>
+                </div>
+              </a>
 
-                <div class="card__urgent-right">
-                  <p class="card__date" id="upcoming-deadline-date">
-                    October 16, 2022<br />
-                  <p class="card__deadline">Upcoming Deadline</p>
-                  </p>
+              <div class="card__greeting card__greeting-inline">
+                <div>
+                  <p class="card__greetings-text" id="greeting-text">Good morning,</p>
+                  <p class="card__username" id="greeting-username">Sofia Müller</p>
                 </div>
               </div>
-            </a>
-            <div class="card__greeting card__greeting-inline">
-              <div>
-                <p class="card__greetings-text" id="greeting-text">Good morning,</p>
-                <p class="card__username" id="greeting-username">Sofia Müller</p>
-              </div>
             </div>
+
+            <!-- Third Row: Overview Cards -->
+            <div class="card__row">
+              <a href="board.html" class="card__link">
+                <div class="card__overview">
+                  <p class="card__number" id="count-board">0</p>
+                  <p class="card__label">Tasks in Board</p>
+                </div>
+              </a>
+
+              <a href="board.html" class="card__link">
+                <div class="card__overview">
+                  <p class="card__number" id="count-progress">0</p>
+                  <p class="card__label">Tasks In Progress</p>
+                </div>
+              </a>
+
+              <a href="board.html" class="card__link">
+                <div class="card__overview">
+                  <p class="card__number" id="count-feedback">0</p>
+                  <p class="card__label">Awaiting Feedback</p>
+                </div>
+              </a>
+            </div>
+          </section>
+        </main>
       </div>
-
-
-      <!-- Dritte Reihe: Weitere Karten -->
-      <a href="board.html" class="card__link">
-        <div class="card__row">
-          <div class="card__overview">
-            <p class="card__number" id="count-board">0</p>
-            <p class="card__label">Tasks in Board</p>
-          </div>
-      </a>
-
-      <a href="board.html" class="card__link">
-        <div class="card__overview">
-          <p class="card__number" id="count-progress">0</p>
-          <p class="card__label">Tasks In Progress</p>
-        </div>
-      </a>
-
-      <a href="board.html" class="card__link">
-        <div class="card__overview">
-          <p class="card__number" id="count-feedback">0</p>
-          <p class="card__label">Awaiting Feedback</p>
-        </div>
-      </a>
     </div>
-    </section>
-    </main>
-    <!-- Ende Layout -->
   </div>
   <script src="../js/summary.js" defer></script>
-
 </body>
-
 </html>
