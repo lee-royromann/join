@@ -84,7 +84,7 @@ body {
   padding-left: 48px;
   padding-top: 30px;
   width: 100%;
-  gap: 8px;
+  gap: 24px;
 }
 
 /* Cards */
@@ -126,7 +126,6 @@ body {
 .card {
   background-color: white;
   padding: 20px;
-  border-radius: 12px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   width: 264px;
@@ -250,7 +249,6 @@ body {
 .card__urgent {
   background-color: white;
   padding: 20px;
-  border-radius: 12px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   width: 548px;
@@ -307,7 +305,6 @@ body {
   justify-content: center;
   background: transparent;
   padding: 20px;
-  border-radius: 12px;
   min-width: 200px;
 }
 
@@ -316,6 +313,7 @@ body {
   font-size: 47px;
   line-height: 120%;
   letter-spacing: 0%;
+  color: #2A3647;
 }
 
 .card__username {
@@ -329,7 +327,6 @@ body {
 .card__overview {
   background-color: white;
   padding: 20px;
-  border-radius: 12px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   width: 168px;
@@ -410,5 +407,5 @@ a.card__link:active {
 .card__urgent,
 .card__overview {
   transition: background-color 0.3s ease, filter 0.3s ease;
-  border-radius: 8px;
+  border-radius: 30px;
 }
