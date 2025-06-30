@@ -306,10 +306,11 @@ fieldset {
 .form__contact {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     padding-top: 7px;
     padding-bottom: 7px;
     padding-left: 16px;
+    padding-right: 16px;
     border-radius: 10px;
 }
 
@@ -338,6 +339,7 @@ fieldset {
     align-items: center;
     width: 42px;
     height: 42px;
+    flex-shrink: 0;
     border-radius: 50%;
     border: 2px solid #ffffff;
     color: white;
@@ -353,10 +355,13 @@ fieldset {
 }
 
 .form__contact-checkbox {
-    width: 18px;
-    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
     accent-color: #2a2a2a;
     margin-right: 16px;
+    appearance: none; /* Modern Browser */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
 }
 
 .form__contact-checkbox--checked {
@@ -366,6 +371,16 @@ fieldset {
 
 .form__contact-checkbox--checked:hover {
     background-color: #081831;
+}
+
+.form__contact-checkbox-icon-unchecked,
+.form__contact-checkbox-icon-checked {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    box-sizing: border-box;
 }
 
 #contact-arrow-icon,
@@ -493,7 +508,6 @@ fieldset {
 /* ACTIONS > CREATE & CLEAR */
 
 .form__actions {
-    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
