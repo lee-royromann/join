@@ -66,6 +66,7 @@ async function loadHTML(file, elementId) {
 }
 
 
+
 /**
  * Highlights the currently active page by adding an "active-menu" class
  * to the relevant navigation element and removing it from all others.

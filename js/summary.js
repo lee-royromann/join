@@ -2,10 +2,10 @@ function initSummary() {
   const tasks = loadTasks();
   updateDashboardCounters(tasks);
   initGreeting();
+  adjustContentWrapperHeight(); // Passt Wrapper-Höhe direkt beim Laden an
 }
 
 function loadTasks() {
- 
   return [
     { title: "Task 1", status: "todo", priority: "normal" },
     { title: "Task 2", status: "in_progress", priority: "urgent" },
@@ -53,5 +53,23 @@ function initGreeting() {
   if (username) username.textContent = name;
 }
 
-// Initialisierung nach dem Laden der Seite
+
+// Passt den Wrapper der Content-Höhe an, um Footer-Kollision zu vermeiden
+function adjustContentWrapperHeight() {
+  const wrapper = document.getElementById('content-wrapper');
+  const footer = document.querySelector('footer');
+  const header = document.querySelector('header');
+
+  if (wrapper && footer && header) {
+    const viewportHeight = window.innerHeight;
+    const headerHeight = header.offsetHeight;
+    const footerHeight = footer.offsetHeight;
+    const desiredHeight = viewportHeight - headerHeight - footerHeight;
+    wrapper.style.minHeight = `${desiredHeight}px`;
+  }
+}
+
+// Bei Fenstergrößenänderung Wrapper-Höhe erneut anpassen
+window.addEventListener('resize', adjustContentWrapperHeight);
+
 document.addEventListener("DOMContentLoaded", initSummary);

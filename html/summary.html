@@ -10,13 +10,14 @@
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../css/summary.css">
   <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/fonts.css" />
 
   <script src="../js/summary_templates.js"></script>
- 
   <script src="../script.js"></script>
+  <script src="../js/header.js" defer></script>
 </head>
 
-<body onload="init()">
+<body>
   <div class="layout-page">
     <div class="layout-page__card">
 
@@ -57,7 +58,7 @@
           <h1 class="header__title">Kanban Project Management Tool</h1>
           <div class="header__container">
             <div class="header__help">?</div>
-            <div class="header__user">SM</div>
+            <div class="header__user" id="header__user"></div>
           </div>
         </header>
 
@@ -106,22 +107,22 @@
             <!-- Zweite Reihe: Urgent & Greeting rechts -->
             <a href="board.html" class="card__link">
               <div class="card__urgent card__urgent-inline">
-           <div class="card__urgent-left">
-  <div class="card__urgent-content">
-    <span class="card__urgent-icon">
-      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
-    </span>
-    <div class="card__urgent-number-label">
-      <span class="card__number" id="count-urgent">0</span>
-      <p class="card__label">Urgent</p>
-    </div>
-  </div>
-</div>
+                <div class="card__urgent-left">
+                  <div class="card__urgent-content">
+                    <span class="card__urgent-icon">
+                      <img src="../assets/img/icon/urgent_white.svg" alt="Urgent" />
+                    </span>
+                    <div class="card__urgent-number-label">
+                      <span class="card__number" id="count-urgent">0</span>
+                      <p class="card__label">Urgent</p>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="card__urgent-seperator"></div>
 
                 <div class="card__urgent-right">
-                  <p class="card__date">
+                  <p class="card__date" id="upcoming-deadline-date">
                     October 16, 2022<br />
                   <p class="card__deadline">Upcoming Deadline</p>
                   </p>
@@ -164,7 +165,8 @@
     </main>
     <!-- Ende Layout -->
   </div>
- <script src="../js/summary.js"></script>
+  <script src="../js/summary.js" defer></script>
+
 </body>
 
 </html>
