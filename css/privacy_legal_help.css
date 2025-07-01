@@ -1,1 +1,95 @@
+/* Hauptcontainer für den Textblock auf den Legal- & Privacy-Seiten */
+.legal-container,
+.policy-container {
+    max-width: 900px;
+    /* Zentriert den Block horizontal und gibt ihm Abstand nach oben/unten */
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 32px 40px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Feste Höhe, damit das Scroll-Feld funktioniert */
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
 
+/* Hauptüberschrift (H1) */
+.main-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #29ABE2;
+    color: #2A3647;
+    flex-shrink: 0; /* Verhindert, dass der Titel schrumpft */
+}
+
+/* Der Bereich, der scrollen soll */
+.scrollable-content {
+    flex-grow: 1; /* Füllt den verfügbaren Platz aus */
+    overflow-y: auto; /* Aktiviert die vertikale Scroll-Leiste bei Bedarf */
+    padding-right: 15px; /* Platz für die Scroll-Leiste */
+}
+
+/* Einzelne Abschnitte im Text */
+.section {
+    margin-bottom: 24px;
+}
+
+/* Untertitel (H2) */
+.subtitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2A3647;
+    margin-bottom: 16px;
+}
+
+/* Kleinere Überschriften (H3) */
+.headline {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+/* Der eigentliche Absatztext */
+.undertext {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 10px;
+    /* Formatiert den Text als Blocksatz */
+    text-align: justify;
+}
+
+.undertext a {
+    color: #29ABE2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.font-strong {
+    font-weight: 700;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 900px) {
+    .legal-container,
+    .policy-container {
+        padding: 20px;
+        height: auto; /* Höhe auf kleineren Geräten automatisch anpassen */
+        max-height: 75vh;
+    }
+    .main-title { font-size: 40px; }
+}
+
+@media (max-width: 600px) {
+    .legal-container,
+    .policy-container {
+        padding: 16px;
+        margin: 20px auto;
+    }
+    .main-title { font-size: 32px; }
+    .undertext { font-size: 14px; }
+}
