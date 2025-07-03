@@ -89,3 +89,38 @@ window.addEventListener('resize', adjustContentWrapperHeight);
 
 // Initialisiert das Dashboard nach dem Laden des DOMs
 document.addEventListener("DOMContentLoaded", initSummary);
+
+document.querySelectorAll('.sidebar__item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar__item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+    });
+});
+
+
+// Fügt aktiven Zustand für Sidebar-Elemente hinzu
+
+
+window.addEventListener('resize', adjustSidebarWidth);
+window.addEventListener('DOMContentLoaded', adjustSidebarWidth);
+
+function adjustSidebarWidth() {
+    const mainContainer = document.querySelector('.main-container');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (mainContainer && sidebar) {
+        // Breite der Sidebar an die Main-Container-Breite anpassen
+        const mainWidth = mainContainer.offsetWidth;
+        sidebar.style.width = mainWidth + 'px';
+
+        // Exakten linken Abstand ermitteln und setzen
+        const mainRect = mainContainer.getBoundingClientRect();
+        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+
+        sidebar.style.left = (mainRect.left + scrollLeft) + 'px';
+
+        // Fixieren am unteren Rand
+        sidebar.style.position = 'fixed';
+        sidebar.style.bottom = '0';
+    }
+}
