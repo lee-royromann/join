@@ -17,3 +17,10 @@ function openEditOverlay() {
     story.classList.add("d-none");
     edit.classList.remove("d-none");
 }
+
+function closeEditOverlay() {
+    const story = document.getElementById("story");
+    const edit = document.getElementById("edit");
+    story.classList.remove("d-none");
+    edit.classList.add("d-none");
+}

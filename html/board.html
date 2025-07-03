@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="../css/navbar.css" />
         <link rel="stylesheet" href="../css/board.css" />
         <link rel="stylesheet" href="../css/board_overlay.css" />
+        <link rel="stylesheet" href="../css/board_edit.css" />
         <link rel="stylesheet" href="../css/fonts.css" />
 
         <script defer src="../js/board.js"></script>
@@ -137,7 +138,7 @@
         <div class="overlay" id="overlay">
             <div class="overlay__content">
 
-                <div class="overlay__story  d-none" id="story">
+                <div class="overlay__story " id="story">
                     <div class="overlay__badgeframe">
                         <div class="overlay__badge">
                             <span>User Story</span>
@@ -212,7 +213,7 @@
                     </div>
                 </div>  
                 
-                <div class="overlay__edit" id="edit">
+                <div class="overlay__edit d-none" id="edit">
                     <div class="overlay__edit--closewrapper">
                         <div class="overlay__close--button" onclick="closeOverlay()">
                             <img src="../assets/img/icon/close.svg" alt="close-icon">
@@ -387,7 +388,7 @@
                     </div>  
                 
                     <footer class="edit__action-buttons">
-                        <button type="submit" class="edit__button-ok">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
+                        <button type="submit" class="edit__button-ok" onclick="closeEditOverlay()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
                     </footer>
 
                 </div>
