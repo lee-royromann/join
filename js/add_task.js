@@ -80,13 +80,21 @@ function toggleDropdown(event, dropdownId, arrowIconId) {
 
 function selectContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
-    
-    if (!checkbox) {
-        console.error(`Checkbox with ID contact-checkbox-${id} not found.`);        
-        return;
+    const listItem = document.getElementById(`contact-id-${id}`);
+    if (!checkbox || !listItem) return;
+    const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
+    const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
+    if (!iconChecked || !iconUnchecked) return;
+    const isChecked = checkbox.checked = !checkbox.checked;
+    if (isChecked) {
+        iconChecked.classList.remove('d_none');
+        iconUnchecked.classList.add('d_none');
+        highlightContact(checkbox);
+    } else {
+        iconChecked.classList.add('d_none');
+        iconUnchecked.classList.remove('d_none');
+        unhighlightContact(checkbox);
     }
-    checkbox.checked ? unhighlightContact(checkbox) : highlightContact(checkbox);
-    checkbox.checked = !checkbox.checked;
 }
 
 function highlightContact(checkbox) {
@@ -141,10 +149,13 @@ function uncheckAllContacts() {
 
     contactItems.forEach((item) => {
         const checkbox = item.querySelector('.form__contact-checkbox');
-
+        const iconChecked = item.querySelector('.form__contact-checkbox-icon-checked');
+        const iconUnchecked = item.querySelector('.form__contact-checkbox-icon-unchecked');
         if (checkbox && checkbox.checked) {
             checkbox.checked = false;
             item.classList.remove('form__contact-checkbox--checked');
+            iconChecked.classList.add('d_none');
+            iconUnchecked.classList.remove('d_none');
         }
     });
 }
@@ -169,36 +180,46 @@ function getDatasetInfos() {
     return contacts;
 }
 
-const taskStructure = {
-  "id": "1",
-  "title": "Erstelle eine Task-Struktur",
-  "description": "Enthält alle notwendigen Werte für eine Aufgabe.",
-  "date": "2025-06-25",
-  "category": "Funktionalität",
-  "priority": "urgent",
-  "assignedTo": [
+// Example dataset for tasks
+let tasksArray = [
     {
-        "name": "Lee-Roy Romann",
-        "email": "lee-roy@example.com",
-        "color": "#0044cc",
-        "initials": "LR"
+        "id": 0,
+        "title": "Task 1",
+        "description": "Beschreibung 1",
+        "date": "2025-06-25",
+        "category": "User Story",
+        "priority": "medium",
+        "assignedTo": [0,2,3],
+        "subtask": [
+            {
+                "title": "Zahlen aktualisieren",
+                "done": false
+            },
+            {
+                "title": "CI-Folien integrieren",
+                "done": true
+            }
+        ],
+        "status": "in progress" // "to-do", "in progress", "await feedback", "done"
     },
     {
-        "name": "Philipp Novak",
-        "email": "philipp@example.com",
-        "color": "#00ccaa",
-        "initials": "PN"
+        "id": 1,
+        "title": "Task 2",
+        "description": "Beschreibung 2",
+        "date": "2025-06-25",
+        "category": "Technical Task",
+        "priority": "urgent",
+        "assignedTo": [0,4,5],
+        "subtask": [
+            {
+                "title": "Zahlen aktualisieren",
+                "done": false
+            },
+            {
+                "title": "CI-Folien integrieren",
+                "done": true
+            }
+        ],
+        "status": "await feedback" // "to-do", "in progress", "await feedback", "done"
     }
-  ],
-  "subtask": [
-    {
-        "title": "Zahlen aktualisieren",
-        "done": false
-    },
-    {
-        "title": "CI-Folien integrieren",
-        "done": true
-    }
-  ],
-  "status": "open" 
-}
+]

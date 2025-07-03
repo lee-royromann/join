@@ -24,3 +24,11 @@ function closeEditOverlay() {
     story.classList.remove("d-none");
     edit.classList.add("d-none");
 }
+
+function init() {
+    render();
+}
+
+function render(){
+    // für jede Spalte die Taskinputs filtern und rendern
+}
