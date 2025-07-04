@@ -223,3 +223,46 @@ let tasksArray = [
         "status": "await feedback" // "to-do", "in progress", "await feedback", "done"
     }
 ]
+
+
+// korrigiertes Dataset - jedes Task ein Objekt nicht Array
+ "tasks": {
+      "0": {
+        "title": "Task 1",
+        "description": "Beschreibung 1",
+        "date": "2025-06-25",
+        "category": "User Story",
+        "priority": "medium",
+        "assignedTo": [0, 2, 3],
+        "subtask": [
+          {
+            "title": "Zahlen aktualisieren",
+            "done": false
+          },
+          {
+            "title": "CI-Folien integrieren",
+            "done": true
+          }
+        ],
+        "status": "in progress"
+      },
+      "1": {
+        "title": "Task 2",
+        "description": "Beschreibung 2",
+        "date": "2025-06-25",
+        "category": "Technical Task",
+        "priority": "urgent",
+        "assignedTo": [0],
+        "subtask": [
+          {
+            "title": "Zahlen aktualisieren",
+            "done": false
+          },
+          {
+            "title": "CI-Folien integrieren",
+            "done": true
+          }
+        ],
+        "status": "await feedback"
+      }
+    }
