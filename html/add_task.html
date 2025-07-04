@@ -108,8 +108,9 @@
 
                             <!-- Title -->
                             <fieldset class="form__group">
-                                <label class="form__label" for="task-title">Title<span class="required">*</span></label>
+                                <label class="form__label" for="task-title">Title<span class="required-asterisk">*</span></label>
                                 <input class="form__input" id="task-title" type="text" name="title" placeholder="Enter a title" required/>
+                                <p class="required-hint">This field is required</p>
                             </fieldset>
 
                             <!-- Description -->
@@ -121,13 +122,14 @@
 
                             <!-- Due Date -->
                             <fieldset class="form__group">
-                                <label class="form__label" for="task-due-date">Due date<span class="required">*</span></label>
+                                <label class="form__label" for="task-due-date">Due date<span class="required-asterisk">*</span></label>
                                 <div class="form__wrapper-date">
                                     <input class="form__input" id="task-due-date" type="text" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
                                     <span class="form__icon-calendar" aria-hidden="true">
                                         <img src="../assets/img/icon/calendar.svg" alt="Calendar icon for Due Date" />
                                     </span>
                                 </div>
+                                <p class="required-hint">This field is required</p>
                             </fieldset>
                         </section>
 
@@ -174,8 +176,7 @@
                                             type="text"
                                             class="form__input"
                                             id="contact-search"
-                                            onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
-                                            oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
+                                            oninput="showElement('contact-list'), filterDropdown('contact-search', '#contact-list .form__contact')"
                                             placeholder="Select contacts to assign"
                                         />
                                         <div class="form__icon-contact" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')">
@@ -183,14 +184,14 @@
                                         </div>
                                     </div>
                                     <div class="form__wrapper-list d_none" id="contact-list">
-                                        <ul class="form__contact-list" id="contact-list">
+                                        <ul class="form__contact-list">
                                             <li class="form__contact"
                                                 id="contact-id-7"
                                                 data-id="7"
                                                 data-shortname="AW"
                                                 data-fullname="Alice Wonderland"
                                                 data-color="#eb56f0"
-                                                onclick="selectContact(7)">
+                                                onclick="selectContact(7), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #FF4646;">AW</span>
                                                 <span class="form__contact-name">Alice Wonderland</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-7" type="checkbox" onclick="selectContact(7)" hidden/>
@@ -208,7 +209,7 @@
                                                 data-shortname="DM"
                                                 data-fullname="Danny Mensing"
                                                 data-color="#c3624a"
-                                                onclick="selectContact(4)">
+                                                onclick="selectContact(4), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #0038FF;">DM</span>
                                                 <span class="form__contact-name">Danny Mensing</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-4" type="checkbox" onclick="selectContact(4)" hidden/>
@@ -226,7 +227,7 @@
                                                 data-shortname="JD"
                                                 data-fullname="John Doe"
                                                 data-color="#4c4ac3"
-                                                onclick="selectContact(6)">
+                                                onclick="selectContact(6), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #FFE62B;">JD</span>
                                                 <span class="form__contact-name">John Doe</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-6" type="checkbox" onclick="selectContact(6)" hidden/>
@@ -244,7 +245,7 @@
                                                 data-shortname="LR"
                                                 data-fullname="Lee-Roy Romann"
                                                 data-color="#00BCD4"
-                                                onclick="selectContact(1)">
+                                                onclick="selectContact(1), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #FF7A00;">LR</span>
                                                 <span class="form__contact-name">Lee-Roy Romann<span id="contact-you"> (You)</span></span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-1" type="checkbox" onclick="selectContact(1)" hidden/>
@@ -262,7 +263,7 @@
                                                 data-shortname="MR"
                                                 data-fullname="Mechthild Rölfing"
                                                 data-color="#c34ab5"
-                                                onclick="selectContact(2)">
+                                                onclick="selectContact(2), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #FF5EB3;">MR</span>
                                                 <span class="form__contact-name">Mechthild Rölfing</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-2" type="checkbox" onclick="selectContact(2)" hidden/>
@@ -280,7 +281,7 @@
                                                 data-shortname="PN"
                                                 data-fullname="Philipp Novak"
                                                 data-color="#8BC34A"
-                                                onclick="selectContact(3)">
+                                                onclick="selectContact(3), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #1FD7C1;">PN</span>
                                                 <span class="form__contact-name">Philipp Novak</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-3" type="checkbox" onclick="selectContact(3)" hidden/>
@@ -298,7 +299,7 @@
                                                 data-shortname="SN"
                                                 data-fullname="Satoshi Nakamoto"
                                                 data-color="#ed8a20"
-                                                onclick="selectContact(5)">
+                                                onclick="selectContact(5), emptySearchField('contact-search', '#contact-list .form__contact')">
                                                 <span class="form__contact-badge" style="background-color: #FFA35E;">SN</span>
                                                 <span class="form__contact-name">Satoshi Nakamoto</span>
                                                 <input class="form__contact-checkbox" id="contact-checkbox-5" type="checkbox" onclick="selectContact(5)" hidden/>
@@ -323,7 +324,7 @@
 
                             <!-- Category -->
                             <fieldset class="form__group">
-                                <label class="form__label" for="category-input">Category<span class="required">*</span></label>
+                                <label class="form__label" for="category-input">Category<span class="required-asterisk">*</span></label>
                                 <div>
                                     <!-- Dropdown Input -->
                                     <div class="form__wrapper-category" id="categroy-selector">
@@ -341,6 +342,7 @@
                                         </ul>
                                     </div>
                                 </div>
+                                <p class="required-hint">This field is required</p>
                             </fieldset>
 
                             <!-- Subtasks -->
@@ -376,7 +378,7 @@
 
                     <!-- Action Buttons -->
                     <footer class="form__actions">
-                        <span class="required-text"><span class="required">* </span>This field is required</span>
+                        <span class="required-text"><span class="required-asterisk">* </span>This field is required</span>
                         <div class="form__action-buttons">
                             <button type="reset" class="form__button-clear" onclick="clearForm()">
                                 <span>Clear</span>
