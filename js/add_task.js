@@ -157,6 +157,7 @@ function initAddTask() {
 /** 
  * Function to populate the contacts to the assignee dropdown list.
  * This function will finally interact with data from the Firebase DB. (coming soon..)
+ * At the moment this function is using a local test array.
  */
 function populateContactsToDropdown() {
     console.log("Populating contacts...");
@@ -169,7 +170,11 @@ function populateContactsToDropdown() {
     }
 }
 
-
+/** 
+ * Function to populate the categories to the category dropdown list.
+ * This function will finally interact with data from the Firebase DB. (coming soon..)
+ * At the moment this function is using a local test array.
+ */
 function populateCategoriesToDropdown() {
     console.log("Populating categories...");
     let categoriesRef = document.getElementById("category-list-ul");
@@ -220,8 +225,9 @@ document.addEventListener('click', function (event) {
 });
 
 
-/** 
- * Function to set the priority button based on the selected priority. 
+/**
+ * Function to set the selected task priority.
+ * Resets all priority buttons and applies the specifically choosen priority css class to it.
  */
 function setPriority(priority) {
     resetPriorityButtons();
@@ -230,8 +236,9 @@ function setPriority(priority) {
 }
 
 
-/** 
- * Function to reset all priority buttons.
+/**
+ * Function to reset all priority buttons to their default state.
+ * Removes any applied priority-specific modifier classes from each button.
  */
 function resetPriorityButtons() {
     const buttons = document.querySelectorAll('.form__button-prio');
@@ -273,6 +280,10 @@ function emptySearchField(id, listSelector) {
 }
 
 
+/** 
+ * Function to reset the filtered view.
+ * It is going to display all choosable items. 
+ */
 function resetSearchFilter(listSelector) {
     document.querySelectorAll(listSelector).forEach(item => {
         item.style.display = 'flex';
@@ -280,12 +291,21 @@ function resetSearchFilter(listSelector) {
 }
 
 
+/** 
+ * Function to rotate the arrow icon in on of the dropdown-fields.
+ * It's going to toggle a specific css-class which rotates the icon.
+ */
 function rotateArrowIcon(arrowIconId) {
     const arrowIcon = document.getElementById(arrowIconId);
     arrowIcon.classList.toggle('arrow-icon-rotated');
 }
 
 
+/**
+ * Function to toggle the visibility of a dropdown menu and rotate its arrow icon.
+ * If another dropdown is currently open, it will be closed before opening the new one.
+ * Keeps track of the currently open dropdown to ensure only one is open at a time.
+ */
 function toggleDropdown(event, dropdownId, arrowIconId) {
     stopEventPropagation(event);
     const dropdown = document.getElementById(dropdownId);
@@ -307,6 +327,13 @@ function toggleDropdown(event, dropdownId, arrowIconId) {
 }
 
 
+/**
+ * Function to toggle the selection state of a contact.
+ * Updates the checkbox -> switching the checked/unchecked icons.
+ * Highlights or unhighlights the contact visually.
+ * Adds or removes the corresponding badge.
+ * Clears the search input after each selection change.
+ */
 function selectContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
     const listItem = document.getElementById(`contact-id-${id}`);
@@ -328,6 +355,10 @@ function selectContact(id) {
 }
 
 
+/**
+ * Function to display the badge of a selected contact.
+ * Appends the corresponding badge using the rendered template.
+ */
 function displayBadgeOfSelectedContact(id) {
     let contactBadgesRef = document.getElementById("contact-badges");
     for (let index = 0; index < contacts.length; index++) {
@@ -341,6 +372,11 @@ function displayBadgeOfSelectedContact(id) {
 };
 
 
+/**
+ * Function to remove the badge of a deselected contact.
+ * Searches for the badge element by contact ID and removes it from the DOM.
+ * Logs a warning in the console if the badge element is not found.
+ */
 function deleteContactBadge(id) {
     const badge = document.getElementById(`contact-badge-${id}`);   
     if (badge) {
@@ -351,6 +387,10 @@ function deleteContactBadge(id) {
 }
 
 
+/**
+ * Function to visually highlight a selected contact.
+ * Adds a CSS class to the parent element of the given checkbox, to indicate the selected state.
+ */
 function highlightContact(checkbox) {
     if (checkbox) {
         checkbox.parentElement.classList.add('form__contact-checkbox--checked');
@@ -358,6 +398,10 @@ function highlightContact(checkbox) {
 }
 
 
+/**
+ * Function to remove the visual highlight from a deselected contact.
+ * Removes the CSS class from the parent element of the given checkbox, to indicate the unselected state.
+ */
 function unhighlightContact(checkbox) {
     if (checkbox) {
         checkbox.parentElement.classList.remove('form__contact-checkbox--checked');
@@ -365,6 +409,10 @@ function unhighlightContact(checkbox) {
 }
 
 
+/**
+ * Function to filter dropdown list items based on user input.
+ * Compares the lowercase search value with the text content of each list item and toggles their visibility accordingly.
+ */
 function filterDropdown(inputId, listSelector) {
     const value = document.getElementById(inputId).value.toLowerCase();
     document.querySelectorAll(listSelector).forEach(item => {
@@ -373,6 +421,11 @@ function filterDropdown(inputId, listSelector) {
 }
 
 
+/**
+ * Function to select a category from the dropdown.
+ * Sets the selected category value into the input field based on the clicked item.
+ * Hides the dropdown menu after selection and resets the arrow icon rotation.
+ */
 function selectCategory(id, arrowIconId) {
     const item = document.getElementById(`category-id-${id}`);
     const input = document.getElementById('category-input');
@@ -397,6 +450,12 @@ function addSubtask() {
 }
 
 
+/**
+ * Function to reset the task form to its initial state.
+ * Unchecks all selected contacts.
+ * Resets the priority state of all buttons.
+ * Sets the default task priority.
+ */
 function clearForm() {  
     uncheckAllContacts();
     resetPriorityButtons();
@@ -404,6 +463,10 @@ function clearForm() {
 }
 
 
+/**
+ * Function to uncheck all selected contacts in the dropdown list.
+ * Resets each contact's checkbox state, removes visual highlighting, switches the checkbox icons back to the unchecked.
+ */
 function uncheckAllContacts() {
     const contactItems = document.querySelectorAll('.form__contact');
     contactItems.forEach((item) => {
@@ -420,6 +483,10 @@ function uncheckAllContacts() {
 }
 
 
+/**
+ * Function to extract contact information from dataset attributes.
+ * Actually only for testing purposes
+ */
 function getDatasetInfos() {
     const items = document.querySelectorAll('.form__contact');
     const contacts = [];
