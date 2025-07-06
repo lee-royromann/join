@@ -170,6 +170,7 @@ function populateContactsToDropdown() {
     }
 }
 
+
 /** 
  * Function to populate the categories to the category dropdown list.
  * This function will finally interact with data from the Firebase DB. (coming soon..)
@@ -442,6 +443,16 @@ function selectCategory(id, arrowIconId) {
 }
 
 
+/**
+ * Function to remove all contact badges below the assigned-to field.
+ * Clears the inner HTML of the badge container.
+ */
+function removeAllContactBadges() {
+    let contactBadgesRef = document.getElementById("contact-badges");
+    contactBadgesRef.innerHTML = "";
+}
+
+
 /** 
  * Function to add a new task. 
  */
@@ -460,6 +471,7 @@ function clearForm() {
     uncheckAllContacts();
     resetPriorityButtons();
     setDefaultTaskPriority();
+    removeAllContactBadges();
 }
 
 
