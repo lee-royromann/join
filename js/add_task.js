@@ -28,7 +28,7 @@ const contacts = [
     {
         id: 0,
         prename: 'alice',
-        surname: 'wonderlamd',
+        surname: 'wonderland',
         email: 'alice.wonderland@example.com',
         phone: '+41319876543',
         mobile: '+41769876543',
@@ -146,7 +146,8 @@ function initAddTask() {
 
 
 /** 
- * Function to populate the contacts to the assignee dropdown list. 
+ * Function to populate the contacts to the assignee dropdown list.
+ * This function will finally interact with data from the Firebase DB. (coming soon..)
  */
 function populateContactsToDropdown() {
     console.log("Populating contacts...");
@@ -161,10 +162,12 @@ function populateContactsToDropdown() {
 
 
 /** 
- * Function to add a new task. 
+ * Function to set the default priority button. 
  */
-function addSubtask() {
-    console.log("Adding subtask...");
+function setDefaultPriority() {
+    const defaultPriority = 'medium';
+    resetPriorityButtons();
+    setPriority(defaultPriority);
 }
 
 
@@ -194,16 +197,6 @@ document.addEventListener('click', function (event) {
         }
     }
 });
-
-
-/** 
- * Function to set the default priority button. 
- */
-function setDefaultPriority() {
-    const defaultPriority = 'medium';
-    resetPriorityButtons();
-    setPriority(defaultPriority);
-}
 
 
 /** 
@@ -303,13 +296,39 @@ function selectContact(id) {
         iconChecked.classList.remove('d_none');
         iconUnchecked.classList.add('d_none');
         highlightContact(checkbox);
+        displayBadgeOfSelectedContact(id);
     } else {
         iconChecked.classList.add('d_none');
         iconUnchecked.classList.remove('d_none');
         unhighlightContact(checkbox);
+        deleteContactBadge(id);
     }
     emptySearchField('contact-search');
 }
+
+
+function displayBadgeOfSelectedContact(id) {
+    let contactBadgesRef = document.getElementById("contact-badges");
+    for (let index = 0; index < contacts.length; index++) {
+        const contact = contacts[index];
+        if (contact.id == id) {
+            let contactBadgeTemplate = renderSelectedContactBadge(contact);
+            contactBadgesRef.innerHTML += contactBadgeTemplate;
+            return;
+        }
+    }
+};
+
+
+function deleteContactBadge(id) {
+    const badge = document.getElementById(`contact-badge-${id}`);   
+    if (badge) {
+        badge.remove();
+    } else {
+        console.warn(`Badge mit ID contact-badge-${id} nicht gefunden.`);
+    }
+}
+
 
 
 function highlightContact(checkbox) {
@@ -347,6 +366,14 @@ function selectCategory(id, arrowIconId) {
         dropdown.classList.add('d_none');
     }
     arrowIcon.classList.remove('arrow-icon-rotated');
+}
+
+
+/** 
+ * Function to add a new task. 
+ */
+function addSubtask() {
+    console.log("Adding subtask...");
 }
 
 
