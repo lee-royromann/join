@@ -39,3 +39,10 @@ function renderSelectedContactBadge(contact) {
     `
 };
 
+
+function renderCategoryListItem(id, category) {
+    const categoryFromated = category.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');        
+    return `
+        <li class="form__category" id="category-id-${id}" data-id="${id}" data-category="${categoryFromated}" onclick="selectCategory(${id}, 'category-arrow-icon')">${categoryFromated}</li>
+    `
+};
