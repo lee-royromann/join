@@ -27,10 +27,8 @@ const figmaColors = {
 const contacts = [
     {
         id: 0,
-        prename: 'Alice',
-        middlename: '',
-        surname: 'Wonderlamd',
-        shortname: 'AW',
+        prename: 'alice',
+        surname: 'wonderlamd',
         email: 'alice.wonderland@example.com',
         phone: '+41319876543',
         mobile: '+41769876543',
@@ -38,10 +36,8 @@ const contacts = [
     },
     {
         id: 1,
-        prename: 'John',
-        middlename: '',
-        surname: 'Doe',
-        shortname: 'JD',
+        prename: 'john',
+        surname: 'doe',
         email: 'john.doe@example.com',
         phone: '+41311234567',
         mobile: '+41761234567',
@@ -49,10 +45,8 @@ const contacts = [
     },
     {
         id: 2,
-        prename: 'Danny',
-        middlename: '',
-        surname: 'Mensing',
-        shortname: 'DM',
+        prename: 'danny',
+        surname: 'mensing',
         email: 'danny.mensing@example.com',
         phone: '+41312345678',
         mobile: '+41762345678',
@@ -60,10 +54,8 @@ const contacts = [
     },
     {
         id: 3,
-        prename: 'Lee-Roy',
-        middlename: '',
-        surname: 'Romann',
-        shortname: 'LR',
+        prename: 'lee-roy',
+        surname: 'romann',
         email: 'lee-roy.romann@example.com',
         phone: '+41314567890',
         mobile: '+41764567890',
@@ -71,10 +63,8 @@ const contacts = [
     },
     {
         id: 4,
-        prename: 'Mechthild',
-        middlename: '',
-        surname: 'Rölfing',
-        shortname: 'MR',
+        prename: 'mechthild',
+        surname: 'rölfing',
         email: 'mechthild.roelfing@example.com',
         phone: '+41312345678',
         mobile: '+41762345678',
@@ -82,10 +72,8 @@ const contacts = [
     },
     {
         id: 5,
-        prename: 'Philipp',
-        middlename: '',
-        surname: 'Novak',
-        shortname: 'PN',
+        prename: 'philipp',
+        surname: 'novak',
         email: 'philipp.novak@example.com',
         phone: '+41311223344',
         mobile: '+41761223344',
@@ -93,10 +81,8 @@ const contacts = [
     },
     {
         id: 6,
-        prename: 'Satoshi',
-        middlename: '',
-        surname: 'Nakamoto',
-        shortname: 'SN',
+        prename: 'satoshi',
+        surname: 'nakamoto',
         email: 'satoshi.nakamoto@example.com',
         phone: '+41310987654',
         mobile: '+41760987654',
@@ -175,6 +161,10 @@ function loadSidebar() {
  */
 function populateContactsToDropdown() {
     console.log("Populating contacts...");
+    for (let index = 0; index < contacts.length; index++) {
+        const contact = contacts[index];
+        console.log(renderContactListItems(contact));
+    }
 }
 
 
@@ -413,43 +403,43 @@ function getDatasetInfos() {
 
 
 // korrigiertes Dataset - jedes Task ein Objekt nicht Array
- "tasks": {
-      "0": {
-        "title": "Task 1",
-        "description": "Beschreibung 1",
-        "date": "2025-06-25",
-        "category": "User Story",
-        "priority": "medium",
-        "assignedTo": [0, 2, 3],
-        "subtask": [
-          {
-            "title": "Zahlen aktualisieren",
-            "done": false
-          },
-          {
-            "title": "CI-Folien integrieren",
-            "done": true
-          }
-        ],
-        "status": "in progress"
-      },
-      "1": {
-        "title": "Task 2",
-        "description": "Beschreibung 2",
-        "date": "2025-06-25",
-        "category": "Technical Task",
-        "priority": "urgent",
-        "assignedTo": [0],
-        "subtask": [
-          {
-            "title": "Zahlen aktualisieren",
-            "done": false
-          },
-          {
-            "title": "CI-Folien integrieren",
-            "done": true
-          }
-        ],
-        "status": "await feedback"
-      }
-    }
+//  "tasks": {
+//       "0": {
+//         "title": "Task 1",
+//         "description": "Beschreibung 1",
+//         "date": "2025-06-25",
+//         "category": "User Story",
+//         "priority": "medium",
+//         "assignedTo": [0, 2, 3],
+//         "subtask": [
+//           {
+//             "title": "Zahlen aktualisieren",
+//             "done": false
+//           },
+//           {
+//             "title": "CI-Folien integrieren",
+//             "done": true
+//           }
+//         ],
+//         "status": "in progress"
+//       },
+//       "1": {
+//         "title": "Task 2",
+//         "description": "Beschreibung 2",
+//         "date": "2025-06-25",
+//         "category": "Technical Task",
+//         "priority": "urgent",
+//         "assignedTo": [0],
+//         "subtask": [
+//           {
+//             "title": "Zahlen aktualisieren",
+//             "done": false
+//           },
+//           {
+//             "title": "CI-Folien integrieren",
+//             "done": true
+//           }
+//         ],
+//         "status": "await feedback"
+//       }
+//     }
