@@ -140,19 +140,8 @@ let tasks = [
  * Function to initialize the Add Task page.
  */
 function initAddTask() {
-    loadSidebar();
     populateContactsToDropdown();
     setDefaultPriority();
-}
-
-
-/** 
- * Function to load the sidebar.
- * This function maybe unnescessary because its static.
- * Checklist says not to render static HTML (let's see..)
- */
-function loadSidebar() {
-    console.log("Loading sidebar...");
 }
 
 
@@ -161,9 +150,21 @@ function loadSidebar() {
  */
 function populateContactsToDropdown() {
     console.log("Populating contacts...");
+    let contactsRef = document.getElementById("contact-list-ul");
+    contactsRef.innerHTML = "";
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
-        console.log(renderContactListItems(contact));
+        let contactTemplate = renderContactListItems(contact);
+        contactsRef.innerHTML += contactTemplate;
+    }
+}
+
+function renderDishes(dishes, containerId, dishType){
+    let dishContainer = document.getElementById(containerId);
+
+    for (let i = 0; i < dishes.length; i++){
+        let dishTemplate = getDishTemplate(dishes[i], i, dishType);
+        dishContainer.innerHTML += dishTemplate;
     }
 }
 
