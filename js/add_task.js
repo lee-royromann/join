@@ -159,15 +159,6 @@ function populateContactsToDropdown() {
     }
 }
 
-function renderDishes(dishes, containerId, dishType){
-    let dishContainer = document.getElementById(containerId);
-
-    for (let i = 0; i < dishes.length; i++){
-        let dishTemplate = getDishTemplate(dishes[i], i, dishType);
-        dishContainer.innerHTML += dishTemplate;
-    }
-}
-
 
 /** 
  * Function to add a new task. 
