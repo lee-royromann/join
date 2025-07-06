@@ -23,7 +23,7 @@ const figmaColors = {
 };
 
 
-// Example dataset for contacts
+// Test array for rendering contacts
 const contacts = [
     {
         id: 0,
@@ -91,6 +91,14 @@ const contacts = [
 ];
 
 
+// Test array for rendering categories
+const categories = [
+    "technical-task",
+    "user-story",
+    "foo"
+];
+
+
 // Example dataset for tasks
 let tasks = [
     {
@@ -140,8 +148,9 @@ let tasks = [
  * Function to initialize the Add Task page.
  */
 function initAddTask() {
+    setDefaultTaskPriority();
     populateContactsToDropdown();
-    setDefaultPriority();
+    populateCategoriesToDropdown();
 }
 
 
@@ -161,10 +170,22 @@ function populateContactsToDropdown() {
 }
 
 
+function populateCategoriesToDropdown() {
+    console.log("Populating categories...");
+    let categoriesRef = document.getElementById("category-list-ul");
+    categoriesRef.innerHTML = "";
+    for (let index = 0; index < categories.length; index++) {
+        const category = categories[index];
+        let categoryTemplate = renderCategoryListItem(index, category);
+        categoriesRef.innerHTML += categoryTemplate;
+    }
+};
+
+
 /** 
  * Function to set the default priority button. 
  */
-function setDefaultPriority() {
+function setDefaultTaskPriority() {
     const defaultPriority = 'medium';
     resetPriorityButtons();
     setPriority(defaultPriority);
@@ -330,7 +351,6 @@ function deleteContactBadge(id) {
 }
 
 
-
 function highlightContact(checkbox) {
     if (checkbox) {
         checkbox.parentElement.classList.add('form__contact-checkbox--checked');
@@ -380,6 +400,7 @@ function addSubtask() {
 function clearForm() {  
     uncheckAllContacts();
     resetPriorityButtons();
+    setDefaultTaskPriority();
 }
 
 
