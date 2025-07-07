@@ -84,12 +84,52 @@ function updateDashboardCounters(tasks) {
     document.getElementById("count-feedback").textContent = feedback;
 }
 
-// Passt Wrapper-Höhe bei Fenstergrößenänderung automatisch an
-window.addEventListener('resize', adjustContentWrapperHeight);
+/**
+ * Passt die Sidebar-Breite an die Main-Breite an (nur bei 1305px und kleiner)
+ */
+function adjustSidebarToMainWidth() {
+
+    if (window.innerWidth <= 1305) {
+        const sidebar = document.querySelector('.sidebar');
+        const mainElement = document.querySelector('.main');
+
+        if (sidebar && mainElement) {
+            const mainWidth = mainElement.offsetWidth;
+            const mainRect = mainElement.getBoundingClientRect();
+
+            sidebar.style.width = `${mainWidth}px`;
+
+            const mainLeft = mainRect.left + window.scrollX;
+            const mainCenter = mainLeft + (mainWidth / 2);
+            const viewportCenter = window.innerWidth / 2;
+            const offsetFromCenter = mainCenter - viewportCenter;
+
+            sidebar.style.left = '50%';
+            sidebar.style.transform = `translateX(calc(-50% + ${offsetFromCenter}px))`;
+        }
+    } else {
+        
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.style.width = '';
+            sidebar.style.left = '';
+            sidebar.style.transform = '';
+        }
+    }
+}
+
+window.addEventListener('resize', () => {
+    adjustContentWrapperHeight();
+    adjustSidebarToMainWidth();
+});
 
 // Initialisiert das Dashboard nach dem Laden des DOMs
-document.addEventListener("DOMContentLoaded", initSummary);
+document.addEventListener("DOMContentLoaded", () => {
+    initSummary();
+    adjustSidebarToMainWidth();
+});
 
+// Fügt aktiven Zustand für Sidebar-Elemente hinzu
 document.querySelectorAll('.sidebar__item').forEach(item => {
     item.addEventListener('click', () => {
         document.querySelectorAll('.sidebar__item').forEach(i => i.classList.remove('active'));
@@ -97,30 +137,3 @@ document.querySelectorAll('.sidebar__item').forEach(item => {
     });
 });
 
-
-// Fügt aktiven Zustand für Sidebar-Elemente hinzu
-
-
-window.addEventListener('resize', adjustSidebarWidth);
-window.addEventListener('DOMContentLoaded', adjustSidebarWidth);
-
-function adjustSidebarWidth() {
-    const mainContainer = document.querySelector('.main-container');
-    const sidebar = document.querySelector('.sidebar');
-
-    if (mainContainer && sidebar) {
-        // Breite der Sidebar an die Main-Container-Breite anpassen
-        const mainWidth = mainContainer.offsetWidth;
-        sidebar.style.width = mainWidth + 'px';
-
-        // Exakten linken Abstand ermitteln und setzen
-        const mainRect = mainContainer.getBoundingClientRect();
-        const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-
-        sidebar.style.left = (mainRect.left + scrollLeft) + 'px';
-
-        // Fixieren am unteren Rand
-        sidebar.style.position = 'fixed';
-        sidebar.style.bottom = '0';
-    }
-}

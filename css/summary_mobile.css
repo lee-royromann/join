@@ -1,19 +1,20 @@
-@media (max-width: 1274px) {
+@media (max-width: 1305px) {
   .sidebar {
     position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    
+    max-width: none;
+    min-width: 320px; 
     height: 80px;
     background-color: #2A3647;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 16px 16px 0 0;
     padding: 0 12px;
     z-index: 1000;
+    margin: 0 auto;
   }
 
   .sidebar__logo,
@@ -27,7 +28,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 428px; /* stellt sicher, dass sie nicht überläuft */
+    max-width: 428px;
   }
 
   .sidebar__item {
@@ -59,8 +60,6 @@
     margin-top: 4px;
   }
 
-
-
   /* Header-Anpassungen */
   .header__help,
   .header__title,
@@ -68,43 +67,597 @@
     display: none;
   }
 
+  /* Logo im Header anzeigen */
+  .header::before {
+    content: "";
+    display: inline-block;
+    background-image: url('../assets/img/logo/join_1.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 40px;
+    margin-right: 20px;
+    vertical-align: middle;
+  }
 
+  .header__title {
+    font-size: 20px;
+    display: none; 
+  }
 
+  
+  .dashboard {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 100px;
+  }
 
-    /* Logo im Header anzeigen */
-    .header::before {
-        content: "";
-        display: inline-block;
-        background-image: url('../assets/img/logo/join_1.svg');
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 120px;
-        height: 40px;
-        margin-right: 20px;
-        vertical-align: middle;
-    }
+  .main {
+    padding: 20px;
+    padding-bottom: 100px;
+  }
 
-    .header__title {
-        font-size: 20px;
-    }
-
-    .header__title {
-        display: none; 
-    }
-
-    /* Dashboard Padding reduzieren */
-    .dashboard {
-        padding-left: 16px;
-        padding-right: 16px;
-        padding-top: 16px;
-    }
-
-    .main {
-        padding: 20px;
-    }
-
-    .sidebar__item.active {
+  .sidebar__item.active {
     background-color: #091931;
+  }
+
+  
+  @media (max-width: 768px) {
+    .sidebar {
+     width: calc(100% - 20px);
+    }
+  }
 }
 
+
+@media (max-width: 642px) {
+
+  .layout-page {
+    height: 100vh;
+    max-width: none;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  .layout-page__card {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+  }
+
+  .main {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    }
+
+  .dashboard {
+    padding: 16px;
+    padding-bottom: 100px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+   
+  }
+
+  .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard__title {
+    order: 1;
+    font-size: 42px;
+    margin-bottom: 0;
+  }
+  
+  .dashboard__subtitle {
+    order: 2;
+    font-size: 18px;
+    margin-bottom: 16px;
+    position: static;
+    bottom: auto;
+  }
+  
+  .dashboard__seperator {
+    order: 3;
+    width: 80px;
+    height: 3px;
+    background-color: #29ABE2;
+    position: static;
+    top: auto;
+    margin: 0;
+  }
+
+  /* Cards - Desktop-Design mit kleineren Größen */
+  .card {
+    width: 180px;
+    height: 130px;
+    padding: 14px;
+  }
+
+  .card__header {
+    gap: 12px;
+  }
+
+  .card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card__icon img {
+    width: 20px;
+    height: 16px;
+  }
+
+  .card__number {
+    font-size: 42px;
+  }
+
+  .card__label {
+    font-size: 14px;
+  }
+
+  /* Urgent Card */
+  .card__urgent {
+    width: 380px;
+    height: 130px;
+    padding: 14px;
+  }
+
+  .card__urgent-left {
+    padding-left: 30px;
+  }
+
+  .card__urgent-content {
+    gap: 10px;
+  }
+
+  .card__urgent-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card__urgent-icon img {
+    width: 20px;
+    height: 16px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 42px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 14px;
+  }
+
+  .card__urgent-seperator {
+    height: 80%;
+    width: 2px;
+    background-color: #D1D1D1;
+    margin: 0 10px;
+  }
+
+  .card__urgent-right {
+    margin-right: 30px;
+    gap: 8px;
+  }
+
+  .card__date {
+    font-size: 16px;
+  }
+
+  .card__deadline {
+    font-size: 12px;
+  }
+
+  /* Overview Cards */
+  .card__overview {
+    width: 120px;
+    height: 120px;
+    padding: 14px;
+  }
+
+  .card__overview .card__number {
+    font-size: 42px;
+  }
+
+  .card__overview .card__label {
+    font-size: 14px;
+  }
+
+  /* Greeting Card - versteckt auf mobilen Geräten */
+  .card__greeting {
+    display: none;
+  }
+}
+
+/* Weitere Verkleinerung für 480px und kleiner */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100vw;
+    left: 0;
+    transform: none;
+    margin: 0;
+  }
+  
+  .sidebar__menu {
+    max-width: 100%;
+  }
+  
+  .sidebar__text {
+    font-size: 10px;
+  }
+  
+  .sidebar__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dashboard {
+    padding: 12px;
+    padding-bottom: 100px;
+  }
+
+  .dashboard__title {
+    font-size: 36px;
+  }
+  
+  .dashboard__subtitle {
+    font-size: 16px;
+  }
+  
+  .dashboard__seperator {
+    width: 70px;
+  }
+
+  /* Cards weiter verkleinern */
+  .card {
+    width: 160px;
+    height: 120px;
+    padding: 12px;
+  }
+
+  .card__header {
+    gap: 10px;
+  }
+
+  .card__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card__icon img {
+    width: 18px;
+    height: 14px;
+  }
+
+  .card__number {
+    font-size: 36px;
+  }
+
+  .card__label {
+    font-size: 13px;
+  }
+
+  /* Urgent Card */
+  .card__urgent {
+    width: 320px;
+    height: 120px;
+    padding: 12px;
+  }
+
+  .card__urgent-left {
+    padding-left: 25px;
+  }
+
+  .card__urgent-content {
+    gap: 8px;
+  }
+
+  .card__urgent-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card__urgent-icon img {
+    width: 18px;
+    height: 14px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 36px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 13px;
+  }
+
+  .card__urgent-seperator {
+    margin: 0 8px;
+  }
+
+  .card__urgent-right {
+    margin-right: 25px;
+    gap: 6px;
+  }
+
+  .card__date {
+    font-size: 15px;
+  }
+
+  .card__deadline {
+    font-size: 11px;
+  }
+
+  /* Overview Cards */
+  .card__overview {
+    width: 100px;
+    height: 100px;
+    padding: 12px;
+  }
+
+  .card__overview .card__number {
+    font-size: 36px;
+  }
+
+  .card__overview .card__label {
+    font-size: 13px;
+  }
+
+  /* Cards Row - bessere Flexibilität */
+  .card__row {
+    gap: 12px;
+  }
+}
+
+/* Weitere Verkleinerung für 360px und kleiner */
+@media (max-width: 360px) {
+  .dashboard {
+    padding: 10px;
+    padding-bottom: 100px;
+  }
+
+  .dashboard__title {
+    font-size: 32px;
+  }
+  
+  .dashboard__subtitle {
+    font-size: 15px;
+  }
+  
+  .dashboard__seperator {
+    width: 60px;
+  }
+
+  /* Cards weiter verkleinern */
+  .card {
+    width: 140px;
+    height: 110px;
+    padding: 10px;
+  }
+
+  .card__header {
+    gap: 8px;
+  }
+
+  .card__icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .card__icon img {
+    width: 16px;
+    height: 12px;
+  }
+
+  .card__number {
+    font-size: 32px;
+  }
+
+  .card__label {
+    font-size: 12px;
+  }
+
+  /* Urgent Card */
+  .card__urgent {
+    width: 280px;
+    height: 110px;
+    padding: 10px;
+  }
+
+  .card__urgent-left {
+    padding-left: 20px;
+  }
+
+  .card__urgent-content {
+    gap: 6px;
+  }
+
+  .card__urgent-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .card__urgent-icon img {
+    width: 16px;
+    height: 12px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 32px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 12px;
+  }
+
+  .card__urgent-seperator {
+    margin: 0 6px;
+  }
+
+  .card__urgent-right {
+    margin-right: 20px;
+    gap: 5px;
+  }
+
+  .card__date {
+    font-size: 14px;
+  }
+
+  .card__deadline {
+    font-size: 10px;
+  }
+
+  /* Overview Cards */
+  .card__overview {
+    width: 85px;
+    height: 85px;
+    padding: 10px;
+  }
+
+  .card__overview .card__number {
+    font-size: 32px;
+  }
+
+  .card__overview .card__label {
+    font-size: 12px;
+  }
+
+  /* Cards Row */
+  .card__row {
+    gap: 10px;
+  }
+}
+
+/* Minimum für 320px */
+@media (max-width: 320px) {
+  .dashboard {
+    padding: 8px;
+    padding-bottom: 100px;
+  }
+
+  .dashboard__title {
+    font-size: 28px;
+  }
+  
+  .dashboard__subtitle {
+    font-size: 14px;
+  }
+  
+  .dashboard__seperator {
+    width: 50px;
+  }
+
+  /* Cards minimal */
+  .card {
+    width: 125px;
+    height: 100px;
+    padding: 8px;
+  }
+
+  .card__header {
+    gap: 6px;
+  }
+
+  .card__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .card__icon img {
+    width: 14px;
+    height: 10px;
+  }
+
+  .card__number {
+    font-size: 28px;
+  }
+
+  .card__label {
+    font-size: 11px;
+  }
+
+  /* Urgent Card */
+  .card__urgent {
+    width: 250px;
+    height: 100px;
+    padding: 8px;
+  }
+
+  .card__urgent-left {
+    padding-left: 15px;
+  }
+
+  .card__urgent-content {
+    gap: 5px;
+  }
+
+  .card__urgent-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .card__urgent-icon img {
+    width: 14px;
+    height: 10px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 28px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 11px;
+  }
+
+  .card__urgent-seperator {
+    margin: 0 5px;
+  }
+
+  .card__urgent-right {
+    margin-right: 15px;
+    gap: 4px;
+  }
+
+  .card__date {
+    font-size: 12px;
+  }
+
+  .card__deadline {
+    font-size: 9px;
+  }
+
+  /* Overview Cards */
+  .card__overview {
+    width: 75px;
+    height: 75px;
+    padding: 8px;
+  }
+
+  .card__overview .card__number {
+    font-size: 28px;
+  }
+
+  .card__overview .card__label {
+    font-size: 11px;
+  }
+
+  /* Cards Row */
+  .card__row {
+    gap: 8px;
+  }
 }
