@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/contacts.css">
+    <link rel="stylesheet" href="../css/contact_overlay.css">
+    <link rel="stylesheet" href="../css/contact_media.css">
+    <link rel="stylesheet" href="../css/board_task_overlay.css">
+    <link rel="stylesheet" href="../css/fonts.css">
+    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+    <script src="../script.js"></script>
+    <script src="/script/contacts_controllers.js"></script>
+    <script src="../script/contacts_services.js"></script>
+    <script src="../script/db.js"></script>
+    <script src="../script/templates_contact.js"></script>
+</head>
+
+<body class="resp-over-screen" onload="initContactsPage()">
+    <div id="rotate-warning-placeholder"></div>
+    <nav id="navbar-section" class="navbar-section"></nav>
+    <section id="overlayContact" class="overlay-content-container d-none" onclick="closeOverlay(event)"></section>
+    <div id="successContainer" class="overlay-successful-container d-none">
+        <div id="success" class="overlay-successful d-none">
+            <p>Contact successfully created </p>
+        </div>
+    </div>
+    <div id="addBtnResp">
+        <div class="add-btn-resp" onclick="addRespContact()">
+            <img class="contact-img" src="../assets/img/icon/person_add.svg" alt="">
+        </div>
+    </div>
+    <main>
+        <header id="header-placeholder"></header>
+        <div class="contact-background">
+            <section id="contactContainer" class="user-container">
+                <div class="list-header flex-box-center-center">
+                    <div id="add-contact-btn" class="add-contact-container flex-box-center-center" onclick="addContact()">
+                        <button>Add new contact</button>
+                        <img src="../assets/img/icon/person_add.svg" alt="">
+                    </div>
+                </div>
+                <div id="contactList" class="user-list"></div>
+            </section>
+            <section id="contactInfoContainer" class="content-contact">
+                <div id="backBtnResp">
+                    <div class="back-btn-resp" onclick="showRespContactList()">
+                        <img class="contact-img" src="../assets/img/icon/arrow-left-line.svg" alt="">
+                    </div>
+                </div>
+                <div class="headline">
+                    <h2>Contacts</h2>
+                    <hr>
+                    <p>Better with a Team</p>
+                </div>
+                <div id="contactInformation" class="user-info-container"></div>    
+            </section>
+        </div> 
+    </main>
+</body>
+
+</html>
