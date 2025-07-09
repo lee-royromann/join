@@ -1,0 +1,260 @@
+.board-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 99;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.overlay-container {
+    width: 525px;
+    height: 90%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 48px 40px;
+    transition-duration: 0.1s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 950px;
+}
+
+.overlay-container-sliding {
+    transform: translateX(150vh);
+    transition-duration: 0.1s;
+}
+
+
+.empty-column {
+    background-color: #E7E7E7;
+    border: 1px dashed #A8A8A8;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #A8A8A8;
+    width: 100%;
+    box-sizing: border-box;
+    height: 48px;
+}
+
+.overlay-headline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+}
+
+.overlay-titel h2 {
+    font-size: 56px;
+    margin: 24px 0;
+    word-break: break-word;
+
+}
+
+.overlay-table img {
+    margin-left: 8px;
+}
+
+.task-cat-custom {
+    margin: 0 !important;
+    height: 36px;
+    font-size: 23px;
+}
+
+.close-icon {
+    cursor: pointer;
+    padding: 8px 8px;
+}
+
+.close-icon:hover {
+    background-color: #D1D1D1;
+    border-radius: 50%;
+}
+
+.overlay-task-description {
+    width: 100%;
+    margin-bottom: 24px;
+
+}
+
+.overlay-task-details {
+    position: relative;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.overlay-table td {
+    padding: 0;
+    padding-bottom: 24px;
+}
+
+.overlay-table td:first-child {
+    padding-right: 30px;
+    color: #2A3647;
+}
+
+.overlay-table table {
+    border-collapse: collapse;
+}
+
+.overlay-user {
+    margin-left: 8px;
+}
+
+.assigned-section {
+    margin-bottom: 24px;
+}
+
+.assigned-section table {
+    font-size: 19px;
+    margin-top: 8px;
+}
+
+.assigned-section td:first-child {
+    padding: 8px;
+}
+
+.assigned-section span {
+    color: #2A3647
+}
+
+.subtask-overlay {
+    display: flex;
+    margin-left: 12px;
+    align-items: center;
+}
+
+.edit-task-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: white;
+}
+
+.delete-task,
+.edit-task {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0px 16px;
+    color: #2A3647;
+}
+
+.delete-task:hover,
+.edit-task:hover {
+    filter: brightness(0) saturate(100%) invert(57%) sepia(96%) saturate(1284%) hue-rotate(165deg) brightness(93%) contrast(89%);
+}
+
+.edit-task-section img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.subtasks img {
+    cursor: pointer;
+}
+
+.spaceholder {
+    width: 1px;
+    background-color: #D1D1D1;
+    height: 24px;
+}
+
+.details-content-complete {
+    overflow-y: auto;
+}
+
+.task-overlay-prio-text::first-letter {
+    text-transform: uppercase;
+}
+
+.task_overlay_prio {
+    display: flex;
+
+}
+
+.subtask-label {
+    cursor: pointer;
+    user-select: none;
+    color: #2A3647;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-wrap: wrap;
+}
+
+.subtask-img {
+    height: 24px;
+    width: 24px;
+    align-items: center;
+    display: flex;
+}
+
+.subtask-img img {
+    height: 16px;
+    width: 16px;
+    margin-right: 12px;
+}
+
+#task_overlay_subtask_list {
+    margin-top: 8px;
+}
+
+.list-overlay {
+    z-index: 8;
+    position: fixed;
+    background: transparent;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+@media(max-width: 600px) {
+
+    
+
+    .task-cat-custom {
+        font-size: 16px;
+        align-content: center;
+    }
+
+    .addTask-footer span {
+        font-size: 16px !important;
+    }
+
+    .create-task-button {
+        padding: 8px !important;
+        height: 36px !important;
+    }
+
+    .required-field {
+        font-size: 16px;
+    }
+
+    .overlay-container {
+        padding: 8px;
+        width: 300px;
+        max-height: 750px;
+    }
+
+    .overlay-titel h2 {
+        font-size: 36px;
+        margin: 12px 0;
+    }
+
+}
