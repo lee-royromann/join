@@ -133,6 +133,9 @@
     font-weight: 400;
     color: #000000;
     border: 1px solid #D1D1D1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    resize: none;
 }
 
 .edit__wrapper-assignee,

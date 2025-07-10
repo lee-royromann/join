@@ -1,6 +1,21 @@
 // Transfer to db.js
 
 let tasksFirebase = [];
+const BASE_URL = "https://join-472-default-rtdb.europe-west1.firebasedatabase.app/";
+
+
+/**
+ * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
+ * @returns {Promise<void>}
+ */
+async function loadTasksFromFirebase() {
+    let response = await fetch(BASE_URL + "join/tasks.json");
+    let responseToJson = await response.json();
+    tasksFirebase = Object.values(responseToJson);
+    console.log(tasksFirebase);
+    console.log(tasksFirebase.length);
+  }
+
 
 // Achtung: hier die genaue ID ermitteln und als Parameter mitgeben
 function openOverlay() {
@@ -31,15 +46,35 @@ function closeEditOverlay() {
     edit.classList.add("d-none");
 }
 
-function init() {
+async function init() {
+    await loadTasksFromFirebase();
     renderTasks();
 }
 
 function renderTasks() {
-    let contentRef = document.getElementById("in-progress");
-    contentRef.innerHTML = '';
-    //contentredf.innerHTML += getTaskTemplate(tasksFirebase[0], 0);
-    contentRef.innerHTML += getTaskTemplate();
+     // Zuerst alle Container (Spalten) leeren
+  document.getElementById("to-do").innerHTML = "";
+  document.getElementById("in-progress").innerHTML = "";
+  document.getElementById("await-feedback").innerHTML = "";
+  document.getElementById("done").innerHTML = "";
+
+  // Jetzt alle Tasks aus dem Array durchgehen
+  for (let i = 0; i < tasksFirebase.length; i++) {
+    let task = tasksFirebase[i]; // Aktueller Task
+    console.log(task);
+
+    // Hole den Status z. B. "in-progress"
+    let status = task.status;
+
+    // Hole das passende HTML-Element anhand des Status
+    let column = document.getElementById(status);
+
+    // Falls es tatsächlich eine Spalte mit dieser ID gibt:
+    if (column) {
+      // Füge das generierte HTML des Tasks in die Spalte ein
+      column.innerHTML += getTaskTemplate(task);
+    }
+  }
 }
 
 function renderOverlayTask() {

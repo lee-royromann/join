@@ -1,13 +1,13 @@
-function getTaskTemplate() {
+function getTaskTemplate(task) {
     return `
         <div class="card" onclick="openOverlay()">
                                 <div class="card__content">
                                     <div class="card__badge">
-                                        <span>User Story</span>
+                                        <span>${task.category}</span>
                                     </div>
                                     <div class="card__header">
-                                        <div class="card__header--title">Kochwelt Page & Recipe Recommender</div>
-                                        <div class="card__header--description">Build start page with recipe recommendation.</div>
+                                        <div class="card__header--title">${task.title}</div>
+                                        <div class="card__header--description">${task.description}</div>
                                     </div>
                                     <div class="card__subtasks">
                                         <div class="card__subtasks-bar">
