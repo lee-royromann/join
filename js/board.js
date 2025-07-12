@@ -1,6 +1,21 @@
 // Transfer to db.js
 
 let tasksFirebase = [];
+let contactsFirebase = [];
+
+const avatarColors = {
+  1: "#FF7A00",
+  2: "#9327FF",
+  3: "#6E52FF",
+  4: "#FC71FF",
+  5: "#FFBB2B",
+  6: "#1FD7C1",
+  7: "#462F8A",
+  8: "#FF4646",
+  9: "#00BEE8",
+  0: "#0038FF"
+};
+
 const BASE_URL = "https://join-472-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
@@ -12,8 +27,24 @@ async function loadTasksFromFirebase() {
     let responseToJson = await response.json();
     tasksFirebase = Object.values(responseToJson);
     console.log(tasksFirebase);
-    console.log(tasksFirebase.length);
   }
+
+//Achtung, diese Funktion gibt es schon in db.js kann final einfach gelöscht werden
+/**
+ * Loads contacts from Firebase and assigns them to `contactsFirebase`.
+ * @returns {Promise<void>}
+ */
+async function loadContactsFromFirebase() {
+  let response = await fetch(BASE_URL + "/join/contacts.json");
+  if (response.ok) {
+    let data = await response.json();
+    contactsFirebase = Object.values(data || {});
+    // renderAvatar();
+  } else {
+    contactsFirebase = [];
+  }
+  console.log(contactsFirebase);
+}
 
 
 // Achtung: hier die genaue ID ermitteln und als Parameter mitgeben
@@ -45,8 +76,9 @@ function closeEditOverlay() {
     edit.classList.add("d-none");
 }
 
-async function init() {
+async function boardInit() {
     await loadTasksFromFirebase();
+    await loadContactsFromFirebase();
     renderTasks();
 }
 
@@ -113,6 +145,21 @@ function getPriorityIcon(priority) {
   };
 
   return iconMap[priority];
+}
+
+function renderAssignedAvatars(task) {
+  return task.assignedTo
+    .map(userId => {
+      const contact = contactsFirebase.find(c => c.id === userId);
+      if (contact) {
+        const avatar = contact.avatar || "?";
+        const colorKey = contact.id % 10; // letzte Ziffer der ID
+        const color = avatarColors[colorKey] || "#cccccc"; // fallback
+        return `<div class="card__credential" style="background-color: ${color};">${avatar}</div>`;
+      }
+      return "";
+    })
+    .join("");
 }
 
 function renderOverlayTask() {

@@ -1,7 +1,8 @@
 function getTaskTemplate(task) {
     const { total, done, percent } = getSubtaskProgress(task);
     const categoryInfo = getCategoryInfo(task.category);
-    const priorityIcon = getPriorityIcon(task.priority)
+    const priorityIcon = getPriorityIcon(task.priority);
+    const assignedAvatar = renderAssignedAvatars(task);
     return `
         <div class="card" onclick="openOverlay()">
                                 <div class="card__content">
@@ -20,9 +21,7 @@ function getTaskTemplate(task) {
                                     </div>
                                     <div class="card__footer">
                                         <div class="card__credentials">
-                                            <div class="card__credential card__credential--color--orange">AM</div>
-                                            <div class="card__credential card__credential--color--purple">WL</div>
-                                            <div class="card__credential card__credential--color--pink">MB</div>
+                                            ${assignedAvatar}
                                         </div>
                                         <div class="card__priority">
                                             <img src="${priorityIcon}" alt="priority-icon">
