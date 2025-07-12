@@ -83,30 +83,36 @@ async function boardInit() {
 }
 
 function renderTasks() {
-     // Zuerst alle Container (Spalten) leeren
-  document.getElementById("to-do").innerHTML = "";
-  document.getElementById("in-progress").innerHTML = "";
-  document.getElementById("await-feedback").innerHTML = "";
-  document.getElementById("done").innerHTML = "";
-
-  // Jetzt alle Tasks aus dem Array durchgehen
-  for (let i = 0; i < tasksFirebase.length; i++) {
-    let task = tasksFirebase[i]; // Aktueller Task
-    console.log(task);
-
-    // Hole den Status z. B. "in-progress"
-    let status = task.status;
-
-    // Hole das passende HTML-Element anhand des Status
-    let column = document.getElementById(status);
-
-    // Falls es tatsächlich eine Spalte mit dieser ID gibt:
-    if (column) {
-      // Füge das generierte HTML des Tasks in die Spalte ein
-      column.innerHTML += getTaskTemplate(task);
-    }
-  }
+    clearAllColumns();
+    const taskCounts = renderAllTasks();
+    renderEmptyColumns(taskCounts);
 }
+
+function clearAllColumns() {
+  ["to-do", "in-progress", "await-feedback", "done"]
+    .forEach(id => document.getElementById(id).innerHTML = "");
+}
+
+function renderAllTasks() {
+  const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
+  tasksFirebase.forEach(task => {
+    const column = document.getElementById(task.status);
+    if (column) {
+      column.innerHTML += getTaskTemplate(task);
+      counts[task.status]++;
+    }
+  });
+  return counts;
+}
+
+function renderEmptyColumns(counts) {
+  Object.entries(counts).forEach(([status, count]) => {
+    if (count === 0) {
+      document.getElementById(status).innerHTML = getEmptyColumnTemplate(status);
+    }
+  });
+}
+
 
 function getCategoryInfo(category) {
   // Formatierte Bezeichnung (z. B. "user-story" → "User Story")

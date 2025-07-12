@@ -32,6 +32,16 @@ function getTaskTemplate(task) {
     `;
 }
 
+function getEmptyColumnTemplate(status) {
+  const statusLabels = {
+    "to-do": "To Do",
+    "in-progress": "In Progress",
+    "await-feedback": "Await Feedback",
+    "done": "Done"
+  };
+  return `<div class="card--notasks"><p>No task ${statusLabels[status]}</p></div>`;
+}
+
 function getOverlayTemplate() {
     return `
         <div class="overlay__badgeframe">
