@@ -3,7 +3,6 @@
 let tasksFirebase = [];
 const BASE_URL = "https://join-472-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
 /**
  * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
  * @returns {Promise<void>}
@@ -75,6 +74,14 @@ function renderTasks() {
       column.innerHTML += getTaskTemplate(task);
     }
   }
+}
+
+function getSubtaskProgress(task) {
+  const total = task.subtask?.length || 0;
+  const done = task.subtask?.filter(st => st.done).length || 0;
+  const percent = total > 0 ? (done / total) * 100 : 0;
+
+  return { total, done, percent };
 }
 
 function renderOverlayTask() {

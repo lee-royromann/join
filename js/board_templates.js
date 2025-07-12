@@ -1,4 +1,5 @@
 function getTaskTemplate(task) {
+    const { total, done, percent } = getSubtaskProgress(task);
     return `
         <div class="card" onclick="openOverlay()">
                                 <div class="card__content">
@@ -11,9 +12,9 @@ function getTaskTemplate(task) {
                                     </div>
                                     <div class="card__subtasks">
                                         <div class="card__subtasks-bar">
-                                            <div class="card__subtasks-progress" id="progress-bar" role="progressbar"style="width: 50%;"></div>
+                                            <div class="card__subtasks-progress" id="progress-bar" role="progressbar"style="width: ${percent}%;"></div>
                                         </div>
-                                        <div class="card__subtasks-text">1/2 Subtasks</div>
+                                        <div class="card__subtasks-text">${done}/${total} Subtasks</div>
                                     </div>
                                     <div class="card__footer">
                                         <div class="card__credentials">
