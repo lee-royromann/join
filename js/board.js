@@ -105,6 +105,16 @@ function getSubtaskProgress(task) {
   return { total, done, percent };
 }
 
+function getPriorityIcon(priority) {
+  const iconMap = {
+    low: "../assets/img/icon/low_green.svg",
+    medium: "../assets/img/icon/medium_yellow.svg",
+    urgent: "../assets/img/icon/urgent_red.svg"
+  };
+
+  return iconMap[priority];
+}
+
 function renderOverlayTask() {
     let contentRef = document.getElementById("story");
     contentRef.innerHTML = '';
