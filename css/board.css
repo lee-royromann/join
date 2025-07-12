@@ -295,11 +295,19 @@ body {
     padding: 4px 16px;
     border-radius: 8px;
     color: #FFFFFF;
-    background-color: #0038FF;
     font-weight: 400;
     font-size: 16px;
     line-height: 120%;
     align-self: flex-start;
+}
+
+.card__badge-user-story {
+    background-color: #0038FF;
+}
+
+.card__badge-technical-task {
+    background-color: #1FD7C1;
+;
 }
 
 .card__header {

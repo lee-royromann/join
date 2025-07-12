@@ -1,10 +1,11 @@
 function getTaskTemplate(task) {
     const { total, done, percent } = getSubtaskProgress(task);
+    const categoryInfo = getCategoryInfo(task.category);
     return `
         <div class="card" onclick="openOverlay()">
                                 <div class="card__content">
-                                    <div class="card__badge">
-                                        <span>${task.category}</span>
+                                    <div class="card__badge ${categoryInfo.className}">
+                                        <span>${categoryInfo.name}</span>
                                     </div>
                                     <div class="card__header">
                                         <div class="card__header--title">${task.title}</div>

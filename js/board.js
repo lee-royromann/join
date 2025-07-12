@@ -76,6 +76,27 @@ function renderTasks() {
   }
 }
 
+function getCategoryInfo(category) {
+  // Formatierte Bezeichnung (z. B. "user-story" → "User Story")
+  const formattedName = category
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  // Klasse für Farbstyling
+  const badgeClassMap = {
+    "user-story": "card__badge-user-story",
+    "technical-task": "card__badge-technical-task"
+  };
+
+  const badgeClass = badgeClassMap[category];
+
+  return {
+    name: formattedName,
+    className: badgeClass
+  };
+}
+
 function getSubtaskProgress(task) {
   const total = task.subtask?.length || 0;
   const done = task.subtask?.filter(st => st.done).length || 0;
