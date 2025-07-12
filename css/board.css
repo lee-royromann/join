@@ -23,9 +23,9 @@ body {
 .board-page {
     position: relative;
     max-width: 1440px;
-    max-height: 1024px;
+    /* max-height: 1024px; */
     height: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     width: 100%;
     margin: auto;
     overflow: hidden; 
@@ -38,27 +38,27 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    min-height: 0;
     margin: auto;
     background-color: #F6F7F8;
 }
 
 .kanban {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex: 1;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
 }
 
 .kanban__header {
     position: relative;
     width: 100%;
-    height: 232px;
+    height: 180px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content:center;
     align-items: center;
+    padding: 0 64px;
 }
 
 .kanban__headline {
@@ -66,8 +66,8 @@ body {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 1056px;
-    z-index: 2;
+    width: 100%; 
+    box-sizing: border-box;
 }
 
 .kanban__title {
@@ -94,7 +94,7 @@ body {
 }
 
 .kanban__search-input {
-    width: 100px;
+    max-width: 100px;
     height: 24px;
     font-size: 20px;
     line-height: 120%;
@@ -176,23 +176,31 @@ body {
     fill: #FFFFFF;   
 }
 
-.kanban__subtitle-wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
+.kanban__grid-wrapper {
     display: flex;
-    justify-content: space-between;
-    padding: 0 64px;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 64px;
+  box-sizing: border-box;
+}
+
+.kanban__subtitle-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  margin-bottom: 12px;
 }
 
 .kanban__subtitle {
     display: flex;
     justify-content: space-between;
-    max-width: 244px;
-    width: 100%;
-    margin-bottom: 8px;
+    align-items: center;
+    font-weight: 700;
+    font-size: 20px;
+    height: 40px;
 }
 
 .kanban__subtitle-text {
@@ -229,32 +237,32 @@ body {
 }
 
 .kanban__columns {
-    max-width: 1208px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    height: 688px;
-    max-height: 688px;
-    overflow-y: auto;
-    padding: 0 64px;
-    gap: 26px;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none; 
+display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  padding: 16px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+
+  /* Scrollbar unsichtbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 }
 
 .kanban__columns::-webkit-scrollbar {
-    display: none; 
+    display: none;                /* Chrome, Safari */
 }
 
 .kanban__column {
     flex: 1 1 246px;
-    min-width: 100px;
-    max-width: 100%;
-}   
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
 
 .card--notasks {
-    /* schauen ob die family hochwandert */
     font-family: "Open Sans";    
     width: 100%;
     display: flex;
