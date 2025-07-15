@@ -1,4 +1,4 @@
-function renderContactListItems(contact) {
+function getContactListItem(contact) {
     if (!contact || !contact.prename || !contact.surname) {
         console.warn('Incomplete Contact:', contact);
         return '';
@@ -33,16 +33,44 @@ function renderContactListItems(contact) {
 }
 
 
-function renderSelectedContactBadge(contact) {
+function getSelectedContactBadge(contact) {
     return `
         <span class="form__contact-badge" id="contact-badge-${contact.id}" style="background-color: ${contact.color};">${contact.prename.charAt(0).toUpperCase() + contact.surname.charAt(0).toUpperCase()}</span>
     `
 };
 
 
-function renderCategoryListItem(id, category) {
+function getCategoryListItem(id, category) {
     const categoryFromated = category.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');        
     return `
         <li class="form__category" id="category-id-${id}" data-id="${id}" data-category="${categoryFromated}" onclick="selectCategory(${id}, 'category-arrow-icon')">${categoryFromated}</li>
     `
 };
+
+function getSubtaskRegularTemplate(id, text) {
+    return `
+        <li class="form__subtask-item" data-id="${id}" data-text="${text}">
+            <span class="form__subtask-label">${text}</span>
+            <div class="form__subtask-icons">
+                <img class="form__subtask-icon" src="../assets/img/icon/edit.svg" alt="Icon to edit subtask" onclick="editSubtask(${id})">
+                <span class="form__icon-separator"></span>
+                <img class="form__subtask-icon" src="../assets/img/icon/delete.svg" alt="Icon to delete subtask" onclick="deleteSubtask('', ${id})">
+            </div>
+        </li>
+    `;
+}
+
+function getSubtaskEditTemplate(id, text) {
+    return `
+        <li class="form__subtask-item-edit" data-id="${id}">
+            <div class="form__subtask-edit-container">
+                <input class="form__subtask-input" type="text" value="${text}"/>
+                <div class="form__subtask-icons--editing">
+                    <img class="form__subtask-icon" src="../assets/img/icon/delete.svg" alt="Icon to delete subtask" onclick="deleteSubtask('-edit', ${id})">
+                    <span class="form__icon-separator"></span>
+                    <img class="form__subtask-icon" src="../assets/img/icon/check_subtask.svg" alt="Icon to save subtask" onclick="saveSubtask(${id})">
+                </div>
+            </div>
+        </li>
+    `;
+}

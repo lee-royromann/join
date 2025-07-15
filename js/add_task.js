@@ -1,6 +1,8 @@
 // Global variables
 const priorities = ['urgent', 'medium', 'low'];
 let currentOpenDropdown = null;
+let subtaskCount = 0;
+let subtaskIdCount = 0;
 
 
 // Figma color palette for test purposes
@@ -94,8 +96,7 @@ const contacts = [
 // Test array for rendering categories
 const categories = [
     "technical-task",
-    "user-story",
-    "foo"
+    "user-story"
 ];
 
 
@@ -119,7 +120,7 @@ let tasks = [
                 "done": true
             }
         ],
-        "status": "in progress" // "to-do", "in progress", "await feedback", "done"
+        "status": "to-do" // "to-do", "in progress", "await feedback", "done"
     },
     {
         "id": 1,
@@ -139,9 +140,21 @@ let tasks = [
                 "done": true
             }
         ],
-        "status": "await feedback" // "to-do", "in progress", "await feedback", "done"
+        "status": "to-do" // "to-do", "in progress", "await feedback", "done"
     }
 ]
+
+
+/** 
+ * Function to add a task to the Firebase Realtime Database.
+ * Comig soon...
+ */
+function addTaskToDB(taskObject, status) {
+    console.log("Add task to firebase realtime DB");
+    // Dieser Funktion einen Parameter übergeben, der definiert, in welchem Status die Aufgabe abgespeichert werden soll...
+    // Wichtig für Mechthild -> Board -> Plus Icons oberhalb der Spalten -> onclick die Parameter mitgeben.
+    // Per Default werden Tasks im Satus "to do" gespeichert.
+}
 
 
 /** 
@@ -160,12 +173,11 @@ function initAddTask() {
  * At the moment this function is using a local test array.
  */
 function populateContactsToDropdown() {
-    console.log("Populating contacts...");
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
-        let contactTemplate = renderContactListItems(contact);
+        let contactTemplate = getContactListItem(contact);
         contactsRef.innerHTML += contactTemplate;
     }
 }
@@ -177,12 +189,11 @@ function populateContactsToDropdown() {
  * At the moment this function is using a local test array.
  */
 function populateCategoriesToDropdown() {
-    console.log("Populating categories...");
     let categoriesRef = document.getElementById("category-list-ul");
     categoriesRef.innerHTML = "";
     for (let index = 0; index < categories.length; index++) {
         const category = categories[index];
-        let categoryTemplate = renderCategoryListItem(index, category);
+        let categoryTemplate = getCategoryListItem(index, category);
         categoriesRef.innerHTML += categoryTemplate;
     }
 };
@@ -206,7 +217,7 @@ function stopEventPropagation(event) {
 }
 
 
-/** 
+/**
  * Function to close the dropdown when clicking outside of it.
  * This function checks if the clicked element is outside the currently open dropdown.
  * If it is, it closes the dropdown and resets the currentOpenDropdown variable.
@@ -221,6 +232,7 @@ document.addEventListener('click', function (event) {
             dropdown.classList.add('d_none');
             arrow.classList.remove('arrow-icon-rotated');
             currentOpenDropdown = null;
+            emptySearchField("contact-search", "#contact-list .form__contact")
         }
     }
 });
@@ -277,7 +289,9 @@ function hideElement(id) {
 function emptySearchField(id, listSelector) {
     const inputField = document.getElementById(id);
     inputField.value = "";
-    resetSearchFilter(listSelector);
+    if (listSelector) {
+        resetSearchFilter(listSelector);
+    }
 }
 
 
@@ -365,7 +379,7 @@ function displayBadgeOfSelectedContact(id) {
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
         if (contact.id == id) {
-            let contactBadgeTemplate = renderSelectedContactBadge(contact);
+            let contactBadgeTemplate = getSelectedContactBadge(contact);
             contactBadgesRef.innerHTML += contactBadgeTemplate;
             return;
         }
@@ -453,11 +467,144 @@ function removeAllContactBadges() {
 }
 
 
-/** 
- * Function to add a new task. 
+/**
+ * Function to add a new subtask to the list based on user input.
+ * Reads the value from the subtask input field. If the input is not empty,
+ * it generates a new subtask element using a template, appends it to the subtask list,
+ * clears the input field, and updates the subtask counters.
  */
 function addSubtask() {
-    console.log("Adding subtask...");
+    let inputField = document.getElementById("task-subtask-input");
+    let subtaskText = inputField.value.trim();
+    if (subtaskText === "") return;
+    let subtasksRef = document.getElementById("subtask-list");
+    const subtaskTemplate = getSubtaskRegularTemplate(subtaskIdCount, subtaskText);
+    subtasksRef.innerHTML += subtaskTemplate;
+    inputField.value = "";
+    increaseSubtaskCount();
+    increaseSubtaskIdCount();
+}
+
+
+/**
+ * Function to add a subtask when the "Enter" key is pressed inside the input field.
+ * It prevents default behavior to avoid form submission, when key is pressed down.
+ */
+function handleEnterToAddSubtask(event) {   
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addSubtask();
+    }
+};
+
+
+/**
+ * Function to change a subtask from display mode to edit mode.
+ * It finds the subtask by its ID, reads the current text from the dataset,
+ * generates the editable version using a template, and replaces 
+ * the static view with an input-enabled version.
+ */
+function editSubtask(id) {
+    const defaultSubtask = document.querySelector(`.form__subtask-item[data-id="${id}"]`);
+    const text = defaultSubtask.dataset.text;
+    const editSubtask = convertHtmlStringToDomElement(getSubtaskEditTemplate(id, text));
+    defaultSubtask.replaceWith(editSubtask);
+}
+
+
+/**
+ * Function to save a subtask that’s currently being edited.
+ * It finds the subtask in "edit" mode using its ID, grabs the input text,
+ * and if the input isn’t empty, replaces the editable version with
+ * the regular/default subtask display element.
+ */
+function saveSubtask(id) {
+    const editSubtask = document.querySelector(`.form__subtask-item-edit[data-id="${id}"]`);
+    const input = editSubtask.querySelector('.form__subtask-input');
+    const newText = input.value.trim();
+    if (!newText) return;
+    const defaultSubtask = convertHtmlStringToDomElement(getSubtaskRegularTemplate(id, newText));
+    editSubtask.replaceWith(defaultSubtask);
+}
+
+
+/**
+ * Function to delete a specific subtask from the DOM.
+ * Locates the subtask element using its ID and a selector suffix,
+ * removes it from the DOM if found, and updates the subtask counter.
+ */
+function deleteSubtask(element, id) {
+    const item = document.querySelector(`.form__subtask-item${element}[data-id="${id}"]`);
+    if (item) item.remove();
+    decreaseSubtaskCount();
+}
+
+
+/**
+ * Funtcion to convert an HTML string into a real DOM element.
+ * Creates a <template> element to parse the string,
+ * then returns the first element inside it. Useful when dynamic
+ * HTML needs to be inserted into the DOM as a real node.
+ */
+function convertHtmlStringToDomElement(htmlString) {
+    const template = document.createElement('template');
+    template.innerHTML = htmlString.trim();
+    return template.content.firstElementChild;
+}
+
+
+/** */
+// function getSubtasksFromTask(index) {
+//     const specificTask = tasks.find(t => t.id === index);
+//     const subtasks = specificTask?.subtask ?? [];
+//     console.log(subtasks);
+//     return subtasks;
+// }
+
+
+/**
+ * Function to increment the current number of subtasks by one.
+ * Should be called whenever a new subtask is added to keep the subtask count in sync.
+ */
+function increaseSubtaskCount() {
+    subtaskCount++;
+}
+
+
+/**
+ * Function to decrease the subtask count by one, but not below zero.
+ */
+function decreaseSubtaskCount() {
+    if (subtaskCount > 0) {
+        subtaskCount--;
+    }
+}
+
+
+/**
+ * Function to increment the subtask ID counter by one.
+ * Ensures that each new subtask gets a unique identifier.
+ * Should be called after creating a new subtask.
+ */function increaseSubtaskIdCount() {
+    subtaskIdCount++;
+}
+
+
+/**
+ * Function to reset the subtask count and the subtask ID counter to zero.
+ * Used to clear or reinitialize the form to ensure all counter are set to default.
+ */function resetAllCounters() {
+    subtaskCount = 0;
+    subtaskIdCount = 0;
+}
+
+
+/**
+ * Function to remove all subtasks from the subtask list in the DOM.
+ */
+function deleteAllSubtasks() {
+    let subtasks = document.getElementById("subtask-list");
+    subtasks.innerHTML = "";
 }
 
 
@@ -466,12 +613,17 @@ function addSubtask() {
  * Unchecks all selected contacts.
  * Resets the priority state of all buttons.
  * Sets the default task priority.
+ * Removes all contact badges below the assigned to field.
+ * Resets internal subtask counters.
+ * Deletes all existing subtasks from the DOM.
  */
 function clearForm() {  
     uncheckAllContacts();
     resetPriorityButtons();
     setDefaultTaskPriority();
     removeAllContactBadges();
+    resetAllCounters();
+    deleteAllSubtasks();
 }
 
 
@@ -520,8 +672,23 @@ function getDatasetInfos() {
 }
 
 
+// function renderAssignedAvatars(task) {
+//   return task.assignedTo
+//     .map(userId => {
+//       const contact = contactsFirebase.find(c => c.id === userId);
+//       if (contact) {
+//         const avatar = contact.avatar || "?";
+//         const colorKey = contact.id % 10; // letzte Ziffer der ID
+//         const color = avatarColors[colorKey] || "#cccccc"; // fallback
+//         return `<div class="card__credential" style="background-color: ${color};">${avatar}</div>`;
+//       }
+//       return "";
+//     })
+//     .join("");
+// }
 
-// korrigiertes Dataset - jedes Task ein Objekt nicht Array
+
+//korrigiertes Dataset - jedes Task ein Objekt nicht Array
 //  "tasks": {
 //       "0": {
 //         "title": "Task 1",
