@@ -111,7 +111,7 @@
                             <fieldset class="form__group">
                                 <label class="form__label" for="task-title">Title<span class="required-asterisk">*</span></label>
                                 <input class="form__input" id="task-title" type="text" name="title" placeholder="Enter a title" required/>
-                                <p class="required-hint">This field is required</p>
+                                <p class="required-hint d_none">This field is required</p>
                             </fieldset>
 
                             <!-- Description -->
@@ -130,7 +130,7 @@
                                         <img src="../assets/img/icon/calendar.svg" alt="Calendar icon for Due Date" />
                                     </span>
                                 </div>
-                                <p class="required-hint">This field is required</p>
+                                <p class="required-hint d_none">This field is required</p>
                             </fieldset>
                         </section>
 
@@ -177,7 +177,8 @@
                                             type="text"
                                             class="form__input"
                                             id="contact-search"
-                                            oninput="showElement('contact-list'), filterDropdown('contact-search', '#contact-list .form__contact')"
+                                            onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
+                                            oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
                                             placeholder="Select contacts to assign"
                                         />
                                         <div class="form__icon-contact" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')">
@@ -196,8 +197,8 @@
                                 <label class="form__label" for="category-input">Category<span class="required-asterisk">*</span></label>
                                 <div>
                                     <!-- Dropdown Input -->
-                                    <div class="form__wrapper-category" id="categroy-selector">
-                                        <input type="text" class="form__input" id="category-input" onclick="toggleDropdown(event, 'category-list', 'category-arrow-icon')" placeholder="Select category" readonly/>
+                                    <div class="form__wrapper-category" id="category-selector">
+                                        <input type="text" class="form__input" id="category-input" onclick="toggleDropdown(event, 'category-list', 'category-arrow-icon')" placeholder="Select task category" readonly/>
                                         <div class="form__icon-category" onclick="toggleDropdown(event, 'category-list', 'category-arrow-icon')">
                                             <img id="category-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open category list">
                                         </div>                                    
@@ -208,7 +209,7 @@
                                         <ul id="category-list-ul"></ul>
                                     </div>
                                 </div>
-                                <p class="required-hint">This field is required</p>
+                                <p class="required-hint d_none">This field is required</p>
                             </fieldset>
 
                             <!-- Subtasks -->
@@ -218,17 +219,17 @@
                                 <!-- Subtasks Input -->
                                 <div class="form__wrapper-input">
 
-                                    <input type="text" class="form__input" id="task-subtask-input" placeholder="Add new subtask"/>
+                                    <input type="text" class="form__input" id="task-subtask-input" placeholder="Add new subtask" onkeydown="handleEnterToAddSubtask(event)"/>
 
                                     <!-- Subtask plus icon -->
-                                    <div class="form__wrapper-subtask-icons d_none" id="task-subtask-icons-1">
-                                        <div class="form__icon-subtask">
+                                    <div class="form__wrapper-subtask-icons" id="task-subtask-icons-1">
+                                        <div class="form__icon-subtask" onclick="addSubtask()">
                                             <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                                         </div>
                                     </div>
 
                                     <!-- Subtask delte / check icons -->
-                                    <div class="form__wrapper-subtask-icons" id="task-subtask-icons-2">
+                                    <div class="form__wrapper-subtask-icons d_none" id="task-subtask-icons-2">
                                         <div class="form__icon-subtask">
                                             <img src="../assets/img/icon/close.svg" alt="Subtask icon to delete subtask">
                                         </div>
@@ -237,7 +238,13 @@
                                             <img src="../assets/img/icon/done.svg" alt="Subtask icon to mark subtask as done">
                                         </div>
                                     </div>
-                                </div>                            
+                                </div>
+
+                                <!-- Subtask List -->
+                                <div class="form__wrapper-subtasks">
+                                    <ul class="form__subtask-list" id="subtask-list">
+                                    </ul>
+                                </div>
                             </fieldset>
                         </section>
                     </div>
