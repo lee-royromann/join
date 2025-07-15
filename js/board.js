@@ -16,6 +16,8 @@ const avatarColors = {
   0: "#0038FF"
 };
 
+let currentDraggedID;
+
 const BASE_URL = "https://joinmr-add3b-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
@@ -26,7 +28,7 @@ async function loadTasksFromFirebase() {
     let response = await fetch(BASE_URL + "tasks.json");
     // let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
-    tasksFirebase = Object.values(responseToJson);
+    tasksFirebase = responseToJson;
     console.log(tasksFirebase);
   }
 
@@ -41,7 +43,6 @@ async function loadContactsFromFirebase() {
   if (response.ok) {
     let data = await response.json();
     contactsFirebase = Object.values(data || {});
-    // renderAvatar();
   } else {
     contactsFirebase = [];
   }
@@ -84,6 +85,27 @@ async function boardInit() {
     renderTasks();
 }
 
+async function saveTaskToFirebase(taskId, fullTaskObject) {
+    try {
+        const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(fullTaskObject), // GANZES OBJEKT speichern
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Fehler beim Speichern in Firebase:", errorText);
+        } else {
+            console.log("Task erfolgreich gespeichert:", taskId);
+        }
+    } catch (error) {
+        console.error("Netzwerkfehler beim Speichern des Tasks:", error);
+    }
+}
+
 function renderTasks() {
     clearAllColumns();
     const taskCounts = renderAllTasks();
@@ -97,13 +119,14 @@ function clearAllColumns() {
 
 function renderAllTasks() {
   const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-  tasksFirebase.forEach((task, index) => {
+  Object.entries(tasksFirebase).forEach(([id, task]) => {
+  task.id = id; // falls noch nicht vorhanden
     const column = document.getElementById(task.status);
     if (column) {
-      column.innerHTML += getTaskTemplate(task, index);
+      column.innerHTML += getTaskTemplate(task);
       counts[task.status]++;
     }
-    console.log(index);
+    console.log(task.id);  //final löschen
   });
   return counts;
 }
@@ -118,13 +141,12 @@ function renderEmptyColumns(counts) {
 
 
 function getCategoryInfo(category) {
-  // Formatierte Bezeichnung (z. B. "user-story" → "User Story")
+  
   const formattedName = category
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  // Klasse für Farbstyling
   const badgeClassMap = {
     "user-story": "card__badge-user-story",
     "technical-task": "card__badge-technical-task"
@@ -169,6 +191,41 @@ function renderAssignedAvatars(task) {
       return "";
     })
     .join("");
+}
+
+function startDragging(id) {
+    currentDraggedID = String(id);
+    //hier noch die Schiefstellung einbringen
+}
+
+function allowDrop(event) {
+    event.preventDefault();
+    console.log("Allow drop funktioniert")
+}
+
+async function moveTo(event) {
+    console.log("Move to wird aufgerufen");
+    const targetColumn = event.currentTarget.id;
+    console.log("Zielspalte:", targetColumn);
+
+    if (currentDraggedID && tasksFirebase[currentDraggedID]) {
+        // Task aus tasksFirebase holen und kopieren
+        const task = JSON.parse(JSON.stringify(tasksFirebase[currentDraggedID]));
+
+        // Status aktualisieren
+        task.status = targetColumn;
+
+        // Speichern in Firebase
+        await saveTaskToFirebase(currentDraggedID, task);
+
+        // Lokale Kopie auch aktualisieren
+        tasksFirebase[currentDraggedID] = task;
+
+        // Board neu rendern
+        renderTasks();
+    } else {
+        console.warn("Kein gültiger Task gefunden für ID:", currentDraggedID);
+    }
 }
 
 function renderOverlayTask(index) {

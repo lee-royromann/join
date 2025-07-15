@@ -178,20 +178,20 @@ body {
 
 .kanban__grid-wrapper {
     display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-  overflow: hidden;
-  padding: 0 64px;
-  box-sizing: border-box;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 64px;
+    box-sizing: border-box;
 }
 
 .kanban__subtitle-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 26px;
-  margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+    margin-bottom: 8px;
 }
 
 .kanban__subtitle {
@@ -200,13 +200,10 @@ body {
     align-items: center;
     font-weight: 700;
     font-size: 20px;
-    height: 40px;
 }
 
 .kanban__subtitle-text {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
+    margin-right: 8px;
 }
 
 .kanban__subtitle-plus {
@@ -218,7 +215,6 @@ body {
     height: 24px;
     line-height: 24px;
     color: #2A3647;
-    font-size: 20px;
     border: 2px solid #2A3647;
     border-radius: 8px;  
 }
@@ -237,7 +233,7 @@ body {
 }
 
 .kanban__columns {
-display: grid;
+  display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 26px;
   flex: 1 1 auto;
@@ -247,7 +243,6 @@ display: grid;
   /* Scrollbar unsichtbar */
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
 }
 
 .kanban__columns::-webkit-scrollbar {
@@ -280,7 +275,7 @@ display: grid;
     width: 100%;
     border-radius: 24px;
     padding: 16px;
-    gap: 8px;
+    gap: 4px;
     background-color: #FFFFFF;
     box-shadow: 0px 0px 10px 3px #00000014;
     margin-bottom: 8px;
@@ -289,7 +284,7 @@ display: grid;
 .card__content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     width: 100%;
 }
 
