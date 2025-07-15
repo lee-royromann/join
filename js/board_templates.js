@@ -1,10 +1,10 @@
-function getTaskTemplate(task) {
+function getTaskTemplate(task, index) {
     const { total, done, percent } = getSubtaskProgress(task);
     const categoryInfo = getCategoryInfo(task.category);
     const priorityIcon = getPriorityIcon(task.priority);
     const assignedAvatar = renderAssignedAvatars(task);
     return `
-        <div class="card" onclick="openOverlay()">
+        <div class="card" onclick="openOverlay(${index})">
                                 <div class="card__content">
                                     <div class="card__badge ${categoryInfo.className}">
                                         <span>${categoryInfo.name}</span>

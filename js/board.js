@@ -16,14 +16,15 @@ const avatarColors = {
   0: "#0038FF"
 };
 
-const BASE_URL = "https://join-472-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://joinmr-add3b-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
  * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
  * @returns {Promise<void>}
  */
 async function loadTasksFromFirebase() {
-    let response = await fetch(BASE_URL + "join/tasks.json");
+    let response = await fetch(BASE_URL + "tasks.json");
+    // let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
     tasksFirebase = Object.values(responseToJson);
     console.log(tasksFirebase);
@@ -35,7 +36,8 @@ async function loadTasksFromFirebase() {
  * @returns {Promise<void>}
  */
 async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "/join/contacts.json");
+  let response = await fetch(BASE_URL + "contacts.json");
+//   let response = await fetch(BASE_URL + "/join/contacts.json");
   if (response.ok) {
     let data = await response.json();
     contactsFirebase = Object.values(data || {});
@@ -95,12 +97,13 @@ function clearAllColumns() {
 
 function renderAllTasks() {
   const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-  tasksFirebase.forEach(task => {
+  tasksFirebase.forEach((task, index) => {
     const column = document.getElementById(task.status);
     if (column) {
-      column.innerHTML += getTaskTemplate(task);
+      column.innerHTML += getTaskTemplate(task, index);
       counts[task.status]++;
     }
+    console.log(index);
   });
   return counts;
 }
@@ -168,14 +171,14 @@ function renderAssignedAvatars(task) {
     .join("");
 }
 
-function renderOverlayTask() {
+function renderOverlayTask(index) {
     let contentRef = document.getElementById("story");
     contentRef.innerHTML = '';
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
     contentRef.innerHTML += getOverlayTemplate();
 }
 
-function renderEditTask() {
+function renderEditTask(index) {
     let contentRef = document.getElementById("edit");
     contentRef.innerHTML = '';
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
