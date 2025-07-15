@@ -1,217 +1,184 @@
 /**
- * =================================================================================
- * Firebase-Datenbankmodul (db.js) - Vollständige & Sichere Version
- * =================================================================================
- *
- * Dieses Skript ersetzt die ursprüngliche db.js vollständig. Es ist für eine
- * sichere Mehrbenutzer-Anwendung konzipiert und erfordert Firebase Authentication.
- *
- */
-
-/**
- * Basis-URL für Ihre Firebase Realtime Database.
+ * Base URL for Firebase Realtime Database.
  * @type {string}
  */
-const BASE_URL = "https://join-472-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
-// =================================================================================
-// SECTION 1: Kernfunktionen für die Authentifizierung & Datenbank-Interaktion
-// Diese Hilfsfunktionen bilden die sichere Grundlage für alle Operationen.
-// =================================================================================
 
 /**
- * Ruft die ID des aktuell angemeldeten Benutzers von Firebase Auth ab.
- * Dies ist entscheidend für die Datensicherheit.
- * @returns {string|null} Die UID des Benutzers oder null.
+ * Loaded contacts stored in Firebase.
+ * @type {Array<Object>}
  */
-function getCurrentUserId() {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    return user.uid;
+let contactsFirebase = [];
+
+
+/**
+ * Loads contacts from Firebase and assigns them to `contactsFirebase`.
+ * @returns {Promise<void>}
+ */
+async function loadContactsFromFirebase() {
+  let response = await fetch(BASE_URL + "/join/contacts.json");
+  if (response.ok) {
+    let data = await response.json();
+    contactsFirebase = Object.values(data || {});
+    renderAvatar();
   } else {
-    console.error("Datenbankoperation fehlgeschlagen: Kein Benutzer angemeldet.");
-    return null;
+    contactsFirebase = [];
   }
 }
 
-/**
- * Holt Daten für den angemeldeten Benutzer von einem bestimmten Pfad.
- * @param {string} path - Der Pfad zur Sammlung (z.B. 'contacts' oder 'tasks').
- * @returns {Promise<Object|null>} Die Daten als Objekt oder null bei einem Fehler.
- */
-async function fetchData(path) {
-  const userId = getCurrentUserId();
-  if (!userId) return null;
-  try {
-    const response = await fetch(`${BASE_URL}users/${userId}/${path}.json`);
-    if (!response.ok) throw new Error(`Server-Fehler: ${response.status}`);
-    return await response.json();
-  } catch (error) {
-    console.error(`Fehler beim Laden von '${path}':`, error);
-    return null;
-  }
-}
 
 /**
- * Sendet Daten an die Datenbank, um einen neuen Eintrag mit einer einzigartigen ID zu erstellen.
- * @param {string} path - Der Pfad zur Sammlung (z.B. 'contacts').
- * @param {Object} data - Das zu speichernde Objekt.
- * @returns {Promise<Object|null>} Die Antwort von Firebase.
+ * Renders avatar initials from usernames into `contactsFirebase` objects.
  */
-async function postData(path, data) {
-  const userId = getCurrentUserId();
-  if (!userId) return null;
-  return await fetch(`${BASE_URL}users/${userId}/${path}.json`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-}
-
-/**
- * Aktualisiert Teile eines bestehenden Eintrags in der Datenbank.
- * @param {string} path - Der vollständige Pfad zum Eintrag (z.B. 'tasks/TASK_ID').
- * @param {Object} data - Die zu aktualisierenden Felder.
- * @returns {Promise<Object|null>}
- */
-async function patchData(path, data) {
-  const userId = getCurrentUserId();
-  if (!userId) return null;
-  return await fetch(`${BASE_URL}users/${userId}/${path}.json`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-}
-
-/**
- * Löscht einen Eintrag aus der Datenbank.
- * @param {string} path - Der vollständige Pfad zum Eintrag.
- * @returns {Promise<Object|null>}
- */
-async function deleteData(path) {
-  const userId = getCurrentUserId();
-  if (!userId) return null;
-  return await fetch(`${BASE_URL}users/${userId}/${path}.json`, {
-    method: 'DELETE'
+function renderAvatar() {
+  contactsFirebase.forEach(contact => {
+    contact.avatar = contact.username
+      .split(" ")
+      .map(name => name[0].toUpperCase())
+      .join("");
   });
 }
 
 
-// =================================================================================
-// SECTION 2: Anwendungslogik für Kontakte & Aufgaben
-// Diese Funktionen verwenden die sicheren Kernfunktionen von oben.
-// =================================================================================
-
-// Globale Variablen für die zwischengespeicherten Daten des Benutzers
-let userContacts = [];
-let userTasks = [];
-
 /**
- * Lädt die Kontakte des angemeldeten Benutzers aus Firebase,
- * konvertiert sie in ein Array und generiert die Avatare.
- * Ersetzt `loadContactsFromFirebase` und `renderAvatar`.
+ * Saves `contactsFirebase` to Firebase.
+ * @returns {Promise<void>}
  */
-async function loadUserContacts() {
-  const contactsData = await fetchData('contacts');
-  if (contactsData) {
-    // Konvertiert das Firebase-Objekt in ein Array und fügt die ID hinzu
-    userContacts = Object.keys(contactsData).map(key => ({
-      id: key,
-      ...contactsData[key]
-    }));
-    // Generiert die Avatare für jeden Kontakt
-    userContacts.forEach(contact => {
-      contact.avatar = contact.username
-        .split(" ")
-        .map(name => name[0].toUpperCase())
-        .join("");
-    });
-  } else {
-    userContacts = [];
-  }
-  console.log('Benutzerkontakte geladen:', userContacts);
-  // Hier können Sie Ihre UI-Rendering-Funktion aufrufen
-}
-
-/**
- * Fügt einen neuen Kontakt für den angemeldeten Benutzer hinzu.
- * Ersetzt die unsichere `saveContactsToFirebase`-Funktion.
- * @param {Object} contact - Das Kontaktobjekt (z.B. {username: 'Max Mustermann', ...}).
- */
-async function addNewContact(contact) {
-  await postData('contacts', contact);
-  await loadUserContacts(); // Lädt die Kontaktliste neu, um die UI zu aktualisieren
-}
-
-
-/**
- * Lädt die Aufgaben des angemeldeten Benutzers aus Firebase.
- * Ersetzt `getDataFromServer`.
- */
-async function loadUserTasks() {
-  const tasksData = await fetchData('tasks');
-  if (tasksData) {
-    userTasks = Object.keys(tasksData).map(key => {
-      const task = tasksData[key];
-      // Logik von `firbaseObject` hier integriert:
-      return {
-        id: key,
-        title: task.title,
-        descripton: task.descripton,
-        date: task.date,
-        category: task.category,
-        priority: task.priority,
-        // Stellt sicher, dass subtask und assignedTo immer Arrays sind
-        subtask: task.subtask ? Object.values(task.subtask) : [],
-        assignedTo: task.assignedTo ? Object.values(task.assignedTo) : [],
-        condition: task.condition
-      };
-    });
-  } else {
-    userTasks = [];
-  }
-  console.log('Benutzeraufgaben geladen:', userTasks);
-  // Hier Ihre UI-Rendering-Funktion aufrufen, z.B. renderTaskInToColumn()
-}
-
-/**
- * Fügt eine neue Aufgabe hinzu oder aktualisiert eine bestehende.
- * Ersetzt `putDataToServer`.
- * @param {string} taskId - Die ID der Aufgabe. Wenn null, wird eine neue Aufgabe erstellt.
- * @param {Object} data - Die Aufgabendaten.
- */
-async function saveTask(taskId, data) {
-  try {
-    if (taskId) {
-      // Aktualisiert eine bestehende Aufgabe
-      await patchData(`tasks/${taskId}`, data);
-    } else {
-      // Erstellt eine neue Aufgabe
-      await postData('tasks', data);
+async function saveContactsToFirebase() {
+  const contactsAsObject = {};
+  contactsFirebase.forEach((contact, index) => {
+    contactsAsObject[index] = { ...contact, id: index };
+  });
+  await fetch(BASE_URL + "/join/contacts.json", {
+    method: 'PUT',
+    body: JSON.stringify(contactsAsObject),
+    headers: {
+      'Content-Type': 'application/json'
     }
-    // Optional: Erfolgsfeedback für den Benutzer
-    // successfulAddedTask();
-    // userFeedback();
-  } catch (error) {
-    // Optional: Fehlerfeedback für den Benutzer
-    // showErrorAddedTask();
-    console.error("Fehler beim Speichern der Aufgabe:", error);
-  }
-  await loadUserTasks(); // Lädt die Aufgabenliste neu
+  });
 }
 
+
 /**
- * Löscht einen zugewiesenen Benutzer aus einer Aufgabe.
- * Ersetzt `deleteNotFoundedUserFromTask`.
- * Hinweis: Diese Funktion muss jetzt wissen, aus welcher Aufgabe der Benutzer entfernt werden soll.
- * @param {string} taskId - Die ID der Aufgabe.
- * @param {string} assignedUserKey - Der Schlüssel des zugewiesenen Benutzers, der gelöscht werden soll.
+ * Saves user data from `userFirebase` to Firebase.
+ * Falls back to `resetUserArray` on failure.
+ * @returns {Promise<void>}
  */
-async function removeAssignedUserFromTask(taskId, assignedUserKey) {
-  const path = `tasks/${taskId}/assignedTo/${assignedUserKey}`;
-  console.log(`Entferne zugewiesenen Benutzer unter Pfad: ${path}`);
-  await deleteData(path);
-  await loadUserTasks(); // Liste neu laden, um die Änderung widerzuspiegeln
+async function saveUsersToFirebase() {
+  const usersAsObject = {};
+  userFirebase.forEach((user, index) => {
+    usersAsObject[index] = { ...user };
+  });
+  try {
+    await fetch(BASE_URL + "/join/users.json", {
+      method: 'PUT',
+      body: JSON.stringify(usersAsObject),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    console.error("Error when saving:", error.message);
+    resetUserArray();
+  }
+}
+
+
+/**
+ * Sends a new or updated task to Firebase using PUT.
+ * @param {string} path - Firebase path.
+ * @param {Object} data - Task object to store.
+ * @returns {Promise<void>}
+ */
+async function putDataToServer(path = "", data) {
+  try {
+    const response = await fetch(BASE_URL + path + ".json", {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    successfulAddedTask();
+  } catch (error) {
+    showErrorAddedTask();
+  }
+  userFeedback();
+}
+
+
+/**
+ * Sends partial updates to a task object using PATCH.
+ * @param {string} path - Firebase path.
+ * @param {Object} data - Data to patch.
+ * @returns {Promise<void>}
+ */
+async function patchDataToServer(path = "", data) {
+  try {
+    await fetch(BASE_URL + path + ".json", {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (error) {
+    console.error('There was an error updating the data:', error);
+  }
+}
+
+
+//  Get Data //
+//ANCHOR - Get Data
+
+/**
+ * Loads tasks from server, parses them, and updates the task list.
+ * @async
+ * @param {string} [path=""] - API endpoint path for tasks.
+ */
+async function getDataFromServer(path = "") {
+  await loadContactsFromFirebase();
+  let response = await fetch(BASE_URL + path + ".json");
+  let responseToJson = await response.json();
+  let tasksKeysArray = Object.keys(responseToJson);
+
+  for (let index = 0; index < tasksKeysArray.length; index++) {
+    tasks.push(firbaseObject(index, responseToJson, tasksKeysArray));
+  }
+  renderTaskInToColumn();
+  await deleteNotFoundedUserFromTask();
+}
+
+
+/**
+ * Constructs a task object from Firebase response data.
+ * @param {number} index - Task index.
+ * @param {Object} responseToJson - Parsed Firebase response.
+ * @param {Array<string>} tasksKeysArray - Array of task keys.
+ * @returns {Object} The constructed task object.
+ */
+function firbaseObject(index, responseToJson, tasksKeysArray) {
+  return {
+    title: responseToJson[tasksKeysArray[index]].title,
+    descripton: responseToJson[tasksKeysArray[index]].descripton,
+    date: responseToJson[tasksKeysArray[index]].date,
+    category: responseToJson[tasksKeysArray[index]].category,
+    priority: responseToJson[tasksKeysArray[index]].priority,
+    subtask: arraySubtasks(index, responseToJson, tasksKeysArray),
+    assignedTo: arrayAssignedTo(index, responseToJson, tasksKeysArray),
+    id: tasksKeysArray[index],
+    condition: responseToJson[tasksKeysArray[index]].condition
+  };
+}
+
+
+/**
+ * Deletes user entries from Firebase that no longer exist locally.
+ * @async
+ */
+async function deleteNotFoundedUserFromTask() {
+  for (let del of usersToDeleteFromFirebase) {
+    await fetch(`${BASE_URL}/join/tasks/${del.taskKey}/assignedTo/${del.userKey}.json`, {
+      method: "DELETE"
+    });
+  }
 }
