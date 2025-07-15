@@ -126,7 +126,7 @@ body {
 
 .form__columns {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .form__column {
@@ -181,7 +181,7 @@ fieldset {
 }
 
 .form__textarea {
-    height: 120px;
+    height: 180px;
     padding-top: 18px;
     padding-bottom: 18px;
     padding-left: 16px;
@@ -239,6 +239,12 @@ fieldset {
     top: 50%;
     transform: translateY(-50%);
     display: flex;
+    gap: 8px;
+}
+
+.form__wrapper-stubtasks {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
 }
 
@@ -393,6 +399,10 @@ fieldset {
     color: #2a3647;
 }
 
+#contact-search:focus::placeholder {
+  color: transparent;
+}
+
 #contact-you {
     color: #b3b3b3;
     font-weight: 400;
@@ -491,19 +501,119 @@ fieldset {
     cursor: pointer;
 }
 
+#category-input {
+    cursor: pointer;
+}
+
 #task-category-dropdown {
     gap: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
 }
 
-/* SUBTASK */
+/* SUBTASK DEFAULT */
+
+.form__subtask-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+    margin: 0;
+}
+
+.form__subtask-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 6px 20px 6px 40px;
+    min-height: 40px;
+    border-radius: 15px;
+    transition: background-color 0.2s ease;
+}
+
+.form__subtask-item:hover {
+    background-color: #eeeeee;
+}
+
+.form__subtask-item::before {
+    content: "•";
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000000;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.form__subtask-label {
+    font-size: 16px;
+}
+
+.form__subtask-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+}
+
+.form__subtask-item:hover .form__subtask-icons {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.form__subtask-icon {
+    height: 16px;
+    max-width: 16px;
+    cursor: pointer;
+}
 
 .form__icon-separator {
-    min-width: 1px;
+    width: 1px;
     background-color: #A8A8A8;
     height: 24px;
 }
+
+/* SUBTASK EDIT MODE */
+
+.form__subtask-item-edit {
+    all: unset;
+}
+
+.form__subtask-edit-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-bottom: 2px solid #28abe2;
+}
+
+.form__subtask-input {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 8px 60px 8px 18px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.form__subtask-icons--editing {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
 
 /* ACTIONS > CREATE & CLEAR */
 
