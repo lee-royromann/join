@@ -35,7 +35,7 @@ function getContactListItem(contact) {
 
 function getSelectedContactBadge(contact) {
     return `
-        <span class="form__contact-badge" id="contact-badge-${contact.id}" style="background-color: ${contact.color};">${contact.prename.charAt(0).toUpperCase() + contact.surname.charAt(0).toUpperCase()}</span>
+        <span class="form__contact-badge" id="contact-badge-${contact.id}" data-id="${contact.id}" style="background-color: ${contact.color};">${contact.prename.charAt(0).toUpperCase() + contact.surname.charAt(0).toUpperCase()}</span>
     `
 };
 

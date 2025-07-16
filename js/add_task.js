@@ -5,90 +5,11 @@ const priorities = ['urgent', 'medium', 'low'];
 let currentOpenDropdown = null;
 let subtaskCount = 0;
 let subtaskIdCount = 0;
-
-
-// Figma color palette for test purposes
-const figmaColors = {
-    color1: "#FF7A00",
-    color2: "#FFE62B",
-    color3: "#4C4AC3",
-    color4: "#c3624a",
-    color5: "#00BCD4",
-    color6: "#FF5EB3",
-    color7: "#6E52FF",
-    color8: "#9327FF",
-    color9: "#00BEE8",
-    color10: "#1FD7C1",
-    color11: "#FF745E",
-    color12: "#FFA35E",
-    color13: "#FC71FF",
-    color14: "#FFC701",
-    color15: "#0038FF"
-};
-
-
-// Test array for rendering categories
+let choosenPriority = "";
 const categories = [
     "technical-task",
     "user-story"
 ];
-
-
-// Example dataset for tasks
-let tasks = [
-    {
-        "id": 0,
-        "title": "Task 1",
-        "description": "Beschreibung 1",
-        "date": "2025-06-25",
-        "category": "User Story",
-        "priority": "medium",
-        "assignedTo": [0,2,3],
-        "subtask": [
-            {
-                "title": "Zahlen aktualisieren",
-                "done": false
-            },
-            {
-                "title": "CI-Folien integrieren",
-                "done": true
-            }
-        ],
-        "status": "to-do" // "to-do", "in progress", "await feedback", "done"
-    },
-    {
-        "id": 1,
-        "title": "Task 2",
-        "description": "Beschreibung 2",
-        "date": "2025-06-25",
-        "category": "Technical Task",
-        "priority": "urgent",
-        "assignedTo": [0,4,5],
-        "subtask": [
-            {
-                "title": "Zahlen aktualisieren",
-                "done": false
-            },
-            {
-                "title": "CI-Folien integrieren",
-                "done": true
-            }
-        ],
-        "status": "to-do" // "to-do", "in progress", "await feedback", "done"
-    }
-]
-
-
-/** 
- * Function to add a task to the Firebase Realtime Database.
- * Comig soon...
- */
-function addTaskToDB(taskObject, status) {
-    console.log("Add task to firebase realtime DB");
-    // Dieser Funktion einen Parameter übergeben, der definiert, in welchem Status die Aufgabe abgespeichert werden soll...
-    // Wichtig für Mechthild -> Board -> Plus Icons oberhalb der Spalten -> onclick die Parameter mitgeben.
-    // Per Default werden Tasks im Satus "to do" gespeichert.
-}
 
 
 /** 
@@ -97,7 +18,6 @@ function addTaskToDB(taskObject, status) {
 function initAddTask() {
     setDefaultTaskPriority();
     loadContactsFromFirebase();
-    // populateContactsToDropdown();
     populateCategoriesToDropdown();
 }
 
@@ -134,7 +54,6 @@ function populateCategoriesToDropdown() {
 };
 
 
-
 /**
  * This function is loading the contacts from Firebase.
  * After loading is finished, the contacts are getting populated to the dropdown.
@@ -148,16 +67,6 @@ async function loadContactsFromFirebase() {
   } else {
     contactsFirebase = [];
   }
-}
-
-
-/** 
- * Function to set the default priority button. 
- */
-function setDefaultTaskPriority() {
-    const defaultPriority = 'medium';
-    resetPriorityButtons();
-    setPriority(defaultPriority);
 }
 
 
@@ -198,20 +107,7 @@ function setPriority(priority) {
     resetPriorityButtons();
     let button = document.getElementById(`btn-${priority}`);
     button.classList.add(`form__button-prio--${priority}`);
-}
-
-
-/**
- * Function to reset all priority buttons to their default state.
- * Removes any applied priority-specific modifier classes from each button.
- */
-function resetPriorityButtons() {
-    const buttons = document.querySelectorAll('.form__button-prio');
-    buttons.forEach(button => {
-        priorities.forEach(prio => {
-            button.classList.remove(`form__button-prio--${prio}`);
-        });
-    });
+    choosenPriority = priority;    
 }
 
 
@@ -413,16 +309,6 @@ function selectCategory(id, arrowIconId) {
 
 
 /**
- * Function to remove all contact badges below the assigned-to field.
- * Clears the inner HTML of the badge container.
- */
-function removeAllContactBadges() {
-    let contactBadgesRef = document.getElementById("contact-badges");
-    contactBadgesRef.innerHTML = "";
-}
-
-
-/**
  * Function to add a new subtask to the list based on user input.
  * Reads the value from the subtask input field. If the input is not empty,
  * it generates a new subtask element using a template, appends it to the subtask list,
@@ -537,22 +423,79 @@ function increaseSubtaskIdCount() {
 }
 
 
-/**
- * Function to reset the subtask count and the subtask ID counter to zero.
- * Used to clear or reinitialize the form to ensure all counter are set to default.
+/** 
+ * Function to add a task to the Firebase Realtime Database.
+ * Comig soon...
  */
-function resetAllCounters() {
-    subtaskCount = 0;
-    subtaskIdCount = 0;
+function addTaskToDB(event, status) {
+    // console.log(event);
+    // console.log(status);
+    event.preventDefault();
+    let taskObject = getTaskData();
+    // console.log("Add task to firebase realtime DB");
+    console.log(taskObject);
+    clearForm();
 }
 
 
 /**
- * Function to remove all subtasks from the subtask list in the DOM.
+ * This function is creating a task based on the form input.
+ * Form Validation is not implemented actually but will follow soon.
  */
-function deleteAllSubtasks() {
-    let subtasks = document.getElementById("subtask-list");
-    subtasks.innerHTML = "";
+function getTaskData() {
+    const title = document.getElementById("task-title").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const date = document.getElementById("task-due-date").value;
+    const category = document.getElementById("category-input").value;
+    const priority = choosenPriority;
+    const assignedTo = getSelectedContactIds();
+    const subtasks = getSubtasks();
+    const newTask = {
+        title,
+        description,
+        date,
+        category,
+        priority,
+        assignedTo,
+        subtask: subtasks,
+        status: "to-do"
+    };
+    return newTask;
+}
+
+
+/**
+ * This function is collectiong all assignes contact ID's and pushes them to the array.
+ * The Array will be returned to the calling function.
+*/
+function getSelectedContactIds() {
+    const contactBadges = document.querySelectorAll('#contact-badges .form__contact-badge');
+    const contactIDs = [];
+    contactBadges.forEach(badge => {
+        const idString = badge.dataset.id;
+        const id = parseInt(idString, 10);
+        if (!isNaN(id)) {
+            contactIDs.push(id);
+        }
+    });
+    return contactIDs;
+}
+
+
+/**
+ * This function is collecting all created subtasks below the subtask inputfield.
+ * The Array will be returned to the calling function.
+ */
+function getSubtasks() {
+    const listItems = document.querySelectorAll('#subtask-list .form__subtask-item');
+    const subtasks = [];
+    listItems.forEach(subtask => {
+        const text = subtask.dataset.text?.trim();
+        if (text) {
+            subtasks.push({text});
+        }
+    });
+    return subtasks;
 }
 
 
@@ -572,6 +515,7 @@ function clearForm() {
     removeAllContactBadges();
     resetAllCounters();
     deleteAllSubtasks();
+    choosenPriority = "";
 }
 
 
@@ -596,22 +540,53 @@ function uncheckAllContacts() {
 
 
 /**
- * Function to extract contact information from dataset attributes.
- * Actually only for testing purposes
+ * Function to reset all priority buttons to their default state.
+ * Removes any applied priority-specific modifier classes from each button.
  */
-function getDatasetInfos() {
-    const items = document.querySelectorAll('.form__contact');
-    const contacts = [];
-    items.forEach(item => {
-        const contact = {
-            id: parseInt(item.dataset.id, 10),
-            shortname: item.dataset.shortname,
-            fullname: item.dataset.fullname,
-            color: item.dataset.color,
-            selected: item.querySelector('.form__contact-checkbox')?.checked || false
-        };
-        contacts.push(contact);
+function resetPriorityButtons() {
+    const buttons = document.querySelectorAll('.form__button-prio');
+    buttons.forEach(button => {
+        priorities.forEach(prio => {
+            button.classList.remove(`form__button-prio--${prio}`);
+        });
     });
-    console.log(contacts);
-    return contacts;
+}
+
+
+/** 
+ * Function to set the default priority button. 
+ */
+function setDefaultTaskPriority() {
+    const defaultPriority = 'medium';
+    resetPriorityButtons();
+    setPriority(defaultPriority);
+}
+
+
+/**
+ * Function to remove all contact badges below the assigned-to field.
+ * Clears the inner HTML of the badge container.
+ */
+function removeAllContactBadges() {
+    let contactBadgesRef = document.getElementById("contact-badges");
+    contactBadgesRef.innerHTML = "";
+}
+
+
+/**
+ * Function to reset the subtask count and the subtask ID counter to zero.
+ * Used to clear or reinitialize the form to ensure all counter are set to default.
+ */
+function resetAllCounters() {
+    subtaskCount = 0;
+    subtaskIdCount = 0;
+}
+
+
+/**
+ * Function to remove all subtasks from the subtask list in the DOM.
+ */
+function deleteAllSubtasks() {
+    let subtasks = document.getElementById("subtask-list");
+    subtasks.innerHTML = "";
 }
