@@ -4,7 +4,7 @@ function getTaskTemplate(task) {
     const priorityIcon = getPriorityIcon(task.priority);
     const assignedAvatar = renderAssignedAvatars(task);  // Achtung unten das Overlay im task.id prüfen
     return `
-        <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay(${task.id})">
+        <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging(${task.id})" onclick="openOverlay(${task.id})">
                                 <div class="card__content">
                                     <div class="card__badge ${categoryInfo.className}">
                                         <span>${categoryInfo.name}</span>

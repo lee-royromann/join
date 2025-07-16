@@ -194,9 +194,7 @@ function renderAssignedAvatars(task) {
 }
 
 function startDragging(id) {
-    console.log("startDragging – ID erhalten:", id);
     currentDraggedID = String(id);   //Prüfe ob String oder Number
-    //hier noch die Schiefstellung einbringen
     document.getElementById(id).classList.add("card-transform")
 }
 
