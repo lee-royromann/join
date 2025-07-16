@@ -74,14 +74,14 @@ async function saveContactsToFirebase() {
     // Teilt den vollen Benutzernamen in Vor- und Nachnamen auf.
     const nameParts = contact.username ? contact.username.split(" ") : [];
     const prename = nameParts[0] || ""; // Der erste Teil wird zum Vornamen
-    const surename = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
+    const surname = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
 
     // Erstellt das neue Objekt mit der gewünschten Struktur.
     // Es ordnet die Felder aus dem lokalen `contact`-Objekt zu.
     const newContactObject = {
       id: index, // Verwendet den Array-Index als ID
       prename: prename,
-      surename: surename,
+      surname: surname,
       email: contact.email || "", // Annahme: 'email' existiert im lokalen Kontakt
       phone: contact.phone || "", // Annahme: 'phone' existiert im lokalen Kontakt
       mobile: contact.mobile || "" // Annahme: 'mobile' existiert im lokalen Kontakt
