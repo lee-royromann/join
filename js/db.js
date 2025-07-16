@@ -17,13 +17,26 @@ let usersFirebase = [];
 let contactsFirebase = [];
 
 /**
- * Lädt Benutzerdaten aus Firebase und weist sie `usersFirebase` zu.
+ * Lädt Benutzerdaten aus Firebase und konvertiert das Objekt in ein Array.
  * @returns {Promise<void>}
  */
 async function loadUsersFromFirebase() {
     let response = await fetch(BASE_URL + "/join/users.json");
     if (response.ok) {
-        usersFirebase = await response.json();
+        const data = await response.json();
+        if (data) {
+            // Konvertiert das Firebase-Objekt in ein Array von Benutzern
+            usersFirebase = Object.keys(data).map(key => {
+                return {
+                    id: key, // Speichert die einzigartige Firebase-ID
+                    ...data[key] // Fügt alle anderen Benutzerdaten hinzu (name, email, etc.)
+                };
+            });
+        } else {
+            usersFirebase = [];
+        }
+    } else {
+        usersFirebase = [];
     }
 }
 
@@ -77,7 +90,6 @@ async function loadContactsFromFirebase() {
                 .filter(contact => contact) // Filtert 'null'-Einträge heraus
                 .map(contact => {
                     // Rekonstruiert den Benutzernamen aus Vor- und Nachname
-                    // KORREKTUR: surename -> surname
                     const username = `${contact.prename || ''} ${contact.surname || ''}`.trim();
 
                     // Gibt ein neues Objekt zurück, das den rekonstruierten Benutzernamen
