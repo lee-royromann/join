@@ -1,103 +1,139 @@
 /**
- * Base URL for Firebase Realtime Database.
+ * Die Basis-URL für die Firebase Realtime Database.
  * @type {string}
  */
-const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
-
+const BASE_URL = "https://join-kanban-board-35a84-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
- * Loaded contacts stored in Firebase.
+ * Ein Array zum Speichern von Benutzerdaten, die aus Firebase geladen wurden.
+ * @type {Array<Object>}
+ */
+let usersFirebase = [];
+
+/**
+ * Ein Array zum Speichern von Kontaktdaten, die aus Firebase geladen wurden.
  * @type {Array<Object>}
  */
 let contactsFirebase = [];
 
+/**
+ * Lädt Benutzerdaten aus Firebase und weist sie `usersFirebase` zu.
+ * @returns {Promise<void>}
+ */
+async function loadUsersFromFirebase() {
+    let response = await fetch(BASE_URL + "/join/users.json");
+    if (response.ok) {
+        usersFirebase = await response.json();
+    }
+}
+
+/**
+ * Speichert ein Benutzerobjekt in Firebase unter einem neuen Schlüssel.
+ * @param {Object} user - Das zu speichernde Benutzerobjekt.
+ * @returns {Promise<Response>} Das Response-Objekt der Fetch-Anfrage.
+ */
+async function saveUserToFirebase(user) {
+    return await fetch(BASE_URL + "/join/users.json", {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
+/**
+ * Aktualisiert einen vorhandenen Benutzer in Firebase mithilfe seiner ID.
+ * @param {string} userId - Die eindeutige ID des zu aktualisierenden Benutzers.
+ * @param {Object} userData - Die neuen Daten für den Benutzer.
+ * @returns {Promise<Response>} Das Response-Objekt der Fetch-Anfrage.
+ */
+async function updateUserData(userId, userData) {
+    return await fetch(BASE_URL + `/join/users/${userId}.json`, {
+        method: 'PATCH',
+        body: JSON.stringify(userData),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
 
 /**
  * Lädt Kontakte aus Firebase und weist sie `contactsFirebase` zu.
- * Diese Version filtert 'null'-Einträge heraus, die in Firebase existieren könnten.
+ * Es rekonstruiert das Feld `username` aus `prename` und `surname`
+ * für die lokale Verwendung innerhalb der Anwendung.
  * @returns {Promise<void>}
  */
 async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "/join/contacts.json");
-  if (response.ok) {
-    let data = await response.json();
-    let loadedContacts = Object.values(data || {});
-    
-    // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
-    contactsFirebase = loadedContacts
-      // WICHTIG: Diese Zeile filtert alle 'null'-Einträge heraus.
-      .filter(contact => contact) 
-      .map(contact => {
-        // Dieser Code wird nur noch für gültige Kontakt-Objekte ausgeführt.
-        const username = `${contact.prename || ''} ${contact.surename || ''}`.trim();
-        
-        return {
-          ...contact,
-          username: username
-        };
-      });
+    let response = await fetch(BASE_URL + "/join/contacts.json");
+    if (response.ok) {
+        let data = await response.json();
+        if (data) {
+            let loadedContacts = Object.values(data);
+            
+            // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
+            contactsFirebase = loadedContacts
+                .filter(contact => contact) // Filtert 'null'-Einträge heraus
+                .map(contact => {
+                    // Rekonstruiert den Benutzernamen aus Vor- und Nachname
+                    // KORREKTUR: surename -> surname
+                    const username = `${contact.prename || ''} ${contact.surname || ''}`.trim();
 
-    renderAvatar();
-  } else {
-    contactsFirebase = [];
-  }
+                    // Gibt ein neues Objekt zurück, das den rekonstruierten Benutzernamen
+                    // und alle anderen Eigenschaften aus Firebase enthält.
+                    return {
+                        ...contact, // Beinhaltet id, prename, surname, email, phone, mobile
+                        username: username // Fügt das username-Feld für die lokale Logik hinzu
+                    };
+                });
+            renderAvatar(); // Stellt sicher, dass Avatare nach dem Laden neu gerendert werden.
+        } else {
+            contactsFirebase = [];
+        }
+    } else {
+        contactsFirebase = [];
+    }
 }
 
-/**
- * Renders avatar initials from usernames into `contactsFirebase` objects.
- */
-function renderAvatar() {
- contactsFirebase.forEach(contact => {
-  if (!contact.username){
-  contact.avatar = "";
-  return;
-}
-
-contact.avatar = contact.username
-  .split(" ")
-  .filter(name => name.length > 0)
-  .map(name => name[0].toUpperCase())
-  .join("");
-});
-} 
 
 /**
- * Speichert `contactsFirebase` in Firebase mit einer spezifischen Struktur.
- * Es transformiert das lokale Kontaktobjekt vor dem Speichern.
- * Annahme: Das lokale Kontaktobjekt hat die Felder 'username', 'email', 'phone', 'mobile'.
+ * Speichert die gesamte `contactsFirebase`-Liste in Firebase.
+ * Diese Funktion überschreibt alle vorhandenen Kontakte in der Datenbank.
+ * Sie konvertiert das lokale `username`-Feld zurück in `prename` und `surname`.
  * @returns {Promise<void>}
  */
 async function saveContactsToFirebase() {
-  const contactsToSave = {};
+    const contactsToSave = {};
 
-  contactsFirebase.forEach((contact, index) => {
-    // Teilt den vollen Benutzernamen in Vor- und Nachnamen auf.
-    const nameParts = contact.username ? contact.username.split(" ") : [];
-    const prename = nameParts[0] || ""; // Der erste Teil wird zum Vornamen
-    const surname = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
+    contactsFirebase.forEach((contact, index) => {
+        // Teilt den vollen Benutzernamen in Vor- und Nachnamen auf.
+        const nameParts = contact.username ? contact.username.split(" ") : [];
+        const prename = nameParts[0] || ""; // Der erste Teil wird zum Vornamen
+        const surname = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
 
-    // Erstellt das neue Objekt mit der gewünschten Struktur.
-    // Es ordnet die Felder aus dem lokalen `contact`-Objekt zu.
-    const newContactObject = {
-      id: index, // Verwendet den Array-Index als ID
-      prename: prename,
-      surname: surname,
-      email: contact.email || "", // Annahme: 'email' existiert im lokalen Kontakt
-      phone: contact.phone || "", // Annahme: 'phone' existiert im lokalen Kontakt
-      mobile: contact.mobile || "" // Annahme: 'mobile' existiert im lokalen Kontakt
-    };
-    
-    contactsToSave[index] = newContactObject;
-  });
+        // Erstellt das neue Objekt mit der gewünschten Struktur für Firebase.
+        const newContactObject = {
+            id: index, // Verwendet den Array-Index als ID
+            prename: prename,
+            surname: surname,
+            email: contact.email || "",
+            phone: contact.phone || "",
+            mobile: contact.mobile || "",
+            color: contact.color || "grey" // Standardfarbe hinzufügen
+        };
 
-  // Verwendet PUT, um die gesamte Kontaktsammlung mit der neuen Struktur zu ersetzen.
-  await fetch(BASE_URL + "/join/contacts.json", {
-    method: 'PUT',
-    body: JSON.stringify(contactsToSave),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+        contactsToSave[index] = newContactObject;
+    });
+
+    // Verwendet PUT, um die gesamte Kontaktsammlung mit der neuen Struktur zu ersetzen.
+    await fetch(BASE_URL + "/join/contacts.json", {
+        method: 'PUT',
+        body: JSON.stringify(contactsToSave),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 }
 
 
@@ -259,4 +295,5 @@ async function deleteNotFoundedUserFromTask() {
     });
   }
 }
+
 
