@@ -429,7 +429,7 @@ function removeAllContactBadges() {
  * clears the input field, and updates the subtask counters.
  */
 function addSubtask() {
-    let inputField = document.getElementById("task-subtask-input");
+    let inputField = document.getElementById("subtask-input");
     let subtaskText = inputField.value.trim();
     if (subtaskText === "") return;
     let subtasksRef = document.getElementById("subtask-list");

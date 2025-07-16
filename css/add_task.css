@@ -511,11 +511,19 @@ fieldset {
     margin: 0 !important;
 }
 
-/* SUBTASK DEFAULT */
+/* SUBTASK INPUT */
+
+#subtask-input {
+    padding-right: 40px;
+}
+
+/* SUBTASK REGULAR MODE */
 
 .form__subtask-list {
     display: flex;
     flex-direction: column;
+    max-height: 125px;
+    overflow: auto;
     gap: 2px;
     padding: 0;
     margin: 0;
@@ -527,7 +535,7 @@ fieldset {
     align-items: center;
     position: relative;
     padding: 6px 20px 6px 40px;
-    min-height: 40px;
+    max-width: 440px;
     border-radius: 15px;
     transition: background-color 0.2s ease;
 }
@@ -701,20 +709,23 @@ fieldset {
 
 .form__wrapper-list::-webkit-scrollbar,
 .form__textarea::-webkit-scrollbar,
-.page::-webkit-scrollbar {
+.page::-webkit-scrollbar,
+.form__subtask-list::-webkit-scrollbar {
   width: 6px;
 }
 
 .form__wrapper-list::-webkit-scrollbar-thumb,
 .form__textarea::-webkit-scrollbar-thumb,
-.page::-webkit-scrollbar-thumb {
+.page::-webkit-scrollbar-thumb,
+.form__subtask-list::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
 
 .form__wrapper-list::-webkit-scrollbar-track,
 .form__textarea::-webkit-scrollbar-track,
-.page::-webkit-scrollbar-track {
+.page::-webkit-scrollbar-track,
+.form__subtask-list::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
 
