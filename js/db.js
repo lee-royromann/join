@@ -42,21 +42,74 @@ function renderAvatar() {
 
 
 /**
- * Saves `contactsFirebase` to Firebase.
+ * Speichert `contactsFirebase` in Firebase mit einer spezifischen Struktur.
+ * Es transformiert das lokale Kontaktobjekt vor dem Speichern.
+ * Annahme: Das lokale Kontaktobjekt hat die Felder 'username', 'email', 'phone', 'mobile'.
  * @returns {Promise<void>}
  */
 async function saveContactsToFirebase() {
-  const contactsAsObject = {};
+  const contactsToSave = {};
+
   contactsFirebase.forEach((contact, index) => {
-    contactsAsObject[index] = { ...contact, id: index };
+    // Teilt den vollen Benutzernamen in Vor- und Nachnamen auf.
+    const nameParts = contact.username ? contact.username.split(" ") : [];
+    const prename = nameParts[0] || ""; // Der erste Teil wird zum Vornamen
+    const surename = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
+
+    // Erstellt das neue Objekt mit der gewünschten Struktur.
+    // Es ordnet die Felder aus dem lokalen `contact`-Objekt zu.
+    const newContactObject = {
+      id: index, // Verwendet den Array-Index als ID
+      prename: prename,
+      surename: surename,
+      email: contact.email || "", // Annahme: 'email' existiert im lokalen Kontakt
+      phone: contact.phone || "", // Annahme: 'phone' existiert im lokalen Kontakt
+      mobile: contact.mobile || "" // Annahme: 'mobile' existiert im lokalen Kontakt
+    };
+    
+    contactsToSave[index] = newContactObject;
   });
+
+  // Verwendet PUT, um die gesamte Kontaktsammlung mit der neuen Struktur zu ersetzen.
   await fetch(BASE_URL + "/join/contacts.json", {
     method: 'PUT',
-    body: JSON.stringify(contactsAsObject),
+    body: JSON.stringify(contactsToSave),
     headers: {
       'Content-Type': 'application/json'
     }
   });
+}
+
+
+/**
+ * Lädt Kontakte aus Firebase und weist sie `contactsFirebase` zu.
+ * Es rekonstruiert das Feld `username` aus `prename` und `surename`
+ * für die lokale Verwendung innerhalb der Anwendung.
+ * @returns {Promise<void>}
+ */
+async function loadContactsFromFirebase() {
+  let response = await fetch(BASE_URL + "/join/contacts.json");
+  if (response.ok) {
+    let data = await response.json();
+    let loadedContacts = Object.values(data || {});
+    
+    // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
+    contactsFirebase = loadedContacts.map(contact => {
+      // Rekonstruiert den Benutzernamen aus Vor- und Nachname
+      const username = `${contact.prename || ''} ${contact.surename || ''}`.trim();
+      
+      // Gibt ein neues Objekt zurück, das den rekonstruierten Benutzernamen
+      // und alle anderen Eigenschaften aus Firebase enthält.
+      return {
+        ...contact, // Beinhaltet id, prename, surename, email, phone, mobile
+        username: username // Fügt das username-Feld für die lokale Logik hinzu
+      };
+    });
+
+    renderAvatar(); // Diese Funktion wird nun wie erwartet funktionieren
+  } else {
+    contactsFirebase = [];
+  }
 }
 
 
@@ -132,22 +185,26 @@ async function patchDataToServer(path = "", data) {
 
 /**
  * Loads tasks from server, parses them, and updates the task list.
+/**
+ * Loads data from a specified Firebase path.
  * @async
- * @param {string} [path=""] - API endpoint path for tasks.
+ * @param {string} [path=""] - The path to the data in Firebase.
+ * @returns {Promise<Object|null>} The JSON data from Firebase, or null if the request fails.
  */
 async function getDataFromServer(path = "") {
-  await loadContactsFromFirebase();
-  let response = await fetch(BASE_URL + path + ".json");
-  let responseToJson = await response.json();
-  let tasksKeysArray = Object.keys(responseToJson);
-
-  for (let index = 0; index < tasksKeysArray.length; index++) {
-    tasks.push(firbaseObject(index, responseToJson, tasksKeysArray));
+  try {
+    let response = await fetch(BASE_URL + path + ".json");
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.error("Could not fetch data from:", path);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
   }
-  renderTaskInToColumn();
-  await deleteNotFoundedUserFromTask();
 }
-
 
 /**
  * Constructs a task object from Firebase response data.
