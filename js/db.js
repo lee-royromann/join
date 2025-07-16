@@ -13,20 +13,35 @@ let contactsFirebase = [];
 
 
 /**
- * Loads contacts from Firebase and assigns them to `contactsFirebase`.
+ * Lädt Kontakte aus Firebase und weist sie `contactsFirebase` zu.
+ * Diese Version filtert 'null'-Einträge heraus, die in Firebase existieren könnten.
  * @returns {Promise<void>}
  */
 async function loadContactsFromFirebase() {
   let response = await fetch(BASE_URL + "/join/contacts.json");
   if (response.ok) {
     let data = await response.json();
-    contactsFirebase = Object.values(data || {});
+    let loadedContacts = Object.values(data || {});
+    
+    // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
+    contactsFirebase = loadedContacts
+      // WICHTIG: Diese Zeile filtert alle 'null'-Einträge heraus.
+      .filter(contact => contact) 
+      .map(contact => {
+        // Dieser Code wird nur noch für gültige Kontakt-Objekte ausgeführt.
+        const username = `${contact.prename || ''} ${contact.surename || ''}`.trim();
+        
+        return {
+          ...contact,
+          username: username
+        };
+      });
+
     renderAvatar();
   } else {
     contactsFirebase = [];
   }
 }
-
 
 /**
  * Renders avatar initials from usernames into `contactsFirebase` objects.
@@ -244,3 +259,4 @@ async function deleteNotFoundedUserFromTask() {
     });
   }
 }
+
