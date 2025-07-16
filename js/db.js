@@ -32,14 +32,19 @@ async function loadContactsFromFirebase() {
  * Renders avatar initials from usernames into `contactsFirebase` objects.
  */
 function renderAvatar() {
-  contactsFirebase.forEach(contact => {
-    contact.avatar = contact.username
-      .split(" ")
-      .map(name => name[0].toUpperCase())
-      .join("");
-  });
+ contactsFirebase.forEach(contact => {
+  if (!contact.username){
+  contact.avatar = "";
+  return;
 }
 
+contact.avatar = contact.username
+  .split(" ")
+  .filter(name => name.length > 0)
+  .map(name => name[0].toUpperCase())
+  .join("");
+});
+} 
 
 /**
  * Speichert `contactsFirebase` in Firebase mit einer spezifischen Struktur.
