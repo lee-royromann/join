@@ -194,8 +194,10 @@ function renderAssignedAvatars(task) {
 }
 
 function startDragging(id) {
+    console.log("startDragging – ID erhalten:", id);
     currentDraggedID = String(id);   //Prüfe ob String oder Number
     //hier noch die Schiefstellung einbringen
+    document.getElementById(id).classList.add("card-transform")
 }
 
 function allowDrop(event) {
@@ -204,33 +206,9 @@ function allowDrop(event) {
 
 async function moveTo(status) {
     tasksFirebase[currentDraggedID]['status'] = status;
-    renderTasks();
-    
+    renderTasks();  
     const updatedTask = tasksFirebase[currentDraggedID];
     await saveTaskToFirebase(currentDraggedID, updatedTask);
-    
-    // console.log("event: ", event);
-    // const targetColumn = event.currentTarget.id;
-    // console.log("Zielspalte:", targetColumn);
-
-    // if (currentDraggedID && tasksFirebase[currentDraggedID]) {
-    //     // Task aus tasksFirebase holen und kopieren
-    //     const task = JSON.parse(JSON.stringify(tasksFirebase[currentDraggedID]));
-
-    //     // Status aktualisieren
-    //     task.status = targetColumn;
-
-    //     // Speichern in Firebase
-    //     await saveTaskToFirebase(currentDraggedID, task);
-
-    //     // Lokale Kopie auch aktualisieren
-    //     tasksFirebase[currentDraggedID] = task;
-
-    //     // Board neu rendern
-    //     renderTasks();
-    // } else {
-    //     console.warn("Kein gültiger Task gefunden für ID:", currentDraggedID);
-    // }
 }
 
 function renderOverlayTask(index) {
