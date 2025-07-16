@@ -22,9 +22,14 @@ function cleanContactsList() {
 function groupInitials() {
     let group = {};
     contactsFirebase.forEach(contact => {
-        let lastNameInitinal = contact.username.split(" ")[0][0].toUpperCase();
-        if (!group[lastNameInitinal]) group[lastNameInitinal] = [];
-        group[lastNameInitinal].push(contact);
+        if (contact && contact.username.trim() !== ""){
+            const initial = contact.username.trim()[0].toUpperCase();
+            
+            if (!group[initial]) {
+                group[initial] = [];
+            }
+            group[initial].push(contact);
+        }
     });
     createHTML(group);
 }
