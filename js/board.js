@@ -194,38 +194,43 @@ function renderAssignedAvatars(task) {
 }
 
 function startDragging(id) {
-    currentDraggedID = String(id);
+    currentDraggedID = String(id);   //Prüfe ob String oder Number
     //hier noch die Schiefstellung einbringen
 }
 
 function allowDrop(event) {
     event.preventDefault();
-    console.log("Allow drop funktioniert")
 }
 
-async function moveTo(event) {
-    console.log("Move to wird aufgerufen");
-    const targetColumn = event.currentTarget.id;
-    console.log("Zielspalte:", targetColumn);
+async function moveTo(status) {
+    tasksFirebase[currentDraggedID]['status'] = status;
+    renderTasks();
+    
+    const updatedTask = tasksFirebase[currentDraggedID];
+    await saveTaskToFirebase(currentDraggedID, updatedTask);
+    
+    // console.log("event: ", event);
+    // const targetColumn = event.currentTarget.id;
+    // console.log("Zielspalte:", targetColumn);
 
-    if (currentDraggedID && tasksFirebase[currentDraggedID]) {
-        // Task aus tasksFirebase holen und kopieren
-        const task = JSON.parse(JSON.stringify(tasksFirebase[currentDraggedID]));
+    // if (currentDraggedID && tasksFirebase[currentDraggedID]) {
+    //     // Task aus tasksFirebase holen und kopieren
+    //     const task = JSON.parse(JSON.stringify(tasksFirebase[currentDraggedID]));
 
-        // Status aktualisieren
-        task.status = targetColumn;
+    //     // Status aktualisieren
+    //     task.status = targetColumn;
 
-        // Speichern in Firebase
-        await saveTaskToFirebase(currentDraggedID, task);
+    //     // Speichern in Firebase
+    //     await saveTaskToFirebase(currentDraggedID, task);
 
-        // Lokale Kopie auch aktualisieren
-        tasksFirebase[currentDraggedID] = task;
+    //     // Lokale Kopie auch aktualisieren
+    //     tasksFirebase[currentDraggedID] = task;
 
-        // Board neu rendern
-        renderTasks();
-    } else {
-        console.warn("Kein gültiger Task gefunden für ID:", currentDraggedID);
-    }
+    //     // Board neu rendern
+    //     renderTasks();
+    // } else {
+    //     console.warn("Kein gültiger Task gefunden für ID:", currentDraggedID);
+    // }
 }
 
 function renderOverlayTask(index) {
@@ -241,23 +246,3 @@ function renderEditTask(index) {
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
     contentRef.innerHTML += getEditTemplate();
 }
-
-
-
-
-// Erweiterung der Funktion renderTasks, um die Tasks aus Firebase zu laden
-// function render Tasks() {
-//     const columns = ['to_do', 'in_progress', 'await_feedback', 'done'];
-//     columns.forEach(column => {      
-//         const contentRef = document.getElementById(column.replace('_', '-')); // Replace _ with - for HTML IDs
-//         contentRef.innerHTML = '';   
-//         tasksFirebase.forEach(task => {
-//             if (task.status === column) {        
-//                 // Assuming generateTaskHTML is a function that returns the HTML for a task
-//                 // You need to implement this function to generate the HTML for each task
-//                 //Brauche ich hier eine for schleife um das i zu füllen oder kann ich mit der ID arbeiten?
-//                 // contentRef.innerHTML += getTaskTemplate(task, i);
-
-//             }
-//         });
-//     });
