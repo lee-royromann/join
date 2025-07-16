@@ -18,15 +18,15 @@ const avatarColors = {
 
 let currentDraggedID;
 
-const BASE_URL = "https://joinmr-add3b-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
  * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
  * @returns {Promise<void>}
  */
 async function loadTasksFromFirebase() {
-    let response = await fetch(BASE_URL + "tasks.json");
-    // let response = await fetch(BASE_URL + "join/tasks.json");
+    // let response = await fetch(BASE_URL + "tasks.json");
+    let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
     tasksFirebase = responseToJson;
     console.log(tasksFirebase);
@@ -38,8 +38,8 @@ async function loadTasksFromFirebase() {
  * @returns {Promise<void>}
  */
 async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "contacts.json");
-//   let response = await fetch(BASE_URL + "/join/contacts.json");
+//   let response = await fetch(BASE_URL + "contacts.json");
+  let response = await fetch(BASE_URL + "/join/contacts.json");
   if (response.ok) {
     let data = await response.json();
     contactsFirebase = Object.values(data || {});
@@ -87,7 +87,7 @@ async function boardInit() {
 
 async function saveTaskToFirebase(taskId, fullTaskObject) {
     try {
-        const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
+        const response = await fetch(`${BASE_URL}join/tasks/${taskId}.json`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
