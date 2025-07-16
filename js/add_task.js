@@ -1,4 +1,6 @@
 // Global variables
+const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+let contactsFirebase = [];
 const priorities = ['urgent', 'medium', 'low'];
 let currentOpenDropdown = null;
 let subtaskCount = 0;
@@ -23,74 +25,6 @@ const figmaColors = {
     color14: "#FFC701",
     color15: "#0038FF"
 };
-
-
-// Test array for rendering contacts
-const contacts = [
-    {
-        id: 0,
-        prename: 'alice',
-        surname: 'wonderland',
-        email: 'alice.wonderland@example.com',
-        phone: '+41319876543',
-        mobile: '+41769876543',
-        color: '#FF7A00'
-    },
-    {
-        id: 1,
-        prename: 'john',
-        surname: 'doe',
-        email: 'john.doe@example.com',
-        phone: '+41311234567',
-        mobile: '+41761234567',
-        color: '#FFE62B'
-    },
-    {
-        id: 2,
-        prename: 'danny',
-        surname: 'mensing',
-        email: 'danny.mensing@example.com',
-        phone: '+41312345678',
-        mobile: '+41762345678',
-        color: '#c3624a'
-    },
-    {
-        id: 3,
-        prename: 'lee-roy',
-        surname: 'romann',
-        email: 'lee-roy.romann@example.com',
-        phone: '+41314567890',
-        mobile: '+41764567890',
-        color: '#00BCD4'
-    },
-    {
-        id: 4,
-        prename: 'mechthild',
-        surname: 'rölfing',
-        email: 'mechthild.roelfing@example.com',
-        phone: '+41312345678',
-        mobile: '+41762345678',
-        color: '#FF5EB3'
-    },
-    {
-        id: 5,
-        prename: 'philipp',
-        surname: 'novak',
-        email: 'philipp.novak@example.com',
-        phone: '+41311223344',
-        mobile: '+41761223344',
-        color: '#1FD7C1'
-    },
-    {
-        id: 6,
-        prename: 'satoshi',
-        surname: 'nakamoto',
-        email: 'satoshi.nakamoto@example.com',
-        phone: '+41310987654',
-        mobile: '+41760987654',
-        color: '#FFA35E'
-    },
-];
 
 
 // Test array for rendering categories
@@ -162,7 +96,8 @@ function addTaskToDB(taskObject, status) {
  */
 function initAddTask() {
     setDefaultTaskPriority();
-    populateContactsToDropdown();
+    loadContactsFromFirebase();
+    // populateContactsToDropdown();
     populateCategoriesToDropdown();
 }
 
@@ -172,7 +107,7 @@ function initAddTask() {
  * This function will finally interact with data from the Firebase DB. (coming soon..)
  * At the moment this function is using a local test array.
  */
-function populateContactsToDropdown() {
+function populateContactsToDropdown(contacts) {
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
     for (let index = 0; index < contacts.length; index++) {
@@ -197,6 +132,23 @@ function populateCategoriesToDropdown() {
         categoriesRef.innerHTML += categoryTemplate;
     }
 };
+
+
+
+/**
+ * This function is loading the contacts from Firebase.
+ * After loading is finished, the contacts are getting populated to the dropdown.
+ */
+async function loadContactsFromFirebase() {
+  let response = await fetch(BASE_URL + "/join/contacts.json");
+  if (response.ok) {
+    let data = await response.json();
+    contactsFirebase = Object.values(data || {});
+    populateContactsToDropdown(contactsFirebase);
+  } else {
+    contactsFirebase = [];
+  }
+}
 
 
 /** 
@@ -376,8 +328,11 @@ function selectContact(id) {
  */
 function displayBadgeOfSelectedContact(id) {
     let contactBadgesRef = document.getElementById("contact-badges");
-    for (let index = 0; index < contacts.length; index++) {
-        const contact = contacts[index];
+    for (let index = 0; index < contactsFirebase.length; index++) {
+        const contact = contactsFirebase[index];
+        if (contact == null) {
+            continue;
+        }
         if (contact.id == id) {
             let contactBadgeTemplate = getSelectedContactBadge(contact);
             contactBadgesRef.innerHTML += contactBadgeTemplate;
@@ -553,15 +508,6 @@ function convertHtmlStringToDomElement(htmlString) {
 }
 
 
-/** */
-// function getSubtasksFromTask(index) {
-//     const specificTask = tasks.find(t => t.id === index);
-//     const subtasks = specificTask?.subtask ?? [];
-//     console.log(subtasks);
-//     return subtasks;
-// }
-
-
 /**
  * Function to increment the current number of subtasks by one.
  * Should be called whenever a new subtask is added to keep the subtask count in sync.
@@ -585,7 +531,8 @@ function decreaseSubtaskCount() {
  * Function to increment the subtask ID counter by one.
  * Ensures that each new subtask gets a unique identifier.
  * Should be called after creating a new subtask.
- */function increaseSubtaskIdCount() {
+ */
+function increaseSubtaskIdCount() {
     subtaskIdCount++;
 }
 
@@ -593,7 +540,8 @@ function decreaseSubtaskCount() {
 /**
  * Function to reset the subtask count and the subtask ID counter to zero.
  * Used to clear or reinitialize the form to ensure all counter are set to default.
- */function resetAllCounters() {
+ */
+function resetAllCounters() {
     subtaskCount = 0;
     subtaskIdCount = 0;
 }
@@ -654,7 +602,6 @@ function uncheckAllContacts() {
 function getDatasetInfos() {
     const items = document.querySelectorAll('.form__contact');
     const contacts = [];
-
     items.forEach(item => {
         const contact = {
             id: parseInt(item.dataset.id, 10),
@@ -663,69 +610,8 @@ function getDatasetInfos() {
             color: item.dataset.color,
             selected: item.querySelector('.form__contact-checkbox')?.checked || false
         };
-
         contacts.push(contact);
     });
-
     console.log(contacts);
     return contacts;
 }
-
-
-// function renderAssignedAvatars(task) {
-//   return task.assignedTo
-//     .map(userId => {
-//       const contact = contactsFirebase.find(c => c.id === userId);
-//       if (contact) {
-//         const avatar = contact.avatar || "?";
-//         const colorKey = contact.id % 10; // letzte Ziffer der ID
-//         const color = avatarColors[colorKey] || "#cccccc"; // fallback
-//         return `<div class="card__credential" style="background-color: ${color};">${avatar}</div>`;
-//       }
-//       return "";
-//     })
-//     .join("");
-// }
-
-
-//korrigiertes Dataset - jedes Task ein Objekt nicht Array
-//  "tasks": {
-//       "0": {
-//         "title": "Task 1",
-//         "description": "Beschreibung 1",
-//         "date": "2025-06-25",
-//         "category": "User Story",
-//         "priority": "medium",
-//         "assignedTo": [0, 2, 3],
-//         "subtask": [
-//           {
-//             "title": "Zahlen aktualisieren",
-//             "done": false
-//           },
-//           {
-//             "title": "CI-Folien integrieren",
-//             "done": true
-//           }
-//         ],
-//         "status": "in progress"
-//       },
-//       "1": {
-//         "title": "Task 2",
-//         "description": "Beschreibung 2",
-//         "date": "2025-06-25",
-//         "category": "Technical Task",
-//         "priority": "urgent",
-//         "assignedTo": [0],
-//         "subtask": [
-//           {
-//             "title": "Zahlen aktualisieren",
-//             "done": false
-//           },
-//           {
-//             "title": "CI-Folien integrieren",
-//             "done": true
-//           }
-//         ],
-//         "status": "await feedback"
-//       }
-//     }
