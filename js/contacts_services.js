@@ -214,20 +214,24 @@ function openEditRespContact(id) {
     overlay.innerHTML = showOverlayEditResp(contact);
 }
 
-
-/**
- * Updates user data in contacts array from input fields.
- * @param {string|number} id - Contact ID.
- */
+// Änderung Danny zum erhalt des surname
 function updateUserData(id) {
-    let n = document.getElementById('contactname');
-    let e = document.getElementById('email');
-    let p = document.getElementById('phone');
+    // Werte aus den Formularfeldern auslesen
+    let nameValue = document.getElementById('contactname').value;
+    let emailValue = document.getElementById('email').value;
+    let phoneValue = document.getElementById('phone').value;
     let contact = contactsFirebase.find(c => c.id === id);
+
     if (contact) {
-        contact.username = n.value;
-        contact.email = e.value;
-        contact.phone = p.value;
+        // Den vollen Namen aufteilen in Vor- und Nachname
+        let nameParts = nameValue.trim().split(/\s+/);
+        
+        // Die Felder im bestehenden Kontakt-Objekt aktualisieren
+        contact.prename = nameParts[0]; // Wichtig: prename aktualisieren
+        contact.surname = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''; // Wichtig: surname aktualisieren
+        contact.username = nameValue.trim(); // username für die sofortige Anzeige
+        contact.email = emailValue;
+        contact.phone = phoneValue;
     } else {
         console.log("Kontakt nicht gefunden");
     }
@@ -261,20 +265,27 @@ function reSortUser() {
     contactsFirebase.forEach((user, index) => { user.id = index; });
 }
 
-
-/**
- * Gathers form input data and pushes a new contact into the array.
- */
+// Änderung Danny zwecks erhalt des surname
 function pushNewContact() {
-    let n = document.getElementById('contactname');
-    let e = document.getElementById('email');
-    let p = document.getElementById('phone');
+    // Werte aus den Formularfeldern auslesen
+    let nameValue = document.getElementById('contactname').value;
+    let emailValue = document.getElementById('email').value;
+    let phoneValue = document.getElementById('phone').value;
+
+    // Den vollen Namen aufteilen in Vor- und Nachname
+    let nameParts = nameValue.trim().split(/\s+/);
+    let prename = nameParts[0];
+    let surname = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+    // Neues Kontakt-Objekt mit korrekten Feldern erstellen
     let newContact = {
         id: contactsFirebase.length,
-        username: n.value,
-        email: e.value,
-        phone: p.value,
-        color: "brown"
+        prename: prename, // Wichtig: prename speichern
+        surname: surname, // Wichtig: surname speichern
+        username: nameValue.trim(), // username für die sofortige Anzeige
+        email: emailValue,
+        phone: phoneValue,
+        color: "brown" // Hier könnte man auch eine Zufallsfarbe einfügen
     };
     contactsFirebase.push(newContact);
 }
