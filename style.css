@@ -1,6 +1,8 @@
 body {
   display: flex;
   overflow-x: hidden;
+  max-width: 1440px;
+  width: 100%;
 }
 
 html {
