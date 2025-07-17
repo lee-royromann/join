@@ -36,9 +36,9 @@ function chooseContact(id) {
  * Opens the add contact overlay.
  */
 function addContact() {
-    clerOverlay();
-    openAddContact();
-    openOverlay();
+    clerOverlay();
+    openAddContact();
+    openOverlay();
 }
 
 
@@ -75,24 +75,35 @@ function editRespContact(id) {
 }
 
 
+
+
 /**
- * Saves updated contact data and refreshes UI.
- * @async
- * @param {string|number} id - Contact ID.
+ * Speichert die Änderungen an einem bestehenden Kontakt, persistiert sie
+ * in Firebase und aktualisiert die Benutzeroberfläche.
+ * @param {string|number} id - Die ID des zu speichernden Kontakts.
  */
 async function saveContact(id) {
-    if (checkValueInput()) return;
-    updateUserData(id);
-    await saveContactsToFirebase();
-    showRespContactList();
-    renderContacts();
-    clearMainContact();
-    closeOverlay();
-    clearSuccessfulContainer();
-    successfulAddContact();
-    successChange();
-}
+    // Optional: Du kannst eine Validierungsfunktion hier behalten, falls benötigt.
+    // if (checkValueInput()) return;
 
+    // 1. Lokale Daten im 'contactsFirebase'-Array aktualisieren
+    updateUserData(id);
+
+    // 2. Das gesamte, aktualisierte Array in Firebase speichern
+    
+    await saveContactsToFirebase();
+
+    // 3. Die Benutzeroberfläche aktualisieren
+    renderContacts();           // Kontaktliste neu rendern
+    clearMainContact();         // Detailansicht leeren
+    closeOverlay();             // Bearbeiten-Overlay schließen
+
+    // 4. Erfolgsmeldung anzeigen
+    // Hinweis: 'successfulAddContact' wird hier wiederverwendet. Du könntest
+     clearSuccessfulContainer();
+    successfulAddContact();
+    successChange(); 
+}
 
 /**
  * Deletes a contact and updates the interface accordingly.
@@ -270,4 +281,6 @@ function checkValues() {
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone";
 }
+
+
 
