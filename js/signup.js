@@ -162,7 +162,7 @@ function readsTheInputValues() {
  */
 function checkValues() {
     let { username, email, passwdReg, passwdConf, checkBox } = readsTheInputValues();
-    if (checkEmptyInput(username) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(username)) return "Username";
+    if (checkEmptyInput(username) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(username)) return "Username";
     if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "EmailSignUp";
     if (checkEmptyInput(passwdReg) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdReg)) return "PasswordReg";
     if (checkEmptyInput(passwdConf) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdConf)) return "PasswordConf";
@@ -183,4 +183,3 @@ function checkValueInput() {
     }
     return false;
 }
-
