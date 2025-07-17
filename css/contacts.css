@@ -1,3 +1,12 @@
+body {
+  display: flex;
+  overflow-x: hidden;
+  max-width: 1440px;
+  width: 100%;
+  background-color: pink;
+}
+
+
 .flex-box-center-center {
     display: flex;
     justify-content: center;
