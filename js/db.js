@@ -99,7 +99,7 @@ async function loadContactsFromFirebase() {
                         username: username // Fügt das username-Feld für die lokale Logik hinzu
                     };
                 });
-            renderAvatar(); // Stellt sicher, dass Avatare nach dem Laden neu gerendert werden.
+           
         } else {
             contactsFirebase = [];
         }
@@ -174,7 +174,7 @@ async function loadContactsFromFirebase() {
       };
     });
 
-    renderAvatar(); // Diese Funktion wird nun wie erwartet funktionieren
+ 
   } else {
     contactsFirebase = [];
   }
@@ -307,5 +307,7 @@ async function deleteNotFoundedUserFromTask() {
     });
   }
 }
+
+
 
 
