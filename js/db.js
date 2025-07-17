@@ -149,37 +149,41 @@ async function saveContactsToFirebase() {
 }
 
 
-/**
- * Lädt Kontakte aus Firebase und weist sie `contactsFirebase` zu.
- * Es rekonstruiert das Feld `username` aus `prename` und `surename`
- * für die lokale Verwendung innerhalb der Anwendung.
- * @returns {Promise<void>}
- */
 async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "/join/contacts.json");
-  if (response.ok) {
-    let data = await response.json();
-    let loadedContacts = Object.values(data || {});
-    
-    // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
-    contactsFirebase = loadedContacts.map(contact => {
-      // Rekonstruiert den Benutzernamen aus Vor- und Nachname
-      const username = `${contact.prename || ''} ${contact.surename || ''}`.trim();
-      
-      // Gibt ein neues Objekt zurück, das den rekonstruierten Benutzernamen
-      // und alle anderen Eigenschaften aus Firebase enthält.
-      return {
-        ...contact, // Beinhaltet id, prename, surename, email, phone, mobile
-        username: username // Fügt das username-Feld für die lokale Logik hinzu
-      };
-    });
+    try {
+        const response = await fetch(BASE_URL + "/join/contacts.json");
+        if (!response.ok) {
+            // Fehler beim Abrufen der Daten, leeres Array verwenden
+            contactsFirebase = [];
+            return;
+        }
 
- 
-  } else {
-    contactsFirebase = [];
-  }
+        const data = await response.json();
+        if (data) {
+            // Wandelt das Firebase-Objekt in ein Array um
+            const loadedContacts = Object.values(data);
+            
+            contactsFirebase = loadedContacts
+                .filter(contact => contact) // Stellt sicher, dass keine null-Einträge verarbeitet werden
+                .map(contact => {
+                    // KORREKTE ZEILE: Baut den vollen Namen aus prename und surname zusammen
+                    const username = `${contact.prename || ''} ${contact.surname || ''}`.trim();
+
+                    // Gibt ein neues Objekt zurück, das alle Felder enthält
+                    return {
+                        ...contact,       // Alle alten Felder (prename, surname, etc.)
+                        username: username  // Der neu und korrekt erstellte username
+                    };
+                });
+        } else {
+            // Wenn keine Daten in Firebase sind
+            contactsFirebase = [];
+        }
+    } catch (error) {
+        console.error("Fehler beim Laden der Kontakte aus Firebase:", error);
+        contactsFirebase = [];
+    }
 }
-
 
 /**
  * Saves user data from `userFirebase` to Firebase.
@@ -307,6 +311,23 @@ async function deleteNotFoundedUserFromTask() {
     });
   }
 }
+
+/**
+ * Speichert das gesamte Kontakt-Array in Firebase und überschreibt die vorhandenen Daten.
+ * Dies stellt sicher, dass neue und bearbeitete Kontakte korrekt persistiert werden.
+ */
+async function saveAllContactsToFirebase() {
+    const response = await fetch(BASE_URL + "/join/contacts.json", {
+        method: "PUT", // 'PUT' überschreibt die Daten am Zielpfad komplett.
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactsFirebase), // Das gesamte lokale Array wird gesendet.
+    });
+    return response;
+}
+
+
 
 
 
