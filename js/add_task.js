@@ -30,6 +30,9 @@ function initAddTask() {
 function populateContactsToDropdown(contacts) {
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
+    
+    // Check if logged in or guest -> add (You)
+
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
         let contactTemplate = getContactListItem(contact);
@@ -425,47 +428,65 @@ function increaseSubtaskIdCount() {
 
 /** 
  * Function to add a task to the Firebase Realtime Database.
- * Comig soon...
  */
-function addTaskToDB(event, status) {
-    // console.log(event);
-    // console.log(status);
+async function addTaskToDB(event, status) {
     event.preventDefault();
-    let taskObject = getTaskData();
-    // console.log("Add task to firebase realtime DB");
-    console.log(taskObject);
-    clearForm();
+    try {
+        const taskObject = await getTaskData();
+        console.log(taskObject.id);
+        const response = await fetch(`${BASE_URL}/join/tasks/${taskObject.id}.json`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(taskObject)
+        });
+        if (!response.ok) {
+            throw new Error(`Serverfehler: ${response.status}`);
+        }
+        console.log("Added task to DB successfully!");
+    } catch (error) {
+        console.error("Fehler beim Hinzufügen der Aufgabe:", error.message);
+    }
 }
 
 
 /**
- * This function is creating a task based on the form input.
+ * Function to create a task based on the form input.
  * Form Validation is not implemented actually but will follow soon.
  */
-function getTaskData() {
+async function getTaskData() {
     const title = document.getElementById("task-title").value.trim();
     const description = document.getElementById("description").value.trim();
     const date = document.getElementById("task-due-date").value;
     const category = document.getElementById("category-input").value;
+    const categoryRaw = category ? convertCategoryTextToDbFormat(category) : "no category";
     const priority = choosenPriority;
     const assignedTo = getSelectedContactIds();
     const subtasks = getSubtasks();
-    const newTask = {
+    const data = await getDataFromServer("/join/tasks");
+    const lastId = getLastFirebaseTaskId(data);
+    const numericId = parseInt(lastId, 10);
+    const newId = isNaN(numericId) ? "0" : (numericId + 1).toString();
+    if (!newId) {
+        throw new Error("newId konnte nicht ermittelt werden");
+    }
+    return {
         title,
         description,
         date,
-        category,
+        category: categoryRaw,
         priority,
         assignedTo,
         subtask: subtasks,
-        status: "to-do"
+        status: "to-do",
+        id: newId
     };
-    return newTask;
 }
 
 
 /**
- * This function is collectiong all assignes contact ID's and pushes them to the array.
+ * Function to collect all assignes contact ID's and pushes them to the array.
  * The Array will be returned to the calling function.
 */
 function getSelectedContactIds() {
@@ -483,16 +504,17 @@ function getSelectedContactIds() {
 
 
 /**
- * This function is collecting all created subtasks below the subtask inputfield.
+ * Function to collect all created subtasks below the subtask inputfield.
  * The Array will be returned to the calling function.
  */
 function getSubtasks() {
     const listItems = document.querySelectorAll('#subtask-list .form__subtask-item');
     const subtasks = [];
     listItems.forEach(subtask => {
-        const text = subtask.dataset.text?.trim();
-        if (text) {
-            subtasks.push({text});
+        const title = subtask.dataset.text?.trim();
+        const done = false;
+        if (title) {
+            subtasks.push({title, done});
         }
     });
     return subtasks;
@@ -500,7 +522,37 @@ function getSubtasks() {
 
 
 /**
- * Function to reset the task form to its initial state.
+ * Function to convert the selected category name into the database format.
+ * Example: Technical Task -> technical-task
+ * It uses a regualar expression to convert the string.
+ */
+function convertCategoryTextToDbFormat(category) {
+    return category.toLowerCase().replace(/\s+/g, '-');
+};
+
+
+/**
+ * Function to indentify the highest task ID currently stored in the firebase DB.
+ * The ID is needed to generate the next higher ID for creating a new task.
+ * If there is no task in the DB or something is invalid, the function returns "-1".
+ */
+function getLastFirebaseTaskId(data) {
+    if (!data || typeof data !== "object") {
+        return "-1";
+    }
+    const numericKeys = Object.keys(data)
+        .map(key => parseInt(key, 10))
+        .filter(id => !isNaN(id));
+    if (numericKeys.length === 0) {
+        return "-1";
+    }
+    const maxId = Math.max(...numericKeys);
+    return maxId.toString();
+}
+
+
+/**
+ * Function to reset the taskform to its initial state.
  * Unchecks all selected contacts.
  * Resets the priority state of all buttons.
  * Sets the default task priority.
@@ -520,7 +572,7 @@ function clearForm() {
 
 
 /**
- * Function to uncheck all selected contacts in the dropdown list.
+ * Function to selected all contacts in the dropdown list.
  * Resets each contact's checkbox state, removes visual highlighting, switches the checkbox icons back to the unchecked.
  */
 function uncheckAllContacts() {
@@ -589,4 +641,23 @@ function resetAllCounters() {
 function deleteAllSubtasks() {
     let subtasks = document.getElementById("subtask-list");
     subtasks.innerHTML = "";
+}
+
+
+/**
+ * Function to fetch specific data from the server base by the choosen path.
+ */
+async function getDataFromServer(path) {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+    if (response.ok) {
+        return await response.json();
+    } else {
+        console.error("Could not fetch data from:", path);
+        return null;
+    }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        return null;
+    }
 }
