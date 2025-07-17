@@ -268,5 +268,6 @@ function checkValues() {
     let { n, e, p } = readsTheInputValues();
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
-    if (checkEmptyInput(p) || !/^\d+$/.test(p)) return "Phone";
+   if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone";
 }
+
