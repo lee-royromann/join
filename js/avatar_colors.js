@@ -1,3 +1,4 @@
+/** getUniqueAvatarColor() Überall bei color brown , html änderung hinzufügen avatar_colors.js */
 /**
  * @file Ein Modul zur Verwaltung und Zuweisung einzigartiger Avatar-Farben.
  * Verwendet eine vordefinierte Palette, um sicherzustellen, dass die Farben ästhetisch ansprechend sind
