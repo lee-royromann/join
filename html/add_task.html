@@ -29,19 +29,21 @@
     <title>Join | Add Task</title>
 
     <!-- Favicon -->
-    <!-- Filepath needs to be changed for the webserver! ./ -->
     <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
 
     <!-- CSS -->
-    <!-- Filepath needs to be changed for the webserver! ./ -->
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/add_task.css">
 
+    <!-- CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- JS -->
-    <!-- Filepath needs to be changed for the webserver! ./ -->
     <script src="../js/add_task.js" defer></script>
     <script src="../js/add_task_templates.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js" defer></script>
 </head>
 
 <body onload="initAddTask()">
@@ -125,8 +127,8 @@
                             <fieldset class="form__group">
                                 <label class="form__label" for="task-due-date">Due date<span class="required-asterisk">*</span></label>
                                 <div class="form__wrapper-date">
-                                    <input class="form__input" id="task-due-date" type="text" name="due-date" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
-                                    <span class="form__icon-calendar" aria-hidden="true">
+                                    <input class="form__input" id="task-due-date" type="text" name="due-date" placeholder="DD.MM.YYYY" required readonly/>
+                                    <span class="form__icon-calendar" aria-hidden="true" onclick="pickDate(event)">
                                         <img src="../assets/img/icon/calendar.svg" alt="Calendar icon for Due Date" />
                                     </span>
                                 </div>

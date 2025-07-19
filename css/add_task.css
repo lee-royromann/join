@@ -75,7 +75,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #c6dcf1;
+    background-color: #000000;
 }
 
 .page {
@@ -762,4 +762,18 @@ a {
 
 .d_none {
     display: none;
+}
+
+/* DATE PICKER */
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+    pointer-events: none;
+    position: absolute;
+}
+
+input[type="date"] {
+    position: relative;
+    z-index: 1;
 }

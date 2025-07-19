@@ -10,15 +10,53 @@ const categories = [
     "technical-task",
     "user-story"
 ];
-
+let flatpickrInstance = null;
 
 /** 
  * Function to initialize the Add Task page.
  */
 function initAddTask() {
+    initFlatpickr();
     setDefaultTaskPriority();
     loadContactsFromFirebase();
     populateCategoriesToDropdown();
+}
+
+
+/**
+ * Function to initialize the Flatpickr instance for the due date input field.
+ * This setup includes localization, date formatting, and ISO output handling.
+ * This code snippet I found on https://flatpickr.js.org/
+ */
+function initFlatpickr() {
+    const input = document.getElementById('task-due-date');
+    const isoField = document.getElementById('task-due-date-iso');
+
+    flatpickrInstance = flatpickr(input, {
+        locale: 'de',
+        dateFormat: 'd.m.Y',
+        disableMobile: true,
+        minDate: 'today',
+        allowInput: true,
+        onChange: function (selectedDates) {
+            if (selectedDates.length > 0 && isoField) {
+                const isoDate = selectedDates[0].toISOString().split('T')[0];
+                isoField.value = isoDate;
+            }
+        }
+    });
+}
+
+
+/**
+ * Function to open the Flatpickr calendar when triggered via icon or inputfield
+ */
+function pickDate(event) {
+    stopEventPropagation(event);
+    if (flatpickrInstance) {
+        flatpickrInstance.open();
+        flatpickrInstance.input.focus();
+    }
 }
 
 
