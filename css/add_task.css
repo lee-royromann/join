@@ -760,6 +760,11 @@ a {
     color: #ff8190;
 }
 
+.required-frame {
+    border: 1px solid #ff8190;
+    border-radius: 4px;
+}
+
 .d_none {
     display: none;
 }

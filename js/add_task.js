@@ -540,9 +540,8 @@ function clearForm() {
     resetAllCounters();
     deleteAllSubtasks();
     choosenPriority = "";
-    if (form) {
-        form.reset();
-    }
+    clearHighlightetRequiredFields();
+    form.reset();
 }
 
 
@@ -626,12 +625,12 @@ function deleteAllSubtasks() {
 async function getDataFromServer(path) {
     try {
         let response = await fetch(BASE_URL + path + ".json");
-    if (response.ok) {
-        return await response.json();
-    } else {
-        console.error("Could not fetch data from:", path);
-        return null;
-    }
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error("Could not fetch data from:", path);
+            return null;
+        }
     } catch (error) {
         console.error("Error fetching data:", error);
         return null;
@@ -645,12 +644,11 @@ async function getDataFromServer(path) {
  */
 async function createTask(event, taskStatus) {
     event.preventDefault();
-    
-    if (!validateFormData()) {
+    const validation = validateFormData();
+    if (!validation.isValid) {
         console.log("Form incomplete! Please fill out all required fields.");
         return;
     }
-    
     try {
         const task = await getTaskData(taskStatus);
         await addTaskToDB(task);
@@ -667,10 +665,13 @@ async function createTask(event, taskStatus) {
  */
 function validateFormData() {
     const fields = getRequiredInputfieldValues();
-    return isFieldValid(fields.title) && 
-           isFieldValid(fields.dueDate) && 
-           isFieldValid(fields.category);
+    const isTitelValid = highlightRequiredFields('task-title', fields.title);
+    const isDueDateValid = highlightRequiredFields('task-due-date', fields.dueDate);
+    const isCategoryValid = highlightRequiredFields('category-input', fields.category);
+    const isValid = isTitelValid && isDueDateValid && isCategoryValid;
+    return { isValid, isTitelValid, isDueDateValid, isCategoryValid };
 }
+
 
 
 /**
@@ -679,6 +680,37 @@ function validateFormData() {
  */
 function isFieldValid(value) {
     return value && value.trim() !== "";
+}
+
+
+/**
+ * Adds or removes validation classes and hint visibility based on input validity.
+ */
+function highlightRequiredFields(inputId, value) {
+    const input = document.getElementById(inputId);
+    const fieldset = input.closest('fieldset');
+    const hint = fieldset.querySelector('.required-hint');
+    const isValid = isFieldValid(value);
+    if (!isValid) {
+        input.classList.add('required-frame');
+        if (hint) hint.classList.remove('d_none');
+    } else {
+        input.classList.remove('required-frame');
+        if (hint) hint.classList.add('d_none');
+    }
+    return isValid;
+}
+
+
+/**
+ * Removes all validation hint elements and input highlight frames within the form.
+ */
+function clearHighlightetRequiredFields() {
+    const inputs = document.querySelectorAll('.required-frame');
+    inputs.forEach(input => input.classList.remove('required-frame'));
+
+    const hints = document.querySelectorAll('.required-hint');
+    hints.forEach(hint => hint.classList.add('d_none'));
 }
 
 
