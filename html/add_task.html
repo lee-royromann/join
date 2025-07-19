@@ -103,7 +103,7 @@
                 <h2 class="title">Add Task</h2>
 
                 <!-- Form -->
-                <form class="form">
+                <form class="form" id="form-add-task">
                     <div class="form__columns">
 
                         <!-- Column Left -->
@@ -266,7 +266,7 @@
                                     />
                                 </svg>
                             </button>
-                            <button type="submit" class="form__button-create" onclick="addTaskToDB(event, 'medium')">Create Task<img src="../assets/img/icon/done_white.svg" alt="Button to create task"></button>
+                            <button type="submit" class="form__button-create" onclick="createTask(event, 'to-do')">Create Task<img src="../assets/img/icon/done_white.svg" alt="Button to create task"></button>
                         </div>
                     </footer>
                 </form>

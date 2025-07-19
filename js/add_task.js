@@ -456,65 +456,6 @@ function increaseSubtaskIdCount() {
 }
 
 
-/** 
- * Function to add a task to the Firebase Realtime Database.
- */
-async function addTaskToDB(event, status) {
-    event.preventDefault();
-    try {
-        const taskObject = await getTaskData();
-        console.log(taskObject.id);
-        const response = await fetch(`${BASE_URL}/join/tasks/${taskObject.id}.json`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(taskObject)
-        });
-        if (!response.ok) {
-            throw new Error(`Serverfehler: ${response.status}`);
-        }
-        console.log("Added task to DB successfully!");
-    } catch (error) {
-        console.error("Fehler beim Hinzufügen der Aufgabe:", error.message);
-    }
-}
-
-
-/**
- * Function to create a task based on the form input.
- * Form Validation is not implemented actually but will follow soon.
- */
-async function getTaskData() {
-    const title = document.getElementById("task-title").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const date = document.getElementById("task-due-date").value;
-    const category = document.getElementById("category-input").value;
-    const categoryRaw = category ? convertCategoryTextToDbFormat(category) : "no category";
-    const priority = choosenPriority;
-    const assignedTo = getSelectedContactIds();
-    const subtasks = getSubtasks();
-    const data = await getDataFromServer("/join/tasks");
-    const lastId = getLastFirebaseTaskId(data);
-    const numericId = parseInt(lastId, 10);
-    const newId = isNaN(numericId) ? "0" : (numericId + 1).toString();
-    if (!newId) {
-        throw new Error("newId konnte nicht ermittelt werden");
-    }
-    return {
-        title,
-        description,
-        date,
-        category: categoryRaw,
-        priority,
-        assignedTo,
-        subtask: subtasks,
-        status: "to-do",
-        id: newId
-    };
-}
-
-
 /**
  * Function to collect all assignes contact ID's and pushes them to the array.
  * The Array will be returned to the calling function.
@@ -590,7 +531,8 @@ function getLastFirebaseTaskId(data) {
  * Resets internal subtask counters.
  * Deletes all existing subtasks from the DOM.
  */
-function clearForm() {  
+function clearForm() {
+    const form = document.querySelector('form-add-task');
     uncheckAllContacts();
     resetPriorityButtons();
     setDefaultTaskPriority();
@@ -598,7 +540,11 @@ function clearForm() {
     resetAllCounters();
     deleteAllSubtasks();
     choosenPriority = "";
+    if (form) {
+        form.reset();
+    }
 }
+
 
 
 /**
@@ -689,5 +635,180 @@ async function getDataFromServer(path) {
     } catch (error) {
         console.error("Error fetching data:", error);
         return null;
+    }
+}
+
+
+/**
+ * Function to handle the event when the create task buttons gets clicked.
+ * It validates the inputs and adds the task to DB if everything is valid.
+ */
+async function createTask(event, taskStatus) {
+    event.preventDefault();
+    
+    if (!validateFormData()) {
+        console.log("Form incomplete! Please fill out all required fields.");
+        return;
+    }
+    
+    try {
+        const task = await getTaskData(taskStatus);
+        await addTaskToDB(task);
+        handleTaskCreationSuccess(task);
+    } catch (error) {
+        handleTaskCreationError(error);
+    }
+}
+
+
+/**
+ * Function to validate the task form inputs.
+ * It returns true if valid or false when not.
+ */
+function validateFormData() {
+    const fields = getRequiredInputfieldValues();
+    return isFieldValid(fields.title) && 
+           isFieldValid(fields.dueDate) && 
+           isFieldValid(fields.category);
+}
+
+
+/**
+ * Function to validate if the input is empty after trimming.
+ * It returns true when field input is not empty.
+ */
+function isFieldValid(value) {
+    return value && value.trim() !== "";
+}
+
+
+/**
+ * Function to return trimmed values of required input fields.
+ */
+function getRequiredInputfieldValues() {
+    const title = document.getElementById("task-title").value.trim();
+    const dueDate = document.getElementById("task-due-date").value.trim();
+    const category = document.getElementById("category-input").value.trim();
+    return { title, dueDate, category };
+}
+
+
+/**
+ * Function to collect task form input data by calling helper functions.
+ * It returns a structured task object.
+ */
+async function getTaskData(status) {
+    const inputs = collectFormInputs();
+    const processedData = processFormData(inputs);
+    const id = await generateTaskId();
+    return {
+        title: processedData.title,
+        description: processedData.description,
+        date: processedData.date,
+        category: processedData.category,
+        priority: processedData.priority,
+        assignedTo: processedData.assignedTo,
+        subtask: processedData.subtask,
+        status: status,
+        id: id
+    };
+}
+
+
+/**
+ * Function to collect form input values from the DOM elements.
+ */
+function collectFormInputs() {
+    return {
+        title: document.getElementById("task-title").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        date: document.getElementById("task-due-date").value,
+        category: document.getElementById("category-input").value,
+        priority: choosenPriority,
+        rawAssignedTo: getSelectedContactIds(),
+        rawSubtasks: getSubtasks()
+    };
+}
+
+
+/**
+ * Function to preprocess raw form data.
+ * It converts the selected category to the team internal defined format.
+ * It makes sure, that empty arrays have a defaul text -> _empty.
+ * Firebase DB is not saving empty arrays for some reason.
+ * Its using ternary operators to keep the function size small
+ * Uses the object spread operator (...inputs) to include all input fields and overrides specific keys with normalized values.
+ */
+function processFormData(inputs) {
+    const categoryRaw = inputs.category ? convertCategoryTextToDbFormat(inputs.category) : "no category";
+    const assignedTo = Array.isArray(inputs.rawAssignedTo) && inputs.rawAssignedTo.length > 0 ? inputs.rawAssignedTo : ["_empty"];
+    const subtask = Array.isArray(inputs.rawSubtasks) && inputs.rawSubtasks.length > 0 ? inputs.rawSubtasks : ["_empty"];
+    return {
+        ...inputs,
+        category: categoryRaw,
+        assignedTo,
+        subtask
+    };
+}
+
+
+/**
+ * Function to generate the next available Task ID.
+ * It checks the ID of the last added task and is taking the next higher id.
+ * If there is no task so far, it will start with id -> 0.
+ */
+async function generateTaskId() {
+    const data = await getDataFromServer("/join/tasks");
+    const lastId = getLastFirebaseTaskId(data);
+    const numericId = parseInt(lastId, 10);
+    const newId = isNaN(numericId) ? "0" : (numericId + 1).toString();
+    if (!newId) {
+        throw new Error("newId could not be identified!");
+    }
+    return newId;
+}
+
+
+/**
+ * Function to handle a successfully added task.
+ * It logs messages to the console so far.
+ * Next step will be to implement some visible user feedback.
+ */
+function handleTaskCreationSuccess(task) {
+    console.log("Task created:", task);
+    console.log("Added task to DB successfully!");
+}
+
+
+/**
+ * Function to handle a unsuccessfully added task -> error.
+ * It logs a message to the console so far.
+ * Next step will be to implement some visible user feedback.
+ */
+function handleTaskCreationError(error) {
+    console.error("Fehler beim Hinzufügen der Aufgabe:", error.message);
+}
+
+
+/**
+ * Adds a task object to the Firebase Realtime Database.
+ */
+async function addTaskToDB(task) {
+    try {
+        const response = await fetch(`${BASE_URL}/join/tasks/${task.id}.json`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(task)
+            }
+        );
+        if (!response.ok) {
+            throw new Error(`Serverfehler: ${response.status}`);
+        }
+        console.log("Added task to DB successfully!");
+        clearForm();
+    } catch (error) {
+        console.error("Failes to add the task to the Firebase DB:", error.message);
     }
 }
