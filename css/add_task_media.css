@@ -1,0 +1,152 @@
+@media (max-width: 1350px) {
+    .content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media (max-width: 1230px) {
+    .form__button-prio {
+        max-width: 120px;
+    }
+
+    .form__button-prio svg {
+        display: none;
+    }
+}
+
+@media (max-width: 1140px) {
+    .form__button-prio {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 1010px) {
+    .form__button-prio {
+        font-size: 18px;
+        max-width: 90px;
+    }
+}
+
+@media (max-width: 950px) {
+
+    .form__separator {
+        display: none;
+    }
+
+    .form__columns {
+        max-width: 440px;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form {
+        gap: 20px;
+        align-items: center;
+        max-width: 440px;
+        width: 100%;
+    }
+
+    .form__columns {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form__button-prio {
+        max-width: 120px;
+        font-size: 20px;
+    }
+
+    .form__button-prio svg {
+        display: block;
+    }
+
+    .form__actions {
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        max-width: 440px;
+        width: 100%;
+        gap: 10px
+    }
+
+    .form__action-buttons {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 690px) {
+    .form__button-prio {
+        max-width: 100px;
+    }
+
+    .form__button-prio svg {
+        display: none;
+    }
+}
+
+@media (max-width: 630px) {
+    .content {
+        padding-top: 20px;
+        padding-bottom: 40px;
+    }
+
+    .sidebar__menu a span{
+        display: none;
+    }
+
+    .sidebar__logo-image {
+        width: 60px;
+    }
+
+}
+
+@media (max-width: 540px) {
+    .sidebar {
+        max-width: 160px;
+    }
+
+    .form__button-prio {
+        font-size: 18px;
+        max-width: 90px;
+    }
+
+    .form__button-create span,
+    .form__button-clear span {
+        display: none;
+        width: 60px;
+    }
+}
+
+@media (max-width: 510px) {
+
+    .title {
+        font-size: 40px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .header__title {
+        display: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 330px) {
+    .form__button-prio {
+        max-width: 80px;
+    }
+}
