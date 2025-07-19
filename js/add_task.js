@@ -30,20 +30,12 @@ function initAddTask() {
  */
 function initFlatpickr() {
     const input = document.getElementById('task-due-date');
-    const isoField = document.getElementById('task-due-date-iso');
-
     flatpickrInstance = flatpickr(input, {
         locale: 'de',
         dateFormat: 'd.m.Y',
         disableMobile: true,
         minDate: 'today',
-        allowInput: true,
-        onChange: function (selectedDates) {
-            if (selectedDates.length > 0 && isoField) {
-                const isoDate = selectedDates[0].toISOString().split('T')[0];
-                isoField.value = isoDate;
-            }
-        }
+        allowInput: true
     });
 }
 
