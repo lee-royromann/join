@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,43 +12,58 @@
         <link rel="stylesheet" href="../css/board_overlay.css" />
         <link rel="stylesheet" href="../css/board_edit.css" />
         <link rel="stylesheet" href="../css/fonts.css" />
-
+        <link rel="stylesheet" href="../css/add_task.css">
+        <link rel="stylesheet" href="../css/add_task_overlay.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         
-        <script defer src="../js/board.js"></script>
-        <script defer src="../js/board_templates.js"></script>
-     
+        <script src="../js/add_task_templates.js" defer></script>
+        <script src="../js/add_task.js" defer></script>
+        <script src="../js/board.js" defer></script>
+        <script src="../js/board_templates.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js" defer></script>
+
     </head>
 
     <body onload="boardInit()">
         <div class="board-page">
             <div class="board-page__card">
 
-                <nav class="sidebar">
+                <!-- Navigation -->
+                <nav class="sidebar" aria-label="Main Navigation">
+
+                    <!-- Logo -->
                     <div class="sidebar__logo">
-                        <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo">
+                        <a href="../index.html">
+                            <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
+                        </a>
                     </div>
-                    <div class="sidebar__menu">
-                        <div class="sidebar__item">
-                            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary">
-                            <a href="/html/summary.html" class="sidebar__text">Summary</a>
-                        </div>
-                        <div class="sidebar__item">
-                            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task">
-                            <a href="/html/add_task.html" class="sidebar__text">Add Task</a>
-                        </div>
-                        <div class="sidebar__item">
-                            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board">
-                            <a href="/html/board.html" class="sidebar__text">Board</a>
-                        </div>
-                        <div class="sidebar__item">
-                            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts">
-                            <a href="/html/contacts.html" class="sidebar__text">Contacts</a>
-                        </div>
-                    </div>
-                    <div class="sidebar__legal">
+
+                    <!-- Page Links -->
+                    <section class="sidebar__menu">
+                        <a href="/html/summary.html" class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
+                            <span class="sidebar__text">Summary</span>
+                        </a>
+                        <a href="/html/add_task.html" class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
+                            <span class="sidebar__text">Add Task</span>
+                        </a>
+                        <a href="/html/board.html" class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
+                            <span class="sidebar__text">Board</span>
+                        </a>
+                        <a href="/html/contacts.html" class="sidebar__item">
+                            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
+                            <span class="sidebar__text">Contacts</span>
+                        </a>
+                    </section>
+
+                    <!-- Legal Links -->
+                    <section class="sidebar__legal">
                         <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
-                        <a href="/html/legal_notice.html" class="sidebar__text">Legal notice</a>
-                    </div>
+                        <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
+                    </section>
                 </nav>
 
                 <div class="kanban">
@@ -73,7 +88,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            <button class="kanban__add-button">
+                            <button class="kanban__add-button" onclick="showTaskOverlay('to-do')">
                                 <span class="kanban__add-text">Add Task</span>
                                 <img src="../assets/img/icon/add_plus.svg" alt="Add Task" class="kanban__add-icon">    
                             </button>
@@ -84,15 +99,15 @@
                          <div class="kanban__subtitle-row">
                             <div class="kanban__subtitle">
                                 <span class="kanban__subtitle-text">To do</span>
-                                <span class="kanban__subtitle-plus"></span>
+                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('to-do')"></span>
                             </div>
                             <div class="kanban__subtitle">
                                 <span class="kanban__subtitle-text">In progress</span>
-                                <span class="kanban__subtitle-plus"></span>
+                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('in-progress')"></span>
                             </div>
                             <div class="kanban__subtitle">
                                 <span class="kanban__subtitle-text">Await feedback</span>
-                                <span class="kanban__subtitle-plus"></span>
+                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('await-feedback')"></span>
                             </div>
                             <div class="kanban__subtitle">
                                 <span class="kanban__subtitle-text">Done</span>
@@ -121,7 +136,8 @@
             </div>
         </div>
 
-       
+        <!-- Task Overlay -->
+        <div class="task__overlay" id="task__overlay"></div>
     </body>
 </html>
 
