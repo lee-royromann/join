@@ -647,6 +647,7 @@ async function getDataFromServer(path) {
  * It also checks the origin, where the function get called from.
  * -> When function call comes from the board-page, then it will close the overlay
  * and reloads the page, to display the new added task.
+ * -> When the funtction call comes from another page than board-page it redirects to the board-page.
  * OPTIMIZATION: Maybee better to refresh the page by fetching tasks from DB instead of reloading the page.
  */
 async function createTask(event, taskStatus, origin) {
@@ -666,6 +667,8 @@ async function createTask(event, taskStatus, origin) {
     if (origin === 'board-page') {
         closeTaskOverlay();
         window.location.reload();
+    } else {
+        window.location.href = './board.html';
     }
 }
 
