@@ -859,8 +859,9 @@ async function addTaskToDB(task) {
 
 /**
  * Function to display the add-task overlay for creating a new task.
- * Gets the reference container to load a template in it.
- * Gets the overlay template and renders it into the refContainer.
+ * Gets the reference container by it's ID to load a template in it.
+ * Gets the overlay template and renders it into the templateContainer.
+ * Next it's going eas-in the backdrop and roundabout one cycle later it slides-in the template from the right side.
  * After that it's going to preset the priority and populates all the data to the dropdowns.
  * Finally it's initalizing the datepicker and shows the overlay after all is done.
  */
@@ -872,7 +873,7 @@ function showTaskOverlay(taskStatus) {
     templateContainer.classList.add('task__overlay--visible');
     setTimeout(() => {
         templateContainer.classList.add('task__overlay--slide-in');
-    }, 20);
+    }, 15);
     setDefaultTaskPriority();
     loadFirebaseContacts();
     populateCategoriesToDropdown();
@@ -882,6 +883,10 @@ function showTaskOverlay(taskStatus) {
 
 /**
  * Function to simply close the overlay by clicking on the cross icon.
+ * First it's going to slide-out the template to right side (out of viewport).
+ * Shortly after it removes the visibility of the backdrop,
+ * empties the innerHTML of the overlay container
+ * and finally hides the overlay container completely.
  */
 function closeTaskOverlay() {
     const taskOverlay = document.getElementById('task__overlay');
@@ -890,5 +895,5 @@ function closeTaskOverlay() {
         taskOverlay.classList.remove('task__overlay--visible');
         taskOverlay.innerHTML = "";
         taskOverlay.style.display = 'none';
-    }, 200);
+    }, 150);
 }
