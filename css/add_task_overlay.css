@@ -1,0 +1,87 @@
+.task__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(0px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: ease-in-out 0.3s;
+    z-index: 1000;
+}
+
+.task__overlay-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 870px;
+    max-width: 1116px;
+    width: 100%;
+    padding: 60px;
+    gap: 30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30px;
+    border: 1px solid var(--border-modal);
+    overflow: hidden;
+    /* box-shadow: 0px 0px 15px rgba(32, 26, 19, 0.186); */
+    position: relative;
+}
+
+.task__overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    width: 100%;
+}
+
+.task__overlay-form {
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 1086px;
+    width: 100%;
+    height: 100%;
+}
+
+.task__overlay-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 61px;
+    font-weight: 700;
+    /* padding-bottom: 30px; */
+}
+
+.task__overlay-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    width: 32px;
+    border-radius: 56px;
+}
+
+.task__overlay-close img {
+    height: 14px;
+}
+
+.task__overlay-close:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.task__overlay-footer {
+    /* position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
