@@ -59,6 +59,7 @@
     padding-right: var(--header-padding-right);
     background-color: var(--header-color-bg);
     box-shadow: 0px 4px 6px var(--header-color-shadow);
+    z-index: 10000;
 }
 
 .header__title {
