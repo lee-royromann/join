@@ -12,6 +12,15 @@ const categories = [
 ];
 let flatpickrInstance = null;
 
+
+/**
+ * Function (eventlistener) to wait, till the hole DOM content is loaded before calling init function.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    initAddTask();
+});
+
+
 /** 
  * Function to initialize the Add Task page.
  */
@@ -541,7 +550,9 @@ function clearForm() {
     deleteAllSubtasks();
     choosenPriority = "";
     clearHighlightetRequiredFields();
-    form.reset();
+    if (form) {
+        form.reset();
+    }
 }
 
 
