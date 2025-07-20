@@ -59,8 +59,6 @@ function pickDate(event) {
  * At the moment this function is using a local test array.
  */
 function populateContactsToDropdown(contacts) {
-    console.log("LOAD CONTACTS TO DROPDOWN (LEE)");
-    
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
     
@@ -91,13 +89,11 @@ function populateCategoriesToDropdown() {
 
 
 /**
- * This function is loading the contacts from Firebase.
+ * Function to load the contacts from Firebase.
  * After loading is finished, the contacts are getting populated to the dropdown.
  */
 async function loadFirebaseContacts() {
-    let response = await fetch(FIREBASE_URL + "/join/contacts.json");
-    console.log(response);
-    
+    let response = await fetch(FIREBASE_URL + "/join/contacts.json");   
     if (response.ok) {
         let data = await response.json();
         firebaseContacts = Object.values(data || {});
@@ -699,7 +695,7 @@ function isFieldValid(value) {
 
 
 /**
- * Adds or removes validation classes and hint visibility based on input validity.
+ * Function to remove validation classes and hint visibility based on input validity.
  */
 function highlightRequiredFields(inputId, value) {
     const input = document.getElementById(inputId);
@@ -718,7 +714,7 @@ function highlightRequiredFields(inputId, value) {
 
 
 /**
- * Removes all validation hint elements and input highlight frames within the form.
+ * Function to remove all validation hint elements and input highlight frames within the form.
  */
 function clearHighlightetRequiredFields() {
     const inputs = document.querySelectorAll('.required-frame');
