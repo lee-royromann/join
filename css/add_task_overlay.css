@@ -10,8 +10,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    transition: ease-in-out 0.3s;
+    transition: opacity 0.3s ease-in-out;
     z-index: 1000;
+    opacity: 0;
+}
+
+.task__overlay--visible {
+    opacity: 1;
 }
 
 .task__overlay-content {
@@ -29,7 +34,12 @@
     border: 1px solid var(--border-modal);
     overflow: hidden;
     /* box-shadow: 0px 0px 15px rgba(32, 26, 19, 0.186); */
-    position: relative;
+    transform: translateX(100vw);
+    transition: transform 0.2s ease-in-out;
+}
+
+.task__overlay--slide-in .task__overlay-content {
+    transform: translateX(0);
 }
 
 .task__overlay-header {

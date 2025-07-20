@@ -865,15 +865,18 @@ async function addTaskToDB(task) {
  * Finally it's initalizing the datepicker and shows the overlay after all is done.
  */
 function showTaskOverlay(taskStatus) {
-    let templateContainer = document.getElementById('task__overlay');
-    let taskTemplate = "";
-    taskTemplate = getAddTaskOverlayTemplate(taskStatus);
+    const templateContainer = document.getElementById('task__overlay');
+    let taskTemplate = getAddTaskOverlayTemplate(taskStatus);
     templateContainer.innerHTML = taskTemplate;
+    templateContainer.style.display = 'flex';
+    templateContainer.classList.add('task__overlay--visible');
+    setTimeout(() => {
+        templateContainer.classList.add('task__overlay--slide-in');
+    }, 20);
     setDefaultTaskPriority();
     loadFirebaseContacts();
     populateCategoriesToDropdown();
     initFlatpickr();
-    templateContainer.style.display = 'flex';
 }
 
 
@@ -881,7 +884,11 @@ function showTaskOverlay(taskStatus) {
  * Function to simply close the overlay by clicking on the cross icon.
  */
 function closeTaskOverlay() {
-    let taskOverlay = document.getElementById('task__overlay');
-    taskOverlay.innerHTML = "";
-    taskOverlay.style.display = 'none';
+    const taskOverlay = document.getElementById('task__overlay');
+    taskOverlay.classList.remove('task__overlay--slide-in');
+    setTimeout(() => {
+        taskOverlay.classList.remove('task__overlay--visible');
+        taskOverlay.innerHTML = "";
+        taskOverlay.style.display = 'none';
+    }, 200);
 }
