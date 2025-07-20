@@ -1,6 +1,6 @@
 // Global variables
-const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
-let contactsFirebase = [];
+const FIREBASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+let firebaseContacts = [];
 const priorities = ['urgent', 'medium', 'low'];
 let currentOpenDropdown = null;
 let subtaskCount = 0;
@@ -16,10 +16,10 @@ let flatpickrInstance = null;
 /** 
  * Function to initialize the Add Task page.
  */
-function initAddTask() {
+async function initAddTask() {
     initFlatpickr();
     setDefaultTaskPriority();
-    loadContactsFromFirebase();
+    await loadFirebaseContacts();
     populateCategoriesToDropdown();
 }
 
@@ -59,6 +59,8 @@ function pickDate(event) {
  * At the moment this function is using a local test array.
  */
 function populateContactsToDropdown(contacts) {
+    console.log("LOAD CONTACTS TO DROPDOWN (LEE)");
+    
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
     
@@ -92,15 +94,17 @@ function populateCategoriesToDropdown() {
  * This function is loading the contacts from Firebase.
  * After loading is finished, the contacts are getting populated to the dropdown.
  */
-async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "/join/contacts.json");
-  if (response.ok) {
-    let data = await response.json();
-    contactsFirebase = Object.values(data || {});
-    populateContactsToDropdown(contactsFirebase);
-  } else {
-    contactsFirebase = [];
-  }
+async function loadFirebaseContacts() {
+    let response = await fetch(FIREBASE_URL + "/join/contacts.json");
+    console.log(response);
+    
+    if (response.ok) {
+        let data = await response.json();
+        firebaseContacts = Object.values(data || {});
+        populateContactsToDropdown(firebaseContacts);
+    } else {
+        firebaseContacts = [];
+    }
 }
 
 
@@ -258,8 +262,8 @@ function selectContact(id) {
  */
 function displayBadgeOfSelectedContact(id) {
     let contactBadgesRef = document.getElementById("contact-badges");
-    for (let index = 0; index < contactsFirebase.length; index++) {
-        const contact = contactsFirebase[index];
+    for (let index = 0; index < firebaseContacts.length; index++) {
+        const contact = firebaseContacts[index];
         if (contact == null) {
             continue;
         }
@@ -627,7 +631,7 @@ function deleteAllSubtasks() {
  */
 async function getDataFromServer(path) {
     try {
-        let response = await fetch(BASE_URL + path + ".json");
+        let response = await fetch(FIREBASE_URL + path + ".json");
         if (response.ok) {
             return await response.json();
         } else {
@@ -644,8 +648,12 @@ async function getDataFromServer(path) {
 /**
  * Function to handle the event when the create task buttons gets clicked.
  * It validates the inputs and adds the task to DB if everything is valid.
+ * It also checks the origin, where the function get called from.
+ * -> When function call comes from the board-page, then it will close the overlay
+ * and reloads the page, to display the new added task.
+ * OPTIMIZATION: Maybee better to refresh the page by fetching tasks from DB instead of reloading the page.
  */
-async function createTask(event, taskStatus) {
+async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
     if (!validation.isValid) {
@@ -658,6 +666,10 @@ async function createTask(event, taskStatus) {
         handleTaskCreationSuccess(task);
     } catch (error) {
         handleTaskCreationError(error);
+    }
+    if (origin === 'board-page') {
+        closeTaskOverlay();
+        window.location.reload();
     }
 }
 
@@ -826,11 +838,11 @@ function handleTaskCreationError(error) {
 
 
 /**
- * Adds a task object to the Firebase Realtime Database.
+ * Function to add a task object to the Firebase realtime database.
  */
 async function addTaskToDB(task) {
     try {
-        const response = await fetch(`${BASE_URL}/join/tasks/${task.id}.json`, {
+        const response = await fetch(`${FIREBASE_URL}/join/tasks/${task.id}.json`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -846,4 +858,34 @@ async function addTaskToDB(task) {
     } catch (error) {
         console.error("Failes to add the task to the Firebase DB:", error.message);
     }
+}
+
+
+/**
+ * Function to display the add-task overlay for creating a new task.
+ * Gets the reference container to load a template in it.
+ * Gets the overlay template and renders it into the refContainer.
+ * After that it's going to preset the priority and populates all the data to the dropdowns.
+ * Finally it's initalizing the datepicker and shows the overlay after all is done.
+ */
+function showTaskOverlay(taskStatus) {
+    let templateContainer = document.getElementById('task__overlay');
+    let taskTemplate = "";
+    taskTemplate = getAddTaskOverlayTemplate(taskStatus);
+    templateContainer.innerHTML = taskTemplate;
+    setDefaultTaskPriority();
+    loadFirebaseContacts();
+    populateCategoriesToDropdown();
+    initFlatpickr();
+    templateContainer.style.display = 'flex';
+}
+
+
+/**
+ * Function to simply close the overlay by clicking on the cross icon.
+ */
+function closeTaskOverlay() {
+    let taskOverlay = document.getElementById('task__overlay');
+    taskOverlay.innerHTML = "";
+    taskOverlay.style.display = 'none';
 }
