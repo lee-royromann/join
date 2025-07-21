@@ -236,15 +236,7 @@ body {
   gap: 26px;
   flex-grow: 1;
   height: 100%;
-  overflow-y: auto;
-
-  /* Scrollbar unsichtbar */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.kanban__columns::-webkit-scrollbar {
-    display: none;                /* Chrome, Safari */
+  
 }
 
 .kanban__column {
@@ -253,6 +245,15 @@ body {
     min-height: 100%;
     height: 100%;
     border: 2px solid green; /* optional für visuelle Hilfe */
+    overflow-y: auto;
+
+    /* Scrollbar unsichtbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.kanban__column::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari */
 }
 
 .card--notasks {
