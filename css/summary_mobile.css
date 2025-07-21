@@ -1,4 +1,143 @@
-@media (max-width: 1305px) {
+@media (max-width: 1265px) {
+  .card__greetings-text {
+  font-size: 30px;
+  }
+
+  .card__username {
+    font-size: 47px;
+  }
+}
+
+@media (max-width: 1157px) {
+
+  .card {
+    width: 190px;
+    height: 130px;
+     display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: center;
+  }
+
+
+  .card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card__icon img {
+    width: 20px;
+    height: 16px;
+  }
+
+  .card__number {
+    font-size: 42px;
+  }
+
+  .card__label {
+    font-size: 14px;
+  }
+
+  /* Urgent Card */
+  .card__urgent {
+    width: 400px;
+    height: 130px;
+    padding: 14px;
+  }
+
+  .card__urgent-left {
+    padding-left: 30px;
+  }
+
+  .card__urgent-content {
+    gap: 10px;
+  }
+
+  .card__urgent-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .card__urgent-icon img {
+    width: 20px;
+    height: 16px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 42px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 14px;
+  }
+
+  .card__urgent-seperator {
+    height: 80%;
+    width: 2px;
+    background-color: #D1D1D1;
+    margin: 0 10px;
+  }
+
+  .card__urgent-right {
+    margin-right: 30px;
+    gap: 8px;
+  }
+
+  .card__date {
+    font-size: 16px;
+  }
+
+  .card__deadline {
+    font-size: 12px;
+  }
+
+  /* Overview Cards */
+  .card__overview {
+    width: 120px;
+    height: 120px;
+    padding: 14px;
+  }
+
+  .card__overview .card__number {
+    font-size: 42px;
+  }
+
+  .card__overview .card__label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1007px) {
+.card__greetings-text {
+  font-size: 20px;
+  }
+
+  .card__username {
+    font-size: 37px;
+  }
+}
+
+@media (max-width: 1007px) {
+  .card__greeting {
+    display: none;
+  }
+
+  /* Card greeting einblenden */
+}
+
+@media (max-width: 927px) {
+  .dashboard__title {
+    font-size: 40px;
+  }
+
+  .dashboard__subtitle {
+    font-size: 20px;
+  }
+
+  /* Card greeting einblenden */
+}
+
+@media (max-width: 763px) {
   .sidebar {
     position: fixed;
     bottom: 0;
@@ -101,17 +240,46 @@
   .sidebar__item.active {
     background-color: #091931;
   }
-
+}
   
-  @media (max-width: 768px) {
-    .sidebar {
+ 
+@media (max-width: 768px){
+ .sidebar {
      width: calc(100% - 20px);
     }
+   .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 30px;
   }
-}
 
+.dashboard__title {
+    order: 1;
+    font-size: 42px;
+    margin-bottom: 0;
+  }
+  
+  .dashboard__subtitle {
+    order: 2;
+    font-size: 18px;
+    margin-bottom: 16px;
+    position: static;
+    bottom: auto;
+  }
+  
+  .dashboard__seperator {
+    order: 3;
+    width: 80px;
+    height: 3px;
+    background-color: #29ABE2;
+    position: static;
+    top: auto;
+    margin: 0;
+  }
+  }
 
-@media (max-width: 642px) {
+@media (max-width: 400px) {
 
   .layout-page {
     height: 100vh;
@@ -192,9 +360,7 @@
   justify-content: center;
   }
 
-  .card__header {
   
-  }
 
   .card__icon {
     width: 48px;

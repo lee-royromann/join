@@ -89,7 +89,7 @@ function updateDashboardCounters(tasks) {
  */
 function adjustSidebarToMainWidth() {
 
-    if (window.innerWidth <= 1305) {
+    if (window.innerWidth <= 675) {
         const sidebar = document.querySelector('.sidebar');
         const mainElement = document.querySelector('.main');
 
