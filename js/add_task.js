@@ -21,6 +21,22 @@ async function initAddTask() {
     setDefaultTaskPriority();
     await loadFirebaseContacts();
     populateCategoriesToDropdown();
+    getUsernameInitals();
+}
+
+
+/** Function to get the username initials for the header logo
+ * It's going to load the username from the local storage.
+ * Then it splits the fullname into first- and surname.
+ * After that it's going to grab the first letter of each name
+ * Finally it puts them together and writes it in the element.
+ */
+function getUsernameInitals() {
+    const element = document.getElementById('header__user');
+    const username = localStorage.username;
+    const [firstname, surname] = username.trim().split(" ");
+    const initials = firstname.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase();
+    element.innerHTML = initials;
 }
 
 
