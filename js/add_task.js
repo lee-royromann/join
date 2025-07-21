@@ -254,21 +254,28 @@ function toggleDropdown(event, dropdownId, arrowIconId) {
 function selectContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
     const listItem = document.getElementById(`contact-id-${id}`);
+    const isChecked = checkbox.checked = !checkbox.checked;
+    updateContactSelectionState(id, checkbox, listItem, isChecked);
+    emptySearchField('contact-search');
+}
+
+
+/**
+ * Function to update the visual state and badge logic for a contact,
+ * based on it's actual selection state (checked or not).
+ */
+function updateContactSelectionState(id, checkbox, listItem, isSelected) {
     const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
     const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
-    const isChecked = checkbox.checked = !checkbox.checked;
-    if (isChecked) {
-        iconChecked.classList.remove('d_none');
-        iconUnchecked.classList.add('d_none');
+    iconChecked.classList.toggle('d_none', !isSelected);
+    iconUnchecked.classList.toggle('d_none', isSelected);
+    if (isSelected) {
         highlightContact(checkbox);
         displayBadgeOfSelectedContact(id);
     } else {
-        iconChecked.classList.add('d_none');
-        iconUnchecked.classList.remove('d_none');
         unhighlightContact(checkbox);
         deleteContactBadge(id);
     }
-    emptySearchField('contact-search');
 }
 
 
