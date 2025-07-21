@@ -71,18 +71,22 @@ function pickDate(event) {
 
 /** 
  * Function to populate the contacts to the assignee dropdown list.
- * This function will finally interact with data from the Firebase DB. (coming soon..)
- * At the moment this function is using a local test array.
+ * It iterates through the contacts and appends each user to the dropdown list. 
+ * If the contact's full name matches the currently logged-in user, 
+ * a "(You)" label will be added to the logged in user.
  */
 function populateContactsToDropdown(contacts) {
     let contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
-    
-    // Check if logged in or guest -> add (You)
-
+    let loggedInUser = localStorage.username;
+    let contactTemplate = "";
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
-        let contactTemplate = getContactListItem(contact);
+        if (contact.prename + " " + contact.surname == loggedInUser) {
+            contactTemplate = getContactListItem(contact, "(You)");
+        } else {
+            contactTemplate = getContactListItem(contact, "");
+        }
         contactsRef.innerHTML += contactTemplate;
     }
 }

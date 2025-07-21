@@ -1,4 +1,4 @@
-function getContactListItem(contact) {   
+function getContactListItem(contact, you) {   
     if (!contact || !contact.prename || !contact.surname) {
         // console.warn('Incomplete Contact:', contact);
         return '';
@@ -19,7 +19,7 @@ function getContactListItem(contact) {
             data-color="${contact.color}"
             onclick="selectContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
             <span class="form__contact-badge" style="background-color:${contact.color};">${initials}</span>
-            <span class="form__contact-name">${prenameFull} ${surnameFull}</span>
+            <span class="form__contact-name">${prenameFull} ${surnameFull} ${you}</span>
             <input class="form__contact-checkbox" id="contact-checkbox-${contact.id}" type="checkbox" onclick="selectContact(${contact.id})" hidden/>
             <svg class="form__contact-checkbox-icon-unchecked" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect stroke="currentColor" stroke-width="2" x="1" y="1" width="16" height="16" rx="3"/>
