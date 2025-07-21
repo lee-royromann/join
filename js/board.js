@@ -183,10 +183,12 @@ function renderAssignedAvatars(task) {
     .map(userId => {
       const contact = contactsFirebase.find(c => c.id === userId);
       if (contact) {
-        const avatar = contact.avatar || "?";
+        const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
+        const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
+        const initials = `${prenameInitial}${surnameInitial}`;
         const colorKey = contact.id % 10; // letzte Ziffer der ID
         const color = avatarColors[colorKey] || "#cccccc"; // fallback
-        return `<div class="card__credential" style="background-color: ${color};">${avatar}</div>`;
+        return `<div class="card__credential" style="background-color: ${color};">${initials}</div>`;
       }
       return "";
     })
