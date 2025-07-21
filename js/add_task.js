@@ -224,7 +224,7 @@ function rotateArrowIcon(arrowIconId) {
  * Keeps track of the currently open dropdown to ensure only one is open at a time.
  */
 function toggleDropdown(event, dropdownId, arrowIconId) {
-    stopEventPropagation(event);
+    event.stopPropagation();
     const dropdown = document.getElementById(dropdownId);
     const arrow = document.getElementById(arrowIconId);
     const isOpen = !dropdown.classList.contains('d_none');

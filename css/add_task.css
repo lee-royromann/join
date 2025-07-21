@@ -164,6 +164,7 @@ fieldset {
     font-size: 20px;
     font-weight: 400;
     color: #2a3647;
+    pointer-events: none;
 }
 
 /* FIELDS */
