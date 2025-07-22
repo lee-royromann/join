@@ -57,6 +57,10 @@ async function loadContactsFromFirebase() {
 function openOverlay() {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "flex";
+    overlay.classList.add("overlay--visible");
+    setTimeout(() => {
+        overlay.classList.add('overlay--slide-in');
+    }, 15);
     document.body.style.overflow = 'hidden';
     renderOverlayTask();
 }
@@ -64,6 +68,9 @@ function openOverlay() {
 function closeOverlay() {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "none";
+    overlay.classList.remove("overlay--visible");
+    overlay.classList.remove('overlay--slide-in');
+
     document.body.style.overflow = '';
 }
 
