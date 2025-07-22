@@ -256,16 +256,13 @@ body {
     flex-direction: column;
     min-height: 100%;
     height: 100%;
-    border: 2px solid green; /* optional für visuelle Hilfe */
     overflow-y: auto;
-
-    /* Scrollbar unsichtbar */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 .kanban__column::-webkit-scrollbar {
-    display: none;                /* Chrome, Safari */
+    display: none;                
 }
 
 .card--notasks {
@@ -412,7 +409,3 @@ body {
 .card__credential + .card__credential {
     margin-left: -10px;
 }
-
-.card__credential--color--orange { background: #FF7A00}
-.card__credential--color--purple { background: #9327FF}
-.card__credential--color--pink   { background: #6E52FF} 

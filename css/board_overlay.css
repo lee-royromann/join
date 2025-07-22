@@ -196,10 +196,8 @@
 }
 
 .overlay__subtask:hover {
-   transform: scale(1.01);
    background-color: #eeeeee;
-   padding: 4px 16px;
-   transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+
 }
 
 .overlay__action {
