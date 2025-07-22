@@ -20,6 +20,9 @@ let currentDraggedID;
 
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
+const searchInput = document.getElementById("search-task");
+const noResults = document.getElementById("no-results");
+
 /**
  * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
  * @returns {Promise<void>}
@@ -137,6 +140,62 @@ function renderEmptyColumns(counts) {
       document.getElementById(status).innerHTML = getEmptyColumnTemplate(status);
     }
   });
+}
+
+function searchTask() {
+    const searchTerm = document.getElementById("search-task").value.trim();
+    const warning = document.getElementById("no-results");
+
+    if (searchTerm === "") {
+        renderTasks();  
+        warning.style.display = "none";
+        return;
+    }
+
+    const filtered = filterTasks(searchTerm);
+    updateTaskDisplay(filtered, warning);
+}
+
+function updateTaskDisplay(filtered, warning) {
+  if (Object.keys(filtered).length > 0) {
+    renderFilteredTasks(filtered);
+    warning.style.display = "none";
+  } else {
+    renderTasks();
+    warning.style.display = "block";
+  }
+}
+
+
+function filterTasks(searchTerm) {
+  const lowerSearchTerm = searchTerm.toLowerCase();
+
+  return Object.entries(tasksFirebase)
+    .filter(([_, task]) =>
+      task.title.toLowerCase().includes(lowerSearchTerm) ||
+      task.description.toLowerCase().includes(lowerSearchTerm)
+    )
+    .reduce((acc, [id, task]) => {
+      acc[id] = task;
+      return acc;
+    }, {});
+}
+
+function renderFilteredTasks(filteredTasks) {
+  clearAllColumns();
+
+  const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
+
+  Object.entries(filteredTasks).forEach(([id, task]) => {
+    task.id = id;
+    const column = document.getElementById(task.status);
+    if (column) {
+      column.innerHTML += getTaskTemplate(task);
+      counts[task.status]++;
+    }
+  });
+
+  renderEmptyColumns(counts);
 }
 
 

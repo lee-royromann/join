@@ -78,22 +78,25 @@
                     <div class="kanban__header">
                         <div class="kanban__headline">
                             <span class="kanban__title">Board</span>
+                            
                             <div class="kanban__tools">
                                 <div class="kanban__search-wrapper">
-                                    <input type="text" class="kanban__search-input" placeholder="Find Task">
+                                    <input type="text" class="kanban__search-input" placeholder="Find Task" id="search-task">
                                     <div class="kanban__search-icon-group">
                                         <div class="kanban__search-separator"></div>
                                         <div class="kanban__search-icon-frame">
-                                            <img src="../assets/img/icon/search.svg" alt="Search" class="kanban__search-icon">
+                                            <img src="../assets/img/icon/search.svg" alt="Search" class="kanban__search-icon" onclick="searchTask()">
                                         </div>
                                     </div>
+                                    <span class="no-result" id="no-results">* kein Suchergebnis vorhanden!</span> 
                                 </div>
-                            <button class="kanban__add-button" onclick="showTaskOverlay('to-do')">
-                                <span class="kanban__add-text">Add Task</span>
-                                <img src="../assets/img/icon/add_plus.svg" alt="Add Task" class="kanban__add-icon">    
-                            </button>
+                                <button class="kanban__add-button" onclick="showTaskOverlay('to-do')">
+                                    <span class="kanban__add-text">Add Task</span>
+                                    <img src="../assets/img/icon/add_plus.svg" alt="Add Task" class="kanban__add-icon">    
+                                </button>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="kanban__grid-wrapper"> <!-- flex-grow-Container -->
                          <div class="kanban__subtitle-row">
