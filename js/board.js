@@ -53,8 +53,7 @@ async function loadContactsFromFirebase() {
 }
 
 
-// Achtung: hier die genaue ID ermitteln und als Parameter mitgeben
-function openOverlay() {
+function openOverlay(taskId) {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "flex";
     overlay.classList.add("overlay--visible");
@@ -62,7 +61,7 @@ function openOverlay() {
         overlay.classList.add('overlay--slide-in');
     }, 15);
     document.body.style.overflow = 'hidden';
-    renderOverlayTask();
+    renderOverlayTask(taskId);
 }
 
 function closeOverlay() {
@@ -244,6 +243,31 @@ function getPriorityIcon(priority) {
   return iconMap[priority];
 }
 
+function getSubtaskIcon(status) {
+  return status 
+    ? "../assets/img/icon/checkbox_checked.svg" 
+    : "../assets/img/icon/checkbox.svg";
+}
+
+function getSubtask(subtasks) {
+  if (!subtasks || subtasks.length === 0) {
+    return ;
+  }
+
+  return subtasks.map(sub => `
+    <div class="overlay__subtask">
+      <img src="${getSubtaskIcon(sub.done)}" alt="${sub.done ? 'checkbox-checked' : 'checkbox-unchecked'}">
+      <span>${sub.title}</span>
+    </div>
+  `).join("");
+}
+
+
+function renderSubtask(task) {
+  const container = document.getElementById("subtaskFrame"); // z. B. <div id="subtaskFrame"></div>
+  container.innerHTML = getSubtask(task.subtask);
+}
+
 function renderAssignedAvatars(task) {
   return task.assignedTo
     .map(userId => {
@@ -261,6 +285,22 @@ function renderAssignedAvatars(task) {
     .join("");
 }
 
+function renderAssignedContacts(task) {
+  return task.assignedTo.map(userId => {
+    const contact = contactsFirebase.find(c => c.id === userId);
+    if (!contact) return '';
+
+    const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
+    const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
+    const initials = `${prenameInitial}${surnameInitial}`;
+    const colorKey = contact.id % 10;
+    const color = avatarColors[colorKey] || "#cccccc";
+
+    return getContactTemplate(contact, initials, color);
+  }).join('');
+}
+
+
 function startDragging(id) {
     currentDraggedID = String(id);   //Prüfe ob String oder Number
     document.getElementById(id).classList.add("card-transform")
@@ -277,14 +317,15 @@ async function moveTo(status) {
     await saveTaskToFirebase(currentDraggedID, updatedTask);
 }
 
-function renderOverlayTask(index) {
+function renderOverlayTask(taskId) {
+    const task = tasksFirebase.find(t => t.id === taskId);
+    if (!task) return;
     let contentRef = document.getElementById("story");
     contentRef.innerHTML = '';
-    // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
-    contentRef.innerHTML += getOverlayTemplate();
+    contentRef.innerHTML += getOverlayTemplate(task);
 }
 
-function renderEditTask(index) {
+function renderEditTask() {
     let contentRef = document.getElementById("edit");
     contentRef.innerHTML = '';
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
