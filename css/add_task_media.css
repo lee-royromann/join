@@ -153,12 +153,15 @@
 @media (max-width: 480px) {
     .header {
         padding-left: 20px;
+        padding-right: 20px;
         height: 80px;
     }
 
     .header__user {
         height: 40px;
         width: 40px;
+        font-size: 16px;
+        border: 2px solid var(--header-color-border-user);
     }
 
     .content {
