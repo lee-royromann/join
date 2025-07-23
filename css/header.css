@@ -62,6 +62,10 @@
     z-index: 9999;
 }
 
+.header__logo {
+    width: 32px;
+}
+
 .header__title {
     font-size: var(--header-font-size-title);
     font-weight: var(--header-font-weight-title);
