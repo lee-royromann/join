@@ -22,6 +22,27 @@ async function initAddTask() {
     await loadFirebaseContacts();
     populateCategoriesToDropdown();
     getUsernameInitals();
+    preventFormSubmitOnEnter('form-add-task');
+}
+
+
+/**
+ * Function to prevent a form submission by pressing the enter key
+ * It adds a eventlistener to every inputfield
+ * By a keydown event (enter) it prevents the default behavior
+ * This function is getting called by init
+ */
+function preventFormSubmitOnEnter(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    const inputs = form.querySelectorAll('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    }
 }
 
 
@@ -92,6 +113,7 @@ function populateContactsToDropdown(contacts) {
         contactsRef.innerHTML += contactTemplate;
     }
 }
+
 
 /**
  * Function to move the logged-in user to the top of the contacts array.
@@ -443,6 +465,18 @@ function handleEnterToAddSubtask(event) {
         addSubtask();
     }
 };
+
+
+/**
+ * Function to save a edited subtask when the "Enter" key is pressed inside the input field in edit-mode.
+ * It prevents default behavior to avoid form submission, when key is pressed down.
+ */
+function handleEnterToSaveEditedSubtask(event, id) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        saveSubtask(id);
+    }
+}
 
 
 /**

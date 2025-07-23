@@ -64,7 +64,7 @@ function getSubtaskEditTemplate(id, text) {
     return `
         <li class="form__subtask-item-edit" data-id="${id}">
             <div class="form__subtask-edit-container">
-                <input class="form__subtask-input" type="text" value="${text}"/>
+                <input class="form__subtask-input" type="text" value="${text}" onkeydown="handleEnterToSaveEditedSubtask(event, ${id})"/>
                 <div class="form__subtask-icons--editing">
                     <img class="form__subtask-icon" src="../assets/img/icon/delete.svg" alt="Icon to delete subtask" onclick="deleteSubtask('-edit', ${id})">
                     <span class="form__icon-separator"></span>
