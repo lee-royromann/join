@@ -43,22 +43,6 @@
     --main-bg-color: #f6f7f8;
     --main-color-text: #2a3647;
 
-    --figma-color-1: #FF7A00;
-    --figma-color-2: #FF5EB3;
-    --figma-color-3: #6E52FF;
-    --figma-color-4: #9327FF;
-    --figma-color-5: #00BEE8;
-    --figma-color-6: #1FD7C1;
-    --figma-color-7: #FF745E;
-    --figma-color-8: #FFA35E;
-    --figma-color-9: #FC71FF;
-    --figma-color-10: #FFC701;
-    --figma-color-11: #0038FF;
-    --figma-color-12: #C3FF2B;
-    --figma-color-13: #FFE62B;
-    --figma-color-14: #FF4646;
-    --figma-color-15: #FFBB2B;
-
     /* Paddings & Margins */
     --content-padding-top: 80px;
     --content-padding-bottom: 80px;
@@ -67,7 +51,7 @@
 
     /* Heights & Widths */
     --page-max-height: 1440px;
-    --page-max-width: 1024px;
+    --page-max-width: 1920px;
 }
 
 html {
@@ -76,7 +60,7 @@ html {
 
 body {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     min-height: 100vh;
     background-color: #000000;
     height: 100%;
@@ -86,18 +70,17 @@ body {
     display: flex;
     flex-direction: row;
     width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
+    max-width: var(--page-max-width);
+    /* margin: 0 auto; */
     min-height: 100vh;
     background-color: #fff;
-    overflow: auto;
 }
 
 .main {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 100%;
+    overflow: auto;
     background-color: var(--main-bg-color);
 }
 
@@ -340,8 +323,14 @@ fieldset {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex: auto;
     padding-top: 4px;
     gap: 10px;
+    width: 100%;
+    min-width: 0;
+    max-width: 440px;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .form__contact-badge {
@@ -357,6 +346,7 @@ fieldset {
     font-size: 12px;
     font-weight: 400;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .form__contact-name {

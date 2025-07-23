@@ -22,18 +22,44 @@ async function initAddTask() {
     await loadFirebaseContacts();
     populateCategoriesToDropdown();
     getUsernameInitals();
+    preventFormSubmitOnEnter('form-add-task');
+}
+
+
+/**
+ * Function to prevent a form submission by pressing the enter key
+ * It adds a eventlistener to every inputfield
+ * By a keydown event (enter) it prevents the default behavior
+ * This function is getting called by init
+ */
+function preventFormSubmitOnEnter(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    const inputs = form.querySelectorAll('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    }
 }
 
 
 /** Function to get the username initials for the header logo
  * It's going to load the username from the local storage.
- * Then it splits the fullname into first- and surname.
+ * If it's a guest login it going to display "G" by default
+ * If user is logged in it splits the fullname into first- and surname.
  * After that it's going to grab the first letter of each name
  * Finally it puts them together and writes it in the element.
  */
 function getUsernameInitals() {
     const element = document.getElementById('header__user');
     const username = localStorage.username;
+    if (username == "Guest") {
+        element.innerHTML = "G"
+        return;
+    }
     const [firstname, surname] = username.trim().split(" ");
     const initials = firstname.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase();
     element.innerHTML = initials;
@@ -76,19 +102,45 @@ function pickDate(event) {
  * a "(You)" label will be added to the logged in user.
  */
 function populateContactsToDropdown(contacts) {
-    let contactsRef = document.getElementById("contact-list-ul");
+    const contactsRef = document.getElementById("contact-list-ul");
     contactsRef.innerHTML = "";
-    let loggedInUser = localStorage.username;
-    let contactTemplate = "";
-    for (let index = 0; index < contacts.length; index++) {
-        const contact = contacts[index];
-        if (contact.prename + " " + contact.surname == loggedInUser) {
-            contactTemplate = getContactListItem(contact, "(You)");
-        } else {
-            contactTemplate = getContactListItem(contact, "");
-        }
+    const loggedInUser = localStorage.username;
+    const sortedContacts = moveLoggedInUserToTop(contacts, loggedInUser);
+    for (let i = 0; i < sortedContacts.length; i++) {
+        const contact = sortedContacts[i];
+        const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
+        const contactTemplate = getContactListItem(contact, isLoggedIn ? "(You)" : "");
         contactsRef.innerHTML += contactTemplate;
     }
+}
+
+
+/**
+ * Function to move the logged-in user to the top of the contacts array.
+ * It searches through the contact list for a contact match (pre- & fullname)
+ * If no logged-in contact is found, it does nothing and returns the original array.
+ * If logged-in user found and not at index 0, it moves the contact to the beginning of the array and returns reordered array.
+ */
+function moveLoggedInUserToTop(contacts, loggedInUser) {
+    let index = -1;
+    for (let i = 0; i < contacts.length; i++) {
+        let fullName = contacts[i].prename + " " + contacts[i].surname;
+        if (fullName === loggedInUser) {
+            index = i;
+            break;
+        }
+    }
+    if (index <= 0) {
+        return contacts;
+    }
+    let reordered = [];
+    reordered.push(contacts[index]);
+    for (let i = 0; i < contacts.length; i++) {
+        if (i !== index) {
+            reordered.push(contacts[i]);
+        }
+    }
+    return reordered;
 }
 
 
@@ -114,13 +166,28 @@ function populateCategoriesToDropdown() {
  */
 async function loadFirebaseContacts() {
     let response = await fetch(FIREBASE_URL + "/join/contacts.json");   
+    let loadedContacts = [];
     if (response.ok) {
         let data = await response.json();
-        firebaseContacts = Object.values(data || {});
+        loadedContacts = Object.values(data || {});
+        firebaseContacts = sortContactsByPrename(loadedContacts);
         populateContactsToDropdown(firebaseContacts);
     } else {
         firebaseContacts = [];
     }
+}
+
+
+/**
+ * Function to sort the contacts descending (a-z) by their prenames
+ * It returns the sorted array back
+ */
+function sortContactsByPrename(contacts) {
+    return [...contacts].sort((a, b) => {
+        const prenameA = a.prename?.toLowerCase() || '';
+        const prenameB = b.prename?.toLowerCase() || '';
+        return prenameA.localeCompare(prenameB, 'de');
+    });
 }
 
 
@@ -398,6 +465,18 @@ function handleEnterToAddSubtask(event) {
         addSubtask();
     }
 };
+
+
+/**
+ * Function to save a edited subtask when the "Enter" key is pressed inside the input field in edit-mode.
+ * It prevents default behavior to avoid form submission, when key is pressed down.
+ */
+function handleEnterToSaveEditedSubtask(event, id) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        saveSubtask(id);
+    }
+}
 
 
 /**

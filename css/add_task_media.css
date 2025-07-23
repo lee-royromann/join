@@ -1,4 +1,5 @@
 @media (max-width: 1320px) {
+    .header,
     .content {
         padding-left: 60px;
         padding-right: 60px;
@@ -6,6 +7,7 @@
 }
 
 @media (max-width: 1280px) {
+    .header,
     .content {
         padding-left: 40px;
         padding-right: 40px;
@@ -43,7 +45,7 @@
     .form__columns {
         max-width: 440px;
         width: 100%;
-        gap: 20px;
+        gap: 30px;
     }
 
     .content {
@@ -87,76 +89,56 @@
     }
 }
 
-@media (max-width: 900px) {
-    .header__title {
-        display: none;
-    }
-
-    .header {
-        justify-content: flex-end;
-    }
-}
-
-@media (max-width: 690px) {
-    .form__button-prio {
-        max-width: 100px;
-    }
-
-    .form__button-prio svg {
-        display: none;
-    }
-}
-
-@media (max-width: 630px) {
-    .content {
-        padding-top: 20px;
-        padding-bottom: 40px;
-    }
-
+@media (max-width: 760px) {
     .title {
         font-size: 40px;
-    }
-
-    .sidebar__menu a span{
-        display: none;
     }
 
     .sidebar__logo-image {
         width: 60px;
     }
 
+    .sidebar__menu a span{
+        display: none;
+    }
+}
+
+@media (max-width: 650px) {
+    .header__title {
+        display: none;
+    }
+
+    .header__logo {
+        display: block;
+    }
+
+    .content {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .sidebar {
+        display: none;
+    }
 }
 
 @media (max-width: 540px) {
+    .title {
+        align-self: flex-start;
+    }
+
     .sidebar {
         max-width: 160px;
     }
 
-    .form__button-prio {
-        font-size: 18px;
-        max-width: 90px;
-    }
-
-    .form__button-create span,
-    .form__button-clear span {
-        display: none;
-        width: 60px;
+    .content {
+        gap: 30px;
     }
 }
 
 @media (max-width: 510px) {
     .header {
         padding-left: 40px;
-    }
-
-    .header__container {
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .sidebar {
-        display: none;
     }
 
     .form__button-prio {
@@ -168,9 +150,62 @@
     }    
 }
 
-@media (max-width: 455px) {
+@media (max-width: 480px) {
+    .header {
+        padding-left: 20px;
+        padding-right: 20px;
+        height: 80px;
+    }
+
+    .header__user {
+        height: 40px;
+        width: 40px;
+        font-size: 16px;
+        border: 2px solid var(--header-color-border-user);
+    }
+
+    .content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .form__group label,
+    .form__input,
+    .form__input::placeholder,
+    .form__textarea::placeholder,
+    #contact-search::placeholder,
+    #category-input::placeholder,
+    .form__button-prio span,
+    .form__contact-name,
+    .form__category,
+    .form__button-clear span,
+    .form__button-create span,
+    .required-asterisk {
+        font-size: 16px;
+    }
+
+    .form__input,
+    .form__contact-list li {
+        height: 40px;
+    }
+
     .form__button-prio {
-        max-width: 110px;
+        max-width: 120px;
+        height: 41px;
+    }
+
+    .form__button-prio svg {
+        width: 20px;
+    }
+
+    .form__contact-badge {
+        height: 32px;
+        width: 32px;
+    }
+
+    .form__button-clear,
+    .form__button-create {
+        height: 40px;
     }
 }
 
@@ -180,29 +215,33 @@
     }
     
     .form__button-prio {
-        max-width: 100px;
+        max-width: 110px;
     }
 }
 
 @media (max-width: 400px) {
-    .header {
-        padding-left: 20px;
-    }
 
-    .content {
-        padding-left: 20px;
-        padding-right: 20px;
+}
+
+@media (max-width: 390px) {
+    .form__button-prio {
+        max-width: 100px;
     }
 }
 
 @media (max-width: 360px) {
     .form__button-prio {
-        max-width: 85px;
+        max-width: 90px;
     }
 }
 
-@media (max-width: 330px) {
+@media (max-width: 325px) {
     .form__button-prio {
-        max-width: 80px;
+        max-width: 85px;
+    }
+
+    .form__button-clear svg,
+    .form__button-create img {
+        display: none;
     }
 }
