@@ -29,9 +29,9 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   background: #c6dcf1;
   overflow: hidden;
 }
@@ -42,22 +42,22 @@ body {
   font-size: 16px;
 }
 
-.layout-page {
-  position: relative;
-  max-width: 1440px;
-  width: 100%;
-  margin: auto;
-  height: 100vh;
+/* .layout-page {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
+  justify-content: flex-start;
+  position: relative;
+  max-width: 1920px;
+  width: 100%;
+  margin: 0;
+  height: 100vh;
+} */
 
 .layout-page__card {
+  max-width: 1920px;
   width: 100%;
-  max-width: 1440px;
   height: 100vh;
-  max-height: 1024px;
+  /* max-height: 1024px; */
   background-color: #F6F7F8;
   display: flex;
 }
