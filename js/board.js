@@ -3,19 +3,6 @@
 let tasksFirebase = [];
 let contactsFirebase = [];
 
-const avatarColors = {
-  1: "#FF7A00",
-  2: "#9327FF",
-  3: "#6E52FF",
-  4: "#FC71FF",
-  5: "#FFBB2B",
-  6: "#1FD7C1",
-  7: "#462F8A",
-  8: "#FF4646",
-  9: "#00BEE8",
-  0: "#0038FF"
-};
-
 let currentDraggedID;
 
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -301,24 +288,7 @@ function renderSubtask(task) {
   container.innerHTML = getSubtask(task.subtask);
 }
 
-function renderAssignedAvatars(task) {
-  return task.assignedTo
-    .map(userId => {
-      const contact = contactsFirebase.find(c => c.id === userId);
-      if (contact) {
-        const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
-        const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
-        const initials = `${prenameInitial}${surnameInitial}`;
-        const colorKey = contact.id % 10; // letzte Ziffer der ID
-        const color = avatarColors[colorKey] || "#cccccc"; // fallback
-        return `<div class="card__credential" style="background-color: ${color};">${initials}</div>`;
-      }
-      return "";
-    })
-    .join("");
-}
-
-function renderAssignedContacts(task) {
+function mapAssignedContacts(task, renderFn) {
   return task.assignedTo.map(userId => {
     const contact = contactsFirebase.find(c => c.id === userId);
     if (!contact) return '';
@@ -326,12 +296,24 @@ function renderAssignedContacts(task) {
     const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
     const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
     const initials = `${prenameInitial}${surnameInitial}`;
-    const colorKey = contact.id % 10;
-    const color = avatarColors[colorKey] || "#cccccc";
+    const color = contact.color || "#cccccc";
 
-    return getContactTemplate(contact, initials, color);
+    return renderFn(contact, initials, color);
   }).join('');
 }
+
+function renderAssignedAvatars(task) {
+  return mapAssignedContacts(task, (contact, initials, color) =>
+    `<div class="card__credential" style="background-color: ${color};">${initials}</div>`
+  );
+}
+
+function renderAssignedContacts(task) {
+  return mapAssignedContacts(task, (contact, initials, color) =>
+    getContactTemplate(contact, initials, color)
+  );
+}
+
 
 
 function startDragging(id) {
