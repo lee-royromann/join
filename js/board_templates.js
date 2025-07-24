@@ -80,7 +80,7 @@ function getOverlayTemplate(task) {
         <div class="overlay__subtasks">
             <span>Subtasks</span>
             <div class="overlay__subtasks--frame" id="subtaskFrame">
-                ${getSubtask(task.subtask)}
+                ${getSubtask(task.subtask, task.id)}
             </div>
         </div>
 

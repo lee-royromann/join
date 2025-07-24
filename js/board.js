@@ -249,14 +249,15 @@ function getSubtaskIcon(status) {
     : "../assets/img/icon/checkbox.svg";
 }
 
-function getSubtask(subtasks) {
+function getSubtask(subtasks, taskId) {
   if (!subtasks || subtasks.length === 0) {
     return ;
   }
 
-  return subtasks.map(sub => `
-    <div class="overlay__subtask">
-      <img src="${getSubtaskIcon(sub.done)}" alt="${sub.done ? 'checkbox-checked' : 'checkbox-unchecked'}">
+  return subtasks.map((sub, index) => `
+    <div class="overlay__subtask" data-index="${index}">
+      <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
+      <img src="../assets/img/icon/checkbox.svg" class="${sub.done ? 'd-none' : ''}" alt="unchecked" id="uncheck-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
       <span>${sub.title}</span>
     </div>
   `).join("");
@@ -331,3 +332,41 @@ function renderEditTask() {
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
     contentRef.innerHTML += getEditTemplate();
 }
+
+
+function selectContact(id) {
+    const checkbox = document.getElementById(`contact-checkbox-${id}`);
+    const listItem = document.getElementById(`contact-id-${id}`);
+    const isChecked = checkbox.checked = !checkbox.checked;
+    updateContactSelectionState(id, checkbox, listItem, isChecked);
+    emptySearchField('contact-search');
+}
+
+async function toggleSubtaskStatus(index, taskId) {
+ 
+  // Task in tasksFirebase finden
+  const task = tasksFirebase.find(t => t.id === taskId);
+  if (!task || !task.subtask || !task.subtask[index]) {
+    console.warn("Task oder Subtask nicht gefunden");
+    return;
+  }
+
+  // Status umschalten
+  task.subtask[index].done = !task.subtask[index].done;
+
+  // DOM aktualisieren
+  const checkEl = document.getElementById(`check-${taskId}-${index}`);
+  const uncheckEl = document.getElementById(`uncheck-${taskId}-${index}`);
+
+  if (task.subtask[index].done) {
+    checkEl.classList.remove("d-none");
+    uncheckEl.classList.add("d-none");
+  } else {
+    checkEl.classList.add("d-none");
+    uncheckEl.classList.remove("d-none");
+  }
+
+  // Änderungen an Firebase zurückschreiben
+  await saveTaskToFirebase(taskId, task);
+}
+

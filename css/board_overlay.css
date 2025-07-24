@@ -84,6 +84,11 @@
     line-height: 120%;
     font-weight: 700;
     color: #000000;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .overlay__description {
@@ -92,6 +97,11 @@
     line-height: 120%;
     font-weight: 400;
     color: #000000;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;      
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .overlay__parameters {
