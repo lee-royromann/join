@@ -28,10 +28,9 @@ const noResults = document.getElementById("no-results");
  * @returns {Promise<void>}
  */
 async function loadTasksFromFirebase() {
-    // let response = await fetch(BASE_URL + "tasks.json");
     let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
-    tasksFirebase = responseToJson;
+    tasksFirebase = Object.values(responseToJson).filter(task => task != null);
     console.log(tasksFirebase);
   }
 
@@ -113,6 +112,39 @@ async function saveTaskToFirebase(taskId, fullTaskObject) {
     } catch (error) {
         console.error("Netzwerkfehler beim Speichern des Tasks:", error);
     }
+}
+
+async function deleteTaskFromFirebase(taskId) {
+    try {
+        const response = await fetch(`${BASE_URL}join/tasks/${taskId}.json`, {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Fehler beim Löschen in Firebase:", errorText);
+        } else {
+            console.log("Task erfolgreich gelöscht:", taskId);
+        }
+    } catch (error) {
+        console.error("Netzwerkfehler beim Löschen des Tasks:", error);
+    }
+    console.log("Task gelöscht:", taskId);
+    
+  }
+
+  async function handleDeleteTask(taskId) {
+  if (confirm("Willst du diese Aufgabe wirklich löschen?")) {
+    try {
+      await deleteTaskFromFirebase(taskId); // Auf das Löschen warten
+      tasksFirebase = []; 
+      await loadTasksFromFirebase();        // Tasks neu laden
+      closeOverlay();                       // Overlay schließen
+      renderTasks();                        // Tasks neu rendern
+    } catch (error) {
+      console.error("Fehler beim Löschen der Aufgabe:", error);
+    }
+  }
 }
 
 function renderTasks() {
