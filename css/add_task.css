@@ -433,33 +433,39 @@ fieldset {
     width: 20px;
 }
 
+#edit__btn-urgent-icon,
 #btn-urgent-icon {
     color: #ff3e01;
 }
 
+#edit__btn-medium-icon,
 #btn-medium-icon {
     color: #ffa700;
 }
 
+#edit__btn-low-icon,
 #btn-low-icon {
     color: #7ae229;
 }
 
-.form__button-prio--urgent {
+.form__button-prio--urgent,
+.edit__button-prio--urgent {
     background-color: #ff3e01;
     color: white;
     font-weight: 700;
     font-size: 21px;
 }
 
-.form__button-prio--medium {
+.form__button-prio--medium,
+.edit__button-prio--medium {
     background-color: #ffa700;
     color: white;
     font-weight: 700;
     font-size: 21px;
 }
 
-.form__button-prio--low {
+.form__button-prio--low,
+.edit__button-prio--low {
     background-color: #7ae229;
     color: white;
     font-weight: 700;
