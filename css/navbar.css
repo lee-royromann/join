@@ -59,6 +59,7 @@
     justify-content: flex-end;
     gap: 12px;
     height: 317px;
+    width: 122px;
 }
 
 .sidebar__legal .sidebar__text {
