@@ -445,21 +445,24 @@ fieldset {
     color: #7ae229;
 }
 
-.form__button-prio--urgent {
+.form__button-prio--urgent,
+.edit__button-prio--urgent {
     background-color: #ff3e01;
     color: white;
     font-weight: 700;
     font-size: 21px;
 }
 
-.form__button-prio--medium {
+.form__button-prio--medium,
+.edit__buton-prio--medium {
     background-color: #ffa700;
     color: white;
     font-weight: 700;
     font-size: 21px;
 }
 
-.form__button-prio--low {
+.form__button-prio--low,
+.edit__button-prio--low {
     background-color: #7ae229;
     color: white;
     font-weight: 700;
@@ -705,14 +708,18 @@ fieldset {
 .form__wrapper-list::-webkit-scrollbar,
 .form__textarea::-webkit-scrollbar,
 .page::-webkit-scrollbar,
-.form__subtask-list::-webkit-scrollbar {
+.form__subtask-list::-webkit-scrollbar,
+.overlay__credentials::-webkit-scrollbar,
+.overlay__subtasks--frame::-webkit-scrollbar {
   width: 6px;
 }
 
 .form__wrapper-list::-webkit-scrollbar-thumb,
 .form__textarea::-webkit-scrollbar-thumb,
 .page::-webkit-scrollbar-thumb,
-.form__subtask-list::-webkit-scrollbar-thumb {
+.form__subtask-list::-webkit-scrollbar-thumb,
+.overlay__credentials::-webkit-scrollbar-thumb,
+.overlay__subtasks--frame::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
@@ -720,7 +727,9 @@ fieldset {
 .form__wrapper-list::-webkit-scrollbar-track,
 .form__textarea::-webkit-scrollbar-track,
 .page::-webkit-scrollbar-track,
-.form__subtask-list::-webkit-scrollbar-track {
+.form__subtask-list::-webkit-scrollbar-track,
+.overlay__credentials::-webkit-scrollbar-track,
+.overlay__subtasks--frame::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
 

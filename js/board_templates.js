@@ -92,7 +92,7 @@ function getOverlayTemplate(task) {
                 <span>Delete</span>
             </div>
             <div class="overlay__action--separator"></div>
-            <div class="overlay__action--activate" onclick="openEditOverlay()">
+            <div class="overlay__action--activate" onclick="openEditOverlay('${task.id}')">
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.68213 16.3967H4.08213L12.7071 7.77173L11.3071 6.37173L2.68213 14.9967V16.3967ZM16.9821 6.32173L12.7321 2.12173L14.1321 0.721729C14.5155 0.338395 14.9863 0.146729 15.5446 0.146729C16.103 0.146729 16.5738 0.338395 16.9571 0.721729L18.3571 2.12173C18.7405 2.50506 18.9405 2.96756 18.9571 3.50923C18.9738 4.0509 18.7905 4.5134 18.4071 4.89673L16.9821 6.32173ZM15.5321 7.79673L4.93213 18.3967H0.682129V14.1467L11.2821 3.54673L15.5321 7.79673Z" fill="#2A3647"/>
                 </svg>
@@ -113,7 +113,7 @@ function getContactTemplate(contact, initials, color) {
 
 //Achtung: Kommentarzeilen noch entfernen
 
-function getEditTemplate() {
+function getEditTemplate(task) {
     return `
         <div class="overlay__edit--closewrapper">
             <div class="overlay__close--button" onclick="closeOverlay()">
@@ -128,23 +128,21 @@ function getEditTemplate() {
                 <div class="edit__group">
                     <label class="edit__label" for="edit-title">Title</label>
                     <div class="edit__group--input-wrapper">
-                        <input class="edit__input edit__input--textblack" id="edit-title" type="text" name="title" value="Kochwelt Page & Recipe Recommender" placeholder="Enter a title" required/>
+                        <input class="edit__input edit__input--textblack" id="edit-title" type="text" name="title" value="${task.title}" placeholder="Enter a title" required/>
                         <div class="edit__required-note">This field is required</div>
                     </div>
                 </div>
 
-                <!-- Description -->
                 <div class="edit__group">
                     <label class="edit__label" for="edit-description">Description</label>
-                    <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">Build start page with recipe recommendation.</textarea>
+                    <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
                     <div class="edit__required-note"></div>
                 </div>
 
-                <!-- Due Date -->
                 <div class="edit__group">
                     <label class="edit__label" for="edit-due-date">Due date</label>
                     <div class="edit__wrapper-date">
-                        <input class="edit__input edit__input--textblack" id="edit-due-date" type="text" name="due-date" value="10/05/2023" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
+                        <input class="edit__input edit__input--textblack" id="edit-due-date" type="text" name="due-date" value="${task.date}" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
                         <span class="edit__icon-calendar" aria-hidden="true">
                             <img src="../assets/img/icon/calendar.svg" alt="calendar-icon" />
                         </span>

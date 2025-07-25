@@ -17,6 +17,7 @@ const noResults = document.getElementById("no-results");
 async function loadTasksFromFirebase() {
     let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
+    tasksFirebase = [];
     tasksFirebase = Object.values(responseToJson).filter(task => task != null);
     console.log(tasksFirebase);
   }
@@ -50,21 +51,23 @@ function openOverlay(taskId) {
     renderOverlayTask(taskId);
 }
 
-function closeOverlay() {
+async function closeOverlay() {
     const overlay = document.getElementById("overlay");
     overlay.style.display = "none";
     overlay.classList.remove("overlay--visible");
     overlay.classList.remove('overlay--slide-in');
 
     document.body.style.overflow = '';
+    await loadTasksFromFirebase(); // Neu laden, um Änderungen zu reflektieren
+    renderTasks(); // Tasks neu rendern
 }
 
-function openEditOverlay() {
+function openEditOverlay(taskId) {
     const story = document.getElementById("story");
     const edit = document.getElementById("edit");
     story.classList.add("d-none");
     edit.classList.remove("d-none");
-    renderEditTask();
+    renderEditTask(taskId);
 }
 
 function closeEditOverlay() {
@@ -317,8 +320,8 @@ function renderAssignedContacts(task) {
 
 
 function startDragging(id) {
-    currentDraggedID = String(id);   //Prüfe ob String oder Number
-    document.getElementById(id).classList.add("card-transform")
+    currentDraggedID = String(id);  
+    document.getElementById(id).classList.add("card-transform")  // achtung muss noch irgendwo removed werden
 }
 
 function allowDrop(event) {
@@ -340,11 +343,13 @@ function renderOverlayTask(taskId) {
     contentRef.innerHTML += getOverlayTemplate(task);
 }
 
-function renderEditTask() {
+function renderEditTask(taskId) {
+    const task = tasksFirebase.find(t => t.id === taskId);
+    if (!task) return;
     let contentRef = document.getElementById("edit");
     contentRef.innerHTML = '';
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
-    contentRef.innerHTML += getEditTemplate();
+    contentRef.innerHTML += getEditTemplate(task);
 }
 
 
