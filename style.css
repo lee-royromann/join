@@ -4,7 +4,7 @@ body {
 }
 
 html {
-  background-color: #F6F7F8;
+  background-color: #000000;
 }
 
 * {
@@ -365,13 +365,13 @@ header {
 }
 .board-page {
     position: relative;
-    max-width: 1440px;
+    max-width: 1920px;
     width: 100%;
-    margin: auto;
+    /* margin: auto; */
     height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    /* align-items: center;
+    justify-content: center; */
     background-color: #F6F7F8;
 }
 
