@@ -55,13 +55,31 @@ function preventFormSubmitOnEnter(formId) {
  */
 function getUsernameInitals() {
     const element = document.getElementById('header__user');
-    const username = localStorage.username;
-    if (username == "Guest") {
-        element.innerHTML = "G"
+    // Besserer Weg, um auf den localStorage zuzugreifen
+    const username = localStorage.getItem('username');
+
+    if (!username || username === "Guest") {
+        element.innerHTML = "G";
         return;
     }
-    const [firstname, surname] = username.trim().split(" ");
-    const initials = firstname.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase();
+
+    // Teilt den Namen und entfernt leere Teile (z.B. bei doppelten Leerzeichen)
+    const nameParts = username.trim().split(' ').filter(Boolean);
+    
+    // Fallback, falls der Name nur aus Leerzeichen bestand
+    if (nameParts.length === 0) {
+        element.innerHTML = "G";
+        return;
+    }
+
+    // Nimmt den ersten Buchstaben des ersten Namens
+    let initials = nameParts[0].charAt(0).toUpperCase();
+    
+    // Wenn es mehr als einen Namensteil gibt, nimm den ersten Buchstaben des letzten Teils
+    if (nameParts.length > 1) {
+        initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+    }
+    
     element.innerHTML = initials;
 }
 
@@ -165,12 +183,14 @@ function populateCategoriesToDropdown() {
  * After loading is finished, the contacts are getting populated to the dropdown.
  */
 async function loadFirebaseContacts() {
-    let response = await fetch(FIREBASE_URL + "/join/contacts.json");   
+    let response = await fetch(FIREBASE_URL + "/join/contacts.json");
     let loadedContacts = [];
     if (response.ok) {
         let data = await response.json();
-        loadedContacts = Object.values(data || {});
-        firebaseContacts = sortContactsByPrename(loadedContacts);
+        // Stellt sicher, dass auch bei leeren Daten ein Array verwendet wird
+        loadedContacts = data ? Object.values(data) : []; 
+        // Ruft die jetzt sichere Sortierfunktion auf
+        firebaseContacts = sortContactsByPrename(loadedContacts); 
         populateContactsToDropdown(firebaseContacts);
     } else {
         firebaseContacts = [];
@@ -181,9 +201,16 @@ async function loadFirebaseContacts() {
 /**
  * Function to sort the contacts descending (a-z) by their prenames
  * It returns the sorted array back
+ * NEU & BEHOBEN: Jetzt 100% sicher gegen null-Werte oder ungültige Einträge.
  */
 function sortContactsByPrename(contacts) {
-    return [...contacts].sort((a, b) => {
+    // Filtert zuallererst alle ungültigen Einträge heraus.
+    // Ein gültiger Kontakt MUSS ein Objekt sein und darf nicht null sein.
+    const validContacts = contacts.filter(contact => contact && typeof contact === 'object');
+
+    // Sortiert die bereinigte Liste.
+    return validContacts.sort((a, b) => {
+        // Weist Standardwerte zu, falls 'prename' fehlt, um Fehler zu vermeiden.
         const prenameA = a.prename?.toLowerCase() || '';
         const prenameB = b.prename?.toLowerCase() || '';
         return prenameA.localeCompare(prenameB, 'de');
@@ -639,7 +666,7 @@ function getLastFirebaseTaskId(data) {
  * Deletes all existing subtasks from the DOM.
  */
 function clearForm() {
-    const form = document.querySelector('form-add-task');
+    const form = document.getElementById('form-add-task');
     uncheckAllContacts();
     resetPriorityButtons();
     setDefaultTaskPriority();
