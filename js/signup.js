@@ -84,8 +84,7 @@ document.getElementById('signup').addEventListener("submit", function (event) {
 
 /**
  * Displays an error message and highlights the input field with an error.
- * 
- * @param {string} inputLabel - The key identifying the input field with the error.
+ * * @param {string} inputLabel - The key identifying the input field with the error.
  */
 function inputError(inputLabel) {
     let info = document.getElementById('errorPoppin');
@@ -97,8 +96,7 @@ function inputError(inputLabel) {
 
 /**
  * Returns a specific error message based on the input key.
- * 
- * @param {string} key - The key identifying the input type.
+ * * @param {string} key - The key identifying the input type.
  * @returns {string} - The corresponding error message.
  */
 function errorMessage(key) {
@@ -115,8 +113,7 @@ function errorMessage(key) {
 
 /**
  * Highlights the label of the input field by adding an error class.
- * 
- * @param {string} inputLabel - The key of the input field to highlight.
+ * * @param {string} inputLabel - The key of the input field to highlight.
  */
 function errorInputField(inputLabel) {
     if (inputLabel !== "Checkbox") {
@@ -130,8 +127,7 @@ function errorInputField(inputLabel) {
 
 /**
  * Checks if the input value is empty after trimming whitespace.
- * 
- * @param {string} value - The input value to check.
+ * * @param {string} value - The input value to check.
  * @returns {boolean} - True if the input is empty, otherwise false.
  */
 function checkEmptyInput(value) {
@@ -141,8 +137,7 @@ function checkEmptyInput(value) {
 
 /**
  * Reads values from input fields and returns them in an object.
- * 
- * @returns {Object} - An object containing all relevant input values.
+ * * @returns {Object} - An object containing all relevant input values.
  */
 function readsTheInputValues() {
     return {
@@ -157,8 +152,8 @@ function readsTheInputValues() {
 
 /**
  * Validates all input values according to specified rules.
- * 
- * @returns {string|undefined} - The key of the invalid input or undefined if all are valid.
+ * Diese Funktion prüft nur die Formate, nicht die Datenbank. Daher sind keine Änderungen nötig.
+ * * @returns {string|undefined} - The key of the invalid input or undefined if all are valid.
  */
 function checkValues() {
     let { username, email, passwdReg, passwdConf, checkBox } = readsTheInputValues();
@@ -172,8 +167,9 @@ function checkValues() {
 
 /**
  * Checks input values and triggers error handling if any input is invalid.
- * 
- * @returns {boolean} - True if an error is found, otherwise false.
+ * Diese Funktion ruft die Logik auf, die die Eingaben vor dem Senden an die Datenbank prüft.
+ * Sie ist der "Gatekeeper" und funktioniert weiterhin perfekt.
+ * * @returns {boolean} - True if an error is found, otherwise false.
  */
 function checkValueInput() {
     let input = checkValues();
