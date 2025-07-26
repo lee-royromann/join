@@ -285,7 +285,7 @@ function pushNewContact() {
         username: nameValue.trim(), // username für die sofortige Anzeige
         email: emailValue,
         phone: phoneValue,
-        color: "brown" // Hier könnte man auch eine Zufallsfarbe einfügen
+        color: getUniqueAvatarColor()  // Hier könnte man auch eine Zufallsfarbe einfügen
     };
     contactsFirebase.push(newContact);
 }
@@ -405,3 +405,4 @@ function removeBackBtn() {
 function changeOfAddPersoneBtn() {
     document.getElementById('addBtnResp').innerHTML = changeAddBtnPerson();
 }
+
