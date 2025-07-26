@@ -1,18 +1,24 @@
+// ===================================================================
+// Globale Variablen und Initialisierung
+// ===================================================================
+
 /**
- * Parses the URL for messages and displays them if present.
+ * Globales Array, das die aus Firebase geladenen Benutzerobjekte speichert.
+ * @type {Array<Object>}
  */
+let userFirebase = [];
+
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get('msg');
 let info = document.getElementById('poppin');
 let isPasswordVisible = false;
 
-
-// Show logo after short delay
+// Logo mit Verzögerung einblenden
 setTimeout(() => {
     document.getElementById('logoImg').classList.remove('d-none');
 }, 1060);
 
-// Display message from URL if exists
+// Erfolgsmeldung von der Registrierung anzeigen, falls vorhanden
 if (msg) {
     info.classList.remove('opacity');
     info.classList.add('poppins-success');
@@ -23,35 +29,83 @@ if (msg) {
 }
 
 
+// ===================================================================
+// KORRIGIERTE LOGIN-FUNKTIONEN
+// ===================================================================
+
 /**
- * Attempts to log in with user credentials from the form inputs.
- * Redirects on success or shows an error message on failure.
+ * Versucht, den Benutzer mit den eingegebenen Daten einzuloggen.
+ * Die Funktion lädt die neue Datenstruktur und findet den passenden Benutzer.
  */
 async function login() {
+    // Annahme: checkValueInput() prüft auf leere/falsche Formate
     if (checkValueInput()) return;
     spinningLoaderStart();
-    let email = document.getElementById('email');
-    let passwd = document.getElementById('password');
+
+    let emailInput = document.getElementById('email');
+    let passwordInput = document.getElementById('password');
+
+    // Schritt 1: Lädt alle Benutzer und konvertiert sie in ein Array
     await loadUserData();
     spinningLoaderEnd();
 
+    // DEBUG: Gib das Array aus, um zu sehen, ob die Daten korrekt ankommen
+    console.log("Geladene Benutzer für den Login-Check:", userFirebase);
+
+    // Schritt 2: Findet den Benutzer im Array, bei dem E-Mail UND Passwort übereinstimmen
     let user = userFirebase.find(
-        user => user.email === email.value && user.password === passwd.value
+        u => u.email === emailInput.value && u.password === passwordInput.value
     );
 
+    // Schritt 3: Reaktion auf das Ergebnis
     if (user) {
-        localStorage.setItem("username", user.username); // ✅ Speichert Namen für Initialen
-        localStorage.setItem("loggedIn", "true");         // Optional: gleich hier setzen
+        // Erfolg! Benutzer gefunden.
+        console.log("Login erfolgreich für Benutzer:", user.username);
+        localStorage.setItem("username", user.username);
+        localStorage.setItem("loggedIn", "true");
         window.location.href = `html/summary.html?name=${encodeURIComponent(user.username)}&login=true`;
-        resetUserArray();
+        userFirebase = []; // Array zurücksetzen
     } else {
+        // Fehler! Kein passender Benutzer gefunden.
+        console.error("Login fehlgeschlagen. E-Mail oder Passwort falsch.");
         displayErrorLogin();
     }
 }
 
 
 /**
- * Displays an error message if login fails.
+ * Lädt die Benutzerdaten aus Firebase und wandelt das Objekt in ein nutzbares Array um.
+ */
+async function loadUserData() {
+    try {
+        const data = await loadUsersFromFirebase(); // Diese Funktion holen wir uns zurück
+        if (data) {
+            // Wandelt das Firebase-Objekt ({ "ID1": user1, "ID2": user2 })
+            // in ein Array ([user1, user2]) um. Das ist der entscheidende Schritt.
+            userFirebase = Object.values(data);
+        } else {
+            userFirebase = [];
+        }
+    } catch (error) {
+        console.error("Fehler beim Laden der Benutzerdaten:", error);
+        userFirebase = []; // Sicherstellen, dass das Array im Fehlerfall leer ist
+    }
+}
+
+
+/**
+ * Notwendige Hilfsfunktion: Holt die Rohdaten aller Benutzer von Firebase.
+ * Diese Funktion muss hier vorhanden sein, damit `loadUserData` funktioniert.
+ */
+async function loadUsersFromFirebase() {
+    // Annahme: BASE_URL ist eine global definierte Variable mit deiner Firebase-URL
+    const response = await fetch(BASE_URL + "/join/users.json");
+    return await response.json();
+}
+
+
+/**
+ * Zeigt eine Fehlermeldung an, wenn der Login fehlschlägt.
  */
 function displayErrorLogin() {
     document.getElementById('labelPassword').classList.add('error-border');
@@ -59,41 +113,22 @@ function displayErrorLogin() {
     info.innerHTML = "Check your e-mail and password.<br> Please try again.";
 }
 
+// ===================================================================
+// UNVERÄNDERTE HILFSFUNKTIONEN (Guest Login, Passwort-Sichtbarkeit etc.)
+// ===================================================================
 
-/**
- * Loads user data from Firebase and assigns to `userFirebase`.
- */
-async function loadUserData() {
-    try {
-        let data = await loadUsersFromFirebase();
-        userFirebase = Object.values(data || {});
-    } catch (error) {
-        console.error("Error loading user login function:", error);
-    }
-}
-
-
-/**
- * Logs in a guest user by bypassing required fields and redirecting.
- * @param {Event} event - The click event from the form.
- */
 function guestLogin(event) {
     event.preventDefault();
     document.getElementById('email').removeAttribute('required');
     document.getElementById('password').removeAttribute('required');
-    localStorage.setItem("username", "Guest");     // 👈 Auch hier speichern!
+    localStorage.setItem("username", "Guest");
     localStorage.setItem("loggedIn", "true");
     window.location.href = "html/summary.html?name=Guest&login=true";
 }
 
-
-/**
- * Updates the password input icon depending on whether input is present and visible.
- */
 function updatePasswdIcon() {
     const passwdInput = document.getElementById('password');
     const passwdIcon = document.getElementById('passwdIcon');
-
     if (passwdInput.value.length > 0) {
         passwdIcon.src = isPasswordVisible
             ? '../assets/img/icon/visibility.svg'
@@ -103,10 +138,6 @@ function updatePasswdIcon() {
     }
 }
 
-
-/**
- * Toggles the password visibility in the input field and updates the icon accordingly.
- */
 function togglePasswordVisibility() {
     const passwdInput = document.getElementById('password');
     const passwdIcon = document.getElementById('passwdIcon');
@@ -117,20 +148,33 @@ function togglePasswordVisibility() {
         : '../assets/img/icon/visibility_off.svg';
 }
 
-
-/**
- * Marks user as logged in by setting a flag in localStorage.
- */
-function usrerIsLoggedIn() {
-    localStorage.setItem("loggedIn", "true");
+// Die restlichen Validierungsfunktionen bleiben unverändert...
+function checkValueInput() {
+    let input = checkValues();
+    if (input) {
+        inputError(input);
+        return true;
+    }
+    return false;
 }
 
+function checkValues() {
+    let { email, password } = readsTheInputValues();
+    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email";
+    if (checkEmptyInput(password) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(password)) return "Password";
+}
 
-/**
- * Displays an error message and highlights the input field in error.
- * 
- * @param {string} inputLabel - The key of the input field with the error.
- */
+function readsTheInputValues() {
+    return {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+}
+
+function checkEmptyInput(value) {
+    return value.trim() === "";
+}
+
 function inputError(inputLabel) {
     let info = document.getElementById('poppin');
     info.classList.remove('opacity');
@@ -138,13 +182,6 @@ function inputError(inputLabel) {
     errorInputField(inputLabel);
 }
 
-
-/**
- * Returns a predefined error message for a given input key.
- * 
- * @param {string} key - Identifier for the input field (e.g., "Email", "Password").
- * @returns {string} - Corresponding error message.
- */
 function errorMessage(key) {
     const messages = {
         "Email": "Please check your email entry!",
@@ -153,65 +190,12 @@ function errorMessage(key) {
     return messages[key] || "Unknown error!";
 }
 
-
-/**
- * Applies an error class to the label of the faulty input field.
- * 
- * @param {string} inputLabel - Identifier of the input field.
- */
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);
     if (label) {
         label.classList.add('error-border');
     }
 }
-
-
-/**
- * Checks whether the given input value is empty after trimming whitespace.
- * 
- * @param {string} value - Input value to validate.
- * @returns {boolean} - True if empty, otherwise false.
- */
-function checkEmptyInput(value) {
-    return value.trim() === "";
-}
-
-
-/**
- * Collects and returns input values from the login form.
- * 
- * @returns {Object} - Object with keys `email` and `password`.
- */
-function readsTheInputValues() {
-    return {
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value
-    };
-}
-
-
-/**
- * Validates input values for email and password formats.
- * 
- * @returns {string|undefined} - Returns input key if invalid, otherwise undefined.
- */
-function checkValues() {
-    let { email, password } = readsTheInputValues();
-    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email";
-    if (checkEmptyInput(password) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(password)) return "Password";
-}
-
-
-/**
- * Initiates validation and error handling for login form inputs.
- * 
- * @returns {boolean} - True if error found, false if all inputs are valid.
- */
-function checkValueInput() {
-    let input = checkValues();
-    if (input) {
-        inputError(input);
         return true;
     }
     return false;
