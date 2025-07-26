@@ -2,24 +2,48 @@
 // Dieser Code speichert Passwörter im Klartext. Das ist ein hohes Sicherheitsrisiko.
 // Es wird dringend empfohlen, auf Firebase Authentication umzusteigen, um Passwörter sicher zu verwalten.
 
-/**
- * Fehlermeldung für nicht übereinstimmende Passwörter.
- * @type {string}
- */
 let textPasswdError = "Ups! your password don't match!";
-
-/**
- * Fehlermeldung für bereits existierende E-Mail.
- * @type {string}
- */
 let textEmailError = "The e-mail already exists!";
 
+/**
+ * NEU & BEHOBEN: Erzeugt eine zufällige, helle Farbe für den Avatar.
+ * @returns {string} Ein Hex-Farbcode, z.B. "#A0C4FF".
+ */
+function getUniqueAvatarColor() {
+    const letters = '89ABCDEF'; // Helle Farben für bessere Lesbarkeit
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
+}
 
 /**
- * Hauptfunktion: Registriert einen neuen Benutzer und fügt ihn zu den Kontakten hinzu.
+ * Holt die nächste verfügbare, fortlaufende ID aus Firebase.
+ * @param {string} counterName - Der Name des Zählers (z.B. 'users' oder 'contacts').
+ * @returns {Promise<number|null>} Die neue ID oder null bei einem Fehler.
+ */
+async function getNextId(counterName) {
+    try {
+        const response = await fetch(`${BASE_URL}/counters/${counterName}.json`);
+        const currentId = await response.json();
+        const nextId = (currentId === null) ? 0 : Number(currentId) + 1;
+        await fetch(`${BASE_URL}/counters/${counterName}.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(nextId),
+        });
+        return nextId;
+    } catch (error) {
+        console.error(`Fehler beim Abrufen der nächsten ID für ${counterName}:`, error);
+        return null;
+    }
+}
+
+/**
+ * Hauptfunktion: Registriert einen neuen Benutzer mit der gleichen Struktur wie ein Kontakt.
  */
 async function addUser() {
-    // Annahme: checkValueInput() ist eine Funktion, die leere Felder prüft.
     if (checkValueInput()) return;
     spinningLoaderStart();
 
@@ -27,83 +51,87 @@ async function addUser() {
     const emailValue = userInput.email.value;
     const usernameValue = userInput.username.value;
 
-    // Schritt 1: Passwörter prüfen
     if (!checkSamePasswd(userInput.password.value, userInput.confirm.value)) return;
-
-    // Schritt 2: Prüfen, ob die E-Mail bereits als Benutzer existiert
     if (await checkUserExists(emailValue)) return;
 
-    // Schritt 3: Das neue Benutzer-Objekt erstellen
-    const newUser = createUserObject(usernameValue, emailValue, userInput.password.value);
-
     try {
-        // Schritt 4: Den neuen Benutzer in Firebase anlegen (erzeugt einzigartige ID)
-        await fetch(BASE_URL + "/join/users.json", {
-            method: "POST",
+        const newUserId = await getNextId('users');
+        if (newUserId === null) throw new Error("Konnte keine neue Benutzer-ID erstellen.");
+
+        const nameParts = usernameValue.trim().split(' ');
+        const prename = nameParts.shift() || '';
+        const surname = nameParts.join(' ') || '';
+
+        const newUser = {
+            id: newUserId,
+            prename: prename,
+            surname: surname,
+            email: emailValue,
+            password: userInput.password.value,
+            phone: "",
+            mobile: "",
+            color: getUniqueAvatarColor() // Dieser Aufruf funktioniert jetzt
+        };
+
+        await fetch(`${BASE_URL}/join/users/${newUserId}.json`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newUser),
         });
 
-        // Schritt 5: Den neuen Benutzer AUCH als neuen Kontakt anlegen (JETZT KORRIGIERT)
-        await addUserToContacts(usernameValue, emailValue);
+        await addUserToContacts(prename, surname, emailValue, newUser.phone, newUser.color);
 
-        // Schritt 6: Erfolg anzeigen und weiterleiten
         spinningLoaderEnd();
         showOverlaySuccessful();
 
     } catch (error) {
+        // Hier wurde der Fehler vorher ausgelöst
         console.error("Ein Fehler ist während des Registrierungsprozesses aufgetreten:", error);
         spinningLoaderEnd();
         alert("Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
     }
 }
 
-
 /**
- * Fügt den neuen Benutzer als separaten Eintrag zur Kontaktliste in Firebase hinzu.
- * VERURSACHT KEIN ÜBERSCHREIBEN MEHR.
- * @param {string} username - Der Name des neuen Kontakts.
- * @param {string} email - Die E-Mail des neuen Kontakts.
+ * Fügt den neuen Benutzer als separaten Eintrag zur Kontaktliste hinzu.
  */
-async function addUserToContacts(username, email) {
+async function addUserToContacts(prename, surname, email, phone, color) {
+    const newContactId = await getNextId('contacts');
+    if (newContactId === null) throw new Error("Konnte keine neue Kontakt-ID erstellen.");
+    
     const newContact = {
-        username: username,
+        id: newContactId,
+        prename: prename,
+        surname: surname,
         email: email,
-        phone: "", // Standardwert für das Telefonfeld
-        color: getUniqueAvatarColor()  // Standardfarbe
+        phone: phone,
+        mobile: "",
+        color: color
     };
-
-    // Verwendet ebenfalls POST, um einen neuen Kontakt hinzuzufügen, ohne andere zu löschen.
-    // Annahme: Dein Pfad für Kontakte ist /join/contacts.json
-    await fetch(BASE_URL + "/join/contacts.json", {
-        method: 'POST',
+    
+    await fetch(`${BASE_URL}/join/contacts/${newContactId}.json`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newContact),
     });
 }
 
-
 /**
- * Prüft effizient über eine Firebase-Abfrage, ob eine E-Mail bereits existiert.
- * @param {string} email - Die zu prüfende E-Mail-Adresse.
- * @returns {Promise<boolean>} True, wenn die E-Mail existiert, sonst false.
+ * Prüft effizient, ob eine E-Mail bereits existiert.
  */
 async function checkUserExists(email) {
     prepareEmailValidationUI();
     const encodedEmail = encodeURIComponent(email);
     const queryUrl = `${BASE_URL}/join/users.json?orderBy="email"&equalTo="${encodedEmail}"`;
-
     try {
         const response = await fetch(queryUrl);
         const data = await response.json();
-
         if (data && Object.keys(data).length > 0) {
             spinningLoaderEnd();
             showEmailExistsError();
             return true;
         }
         return false;
-
     } catch (error) {
         console.error("FEHLER bei der E-Mail-Prüfung:", error);
         spinningLoaderEnd();
@@ -111,11 +139,9 @@ async function checkUserExists(email) {
     }
 }
 
-
 // ===================================================================
 // UNVERÄNDERTE HILFSFUNKTIONEN
 // ===================================================================
-
 function getFormElements() {
     return {
         username: document.getElementById('username'),
@@ -130,7 +156,6 @@ function checkSamePasswd(a, b) {
     let poppinError = document.getElementById('errorPoppin');
     labelPassw.classList.remove('error-border');
     poppinError.classList.add('opacity');
-
     if (a !== b) {
         spinningLoaderEnd();
         labelPassw.classList.add('error-border');
@@ -152,10 +177,6 @@ function showEmailExistsError() {
     label.classList.add('error-border');
     errorMsg.classList.remove('opacity');
     errorMsg.innerHTML = textEmailError;
-}
-
-function createUserObject(username, email, password) {
-    return { username, email, password };
 }
 
 function showOverlaySuccessful() {
