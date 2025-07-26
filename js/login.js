@@ -196,7 +196,3 @@ function errorInputField(inputLabel) {
         label.classList.add('error-border');
     }
 }
-        return true;
-    }
-    return false;
-}
