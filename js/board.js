@@ -291,6 +291,7 @@ function renderSubtask(task) {
   container.innerHTML = getSubtask(task.subtask);
 }
 
+
 function mapAssignedContacts(task, renderFn) {
   return task.assignedTo.map(userId => {
     const contact = contactsFirebase.find(c => c.id === userId);
@@ -350,6 +351,7 @@ function renderEditTask(taskId) {
     contentRef.innerHTML = '';
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
     contentRef.innerHTML += getEditTemplate(task);
+    setInitialTaskPriority(task)
 }
 
 
@@ -387,5 +389,41 @@ async function toggleSubtaskStatus(index, taskId) {
 
   // Änderungen an Firebase zurückschreiben
   await saveTaskToFirebase(taskId, task);
+}
+
+
+/**
+ * Function to set the selected task priority.
+ * Resets all priority buttons and applies the specifically choosen priority css class to it.
+ */
+function setPriority(priority) {
+    resetPriorityButtons();
+    let button = document.getElementById(`edit__btn-${priority}`);
+    let icon = document.getElementById(`edit__btn-${priority}-icon`);
+    button.classList.add(`edit__button-prio--${priority}`);
+    icon.classList.add(`icon-white`);
+    choosenPriority = priority;    //speichert die gewählte Priorität in der globalen Variable
+}
+
+
+function setInitialTaskPriority(task) {
+    const taskPriority = task.priority.toLowerCase();
+    setPriority(taskPriority);
+}
+
+ 
+/**
+ * Function to reset all priority buttons to their default state.
+ * Removes any applied priority-specific modifier classes from each button.
+ */
+function resetPriorityButtons() {
+    const priorities = ['urgent', 'medium', 'low'];
+
+    priorities.forEach(priority => {
+        const button = document.getElementById(`edit__btn-${priority}`);
+        button.classList.remove(`edit__button-prio--${priority}`);
+        const icon = document.getElementById(`edit__btn-${priority}-icon`);
+        icon.classList.remove('icon-white');
+    });
 }
 

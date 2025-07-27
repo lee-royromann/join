@@ -226,6 +226,10 @@
     cursor: pointer;
 }
 
+.edit__button-prio svg.icon-white {
+  color: white !important;
+}
+
 .edit__button-prio--urgent svg {
     color: #ff3e01;
 }
