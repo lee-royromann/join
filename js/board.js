@@ -3,7 +3,7 @@
 let tasksFirebase = [];
 let contactsFirebase = [];
 
-let currentDraggedID;
+let currentDraggedID; 
 
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
@@ -68,6 +68,7 @@ function openEditOverlay(taskId) {
     story.classList.add("d-none");
     edit.classList.remove("d-none");
     renderEditTask(taskId);
+    initFlatpickr()
 }
 
 function closeEditOverlay() {
@@ -312,6 +313,13 @@ function renderAssignedAvatars(task) {
   );
 }
 
+
+function renderAssignedEditAvatars(task) {
+  return mapAssignedContacts(task, (contact, initials, color) =>
+    `<div class="edit__contact-badge" style="background-color: ${color};">${initials}</div>`
+  );
+}
+
 function renderAssignedContacts(task) {
   return mapAssignedContacts(task, (contact, initials, color) =>
     getContactTemplate(contact, initials, color)
@@ -341,7 +349,7 @@ function renderOverlayTask(taskId) {
     if (!task) return;
     let contentRef = document.getElementById("story");
     contentRef.innerHTML = '';
-    contentRef.innerHTML += getOverlayTemplate(task);
+    contentRef.innerHTML = getOverlayTemplate(task);
 }
 
 function renderEditTask(taskId) {
@@ -349,8 +357,9 @@ function renderEditTask(taskId) {
     if (!task) return;
     let contentRef = document.getElementById("edit");
     contentRef.innerHTML = '';
-    // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen    
-    contentRef.innerHTML += getEditTemplate(task);
+    // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen   
+    contentRef.innerHTML = getEditTemplate(task);
+    initFlatpickrEdit();
     setInitialTaskPriority(task)
 }
 
@@ -426,4 +435,28 @@ function resetPriorityButtons() {
         icon.classList.remove('icon-white');
     });
 }
+
+function pickDateEdit(event) {
+    event.stopPropagation();
+   
+    if (flatpickrEditInstance) {
+        flatpickrEditInstance.open();
+        flatpickrEditInstance.input.focus();
+    }
+}
+
+
+function initFlatpickrEdit() {
+    const input = document.getElementById('edit-due-date');
+    if (!input) return;
+
+    flatpickrEditInstance = flatpickr(input, {
+        locale: 'de',
+        dateFormat: 'd.m.Y',
+        disableMobile: true,
+        minDate: 'today',
+        allowInput: true
+    });
+}
+
 

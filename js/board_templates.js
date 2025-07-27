@@ -114,6 +114,8 @@ function getContactTemplate(contact, initials, color) {
 //Achtung: Kommentarzeilen noch entfernen
 
 function getEditTemplate(task) {
+    const assignedAvatar = renderAssignedEditAvatars(task);
+
     return `
         <div class="overlay__edit--closewrapper">
             <div class="overlay__close--button" onclick="closeOverlay()">
@@ -143,7 +145,7 @@ function getEditTemplate(task) {
                     <label class="edit__label" for="edit-due-date">Due date</label>
                     <div class="edit__wrapper-date">
                         <input class="edit__input edit__input--textblack" id="edit-due-date" type="text" name="due-date" value="${task.date}" placeholder="dd/mm/yyyy" pattern="\d{2}/\d{2}/\d{4}" required/>
-                        <span class="edit__icon-calendar" aria-hidden="true">
+                        <span class="edit__icon-calendar" aria-hidden="true" onclick="pickDateEdit(event)">
                             <img src="../assets/img/icon/calendar.svg" alt="calendar-icon" />
                         </span>
                     </div>
@@ -180,7 +182,7 @@ function getEditTemplate(task) {
                 <div class="edit__group">
                     <label class="edit__label" for="contact-search">Assigned to</label>
                     <div>
-                        <div class="edit__wrapper-assignee" id="contact-selector">
+                        <div class="edit__wrapper-assignee" id="contact-edit-selector">
                             <input
                                 type="text"
                                 class="edit__input edit__input--textblack"
@@ -195,41 +197,14 @@ function getEditTemplate(task) {
                         </div>
                         <div class="edit__wrapper-list d-none" id="#">
                             <ul class="edit__contact-list" id="edit-contact-list">
-                                <li class="edit__contact"
-                                    id="contact-id-7"
-                                    data-id="7"
-                                    data-shortname="AW"
-                                    data-fullname="Alice Wonderland"
-                                    data-color="#eb56f0"
-                                    onclick="selectContact(7)">
-                                    <div class="edit__contact-badgename">
-                                        <span class="edit__contact-badge" style="background-color: #FF4646;">AW</span>
-                                        <span class="edit__contact-name">Alice Wonderland</span>
-                                    </div>
-                                    <input class="edit__contact-checkbox" id="contact-checkbox-7" type="checkbox" onclick="selectContact(7)" />
-                                </li>
-                                <li class="edit__contact"
-                                    id="contact-id-4"
-                                    data-id="4"
-                                    data-shortname="DM"
-                                    data-fullname="Danny Mensing"
-                                    data-color="#c3624a"
-                                    onclick="selectContact(4)">
-                                    <div class="edit__contact-badgename">
-                                        <span class="edit__contact-badge" style="background-color: #0038FF;">DM</span>
-                                        <span class="edit__contact-name">Danny Mensing</span>
-                                    </div>
-                                    <input class="edit__contact-checkbox" id="contact-checkbox-4" type="checkbox" onclick="selectContact(4)" />
-                                </li>
+                               
+                                
                                 
                             </ul>
                         </div>
                     </div>
                     <div class="edit__contact-badges">
-                        <span class="edit__contact-badge" style="background-color: #0038FF;">DM</span>
-                        <span class="edit__contact-badge" style="background-color: #FF7A00;">LR</span>
-                        <span class="edit__contact-badge" style="background-color: #FF5EB3;">MR</span>
-                        <span class="edit__contact-badge" style="background-color: #1FD7C1;">PN</span>
+                        ${assignedAvatar}
                     </div>
                 </div>
 
