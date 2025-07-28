@@ -166,7 +166,6 @@
 
 .overlay__subtasks {
     width: 100%;
-
     display: flex;
     flex-direction: column;
     font-size: 20px; 

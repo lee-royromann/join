@@ -115,6 +115,7 @@ function getContactTemplate(contact, initials, color) {
 
 function getEditTemplate(task) {
     const assignedAvatar = renderAssignedEditAvatars(task);
+    const subtasksHTML = renderSubtasks(task.subtask);
 
     return `
         <div class="overlay__edit--closewrapper">
@@ -233,21 +234,10 @@ function getEditTemplate(task) {
                             </div>
                         </div>
                     </div>   
-
-                    <!-- Tasklist
-                    -->
+        
                     <ul class="edit__subtasklist">
                         <li class="edit__subtask">   
-                            <span class="edit__subtask-text">Implement Recipe Recommendation</span>
-                            <div class="edit__subtask-icons">
-                                <div class="edit__icon-subtasklist">
-                                    <img src="../assets/img/icon/edit.svg" alt="Subtask icon to delete subtask">
-                                </div>
-                                <span class="edit__subtask-separator"></span>
-                                <div class="edit__icon-subtasklist">
-                                    <img src="../assets/img/icon/delete.svg" alt="Subtask icon to mark subtask as done">
-                                </div>
-                            </div>   
+                            ${subtasksHTML}
                         </li> 
                     </ul>   
 
@@ -296,4 +286,24 @@ function getEditContactListItem(contact, you, isAssigned) {
             </svg>
         </li>
     `;
+}
+
+
+function getSubtaskTemplate(subtask, index) {
+  return `
+    <li class="edit__subtask">   
+      <span class="edit__subtask-text ${subtask.done ? 'done' : ''}">
+        ${subtask.title}
+      </span>
+      <div class="edit__subtask-icons">
+        <div class="edit__icon-subtasklist" onclick="editSubtask(${index})">
+          <img src="../assets/img/icon/edit.svg" alt="Edit subtask">
+        </div>
+        <span class="edit__subtask-separator"></span>
+        <div class="edit__icon-subtasklist" onclick="toggleSubtaskDone(${index})">
+          <img src="../assets/img/icon/delete.svg" alt="Mark as done">
+        </div>
+      </div>   
+    </li>
+  `;
 }

@@ -378,6 +378,8 @@
 .edit__subtasklist {
     width: 100%;
     list-style-position: none;
+    max-height: 160px;
+    overflow: auto;
    
 }
 

@@ -318,19 +318,11 @@ function renderAssignedAvatars(task) {
   );
 }
 
-
-function renderAssignedEditAvatars(task) {
-  return mapAssignedContacts(task, (contact, initials, color) =>
-    `<div class="edit__contact-badge" style="background-color: ${color};">${initials}</div>`
-  );
-}
-
 function renderAssignedContacts(task) {
   return mapAssignedContacts(task, (contact, initials, color) =>
     getContactTemplate(contact, initials, color)
   );
 }
-
 
 
 function startDragging(id) {
@@ -481,9 +473,6 @@ function populateContactsToEditDropdown(contacts, assignedIds = []) {
 }
 
 
-
-
-
 /** 
  * Function to rotate the arrow icon in on of the dropdown-fields.
  * It's going to toggle a specific css-class which rotates the icon.
@@ -547,4 +536,15 @@ function selectContact(id) {
     emptySearchField('contact-search');
 }
 
+function renderAssignedEditAvatars(task) {
+  return mapAssignedContacts(task, (contact, initials, color) =>
+    `<div class="edit__contact-badge" style="background-color: ${color};">${initials}</div>`
+  );
+}
 
+
+function renderSubtasks(subtasks) {
+  return subtasks.map((subtask, index) =>
+    getSubtaskTemplate(subtask, index)
+  ).join('');
+}
