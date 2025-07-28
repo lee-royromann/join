@@ -119,7 +119,7 @@ function getEditTemplate(task) {
 
     return `
         <div class="overlay__edit--closewrapper">
-            <div class="overlay__close--button" onclick="closeOverlay()">
+            <div class="overlay__close--button" onclick="closeEditOverlay()">
                 <img src="../assets/img/icon/close.svg" alt="close-icon">
             </div>
         </div>

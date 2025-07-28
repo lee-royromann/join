@@ -44,24 +44,43 @@ async function loadContactsFromFirebase() {
 
 function openOverlay(taskId) {
     const overlay = document.getElementById("overlay");
+    const story = document.getElementById("story");
     overlay.style.display = "flex";
     overlay.classList.add("overlay--visible");
     setTimeout(() => {
         overlay.classList.add('overlay--slide-in');
     }, 15);
     document.body.style.overflow = 'hidden';
+    story.classList.remove("d-none");
     renderOverlayTask(taskId);
 }
 
 async function closeOverlay() {
     const overlay = document.getElementById("overlay");
+    const story = document.getElementById("story");
     overlay.style.display = "none";
     overlay.classList.remove("overlay--visible");
     overlay.classList.remove('overlay--slide-in');
 
     document.body.style.overflow = '';
     await loadTasksFromFirebase(); // Neu laden, um Änderungen zu reflektieren
+    story.classList.add("d-none");
     renderTasks(); // Tasks neu rendern
+}
+
+async function closeEditOverlay() {
+    const overlay = document.getElementById("overlay");
+    const edit = document.getElementById("edit");
+    overlay.style.display = "none";
+    overlay.classList.remove("overlay--visible");
+    overlay.classList.remove('overlay--slide-in');
+
+    document.body.style.overflow = '';
+    await loadTasksFromFirebase(); // Neu laden, um Änderungen zu reflektieren
+    edit.classList.add("d-none");
+    currentTask = null; // Aktuellen Task zurücksetzen
+    renderTasks(); // Tasks neu rendern
+    
 }
 
 function openEditOverlay(taskId) {
@@ -73,15 +92,10 @@ function openEditOverlay(taskId) {
     if (!currentTask) return;
 
     renderEditTask(taskId); 
-
+    console.log("Aktueller Task:", currentTask); // Debugging
+    console.log("Aktuelle Task-ID:", taskId); // Debugging
 }
 
-function closeEditOverlay() {
-    const story = document.getElementById("story");
-    const edit = document.getElementById("edit");
-    story.classList.remove("d-none");
-    edit.classList.add("d-none");
-}
 
 async function boardInit() {
     await loadTasksFromFirebase();
@@ -544,7 +558,9 @@ function renderAssignedEditAvatars(task) {
 
 
 function renderSubtasks(subtasks) {
-  return subtasks.map((subtask, index) =>
-    getSubtaskTemplate(subtask, index)
-  ).join('');
+  return subtasks
+  .filter(subtask => subtask.done === false)
+  .map((subtask, index) =>
+    getSubtaskTemplate(subtask, index))
+  .join('');
 }
