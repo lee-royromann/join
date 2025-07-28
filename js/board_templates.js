@@ -137,7 +137,7 @@ function getEditTemplate(task) {
 
                 <div class="edit__group">
                     <label class="edit__label" for="edit-description">Description</label>
-                    <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
+                    <textarea class="form__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
                     <div class="edit__required-note"></div>
                 </div>
 
@@ -185,20 +185,19 @@ function getEditTemplate(task) {
                         <div class="edit__wrapper-assignee" id="contact-edit-selector">
                             <input
                                 type="text"
-                                class="edit__input edit__input--textblack"
+                                class="form__input"
                                 id="edit-contact-search"
-                                onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
-                                oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
+                                onclick="toggleDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')"
+                                oninput="filterDropdown('contact-search', '#edit-contact-list .form__contact')"
                                 placeholder="Select contacts to assign"
                             />
-                            <div class="edit__icon-contact" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')">
+                            <div class="edit__icon-contact" onclick="toggleDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')">
                                 <img id="edit-contact-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open contact list">
                             </div>
                         </div>
-                        <div class="edit__wrapper-list d-none" id="#">
+                        <div class="edit__wrapper-list d-none" id="edit-contact-list-wrapper">
                             <ul class="edit__contact-list" id="edit-contact-list">
-                               
-                                
+                                  
                                 
                             </ul>
                         </div>
@@ -261,5 +260,40 @@ function getEditTemplate(task) {
         <footer class="edit__action-buttons">
             <button type="submit" class="edit__button-ok" onclick="closeEditOverlay()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
         </footer>
+    `;
+}
+
+function getEditContactListItem(contact, you, isAssigned) {
+    if (!contact || !contact.prename || !contact.surname) return '';
+
+    const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
+    const surnameInitial = contact.surname.charAt(0).toUpperCase();
+    const prenameInitial = contact.prename.charAt(0).toUpperCase();
+    const surnameFull = surnameInitial + contact.surname.slice(1);
+    const initials = prenameInitial + surnameInitial;
+
+    const checkedClass = isAssigned ? "" : "d_none";
+    const uncheckedClass = isAssigned ? "d_none" : "";
+    const isChecked = isAssigned ? "checked" : "";
+
+    return `
+        <li class="form__contact"
+            id="contact-id-${contact.id}"
+            data-id="${contact.id}"
+            data-shortname="${initials}"
+            data-fullname="${prenameFull} ${surnameFull}"
+            data-color="${contact.color}"
+            onclick="selectContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
+            <span class="form__contact-badge" style="background-color:${contact.color};">${initials}</span>
+            <span class="form__contact-name">${prenameFull} ${surnameFull} ${you}</span>
+            <input class="form__contact-checkbox" id="contact-checkbox-${contact.id}" type="checkbox" ${isChecked} hidden/>
+            <svg class="form__contact-checkbox-icon-unchecked ${uncheckedClass}" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect stroke="currentColor" stroke-width="2" x="1" y="1" width="16" height="16" rx="3"/>
+            </svg>
+            <svg class="form__contact-checkbox-icon-checked ${checkedClass}" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M17 8.96582V14.9658C17 16.6227 15.6569 17.9658 14 17.9658H4C2.34315 17.9658 1 16.6227 1 14.9658V4.96582C1 3.30897 2.34315 1.96582 4 1.96582H12" />
+                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 9.96582L9 13.9658L17 2.46582"/>
+            </svg>
+        </li>
     `;
 }

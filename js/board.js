@@ -4,6 +4,7 @@ let tasksFirebase = [];
 let contactsFirebase = [];
 
 let currentDraggedID; 
+let currentTask; 
 
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
@@ -28,11 +29,12 @@ async function loadTasksFromFirebase() {
  * @returns {Promise<void>}
  */
 async function loadContactsFromFirebase() {
-//   let response = await fetch(BASE_URL + "contacts.json");
   let response = await fetch(BASE_URL + "/join/contacts.json");
+  let unsortedContacts = [];
   if (response.ok) {
     let data = await response.json();
-    contactsFirebase = Object.values(data || {});
+    unsortedContacts = Object.values(data || {});
+    contactsFirebase = sortContactsByPrename(unsortedContacts);     //prüfen, wann sortierung sinnvoll ist
   } else {
     contactsFirebase = [];
   }
@@ -67,8 +69,11 @@ function openEditOverlay(taskId) {
     const edit = document.getElementById("edit");
     story.classList.add("d-none");
     edit.classList.remove("d-none");
-    renderEditTask(taskId);
-    initFlatpickr()
+    currentTask = tasksFirebase.find(t => t.id === taskId); // <-- Task global speichern
+    if (!currentTask) return;
+
+    renderEditTask(taskId); 
+
 }
 
 function closeEditOverlay() {
@@ -360,7 +365,8 @@ function renderEditTask(taskId) {
     // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen   
     contentRef.innerHTML = getEditTemplate(task);
     initFlatpickrEdit();
-    setInitialTaskPriority(task)
+    setInitialTaskPriority(task);
+    populateContactsToEditDropdown(contactsFirebase, task.assignedTo);
 }
 
 
@@ -460,3 +466,72 @@ function initFlatpickrEdit() {
 }
 
 
+function populateContactsToEditDropdown(contacts, assignedIds = []) {
+    const contactsRef = document.getElementById("edit-contact-list");
+    contactsRef.innerHTML = "";
+    const loggedInUser = localStorage.username;
+    const sortedContacts = moveLoggedInUserToTop(contacts, loggedInUser);
+
+    for (let contact of sortedContacts) {
+        const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
+        const isAssigned = assignedIds.includes(contact.id); // <-- Hier entscheidend
+        const youLabel = isLoggedIn ? "(You)" : "";
+        contactsRef.innerHTML += getEditContactListItem(contact, youLabel, isAssigned);
+    }
+}
+
+
+
+
+
+/** 
+ * Function to rotate the arrow icon in on of the dropdown-fields.
+ * It's going to toggle a specific css-class which rotates the icon.
+ */
+function rotateArrowIcon(arrowIconId) {
+    const arrowIcon = document.getElementById(arrowIconId);
+    arrowIcon.classList.toggle('arrow-icon-rotated');
+    console.log(`Arrow icon with ID ${arrowIconId} rotated.`);
+}
+
+
+/**
+ * Function to toggle the visibility of a dropdown menu and rotate its arrow icon.
+ * If another dropdown is currently open, it will be closed before opening the new one.
+ * Keeps track of the currently open dropdown to ensure only one is open at a time.
+ */
+function toggleDropdown(event, dropdownId, arrowIconId) {
+    event.stopPropagation();
+    const dropdown = document.getElementById(dropdownId);
+    const arrow = document.getElementById(arrowIconId);
+    const isOpen = !dropdown.classList.contains('d_none');
+    if (isOpen) {
+        hideElement(dropdownId);
+        rotateArrowIcon(arrowIconId);
+        currentOpenDropdown = null;
+    } else {
+        if (currentOpenDropdown) {
+            currentOpenDropdown.dropdown.classList.add('d_none');
+            currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
+        }
+        showElement(dropdownId);
+        rotateArrowIcon(arrowIconId);
+        currentOpenDropdown = { dropdown, arrow };
+    }
+}
+
+
+/**
+ * Function to toggle the selection state of a contact.
+ * Updates the checkbox -> switching the checked/unchecked icons.
+ * Highlights or unhighlights the contact visually.
+ * Adds or removes the corresponding badge.
+ * Clears the search input after each selection change.
+ */
+function selectContact(id) {
+    const checkbox = document.getElementById(`contact-checkbox-${id}`);
+    const listItem = document.getElementById(`contact-id-${id}`);
+    const isChecked = checkbox.checked = !checkbox.checked;
+    updateContactSelectionState(id, checkbox, listItem, isChecked);
+    emptySearchField('contact-search');
+}
