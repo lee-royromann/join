@@ -500,13 +500,13 @@ function rotateArrowIcon(arrowIconId) {
  * If another dropdown is currently open, it will be closed before opening the new one.
  * Keeps track of the currently open dropdown to ensure only one is open at a time.
  */
-function toggleDropdown(event, dropdownId, arrowIconId) {
+function toggleEditDropdown(event, dropdownId, arrowIconId) {
     event.stopPropagation();
     const dropdown = document.getElementById(dropdownId);
     const arrow = document.getElementById(arrowIconId);
     const isOpen = !dropdown.classList.contains('d_none');
     if (isOpen) {
-        hideElement(dropdownId);
+        hideElement('edit-contact-list-wrapper');
         rotateArrowIcon(arrowIconId);
         currentOpenDropdown = null;
     } else {
@@ -514,7 +514,7 @@ function toggleDropdown(event, dropdownId, arrowIconId) {
             currentOpenDropdown.dropdown.classList.add('d_none');
             currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
         }
-        showElement(dropdownId);
+        showElement('edit-contact-list-wrapper');
         rotateArrowIcon(arrowIconId);
         currentOpenDropdown = { dropdown, arrow };
     }
@@ -535,3 +535,5 @@ function selectContact(id) {
     updateContactSelectionState(id, checkbox, listItem, isChecked);
     emptySearchField('contact-search');
 }
+
+

@@ -187,15 +187,15 @@ function getEditTemplate(task) {
                                 type="text"
                                 class="form__input"
                                 id="edit-contact-search"
-                                onclick="toggleDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')"
+                                onclick="toggleEditDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')"
                                 oninput="filterDropdown('contact-search', '#edit-contact-list .form__contact')"
                                 placeholder="Select contacts to assign"
                             />
-                            <div class="edit__icon-contact" onclick="toggleDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')">
+                            <div class="edit__icon-contact" onclick="toggleEditDropdown(event, 'edit-contact-list-wrapper', 'edit-contact-arrow-icon')">
                                 <img id="edit-contact-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open contact list">
                             </div>
                         </div>
-                        <div class="edit__wrapper-list d-none" id="edit-contact-list-wrapper">
+                        <div class="edit__wrapper-list d_none" id="edit-contact-list-wrapper">
                             <ul class="edit__contact-list" id="edit-contact-list">
                                   
                                 
