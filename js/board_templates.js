@@ -125,7 +125,7 @@ function getEditTemplate(task) {
         
         <div class="overlay__edit--wrapper">
 
-            <div class="overlay__edit--selections">
+            <div class="overlay__edit--selections" id="edit-scroll-wrapper">
 
                 <div class="edit__group">
                     <label class="edit__label" for="edit-title">Title</label>

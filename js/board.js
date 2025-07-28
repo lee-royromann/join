@@ -499,6 +499,7 @@ function rotateArrowIcon(arrowIconId) {
  * Function to toggle the visibility of a dropdown menu and rotate its arrow icon.
  * If another dropdown is currently open, it will be closed before opening the new one.
  * Keeps track of the currently open dropdown to ensure only one is open at a time.
+ * Scrolls the card to the bottom when opening contact drop-down.
  */
 function toggleEditDropdown(event, dropdownId, arrowIconId) {
     event.stopPropagation();
@@ -517,6 +518,16 @@ function toggleEditDropdown(event, dropdownId, arrowIconId) {
         showElement('edit-contact-list-wrapper');
         rotateArrowIcon(arrowIconId);
         currentOpenDropdown = { dropdown, arrow };
+    }
+
+    scrollToBottom("edit-scroll-wrapper");
+}
+
+
+function scrollToBottom(elementId) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
     }
 }
 
