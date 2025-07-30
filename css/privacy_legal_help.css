@@ -125,4 +125,8 @@ ul li,
     h1 {
         font-size: 34px;
     }
+
+    ul {
+        padding-left: 16px;
+    }
 }
