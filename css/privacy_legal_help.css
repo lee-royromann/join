@@ -3,7 +3,6 @@ h1 {
     font-weight: 700;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    /* border-bottom: 2px solid #29ABE2; */
     color: #2A3647;
     flex-shrink: 0;
 }
@@ -80,17 +79,50 @@ ul li,
     main {
         margin-top: 0;
     }
-    .title { 
-        font-size: 40px;
+}
+
+@media (max-width: 800px) {
+    .sidebar__logo-image {
+        width: 60px;
+    }
+
+    .sidebar__menu a span{
+        display: none;
     }
 }
 
-@media (max-width: 600px) {
-    .title { 
-        font-size: 32px;
+@media (max-width: 750px) {
+    .header {
+        padding-left: 40px;
     }
     
-    .undertext { 
-        font-size: 14px;
+    h1 {
+        font-size: 40px;
+    }
+
+    .page-content-section {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 655px) {
+    .header__title {
+        display: none;
+    }
+
+    .header__logo {
+        display: block;
+    }
+}
+
+@media (max-width: 550px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    h1 {
+        font-size: 34px;
     }
 }
