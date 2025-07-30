@@ -5,112 +5,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Datenschutz</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/privacy_legal_help.css"> <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+    <link rel="stylesheet" href="../css/privacy_legal_help.css">
+
+    <!-- JS -->
+    <script src="../js/add_task.js" defer></script>
 </head>
-<body>
-    <div class="board-page">
-        <div class="board-page__card">
-            <nav class="sidebar">
-                <div class="sidebar__logo"><img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo"></div>
-                <div class="sidebar__menu">
-                    <a href="./summary.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary Icon"><span class="sidebar__text">Summary</span></a>
-                    <a href="./add_task.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task Icon"><span class="sidebar__text">Add Task</span>
-                    <a href="./board.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board Icon"><span class="sidebar__text">Board</span></a>
-                    <a href="#" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts Icon"><span class="sidebar__text">Contacts</span></a>
+
+<body onload="getUsernameInitals()">
+    <div class="page">
+
+        <!-- Navigation -->
+        <nav class="sidebar" aria-label="Main Navigation">
+
+            <!-- Logo -->
+            <div class="sidebar__logo">
+                <a href="../index.html">
+                    <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
+                </a>
+            </div>
+
+            <!-- Page Links -->
+            <section class="sidebar__menu">
+                <a href="/html/summary.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Summary</span>
+                </a>
+                <a href="/html/add_task.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Add Task</span>
+                </a>
+                <a href="/html/board.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Board</span>
+                </a>
+                <a href="/html/contacts.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Contacts</span>
+                </a>
+            </section>
+
+            <!-- Legal Links -->
+            <section class="sidebar__legal">
+                <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
+                <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
+            </section>
+        </nav>
+
+        <main class="main">
+            
+            <!-- Header -->
+            <header class="header">
+                <p class="header__title">Kanban Project Management Tool</p>
+                <a href="/index.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
+                <div class="header__container">
+                    <div class="header__help">?</div>
+                    <div class="header__user" id="header__user"></div>
                 </div>
-                <div class="sidebar__legal">
-                    <a href="./privacy_policy.html" class="sidebar__text active">Privacy Policy</a>
-                    <a href="./legal_notice.html" class="sidebar__text">Legal notice</a>
-                </div>
-            </nav>
-            <div class="page-content">
-                <header class="header">
-                    <h1 class="header__title">Kanban Project Management Tool</h1>
-                    <div class="header__container">
-                        <a class="header__help" href="./help.html">?</a>
-                        <div class="header__user" id="header-user-icon"></div>
-                    </div>
-                </header>
-                <section class="page-content-section">
-                    <h1 class="main-title">Privacy Policy</h1>
-                    <div class="section">
-                        <h2 class="subtitle">General Information</h2>
-                        <p class="undertext">The following notes provide a simple overview of what happens to your personal data when you visit this website. Personal data means any data with which you can be personally identified. Detailed information on data protection can be found in our full privacy policy below.
-                        <h3>Data Collection on This Website</h3><br>
-                        <p>Who is responsible for data collection on this website?</p>
-                        <p>Data processing on this website is carried out by the website operator. Contact details can be found in the section “Information About the Controller” in this privacy policy.</p><br>
-                        <h3>How do we collect your data?</h3><br>
-                        <p>Some data is collected when you provide it to us. This may, for example, be data that you enter in a contact form. Other data is automatically collected by our IT systems when you visit the website. These are mainly technical data (e.g. browser type, operating system, or time of page access). This data is collected automatically as soon as you access this website.</p><br>
-                        <h3>Why do we use your data?</h3><br>
-                        <p>Some of the data is collected to ensure the proper functioning of the website. Other data may be used to analyze user behavior. If contracts are concluded or initiated via purpose of preparing offers, orders, or other inquiries.</p><br>
-                        <h3>What rights do you have regarding your data?</h3><br>
-                        <p>You have the right to receive information about the origin, recipients, and purpose of your stored personal data at any time, free of charge. You also have the right to request the correction or deletion of this data. If you have given consent to data processing, you may revoke this consent at any time for the future. Under certain conditions, you also have the right to restrict the processing of your personal data. Furthermore, you have the right to lodge a complaint with the competent supervisory authority. You may contact us at any time for further information on the subject of data protection.</p><br>
-                        <h2 class="subtitle">Hosting</h2>
-                        <h3>External Hosting</h3><br>
-                        <p>This website is hosted externally. The personal data collected on this website is stored on the servers of the hosting provider. This may include IP addresses, contact requests, meta and communication data, contract data, contact details, names, website accesses, and other data generated via a website.</p><br>
-                        <p>External hosting is carried out for the purpose of fulfilling contracts with our potential and existing customers (Art. 6(1)(b) GDPR) and in the interest of a secure, fast, and efficient provision of our online services by a professional provider (Art. 6(1)(f) GDPR).</p><br>
-                        <p>If consent has been requested, processing is carried out exclusively on the basis of Art. 6(1)(a) GDPR and § 25(1) TDDDG, provided that the consent includes the storage of cookies or access to information on the user’s device (e.g. device fingerprinting). Consent may be revoked at any time.</p><br>
-                        <p>Our hosting provider will only process your data to the extent necessary to fulfill its obligations and follow our instructions regarding this data.</p><br>
-                        <p>We use the following host:</p><br>
-                        <ul>
-                            <li>Developer Akademie</li>
-                            <li>Tassiloplatz 25</li>
-                            <li>81541 Munich, Germany</li>
-                        </ul><br>
-                        <h3>Data Processing Agreement (DPA)</h3><br>
-                        <p>We have concluded a DPA with the above provider. This legally required contract ensures that the provider processes personal data of our website visitors only in accordance with our instructions and in compliance with the GDPR.</p><br>
-                        <h3 class="subtitle">Mandatory Information</h3>
-                        <h3>Data Protection</h3><br>
-                        <p>We take the protection of your personal data seriously. We treat your personal data confidentially and in accordance with legal data protection regulations and this privacy policy. Please note that data transmission over the internet (e.g. communication via email) may have security vulnerabilities. Complete protection of data from access by third parties is not possible.</p><br>
-                        <h3>Controller</h3><br>
-                        <p>The controller responsible for data processing on this website is:</p><br>
-                        <ul>
-                            <li style="color: red;">Danny Mensing</li>
-                            <li style="color: red;">Provinzialstraße 51</li>
-                            <li style="color: red;">45711 Datteln, Germany</li>
-                            <li style="color: red;">Email: danny.mensing@gmail.com</li>
-                        </ul><br>
-                        <h2 class="subtitle">Legal Basis and Storage Period</h2>
-                        <p>Unless a more specific storage period has been stated within this privacy policy, your personal data will be stored until the purpose for data processing no longer applies. If you request deletion or revoke your consent, your data will be deleted unless legally required reasons (e.g. tax or commercial retention periods) justify further storage.</p><br>
-                        <ul>
-                            <li>Data processing is based on:</li>
-                            <li>Consent (Art. 6(1)(a) GDPR)</li>
-                            <li>Contract fulfillment (Art. 6(1)(b) GDPR)</li>
-                            <li>Legal obligation (Art. 6(1)(c) GDPR)</li>
-                            <li>Legitimate interest (Art. 6(1)(f) GDPR)</li>
-                            <li>We also inform you about the specific legal basis in the relevant sections of this policy.</li>
-                        </ul><br>
-                        <h2 class="subtitle">Rights of Data Subjects</h2>
-                            <ul>
-                                <li>Right to withdraw consent</li>
-                                <li>Right to object to data processing (Art. 21 GDPR)</li>
-                                <li>Right to lodge a complaint with a supervisory authority</li>
-                                <li>Right to data portability</li>
-                                <li>Right of access, correction, and deletion</li>
-                                <li>Right to restriction of processing</li>
-                            </ul><br>
-                        <h2 class="subtitle">Cookies</h2>
-                        <p>Our website uses so-called “cookies”. Cookies are small data files stored on your device. They can be temporary (session cookies) or permanent. Session cookies are automatically deleted after your visit ends. Permanent cookies remain on your device until you delete them or your browser does so automatically.</p><br>
-                        <ul>
-                            <li>Cookies can be:</li>
-                            <li>First-party (set by us)</li>
-                            <li>Third-party (set by external services, e.g. payment providers, videos)</li>
-                            <li>Some cookies are technically necessary; others are used to analyze user behavior or for advertising purposes.</li>
-                            <li>Necessary cookies are stored based on Art. 6(1)(f) GDPR, unless another legal basis is stated.</li>
-                            <li>Where consent has been given, cookies are processed based on Art. 6(1)(a) GDPR and § 25(1) TDDDG. Consent can be revoked at any time.</li>
-                            <li>You can configure your browser to notify you about cookies, accept them in specific cases, or reject them generally.</li>
-                            <li>Disabling cookies may limit some website functionality.</li>
-                            <li>More details on which cookies and services we use can be found in the full version of this privacy policy.</li>
-                            <li>Source: https://www.e-recht24.de (adapted for English)</li>
-                        </ul>
-                    </div>
+            </header>
+
+            <div class="page-content-section">
+
+                <h1>Privacy Policy</h1>
+
+                <section class="section">
+                    <h2>General Information</h2>
+                    <p>The following notes provide a simple overview of what happens to your personal data when you visit this website. Personal data means any data with which you can be personally identified. Detailed information on data protection can be found in our full privacy policy below.
+                </section>
+
+                <section class="section">
+                    <h3>Data Collection on This Website</h3>
+                    <p>Who is responsible for data collection on this website? Data processing on this website is carried out by the website operator. Contact details can be found in the section “Information About the Controller” in this privacy policy.</p>
+                </section>
+
+                <section class="section">
+                    <h3>How do we collect your data?</h3>
+                    <p>Some data is collected when you provide it to us. This may, for example, be data that you enter in a contact form. Other data is automatically collected by our IT systems when you visit the website. These are mainly technical data (e.g. browser type, operating system, or time of page access). This data is collected automatically as soon as you access this website.</p>
+                </section>
+
+                <section class="section">
+                    <h3>Why do we use your data?</h3>
+                    <p>Some of the data is collected to ensure the proper functioning of the website. Other data may be used to analyze user behavior. If contracts are concluded or initiated via purpose of preparing offers, orders, or other inquiries.</p>
+                </section>
+
+                <section class="section">
+                    <h3>What rights do you have regarding your data?</h3>
+                    <p>You have the right to receive information about the origin, recipients, and purpose of your stored personal data at any time, free of charge. You also have the right to request the correction or deletion of this data. If you have given consent to data processing, you may revoke this consent at any time for the future. Under certain conditions, you also have the right to restrict the processing of your personal data. Furthermore, you have the right to lodge a complaint with the competent supervisory authority. You may contact us at any time for further information on the subject of data protection.</p>
+                </section>
+
+                <h2>Hosting</h2>
+
+                <section class="section">
+                    <h3>External Hosting</h3>
+                    <p>This website is hosted externally. The personal data collected on this website is stored on the servers of the hosting provider. This may include IP addresses, contact requests, meta and communication data, contract data, contact details, names, website accesses, and other data generated via a website.</p>
+                    <p>External hosting is carried out for the purpose of fulfilling contracts with our potential and existing customers (Art. 6(1)(b) GDPR) and in the interest of a secure, fast, and efficient provision of our online services by a professional provider (Art. 6(1)(f) GDPR).</p>
+                    <p>If consent has been requested, processing is carried out exclusively on the basis of Art. 6(1)(a) GDPR and § 25(1) TDDDG, provided that the consent includes the storage of cookies or access to information on the user’s device (e.g. device fingerprinting). Consent may be revoked at any time.</p>
+                    <p>Our hosting provider will only process your data to the extent necessary to fulfill its obligations and follow our instructions regarding this data.</p>
+                    <p><strong>We use the following host:</strong></p>
+                    <ul>
+                        <li>Developer Akademie</li>
+                        <li>Tassiloplatz 25</li>
+                        <li>81541 Munich, Germany</li>
+                    </ul>
+                </section>
+
+                <section class="section">
+                    <h3>Data Processing Agreement (DPA)</h3>
+                    <p>We have concluded a DPA with the above provider. This legally required contract ensures that the provider processes personal data of our website visitors only in accordance with our instructions and in compliance with the GDPR.</p>
+                </section>
+
+                <h2>Mandatory Information</h2>
+
+                <section class="section">
+                    <h3>Data Protection</h3>
+                    <p>We take the protection of your personal data seriously. We treat your personal data confidentially and in accordance with legal data protection regulations and this privacy policy. Please note that data transmission over the internet (e.g. communication via email) may have security vulnerabilities. Complete protection of data from access by third parties is not possible.</p>
+                </section>
+
+                <section class="section">
+                    <h3>Controller</h3>
+                    <p>The controller responsible for data processing on this website is:</p>
+                    <ul>
+                        <li>Danny Mensing</li>
+                        <li>Provinzialstraße 51</li>
+                        <li>45711 Datteln, Germany</li>
+                        <li>Email: danny.mensing@gmail.com</li>
+                    </ul>
+                </section>
+
+                <h2>Legal Basis and Storage Period</h2>
+
+                <section class="section">
+                    <p>Unless a more specific storage period has been stated within this privacy policy, your personal data will be stored until the purpose for data processing no longer applies. If you request deletion or revoke your consent, your data will be deleted unless legally required reasons (e.g. tax or commercial retention periods) justify further storage.</p>
+                    <ul>
+                        <li>Data processing is based on:</li>
+                        <li>Consent (Art. 6(1)(a) GDPR)</li>
+                        <li>Contract fulfillment (Art. 6(1)(b) GDPR)</li>
+                        <li>Legal obligation (Art. 6(1)(c) GDPR)</li>
+                        <li>Legitimate interest (Art. 6(1)(f) GDPR)</li>
+                        <li>We also inform you about the specific legal basis in the relevant sections of this policy.</li>
+                    </ul>
+                </section>
+
+                <h2>Rights of Data Subjects</h2>
+
+                <section class="section">
+                    <ul>
+                        <li>Right to withdraw consent</li>
+                        <li>Right to object to data processing (Art. 21 GDPR)</li>
+                        <li>Right to lodge a complaint with a supervisory authority</li>
+                        <li>Right to data portability</li>
+                        <li>Right of access, correction, and deletion</li>
+                        <li>Right to restriction of processing</li>
+                    </ul>
+                </section>
+
+                <h2>Cookies</h2>
+
+                <section class="section">
+                    <p>Our website uses so-called “cookies”. Cookies are small data files stored on your device. They can be temporary (session cookies) or permanent. Session cookies are automatically deleted after your visit ends. Permanent cookies remain on your device until you delete them or your browser does so automatically.</p>
+                    <p><strong>Cookies can be:</strong></p>
+                    <ul>
+                        <li>First-party (set by us)</li>
+                        <li>Third-party (set by external services, e.g. payment providers, videos)</li>
+                        <li>Some cookies are technically necessary; others are used to analyze user behavior or for advertising purposes.</li>
+                        <li>Necessary cookies are stored based on Art. 6(1)(f) GDPR, unless another legal basis is stated.</li>
+                        <li>Where consent has been given, cookies are processed based on Art. 6(1)(a) GDPR and § 25(1) TDDDG. Consent can be revoked at any time.</li>
+                        <li>You can configure your browser to notify you about cookies, accept them in specific cases, or reject them generally.</li>
+                        <li>Disabling cookies may limit some website functionality.</li>
+                        <li>More details on which cookies and services we use can be found in the full version of this privacy policy.</li>
+                        <li>Source: https://www.e-recht24.de (adapted for English)</li>
+                    </ul>
                 </section>
             </div>
-        </div>
+        </main>
     </div>
 </body>
 </html>
