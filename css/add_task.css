@@ -708,6 +708,7 @@ fieldset {
 
 /* SCROLLBARS */
 
+.main::-webkit-scrollbar,
 .form__wrapper-list::-webkit-scrollbar,
 .form__textarea::-webkit-scrollbar,
 .page::-webkit-scrollbar,
@@ -717,6 +718,7 @@ fieldset {
   width: 6px;
 }
 
+.main::-webkit-scrollbar-thumb,
 .form__wrapper-list::-webkit-scrollbar-thumb,
 .form__textarea::-webkit-scrollbar-thumb,
 .page::-webkit-scrollbar-thumb,
@@ -727,6 +729,7 @@ fieldset {
   border-radius: 4px;
 }
 
+.main::-webkit-scrollbar-track,
 .form__wrapper-list::-webkit-scrollbar-track,
 .form__textarea::-webkit-scrollbar-track,
 .page::-webkit-scrollbar-track,
