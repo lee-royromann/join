@@ -5,90 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Help</title>
 
+    <!-- Favicon -->    
+    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/privacy_legal_help.css"> 
-    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+
+    <!-- JS -->
+    <script src="../js/add_task.js" defer></script>
 </head>
-<body>
-    <div class="board-page">
-        <div class="board-page__card">
-            <nav class="sidebar">
-                <div class="sidebar__logo"><img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Logo"></div>
-                <div class="sidebar__menu">
-                    <a href="./summary.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="Summary Icon"><span class="sidebar__text">Summary</span></a>
-                    <a href="./add_task.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="Add Task Icon"><span class="sidebar__text">Add Task</span></a>
-                    <a href="./board.html" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="Board Icon"><span class="sidebar__text">Board</span></a>
-                    <a href="#" class="sidebar__item"><img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="Contacts Icon"><span class="sidebar__text">Contacts</span></a>
-                </div>
-                <div class="sidebar__legal">
-                    <a href="./privacy_policy.html" class="sidebar__text">Privacy Policy</a>
-                    <a href="./legal_notice.html" class="sidebar__text">Legal notice</a>
-                </div>
-            </nav>
 
-            <div class="page-content">
-                <header class="header">
-                    <h1 class="header__title">Kanban Project Management Tool</h1>
-                    <div class="header__container">
-                        <a class="header__help" href="./help.html">?</a>
-                        <div class="header__user" id="header-user-icon"></div>
-                    </div>
-                </header>
+<body onload="getUsernameInitals()">
+    <div class="page">
 
-                <main>
-                    <div class="legal-container">
-                        <h1 class="main-title">Help</h1>
-                        <div class="scrollable-content">
-                            
-                            <p class="undertext" style="margin-bottom: 24px;">Welcome to the help page for&nbsp;Join, your guide to using our kanban project management tool.</p>
-                            
-                            <div class="section">
-                                <h2 class="subtitle">What is Join?</h2>
-                                <p class="undertext">Join&nbsp;is a kanban-based project management tool designed and built by a group of students as part of a web development bootcamp. It is an educational exercise to demonstrate our abilities in front- and backend development.</p>
-                                <p class="undertext">Kanban, a Japanese term meaning “billboard,” is a highly effective method to visualize workflows, limit work-in-progress, and maximize efficiency. With&nbsp;Join, you can manage your tasks and projects in a simple, visual, and intuitive way.</p>
-                            </div>
+        <!-- Navigation -->
+        <nav class="sidebar" aria-label="Main Navigation">
 
-                            <div class="section">
-                                <h2 class="subtitle">How to use it</h2>
-                            </div>
-
-                            <div class="section">
-                                <h3 class="headline">1. Exploring the Board</h3>
-                                <p class="undertext">When you log in to&nbsp;Join, you’ll find a default board. This board represents your project and is divided into several lists, typically including "To Do," "In Progress," and "Done." Each list represents a stage in your workflow.</p>
-                            </div>
-
-                            <div class="section">
-                                <h3 class="headline">2. Creating Contacts</h3>
-                                <p class="undertext">To add people you want to collaborate on your projects, go to the “Contacts” section. Here you can add, view, and manage your contacts.</p>
-                            </div>
-
-                            <div class="section">
-                                <h3 class="headline">3. Adding Cards</h3>
-                                <p class="undertext">Now that you’ve added your contacts, you can start adding cards. Cards represent individual tasks. Click the "Add Task" button on the board or in the navigation to create a new card. You can then add a title, description, due date, and assign contacts to the task.</p>
-                            </div>
-
-                            <div class="section">
-                                <h3 class="headline">4. Moving Cards</h3>
-                                <p class="undertext">As a task moves from one stage to another, you can reflect that on the board by dragging and dropping the card from one list to another. This gives everyone a clear and immediate view of the project's progress.</p>
-                            </div>
-
-                            <div class="section">
-                                <h3 class="headline">5. Deleting Cards</h3>
-                                <p class="undertext">Once a task is completed, you can either move it to the "Done" list or delete it entirely if it's no longer needed. Be careful, as deleting a card is permanent!</p>
-                            </div>
-
-                            <div class="section">
-                                <p class="undertext">Have more questions about&nbsp;Join? Feel free to contact us at [Your Contact Email].</p>
-                            </div>
-
-                        </div>
-                    </div>
-                </main>
+            <!-- Logo -->
+            <div class="sidebar__logo">
+                <a href="../index.html">
+                    <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
+                </a>
             </div>
-        </div>
+
+            <!-- Page Links -->
+            <section class="sidebar__menu">
+                <a href="/html/summary.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Summary</span>
+                </a>
+                <a href="/html/add_task.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Add Task</span>
+                </a>
+                <a href="/html/board.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Board</span>
+                </a>
+                <a href="/html/contacts.html" class="sidebar__item">
+                    <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
+                    <span class="sidebar__text">Contacts</span>
+                </a>
+            </section>
+
+            <!-- Legal Links -->
+            <section class="sidebar__legal">
+                <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
+                <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
+            </section>
+        </nav>
+
+        <!-- Main -->
+        <main class="main">
+
+            <!-- Header -->
+            <header class="header">
+                <p class="header__title">Kanban Project Management Tool</p>
+                <a href="/index.html"><img class="header__logo" src="../assets/img/logo/join_1.svg" alt="Join Logo Header" hidden></a>
+                <div class="header__container">
+                    <div class="header__help">?</div>
+                    <div class="header__user" id="header__user"></div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="page-content-section">
+                
+                <h1>Help</h1>
+
+                <section class="section">
+                    <p>Welcome to the help page for Join, your guide to using our kanban project management tool. Here we'll provide an overview of what Join is, how it can benefit you, and how to use it.</p>
+                </section>
+                
+                <section class="section">
+                    <h2>What is Join?</h2>
+                    <p>Join&nbsp;is a kanban-based project management tool designed and built by a group of students as part of a web development bootcamp. It is an educational exercise to demonstrate our abilities in front- and backend development.</p>
+                    <p>Kanban, a Japanese term meaning “billboard,” is a highly effective method to visualize workflows, limit work-in-progress, and maximize efficiency. With&nbsp;Join, you can manage your tasks and projects in a simple, visual, and intuitive way.</p>
+                </section>
+
+                <h2>How to use it</h2>
+
+                <section class="section">
+                    <h3>1. Exploring the Board</h3>
+                    <p>When you log in to&nbsp;Join, you’ll find a default board. This board represents your project and is divided into several lists, typically including "To Do," "In Progress," and "Done." Each list represents a stage in your workflow.</p>
+                </section>
+
+                <section class="section">
+                    <h3>2. Creating Contacts</h3>
+                    <p>To add people you want to collaborate on your projects, go to the “Contacts” section. Here you can add, view, and manage your contacts.</p>
+                </section>
+
+                <section class="section">
+                    <h3>3. Adding Cards</h3>
+                    <p>Now that you’ve added your contacts, you can start adding cards. Cards represent individual tasks. Click the "Add Task" button on the board or in the navigation to create a new card. You can then add a title, description, due date, and assign contacts to the task.</p>
+                </section>
+
+                <section class="section">
+                    <h3>4. Moving Cards</h3>
+                    <p>As a task moves from one stage to another, you can reflect that on the board by dragging and dropping the card from one list to another. This gives everyone a clear and immediate view of the project's progress.</p>
+                </section>
+
+                <section class="section">
+                    <h3>5. Deleting Cards</h3>
+                    <p>Once a task is completed, you can either move it to the "Done" list or delete it entirely if it's no longer needed. Be careful, as deleting a card is permanent!</p>
+                </section>
+
+                <section class="section">
+                    <p>Have more questions about&nbsp;Join? Feel free to contact us at [Your Contact Email].</p>
+                </section>
+
+                <h2>Enjoy using Join!</h2>
+            </div>
+        </main>
     </div>
 </body>
 </html>
