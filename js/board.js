@@ -375,15 +375,6 @@ function renderEditTask(taskId) {
     populateContactsToEditDropdown(contactsFirebase, task.assignedTo);
 }
 
-
-function selectContact(id) {
-    const checkbox = document.getElementById(`contact-checkbox-${id}`);
-    const listItem = document.getElementById(`contact-id-${id}`);
-    const isChecked = checkbox.checked = !checkbox.checked;
-    updateContactSelectionState(id, checkbox, listItem, isChecked);
-    emptySearchField('contact-search');
-}
-
 async function toggleSubtaskStatus(index, taskId) {
  
   // Task in tasksFirebase finden
@@ -542,7 +533,7 @@ function scrollToBottom(elementId) {
  * Adds or removes the corresponding badge.
  * Clears the search input after each selection change.
  */
-function selectContact(id) {
+function selectEditContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
     const listItem = document.getElementById(`contact-id-${id}`);
     const isChecked = checkbox.checked = !checkbox.checked;
@@ -559,8 +550,9 @@ function renderAssignedEditAvatars(task) {
 
 function renderSubtasks(subtasks) {
   return subtasks
-  .filter(subtask => subtask.done === false)
-  .map((subtask, index) =>
-    getSubtaskTemplate(subtask, index))
-  .join('');
+    .map((subtask, originalIndex) => ({ subtask, originalIndex })) // 1. Index merken
+    .filter(({ subtask }) => subtask.done === false)               // 2. Nur unerledigte
+    .map(({ subtask, originalIndex }) => 
+      getSubtaskTemplate(subtask, originalIndex))                  // 3. Index mitgeben
+    .join('');
 }

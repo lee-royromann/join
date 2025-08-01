@@ -265,15 +265,16 @@ function getEditContactListItem(contact, you, isAssigned) {
     const checkedClass = isAssigned ? "" : "d_none";
     const uncheckedClass = isAssigned ? "d_none" : "";
     const isChecked = isAssigned ? "checked" : "";
+    const bgColorClass = isAssigned ? "bg-blue" : "";
 
     return `
-        <li class="form__contact"
+        <li class="form__contact ${bgColorClass}"
             id="contact-id-${contact.id}"
             data-id="${contact.id}"
             data-shortname="${initials}"
             data-fullname="${prenameFull} ${surnameFull}"
             data-color="${contact.color}"
-            onclick="selectContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
+            onclick="selectEditContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
             <span class="form__contact-badge" style="background-color:${contact.color};">${initials}</span>
             <span class="form__contact-name">${prenameFull} ${surnameFull} ${you}</span>
             <input class="form__contact-checkbox" id="contact-checkbox-${contact.id}" type="checkbox" ${isChecked} hidden/>

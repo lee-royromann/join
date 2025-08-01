@@ -467,5 +467,10 @@
 }
 
 .edit__button-ok img {
-    width: 15.49px;
+    width: 16px;
+}
+
+.bg-blue {
+    background-color: #2A3647;
+    color: white
 }
