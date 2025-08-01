@@ -110,7 +110,11 @@
     line-height: 120%;
     font-weight: 400;
     border: 1px solid #D1D1D1;
-   
+}
+
+input:focus {
+    border: 1px solid #28abe2;
+    outline: none; 
 }
 
 .edit__input--textblack {
@@ -188,8 +192,10 @@
    border-radius: 50%;
 }
 
-.edit__icon-done:hover {
-   transform: scale(1.1) 
+.edit__icon-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit__wrapper-priority {
@@ -427,7 +433,7 @@
 }
 
 .edit__icon-subtasklist:hover {
-    transform: scale(1.05);
+    
     transition: transform 0.1s ease-in-out;
 }
 

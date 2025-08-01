@@ -215,30 +215,16 @@ function getEditTemplate(task) {
                     <div class="edit__wrapper-input">
 
                         <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" placeholder="Add new subtask"/>
-
-   
-                        <div class="edit__wrapper-subtask-icons d-none" id="task-subtask-icons-1">
+                        <div class="edit__wrapper-subtask-icons" id="task-subtask-icons-1">
                             <div class="edit__icon-subtask edit__icon-add">
                                 <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                             </div>
                         </div>
 
-                        <!-- Subtask delte / check icons -->
-                        <div class="edit__wrapper-subtask-icons edit__icon-close" id="task-subtask-icons-2">
-                            <div class="edit__icon-subtask">
-                                <img src="../assets/img/icon/close.svg" alt="Subtask icon to delete subtask">
-                            </div>
-                            <span class="edit__icon-separator"></span>
-                            <div class="edit__icon-subtask  edit__icon-done">
-                                <img src="../assets/img/icon/done.svg" alt="Subtask icon to mark subtask as done">
-                            </div>
-                        </div>
                     </div>   
         
                     <ul class="edit__subtasklist">
-                        <li class="edit__subtask">   
-                            ${subtasksHTML}
-                        </li> 
+                        ${subtasksHTML}    
                     </ul>   
 
                 </div>
@@ -248,7 +234,7 @@ function getEditTemplate(task) {
         </div>  
     
         <footer class="edit__action-buttons">
-            <button type="submit" class="edit__button-ok" onclick="closeEditOverlay()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
+            <button type="submit" class="edit__button-ok" onclick="saveEditTask()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
         </footer>
     `;
 }
@@ -301,7 +287,7 @@ function getSubtaskTemplate(subtask, index) {
           <img src="../assets/img/icon/edit.svg" alt="Edit subtask">
         </div>
         <span class="edit__subtask-separator"></span>
-        <div class="edit__icon-subtasklist" onclick="toggleSubtaskDone(${index})">
+        <div class="edit__icon-subtasklist" onclick="deleteEditSubtask(${index})">
           <img src="../assets/img/icon/delete.svg" alt="Mark as done">
         </div>
       </div>   

@@ -556,3 +556,33 @@ function renderSubtasks(subtasks) {
       getSubtaskTemplate(subtask, originalIndex))                  // 3. Index mitgeben
     .join('');
 }
+
+function deleteEditSubtask(id) {
+  if (!currentTask || !currentTask.subtask) return;
+
+  currentTask.subtask.splice(id, 1); 
+  document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+}
+
+
+async function saveEditTask(event, taskStatus, origin) {
+    event.preventDefault();
+    const validation = validateFormData();
+    if (!validation.isValid) {
+        console.log("Form incomplete! Please fill out all required fields.");
+        return;
+    }
+    try {
+        const task = await getTaskData(taskStatus);
+        await addTaskToDB(task);
+        handleTaskCreationSuccess(task);
+    } catch (error) {
+        handleTaskCreationError(error);
+    }
+    if (origin === 'board-page') {
+        closeTaskOverlay();
+        window.location.reload();
+    } else {
+        window.location.href = './board.html';
+    }
+}
