@@ -216,7 +216,7 @@ function getEditTemplate(task) {
 
                         <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" placeholder="Add new subtask"/>
                         <div class="edit__wrapper-subtask-icons" id="task-subtask-icons-1">
-                            <div class="edit__icon-subtask edit__icon-add">
+                            <div class="edit__icon-subtask edit__icon-add" onclick="addEditSubtask()">
                                 <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                             </div>
                         </div>
@@ -276,21 +276,47 @@ function getEditContactListItem(contact, you, isAssigned) {
 }
 
 
-function getSubtaskTemplate(subtask, index) {
+function getSubtaskTemplate(subtask, id) {
   return `
     <li class="edit__subtask">   
       <span class="edit__subtask-text ${subtask.done ? 'done' : ''}">
         ${subtask.title}
       </span>
-      <div class="edit__subtask-icons">
-        <div class="edit__icon-subtasklist" onclick="editSubtask(${index})">
+      <div class="edit__subtask-icons right-padding">
+        <div class="edit__icon-subtasklist" onclick="editEditSubtask(${id})">
           <img src="../assets/img/icon/edit.svg" alt="Edit subtask">
         </div>
         <span class="edit__subtask-separator"></span>
-        <div class="edit__icon-subtasklist" onclick="deleteEditSubtask(${index})">
+        <div class="edit__icon-subtasklist" onclick="deleteEditSubtask(${id})">
           <img src="../assets/img/icon/delete.svg" alt="Mark as done">
         </div>
       </div>   
     </li>
   `;
 }
+
+function getOverlaySubtaskEditTemplate(id, text) {
+  return `
+    <li class="edit__subtask is-editing">
+      <div class="edit__subtask-edit-container">
+        <input 
+            class="edit__subtask-input"
+            type="text" 
+            value="${text}" 
+            id="subtaskEdit-${id}"
+            onkeydown="handleEnterToSaveEditedSubtask(event, ${id})"
+        />
+        <div class="edit__subtask-icons">
+            <div class="edit__icon-subtasklist" onclick="deleteEditSubtask(${id})">
+                <img src="../assets/img/icon/delete.svg" alt="Delete subtask">
+            </div>
+            <span class="edit__subtask-separator"></span>
+            <div class="edit__icon-subtasklist" onclick="saveEditedSubtask(${id})">
+                <img src="../assets/img/icon/check_subtask.svg" alt="Save subtask">
+            </div>
+        </div>
+      </div>
+    </li>
+  `;
+}
+

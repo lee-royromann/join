@@ -394,7 +394,7 @@ input:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 16px;
+    padding: 6px 22px 6px 22px;
     font-size: 16px;
     line-height: 120%;
     font-weight: 400;
@@ -418,6 +418,36 @@ input:focus {
     cursor: pointer;
 }
 
+.edit__subtask.is-editing:hover {
+  background-color: transparent;
+}
+
+.edit__subtask-input:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.edit__subtask-edit-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 6px 16px 6px 0px; 
+  border-bottom: 2px solid #28abe2;
+  background-color: white;
+}
+
+.edit__subtask-input {
+    flex: 1;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
 .edit__subtask-icons{
     display: none;
     align-items: center;
@@ -427,6 +457,11 @@ input:focus {
     gap: 4px;
     padding-right: 4px; 
 }
+
+.right-padding {
+    padding-right: 32px;
+}
+
 
 .edit__subtask:hover .edit__subtask-icons { 
     display: flex;

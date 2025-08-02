@@ -558,10 +558,48 @@ function renderSubtasks(subtasks) {
 }
 
 function deleteEditSubtask(id) {
-  if (!currentTask || !currentTask.subtask) return;
+    currentTask.subtask.splice(id, 1); 
+    document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+}
 
-  currentTask.subtask.splice(id, 1); 
+function editEditSubtask(id) {
+  
+  const subtask = currentTask.subtask[id];
+  if (!subtask) return;
+  const text = subtask.title;
+  
+  const targetElement = document.querySelectorAll('.edit__subtask')[id];
+  if (!targetElement) return;
+
+  const editElement = convertHtmlStringToDomElement(getOverlaySubtaskEditTemplate(id, text));
+  targetElement.replaceWith(editElement);
+ 
+}
+
+function saveEditedSubtask(id) {
+  const input = document.getElementById(`subtaskEdit-${id}`);
+  if (!input) return;
+
+  const newTitle = input.value.trim();
+  if (newTitle === '') return;
+
+  currentTask.subtask[id].title = newTitle;
   document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+}
+
+function addEditSubtask () {
+    const input = document.getElementById("task-subtask-input");
+    
+    if (!input || input.value.trim() === '') return;  //brauche ich hier einen Untertitel?
+
+    const newSubtask = {
+        title: input.value.trim(),
+        done: false
+    };
+
+    currentTask.subtask.push(newSubtask);
+    document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+    input.value = ''; 
 }
 
 
