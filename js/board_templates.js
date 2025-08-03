@@ -136,7 +136,7 @@ function getEditTemplate(task) {
 
                 <div class="edit__group">
                     <label class="edit__label" for="edit-description">Description</label>
-                    <textarea class="form__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
+                    <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
                     <div class="edit__required-note"></div>
                 </div>
 

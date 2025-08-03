@@ -57,8 +57,8 @@
     padding: 4px 24px;
     gap: 10px;
     font-size: 23px;
-    line-height: 120%;
-    font-weight: 400;
+    /* line-height: 120%; */
+    /* font-weight: 400; */
     display: flex;
     align-items: center;
 }
@@ -95,7 +95,7 @@
     width: 100%;
     font-size: 20px;
     line-height: 120%;
-    font-weight: 400;
+    /* font-weight: 400; */
     color: #000000;
     display: -webkit-box;
     -webkit-line-clamp: 3;      
@@ -107,8 +107,8 @@
 .overlay__parameters {
     width: 100%;
     font-size: 20px;
-    line-height: 120%;
-    font-weight: 400;
+    /* line-height: 120%; */
+    /* font-weight: 400; */
     color: #2A3647;
     display: flex;
     flex-direction: row;
@@ -130,8 +130,8 @@
     gap: 8px;  
     font-size: 20px; 
     color: #2A3647;
-    line-height: 120%;
-    font-weight: 400;
+    /* line-height: 120%; */
+    /* font-weight: 400; */
     width: 100%;
 }
 
@@ -139,7 +139,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;  
-    font-size: 16px; 
+    /* font-size: 16px;  */
     width: 100%;
     max-height: 150px;
     overflow: auto;
@@ -170,8 +170,8 @@
     flex-direction: column;
     font-size: 20px; 
     color: #2A3647;
-    line-height: 120%;
-    font-weight: 400;
+    /* line-height: 120%; */
+    /* font-weight: 400; */
     gap: 8px;
 }
 
@@ -190,7 +190,7 @@
     width: 100%;
     padding: 6px 16px;
     gap: 16px;
-    font-size: 16px;
+    /* font-size: 16px; */
 }
 
 .overlay__subtask img {
@@ -228,7 +228,7 @@
     gap: 8px;
     fill: #2A3647;
     color: #2A3647;
-    font-size: 16px;
+    /* font-size: 16px; */
     text-decoration: none;
 }
 
