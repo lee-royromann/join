@@ -111,8 +111,6 @@ function getContactTemplate(contact, initials, color) {
   `;
 }
 
-//Achtung: Kommentarzeilen noch entfernen
-
 function getEditTemplate(task) {
     const assignedAvatar = renderAssignedEditAvatars(task);
     const subtasksHTML = renderSubtasks(task.subtask);

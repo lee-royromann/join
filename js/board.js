@@ -20,7 +20,6 @@ async function loadTasksFromFirebase() {
     let responseToJson = await response.json();
     tasksFirebase = [];
     tasksFirebase = Object.values(responseToJson).filter(task => task != null);
-    console.log(tasksFirebase);
   }
 
 //Achtung, diese Funktion gibt es schon in db.js kann final einfach gelöscht werden
@@ -539,20 +538,41 @@ function toggleEditDropdown(event, dropdownId, arrowIconId) {
     const arrow = document.getElementById(arrowIconId);
     const isOpen = !dropdown.classList.contains('d_none');
     if (isOpen) {
-        hideElement('edit-contact-list-wrapper');
-        rotateArrowIcon(arrowIconId);
-        currentOpenDropdown = null;
+    hideElement('edit-contact-list-wrapper');
+    rotateArrowIcon(arrowIconId);
+    currentOpenDropdown = null;
     } else {
-        if (currentOpenDropdown) {
-            currentOpenDropdown.dropdown.classList.add('d_none');
-            currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
-        }
-        showElement('edit-contact-list-wrapper');
-        rotateArrowIcon(arrowIconId);
-        currentOpenDropdown = { dropdown, arrow };
+    if (currentOpenDropdown) {
+        currentOpenDropdown.dropdown.classList.add('d_none');
+        currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
     }
+    showElement('edit-contact-list-wrapper');
+    rotateArrowIcon(arrowIconId);
+    currentOpenDropdown = { dropdown, arrow };
+    const search = document.getElementById('edit-contact-search').value.trim().toLowerCase();
+    if (search) filterContactsInDropdown(search);
+    else populateContactsToEditDropdown(contactsFirebase, currentTask?.assignedTo || []);
+  }
 
     scrollToBottom("edit-scroll-wrapper");
+}
+
+function filterContactsInDropdown(searchValue) {
+    const filteredContacts = contactsFirebase.filter(contact => {
+        const fullName = `${contact.prename} ${contact.surname}`.toLowerCase();
+        return fullName.includes(searchValue);
+    });
+
+    const listContainer = document.getElementById("edit-contact-list");
+    listContainer.innerHTML = "";
+
+    const assignedIds = currentTask?.assignedTo || [];
+
+    for (let contact of filteredContacts) {
+        const isAssigned = assignedIds.includes(Number(contact.id));
+        const youLabel = (`${contact.prename} ${contact.surname}` === localStorage.username) ? "(You)" : "";
+        listContainer.innerHTML += getEditContactListItem(contact, youLabel, isAssigned);
+    }
 }
 
 

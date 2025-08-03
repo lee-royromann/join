@@ -517,4 +517,5 @@ input:focus {
 }
 
 li:hover {
-  color: black;            
+    background-color: #081831         
+}
