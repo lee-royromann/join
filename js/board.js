@@ -366,16 +366,52 @@ function renderOverlayTask(taskId) {
 }
 
 function renderEditTask(taskId) {
-    const task = tasksFirebase.find(t => t.id === taskId);
+    overrideEmptySearchField();
+    const task = findTaskById(taskId);
     if (!task) return;
-    let contentRef = document.getElementById("edit");
+
+    prepareEditOverlay();
+    insertEditContent(task);
+    initializeEditComponents(task);
+}
+
+function overrideEmptySearchField() {
+    window.emptySearchField = () => {};
+}
+
+function findTaskById(id) {
+    return tasksFirebase.find(t => t.id === id);
+}
+
+function prepareEditOverlay() {
+    const contentRef = document.getElementById("edit");
+    if (!contentRef) return;
+
     contentRef.innerHTML = '';
-    // Hier sollte die Logik zum Rendern der Overlay-Task-Details stehen   
+
+    const ghostInput = document.getElementById('contact-search');
+    if (ghostInput) ghostInput.remove();
+
+    const ghostList = document.getElementById('contact-list');
+    if (ghostList) ghostList.remove();
+}
+
+function insertEditContent(task) {
+    const contentRef = document.getElementById("edit");
     contentRef.innerHTML = getEditTemplate(task);
+}
+
+function initializeEditComponents(task) {
     initFlatpickrEdit();
     setInitialTaskPriority(task);
     populateContactsToEditDropdown(contactsFirebase, task.assignedTo);
+
+    const badgeContainer = document.querySelector('.edit__contact-badges');
+    if (badgeContainer) {
+        badgeContainer.innerHTML = renderAssignedEditAvatars(task);
+    }
 }
+
 
 async function toggleSubtaskStatus(index, taskId) {
  
@@ -473,7 +509,7 @@ function populateContactsToEditDropdown(contacts, assignedIds = []) {
 
     for (let contact of sortedContacts) {
         const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
-        const isAssigned = assignedIds.includes(contact.id); // <-- Hier entscheidend
+        const isAssigned = assignedIds.map(Number).includes(Number(contact.id));
         const youLabel = isLoggedIn ? "(You)" : "";
         contactsRef.innerHTML += getEditContactListItem(contact, youLabel, isAssigned);
     }
@@ -539,8 +575,40 @@ function selectEditContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
     const listItem = document.getElementById(`contact-id-${id}`);
     const isChecked = checkbox.checked = !checkbox.checked;
-    updateContactSelectionState(id, checkbox, listItem, isChecked);
-    emptySearchField('contact-search');
+    updateEditContactSelectionState(id, checkbox, listItem, isChecked);
+    updateAssignedContacts(currentTask, id, isChecked);
+    document.querySelector('.edit__contact-badges').innerHTML = renderAssignedEditAvatars(currentTask);
+}
+
+function updateEditContactSelectionState(id, checkbox, listItem, isSelected) {
+    const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
+    const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
+    iconChecked.classList.toggle('d_none', !isSelected);
+    iconUnchecked.classList.toggle('d_none', isSelected);
+ listItem.classList.toggle('bg-blue', isSelected);
+
+    if (isSelected) {
+      highlightContact(checkbox);
+    } else {
+      unhighlightContact(checkbox);  
+    }
+}
+
+
+
+
+function updateAssignedContacts(task, contactId, isChecked) {
+    if (!Array.isArray(task.assignedTo)) {
+        task.assignedTo = [];
+    }
+
+    const idNum = Number(contactId); 
+
+    if (isChecked && !task.assignedTo.includes(idNum)) {
+        task.assignedTo.push(idNum);
+    } else if (!isChecked) {
+        task.assignedTo = task.assignedTo.filter(id => id !== idNum);
+    }
 }
 
 function renderAssignedEditAvatars(task) {

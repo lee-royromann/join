@@ -515,3 +515,6 @@ input:focus {
     background-color: #2A3647;
     color: white
 }
+
+li:hover {
+  color: black;            

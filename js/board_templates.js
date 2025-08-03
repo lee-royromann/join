@@ -132,7 +132,7 @@ function getEditTemplate(task) {
                     <label class="edit__label" for="edit-title">Title</label>
                     <div class="edit__group--input-wrapper">
                         <input class="edit__input edit__input--textblack" id="edit-title" type="text" name="title" value="${task.title}" placeholder="Enter a title" required/>
-                        <div class="edit__required-note">This field is required</div>
+                        <div class="edit__required-note"></div>
                     </div>
                 </div>
 
@@ -260,7 +260,7 @@ function getEditContactListItem(contact, you, isAssigned) {
             data-shortname="${initials}"
             data-fullname="${prenameFull} ${surnameFull}"
             data-color="${contact.color}"
-            onclick="selectEditContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
+            onclick="selectEditContact(${contact.id})">
             <span class="form__contact-badge" style="background-color:${contact.color};">${initials}</span>
             <span class="form__contact-name">${prenameFull} ${surnameFull} ${you}</span>
             <input class="form__contact-checkbox" id="contact-checkbox-${contact.id}" type="checkbox" ${isChecked} hidden/>
