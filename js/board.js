@@ -86,9 +86,11 @@ async function closeEditOverlay() {
 function openEditOverlay(taskId) {
     const story = document.getElementById("story");
     const edit = document.getElementById("edit");
+    const taskIndex = tasksFirebase.findIndex(t => t.id === taskId);
     story.classList.add("d-none");
     edit.classList.remove("d-none");
-    currentTask = tasksFirebase.find(t => t.id === taskId); // <-- Task global speichern
+    currentTask = tasksFirebase[taskIndex];
+    currentTask.index = taskIndex;  // wenn du später noch speichern willst
     if (!currentTask) return;
 
     renderEditTask(taskId); 
@@ -607,24 +609,58 @@ function addEditSubtask () {
 }
 
 
-async function saveEditTask(event, taskStatus, origin) {
-    event.preventDefault();
-    const validation = validateFormData();
-    if (!validation.isValid) {
-        console.log("Form incomplete! Please fill out all required fields.");
-        return;
-    }
-    try {
-        const task = await getTaskData(taskStatus);
-        await addTaskToDB(task);
-        handleTaskCreationSuccess(task);
-    } catch (error) {
-        handleTaskCreationError(error);
-    }
-    if (origin === 'board-page') {
-        closeTaskOverlay();
-        window.location.reload();
+async function saveEditTask() {
+    if (!validateEditForm()) return;
+
+    updateEditBoardData();
+    await saveTaskToFirebase(currentTask.id, currentTask);
+    await closeEditOverlay();
+}
+
+
+
+function validateEditForm() {
+    const titleInput = document.getElementById("edit-title");
+    const descriptionInput = document.getElementById("edit-description");
+    const dateInput = document.getElementById("edit-due-date");
+
+    let isValid = true;
+
+    if (!checkField(titleInput)) isValid = false;
+    if (!checkField(descriptionInput)) isValid = false;
+    if (!checkField(dateInput)) isValid = false;
+
+    return isValid;
+}
+
+
+function checkField(input, message = "This field is required") {
+    const wrapper = input.closest(".edit__group--input-wrapper") || input.parentElement;
+    const note = wrapper.querySelector(".edit__required-note");
+
+    if (!input.value.trim()) {
+        note.textContent = message;
+        note.style.display = "block";
+        input.classList.add("field-error");
+        return false;
     } else {
-        window.location.href = './board.html';
+        // note.style.display = "none";
+        input.classList.remove("field-error");
+        return true;
     }
 }
+
+function updateEditBoardData() {
+    const title = document.getElementById("edit-title").value.trim();
+    const description = document.getElementById("edit-description").value.trim();
+    const date = document.getElementById("edit-due-date").value.trim();
+
+    currentTask.title = title;
+    currentTask.description = description;
+    currentTask.date = date;
+
+    if (typeof choosenPriority !== 'undefined' && choosenPriority) {
+        currentTask.priority = choosenPriority;
+    }
+}
+
