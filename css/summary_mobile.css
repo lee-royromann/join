@@ -1,4 +1,4 @@
-@media (max-width: 1265px) {
+@media (max-width: 1300px) {
   .card__greetings-text {
   font-size: 30px;
   }
@@ -8,7 +8,7 @@
   }
 }
 
-@media (max-width: 1157px) {
+@media (max-width: 1187px) {
 
   .card {
     width: 190px;
@@ -117,7 +117,7 @@
   }
 }
 
-@media (max-width: 1007px) {
+@media (max-width: 1040px) {
   .card__greeting {
     display: none;
   }
@@ -139,21 +139,19 @@
 
 @media (max-width: 763px) {
   .sidebar {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: none;
-    min-width: 320px; 
-    height: 80px;
-    background-color: #2A3647;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 12px;
-    z-index: 1000;
-    margin: 0 auto;
+   position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: none;
+        width: 100%;
+        height: 80px;
+        padding: 0;
+        background-color: #2A3647;
+        z-index: 1000;
   }
 
   .sidebar__logo,
@@ -162,41 +160,32 @@
   }
 
   .sidebar__menu {
-    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 428px;
+        justify-content: space-around;
+        align-items: center;
+        padding-left: 14px;
+        padding-right: 14px;
   }
 
   .sidebar__item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    cursor: pointer;
-    padding: 8px 0;
-    border-radius: 12px;
-    transition: background-color 0.2s;
+      display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 76px;
+        width: 80px;
+        padding: 0;
+        gap: 6px;
   }
 
-  .sidebar__item:hover {
-    background-color: #091931;
-  }
 
   .sidebar__icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
+  height: 24px;
   }
 
   .sidebar__text {
-    font-size: 12px;
-    color: white;
-    text-decoration: none;
-    margin-top: 4px;
+  display: block;
+        font-size: 14px;
   }
 
   /* Header-Anpassungen */

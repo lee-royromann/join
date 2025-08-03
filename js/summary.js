@@ -1,47 +1,32 @@
-/**
- * Globale Tasks-Variable für Dashboard-Zähler und Board.
- * Muss VOR Nutzung deklariert werden.
- */
 let tasks = [];
+let tasksFirebase = [];
 
-/**
- * Initialisiert das Dashboard (Summary) mit Firebase-Daten und passt Layout an.
- * Lädt echte Tasks, aktualisiert Zähler, setzt Begrüßung und Wrapper-Höhe.
- */
 async function initSummary() {
     try {
-        await getDataFromServer("/join/tasks"); // Tasks aus Firebase laden
-        updateDashboardCounters(tasks);          // Zähler mit echten Daten aktualisieren
+        
+        await loadTasksFromFirebase();
+        updateDashboardCounters(tasksFirebase);
     } catch (error) {
         console.error("Fehler beim Laden der Tasks:", error);
     }
 
     initGreeting();
-    adjustContentWrapperHeight();
 }
 
-/**
- * Passt Wrapper-Höhe an die Viewport-Höhe abzüglich Header und Footer an,
- * um Footer-Kollisionen zu vermeiden.
- */
-function adjustContentWrapperHeight() {
-    const wrapper = document.getElementById('content-wrapper');
-    const footer = document.querySelector('footer');
-    const header = document.querySelector('header');
-
-    if (wrapper && footer && header) {
-        const viewportHeight = window.innerHeight;
-        const headerHeight = header.offsetHeight;
-        const footerHeight = footer.offsetHeight;
-        const desiredHeight = viewportHeight - headerHeight - footerHeight;
-        wrapper.style.minHeight = `${desiredHeight}px`;
+async function loadTasksFromFirebase() {
+    const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+    let response = await fetch(BASE_URL + "join/tasks.json");
+    let responseToJson = await response.json();
+    
+    if (responseToJson) {
+        tasksFirebase = Object.values(responseToJson).filter(task => task != null);
+    } else {
+        tasksFirebase = [];
     }
+    console.log("Tasks loaded for summary:", tasksFirebase);
 }
 
-/**
- * Initialisiert die dynamische Begrüßung abhängig von der Tageszeit
- * und lädt den Benutzernamen aus dem Local Storage.
- */
+
 function initGreeting() {
     const now = new Date();
     const hours = now.getHours();
@@ -65,16 +50,23 @@ function initGreeting() {
 }
 
 /**
- * Zählt die geladenen Tasks für die Dashboard-Elemente und zeigt sie an.
+ * Zählt die geladenen Tasks
  * @param {Array<Object>} tasks - Array aller geladenen Tasks aus Firebase.
  */
 function updateDashboardCounters(tasks) {
-    const todo = tasks.filter(t => t.condition === "todo").length;
-    const done = tasks.filter(t => t.condition === "done").length;
+    if (!tasks || !Array.isArray(tasks)) {
+        console.warn("Keine Tasks verfügbar für Dashboard-Update");
+        return;
+    }
+
+    const todo = tasks.filter(t => t.status === "to-do").length;
+    const done = tasks.filter(t => t.status === "done").length;
     const urgent = tasks.filter(t => t.priority === "urgent").length;
     const all = tasks.length;
-    const inProgress = tasks.filter(t => t.condition === "in_progress").length;
-    const feedback = tasks.filter(t => t.condition === "feedback").length;
+    const inProgress = tasks.filter(t => t.status === "in-progress").length;
+    const feedback = tasks.filter(t => t.status === "await-feedback").length;
+
+    const upcomingDeadline = findUpcomingUrgentDeadline(tasks);
 
     document.getElementById("count-todo").textContent = todo;
     document.getElementById("count-done").textContent = done;
@@ -82,58 +74,49 @@ function updateDashboardCounters(tasks) {
     document.getElementById("count-board").textContent = all;
     document.getElementById("count-progress").textContent = inProgress;
     document.getElementById("count-feedback").textContent = feedback;
+
+    const deadlineElement = document.getElementById("upcoming-deadline-date");
+    if (deadlineElement && upcomingDeadline) {
+        deadlineElement.textContent = upcomingDeadline;
+    } else if (deadlineElement) {
+        deadlineElement.textContent = "No urgent deadlines";
+    }
+
+    console.log("Dashboard counters updated:", {
+        todo, done, urgent, all, inProgress, feedback
+    });
 }
 
 /**
- * Passt die Sidebar-Breite an die Main-Breite an (nur bei 1305px und kleiner)
+ * Findet die nächste Deadline von urgent Tasks
+ * @param {Array<Object>} tasks - Array aller Tasks
+ * @returns {string|null} - Formatiertes Datum oder null
  */
-function adjustSidebarToMainWidth() {
+function findUpcomingUrgentDeadline(tasks) {
+    const urgentTasks = tasks.filter(t => t.priority === "urgent" && t.date);
+    
+    if (urgentTasks.length === 0) return null;
 
-    if (window.innerWidth <= 675) {
-        const sidebar = document.querySelector('.sidebar');
-        const mainElement = document.querySelector('.main');
+    const dates = urgentTasks.map(task => {
+        const [day, month, year] = task.date.split('.');
+        return {
+            date: new Date(year, month - 1, day),
+            original: task.date
+        };
+    }).filter(d => d.date >= new Date());
 
-        if (sidebar && mainElement) {
-            const mainWidth = mainElement.offsetWidth;
-            const mainRect = mainElement.getBoundingClientRect();
+    if (dates.length === 0) return null;
 
-            sidebar.style.width = `${mainWidth}px`;
-
-            const mainLeft = mainRect.left + window.scrollX;
-            const mainCenter = mainLeft + (mainWidth / 2);
-            const viewportCenter = window.innerWidth / 2;
-            const offsetFromCenter = mainCenter - viewportCenter;
-
-            sidebar.style.left = '50%';
-            sidebar.style.transform = `translateX(calc(-50% + ${offsetFromCenter}px))`;
-        }
-    } else {
-        
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar) {
-            sidebar.style.width = '';
-            sidebar.style.left = '';
-            sidebar.style.transform = '';
-        }
-    }
+    dates.sort((a, b) => a.date - b.date);
+    
+    const nextDate = dates[0].date;
+    return nextDate.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
 }
 
-window.addEventListener('resize', () => {
-    adjustContentWrapperHeight();
-    adjustSidebarToMainWidth();
-});
-
-// Initialisiert das Dashboard nach dem Laden des DOMs
 document.addEventListener("DOMContentLoaded", () => {
     initSummary();
-    adjustSidebarToMainWidth();
 });
-
-// Fügt aktiven Zustand für Sidebar-Elemente hinzu
-document.querySelectorAll('.sidebar__item').forEach(item => {
-    item.addEventListener('click', () => {
-        document.querySelectorAll('.sidebar__item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-    });
-});
-
