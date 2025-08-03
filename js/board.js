@@ -549,17 +549,21 @@ function renderAssignedEditAvatars(task) {
 
 
 function renderSubtasks(subtasks) {
+  
   return subtasks
     .map((subtask, originalIndex) => ({ subtask, originalIndex })) // 1. Index merken
     .filter(({ subtask }) => subtask.done === false)               // 2. Nur unerledigte
     .map(({ subtask, originalIndex }) => 
       getSubtaskTemplate(subtask, originalIndex))                  // 3. Index mitgeben
     .join('');
+    
 }
 
 function deleteEditSubtask(id) {
     currentTask.subtask.splice(id, 1); 
-    document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+
+    const list = document.querySelector('.edit__subtasklist');
+    list.innerHTML = renderSubtasks(currentTask.subtask);
 }
 
 function editEditSubtask(id) {
@@ -568,7 +572,7 @@ function editEditSubtask(id) {
   if (!subtask) return;
   const text = subtask.title;
   
-  const targetElement = document.querySelectorAll('.edit__subtask')[id];
+  const targetElement = document.querySelector(`.edit__subtask[data-id="${id}"]`);
   if (!targetElement) return;
 
   const editElement = convertHtmlStringToDomElement(getOverlaySubtaskEditTemplate(id, text));

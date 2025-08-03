@@ -278,7 +278,7 @@ function getEditContactListItem(contact, you, isAssigned) {
 
 function getSubtaskTemplate(subtask, id) {
   return `
-    <li class="edit__subtask">   
+    <li class="edit__subtask" data-id="${id}">   
       <span class="edit__subtask-text ${subtask.done ? 'done' : ''}">
         ${subtask.title}
       </span>
