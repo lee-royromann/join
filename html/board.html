@@ -101,33 +101,43 @@
                         </div>
                         
                     </div>
-                    <div class="kanban__grid-wrapper"> <!-- flex-grow-Container -->
-                         <div class="kanban__subtitle-row">
-                            <div class="kanban__subtitle">
-                                <span class="kanban__subtitle-text">To do</span>
-                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('to-do')"></span>
-                            </div>
-                            <div class="kanban__subtitle">
-                                <span class="kanban__subtitle-text">In progress</span>
-                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('in-progress')"></span>
-                            </div>
-                            <div class="kanban__subtitle">
-                                <span class="kanban__subtitle-text">Await feedback</span>
-                                <span class="kanban__subtitle-plus" onclick="showTaskOverlay('await-feedback')"></span>
-                            </div>
-                            <div class="kanban__subtitle">
-                                <span class="kanban__subtitle-text">Done</span>
-                            </div>
-                         </div>
 
-                        <div class="kanban__columns">
+                    <div class="kanban__grid-wrapper"> <!-- flex-grow-Container -->
+                        
+                       
+                        <div class="kanban__section">
+                            <div class="kanban__subtitle">
+                            <span class="kanban__subtitle-text">To do</span>
+                            <span class="kanban__subtitle-plus" onclick="showTaskOverlay('to-do')"></span>
+                            </div>
                             <div class="kanban__column" id="to-do" ondrop="moveTo('to-do')" ondragover="allowDrop(event)"></div>
+                        </div>
+
+                        <div class="kanban__section">
+                            <div class="kanban__subtitle">
+                            <span class="kanban__subtitle-text">In progress</span>
+                            <span class="kanban__subtitle-plus" onclick="showTaskOverlay('in-progress')"></span>
+                            </div>
                             <div class="kanban__column" id="in-progress" ondrop="moveTo('in-progress')" ondragover="allowDrop(event)"></div>
+                        </div>
+
+                        <div class="kanban__section">
+                            <div class="kanban__subtitle">
+                            <span class="kanban__subtitle-text">Await feedback</span>
+                            <span class="kanban__subtitle-plus" onclick="showTaskOverlay('await-feedback')"></span>
+                            </div>
                             <div class="kanban__column" id="await-feedback" ondrop="moveTo('await-feedback')" ondragover="allowDrop(event)"></div>
+                        </div>
+
+                        <div class="kanban__section">
+                            <div class="kanban__subtitle">
+                            <span class="kanban__subtitle-text">Done</span>
+                            </div>
                             <div class="kanban__column" id="done" ondrop="moveTo('done')" ondragover="allowDrop(event)"></div>
                         </div>
-                        
+
                     </div>
+                    
                 </div>
             </div>
         </div>

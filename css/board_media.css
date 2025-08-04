@@ -148,15 +148,13 @@
 }
 
 @media (max-width: 540px) {
-     .kanban__subtitle-row,
-  .kanban__columns {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+     .kanban__grid-wrapper {
+    grid-template-columns: 1fr;
+    padding: 0 16px 16px 16px;
   }
 
-  .kanban__grid-wrapper {
-    padding: 0 16px 16px 16px; /* schmaleres Padding auf kleinen Screens */
+  .kanban__section {
+    gap: 8px;
   }
 
   .kanban__subtitle {

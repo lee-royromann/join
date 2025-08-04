@@ -191,32 +191,38 @@ body {
 }
 
 .kanban__grid-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 100%;
-    overflow: hidden;
-    padding: 0 64px 16px 64px;
+flex: 1;
+  height: 0; /* wichtig: Kind soll Höhe vom Parent übernehmen */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  padding: 0 64px 16px 64px;
+  overflow: hidden; /* schützt den Viewport */
 }
 
-.kanban__subtitle-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 26px;
-    margin-bottom: 8px;
+.kanban__section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%; /* wichtig für Scrollbar-Verhalten */
 }
 
 .kanban__subtitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  top: 0;
+  z-index: 1;
+  background-color: #F6F7F8; 
+  padding: 8px 0;
+  width: 100%;
+  font-size: 24px;
     font-weight: 700;
-    font-size: 20px;
 }
 
-.kanban__subtitle-text {
+/* .kanban__subtitle-text {
     margin-right: 8px;
-}
+} */
 
 .kanban__subtitle-plus {
     display: inline-flex;
@@ -244,23 +250,11 @@ body {
               border-color 0.2s ease-in-out 0.1s;    
 }
 
-.kanban__columns {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 26px;
-  flex-grow: 1;
-  height: 100%;
-  
-}
-
 .kanban__column {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .kanban__column::-webkit-scrollbar {
