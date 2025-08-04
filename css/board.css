@@ -416,3 +416,8 @@ body {
 .card__credential + .card__credential {
     margin-left: -10px;
 }
+
+.card__priority img {
+    width: 20px;
+    height: 20px;
+}
