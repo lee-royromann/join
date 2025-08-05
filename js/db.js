@@ -4,327 +4,125 @@
  */
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
-/**
- * Ein Array zum Speichern von Benutzerdaten, die aus Firebase geladen wurden.
- * @type {Array<Object>}
- */
+// HINWEIS: Die globalen Arrays sind für andere Funktionen eventuell noch nützlich,
+// aber die Lade-Funktionen sollten die Daten direkt zurückgeben.
 let usersFirebase = [];
-
-/**
- * Ein Array zum Speichern von Kontaktdaten, die aus Firebase geladen wurden.
- * @type {Array<Object>}
- */
 let contactsFirebase = [];
 
-/**
- * Lädt Benutzerdaten aus Firebase und konvertiert das Objekt in ein Array.
- * @returns {Promise<void>}
- */
-async function loadUsersFromFirebase() {
-    let response = await fetch(BASE_URL + "/join/users.json");
-    if (response.ok) {
-        const data = await response.json();
-        if (data) {
-            // Konvertiert das Firebase-Objekt in ein Array von Benutzern
-            usersFirebase = Object.keys(data).map(key => {
-                return {
-                    id: key, // Speichert die einzigartige Firebase-ID
-                    ...data[key] // Fügt alle anderen Benutzerdaten hinzu (name, email, etc.)
-                };
-            });
-        } else {
-            usersFirebase = [];
-        }
-    } else {
-        usersFirebase = [];
+// =================================================================================
+// GENERIC API FUNCTIONS
+// =================================================================================
+
+async function firebaseRequest(path, method = 'GET', body = null) {
+    const url = `${BASE_URL}${path}.json`;
+    const options = {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+    };
+    if (body) {
+        options.body = JSON.stringify(body);
     }
-}
-
-/**
- * Speichert ein Benutzerobjekt in Firebase unter einem neuen Schlüssel.
- * @param {Object} user - Das zu speichernde Benutzerobjekt.
- * @returns {Promise<Response>} Das Response-Objekt der Fetch-Anfrage.
- */
-async function saveUserToFirebase(user) {
-    return await fetch(BASE_URL + "/join/users.json", {
-        method: 'POST',
-        body: JSON.stringify(user),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
-/**
- * Aktualisiert einen vorhandenen Benutzer in Firebase mithilfe seiner ID.
- * @param {string} userId - Die eindeutige ID des zu aktualisierenden Benutzers.
- * @param {Object} userData - Die neuen Daten für den Benutzer.
- * @returns {Promise<Response>} Das Response-Objekt der Fetch-Anfrage.
- */
-async function updateUserData(userId, userData) {
-    return await fetch(BASE_URL + `/join/users/${userId}.json`, {
-        method: 'PATCH',
-        body: JSON.stringify(userData),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
-
-/**
- * Lädt Kontakte aus Firebase und weist sie `contactsFirebase` zu.
- * Es rekonstruiert das Feld `username` aus `prename` und `surname`
- * für die lokale Verwendung innerhalb der Anwendung.
- * @returns {Promise<void>}
- */
-async function loadContactsFromFirebase() {
-    let response = await fetch(BASE_URL + "/join/contacts.json");
-    if (response.ok) {
-        let data = await response.json();
-        if (data) {
-            let loadedContacts = Object.values(data);
-            
-            // Transformiert die geladenen Daten, um der lokalen Datenstruktur zu entsprechen.
-            contactsFirebase = loadedContacts
-                .filter(contact => contact) // Filtert 'null'-Einträge heraus
-                .map(contact => {
-                    // Rekonstruiert den Benutzernamen aus Vor- und Nachname
-                    const username = `${contact.prename || ''} ${contact.surname || ''}`.trim();
-
-                    // Gibt ein neues Objekt zurück, das den rekonstruierten Benutzernamen
-                    // und alle anderen Eigenschaften aus Firebase enthält.
-                    return {
-                        ...contact, // Beinhaltet id, prename, surname, email, phone, mobile
-                        username: username // Fügt das username-Feld für die lokale Logik hinzu
-                    };
-                });
-           
-        } else {
-            contactsFirebase = [];
-        }
-    } else {
-        contactsFirebase = [];
-    }
-}
-
-
-/**
- * Speichert die gesamte `contactsFirebase`-Liste in Firebase.
- * Diese Funktion überschreibt alle vorhandenen Kontakte in der Datenbank.
- * Sie konvertiert das lokale `username`-Feld zurück in `prename` und `surname`.
- * @returns {Promise<void>}
- */
-async function saveContactsToFirebase() {
-    const contactsToSave = {};
-
-    contactsFirebase.forEach((contact, index) => {
-        // Teilt den vollen Benutzernamen in Vor- und Nachnamen auf.
-        const nameParts = contact.username ? contact.username.split(" ") : [];
-        const prename = nameParts[0] || ""; // Der erste Teil wird zum Vornamen
-        const surname = nameParts.slice(1).join(" ") || ""; // Der Rest wird zum Nachnamen
-
-        // Erstellt das neue Objekt mit der gewünschten Struktur für Firebase.
-        const newContactObject = {
-            id: index, // Verwendet den Array-Index als ID
-            prename: prename,
-            surname: surname,
-            email: contact.email || "",
-            phone: contact.phone || "",
-            mobile: contact.mobile || "",
-            color: contact.color || "grey" // Standardfarbe hinzufügen
-        };
-
-        contactsToSave[index] = newContactObject;
-    });
-
-    // Verwendet PUT, um die gesamte Kontaktsammlung mit der neuen Struktur zu ersetzen.
-    await fetch(BASE_URL + "/join/contacts.json", {
-        method: 'PUT',
-        body: JSON.stringify(contactsToSave),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
-
-async function loadContactsFromFirebase() {
     try {
-        const response = await fetch(BASE_URL + "/join/contacts.json");
-        if (!response.ok) {
-            // Fehler beim Abrufen der Daten, leeres Array verwenden
-            contactsFirebase = [];
-            return;
-        }
-
-        const data = await response.json();
-        if (data) {
-            // Wandelt das Firebase-Objekt in ein Array um
-            const loadedContacts = Object.values(data);
-            
-            contactsFirebase = loadedContacts
-                .filter(contact => contact) // Stellt sicher, dass keine null-Einträge verarbeitet werden
-                .map(contact => {
-                    // KORREKTE ZEILE: Baut den vollen Namen aus prename und surname zusammen
-                    const username = `${contact.prename || ''} ${contact.surname || ''}`.trim();
-
-                    // Gibt ein neues Objekt zurück, das alle Felder enthält
-                    return {
-                        ...contact,       // Alle alten Felder (prename, surname, etc.)
-                        username: username  // Der neu und korrekt erstellte username
-                    };
-                });
-        } else {
-            // Wenn keine Daten in Firebase sind
-            contactsFirebase = [];
-        }
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (method === 'DELETE' || response.status === 204) return null;
+        return await response.json();
     } catch (error) {
-        console.error("Fehler beim Laden der Kontakte aus Firebase:", error);
+        console.error(`Firebase-Anfrage an ${path} fehlgeschlagen.`, error);
+        throw error;
+    }
+}
+
+// =================================================================================
+// ID MANAGEMENT
+// =================================================================================
+
+async function getNextId(path) {
+    try {
+        const data = await firebaseRequest(path);
+        if (!data) return 0;
+        const items = Array.isArray(data) ? data : Object.values(data);
+        if (items.length === 0) return 0;
+        const maxId = items.reduce((max, item) => (item && item.id > max ? item.id : max), -1);
+        return maxId + 1;
+    } catch (error) {
+        console.error(`Fehler beim Ermitteln der nächsten ID für ${path}:`, error);
+        return 0;
+    }
+}
+
+// =================================================================================
+// USER FUNCTIONS (KORRIGIERT)
+// =================================================================================
+
+/**
+ * Lädt alle Benutzer aus Firebase und GIBT SIE ZURÜCK.
+ * @returns {Promise<Array<Object>>} Ein Array mit den Benutzerobjekten.
+ */
+async function loadUsers() {
+    try {
+        const data = await firebaseRequest("/join/users");
+        console.log("Rohdaten von /join/users empfangen:", data);
+
+        let loadedUsers = [];
+        if (Array.isArray(data)) {
+            loadedUsers = data.filter(Boolean);
+        } else if (data) {
+            loadedUsers = Object.values(data);
+        }
+        
+        // Die globale Variable für andere Skripte aktualisieren (optional, aber sicher)
+        usersFirebase = loadedUsers;
+        // WICHTIG: Die geladenen Daten zurückgeben!
+        return loadedUsers;
+        
+    } catch (error) {
+        console.error("Fehler beim Laden der Benutzer:", error);
+        usersFirebase = []; // Im Fehlerfall zurücksetzen
+        return []; // Leeres Array im Fehlerfall zurückgeben
+    }
+}
+
+async function addUser(user, id) {
+    return firebaseRequest(`/join/users/${id}`, 'PUT', user);
+}
+
+// =================================================================================
+// CONTACTS FUNCTIONS (KORRIGIERT)
+// =================================================================================
+
+/**
+ * Lädt alle Kontakte aus Firebase und GIBT SIE ZURÜCK.
+ * @returns {Promise<Array<Object>>} Ein Array mit den Kontaktobjekten.
+ */
+async function loadContacts() {
+    try {
+        const data = await firebaseRequest("/join/contacts");
+        console.log("Rohdaten von /join/contacts empfangen:", data);
+
+        let loadedContacts = [];
+        if (data) {
+            const items = Array.isArray(data) ? data : Object.values(data);
+            loadedContacts = items
+                .filter(contact => contact)
+                .map(contact => ({
+                    ...contact,
+                    username: `${contact.prename || ''} ${contact.surname || ''}`.trim()
+                }));
+        }
+        
+        contactsFirebase = loadedContacts;
+        return loadedContacts;
+
+    } catch (error) {
+        console.error("Fehler beim Laden der Kontakte:", error);
         contactsFirebase = [];
+        return [];
     }
 }
 
-/**
- * Saves user data from `userFirebase` to Firebase.
- * Falls back to `resetUserArray` on failure.
- * @returns {Promise<void>}
- */
-async function saveUsersToFirebase() {
-  const usersAsObject = {};
-  userFirebase.forEach((user, index) => {
-    usersAsObject[index] = { ...user };
-  });
-  try {
-    await fetch(BASE_URL + "/join/users.json", {
-      method: 'PUT',
-      body: JSON.stringify(usersAsObject),
-      headers: { 'Content-Type': 'application/json' }
-    });
-  } catch (error) {
-    console.error("Error when saving:", error.message);
-    resetUserArray();
-  }
-}
-
-
-/**
- * Sends a new or updated task to Firebase using PUT.
- * @param {string} path - Firebase path.
- * @param {Object} data - Task object to store.
- * @returns {Promise<void>}
- */
-async function putDataToServer(path = "", data) {
-  try {
-    const response = await fetch(BASE_URL + path + ".json", {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    successfulAddedTask();
-  } catch (error) {
-    showErrorAddedTask();
-  }
-  userFeedback();
-}
-
-
-/**
- * Sends partial updates to a task object using PATCH.
- * @param {string} path - Firebase path.
- * @param {Object} data - Data to patch.
- * @returns {Promise<void>}
- */
-async function patchDataToServer(path = "", data) {
-  try {
-    await fetch(BASE_URL + path + ".json", {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-  } catch (error) {
-    console.error('There was an error updating the data:', error);
-  }
-}
-
-
-//  Get Data //
-//ANCHOR - Get Data
-
-/**
- * Loads tasks from server, parses them, and updates the task list.
-/**
- * Loads data from a specified Firebase path.
- * @async
- * @param {string} [path=""] - The path to the data in Firebase.
- * @returns {Promise<Object|null>} The JSON data from Firebase, or null if the request fails.
- */
-async function getDataFromServer(path = "") {
-  try {
-    let response = await fetch(BASE_URL + path + ".json");
-    if (response.ok) {
-      return await response.json();
-    } else {
-      console.error("Could not fetch data from:", path);
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null;
-  }
-}
-
-/**
- * Constructs a task object from Firebase response data.
- * @param {number} index - Task index.
- * @param {Object} responseToJson - Parsed Firebase response.
- * @param {Array<string>} tasksKeysArray - Array of task keys.
- * @returns {Object} The constructed task object.
- */
-function firbaseObject(index, responseToJson, tasksKeysArray) {
-  return {
-    title: responseToJson[tasksKeysArray[index]].title,
-    descripton: responseToJson[tasksKeysArray[index]].descripton,
-    date: responseToJson[tasksKeysArray[index]].date,
-    category: responseToJson[tasksKeysArray[index]].category,
-    priority: responseToJson[tasksKeysArray[index]].priority,
-    subtask: arraySubtasks(index, responseToJson, tasksKeysArray),
-    assignedTo: arrayAssignedTo(index, responseToJson, tasksKeysArray),
-    id: tasksKeysArray[index],
-    condition: responseToJson[tasksKeysArray[index]].condition
-  };
-}
-
-
-/**
- * Deletes user entries from Firebase that no longer exist locally.
- * @async
- */
-async function deleteNotFoundedUserFromTask() {
-  for (let del of usersToDeleteFromFirebase) {
-    await fetch(`${BASE_URL}/join/tasks/${del.taskKey}/assignedTo/${del.userKey}.json`, {
-      method: "DELETE"
-    });
-  }
-}
-
-/**
- * Speichert das gesamte Kontakt-Array in Firebase und überschreibt die vorhandenen Daten.
- * Dies stellt sicher, dass neue und bearbeitete Kontakte korrekt persistiert werden.
- */
-async function saveAllContactsToFirebase() {
-    const response = await fetch(BASE_URL + "/join/contacts.json", {
-        method: "PUT", // 'PUT' überschreibt die Daten am Zielpfad komplett.
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactsFirebase), // Das gesamte lokale Array wird gesendet.
-    });
-    return response;
+async function addContact(contactData, id) {
+    return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
 }
 
 
