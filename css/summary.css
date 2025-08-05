@@ -38,6 +38,10 @@ body {
   background: #000000;
   font-size: 16px;
 }
+/* Generelle Regel für alle Links */
+a {
+    text-decoration: none;
+}
 
 /* .layout-page {
   display: flex;
