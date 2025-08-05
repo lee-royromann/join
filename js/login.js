@@ -2,23 +2,19 @@
 // Globale Variablen und Initialisierung
 // ===================================================================
 
-/**
- * Globales Array, das die aus Firebase geladenen Benutzerobjekte speichert.
- * @type {Array<Object>}
- */
-let userFirebase = [];
+// HINWEIS: Die `userFirebase`-Variable wurde hier entfernt, um Konflikte zu vermeiden.
+// Wir holen die Daten direkt von der `loadUsers()`-Funktion.
 
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get('msg');
 let info = document.getElementById('poppin');
 let isPasswordVisible = false;
 
-// Logo mit Verzögerung einblenden
+// UI-Initialisierung...
 setTimeout(() => {
     document.getElementById('logoImg').classList.remove('d-none');
 }, 1060);
 
-// Erfolgsmeldung von der Registrierung anzeigen, falls vorhanden
 if (msg) {
     info.classList.remove('opacity');
     info.classList.add('poppins-success');
@@ -30,83 +26,45 @@ if (msg) {
 
 
 // ===================================================================
-// KORRIGIERTE LOGIN-FUNKTIONEN
+// LOGIN-FUNKTIONEN (KORRIGIERT)
 // ===================================================================
 
-/**
- * Versucht, den Benutzer mit den eingegebenen Daten einzuloggen.
- * Die Funktion lädt die neue Datenstruktur und findet den passenden Benutzer.
- */
 async function login() {
-    // Annahme: checkValueInput() prüft auf leere/falsche Formate
     if (checkValueInput()) return;
     spinningLoaderStart();
 
     let emailInput = document.getElementById('email');
     let passwordInput = document.getElementById('password');
 
-    // Schritt 1: Lädt alle Benutzer und konvertiert sie in ein Array
-    await loadUserData();
-    spinningLoaderEnd();
+    try {
+        // KORREKTUR: Die geladenen Benutzer werden in einer lokalen Konstante gespeichert.
+        const users = await loadUsers();
+        spinningLoaderEnd();
 
-    // DEBUG: Gib das Array aus, um zu sehen, ob die Daten korrekt ankommen
-    console.log("Geladene Benutzer für den Login-Check:", userFirebase);
+        console.log("Benutzerdaten, die für den Login-Check bereitstehen:", users);
 
-    // Schritt 2: Findet den Benutzer im Array, bei dem E-Mail UND Passwort übereinstimmen
-    let user = userFirebase.find(
-        u => u.email === emailInput.value && u.password === passwordInput.value
-    );
+        // Wir verwenden die lokale `users`-Konstante für die Prüfung.
+        let user = users.find(
+            u => u && u.email === emailInput.value && u.password === passwordInput.value
+        );
 
-    // Schritt 3: Reaktion auf das Ergebnis
-    if (user) {
-        // Erfolg! Benutzer gefunden.
-        console.log("Login erfolgreich für Benutzer:", user.username);
-        localStorage.setItem("username", user.username);
-        localStorage.setItem("loggedIn", "true");
-        window.location.href = `html/summary.html?name=${encodeURIComponent(user.username)}&login=true`;
-        userFirebase = []; // Array zurücksetzen
-    } else {
-        // Fehler! Kein passender Benutzer gefunden.
-        console.error("Login fehlgeschlagen. E-Mail oder Passwort falsch.");
+        if (user) {
+            const username = `${user.prename || ''} ${user.surname || ''}`.trim();
+            console.log("Login erfolgreich für Benutzer:", username);
+            localStorage.setItem("username", username);
+            localStorage.setItem("loggedIn", "true");
+            window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
+        } else {
+            console.error("Login fehlgeschlagen. E-Mail oder Passwort falsch.");
+            displayErrorLogin();
+        }
+    } catch (error) {
+        console.error("Ein Fehler ist beim Login aufgetreten:", error);
+        spinningLoaderEnd();
         displayErrorLogin();
     }
 }
 
-
-/**
- * Lädt die Benutzerdaten aus Firebase und wandelt das Objekt in ein nutzbares Array um.
- */
-async function loadUserData() {
-    try {
-        const data = await loadUsersFromFirebase(); // Diese Funktion holen wir uns zurück
-        if (data) {
-            // Wandelt das Firebase-Objekt ({ "ID1": user1, "ID2": user2 })
-            // in ein Array ([user1, user2]) um. Das ist der entscheidende Schritt.
-            userFirebase = Object.values(data);
-        } else {
-            userFirebase = [];
-        }
-    } catch (error) {
-        console.error("Fehler beim Laden der Benutzerdaten:", error);
-        userFirebase = []; // Sicherstellen, dass das Array im Fehlerfall leer ist
-    }
-}
-
-
-/**
- * Notwendige Hilfsfunktion: Holt die Rohdaten aller Benutzer von Firebase.
- * Diese Funktion muss hier vorhanden sein, damit `loadUserData` funktioniert.
- */
-async function loadUsersFromFirebase() {
-    // Annahme: BASE_URL ist eine global definierte Variable mit deiner Firebase-URL
-    const response = await fetch(BASE_URL + "/join/users.json");
-    return await response.json();
-}
-
-
-/**
- * Zeigt eine Fehlermeldung an, wenn der Login fehlschlägt.
- */
 function displayErrorLogin() {
     document.getElementById('labelPassword').classList.add('error-border');
     info.classList.remove('opacity');
@@ -114,13 +72,11 @@ function displayErrorLogin() {
 }
 
 // ===================================================================
-// UNVERÄNDERTE HILFSFUNKTIONEN (Guest Login, Passwort-Sichtbarkeit etc.)
+// HILFSFUNKTIONEN (unverändert)
 // ===================================================================
 
 function guestLogin(event) {
     event.preventDefault();
-    document.getElementById('email').removeAttribute('required');
-    document.getElementById('password').removeAttribute('required');
     localStorage.setItem("username", "Guest");
     localStorage.setItem("loggedIn", "true");
     window.location.href = "html/summary.html?name=Guest&login=true";
@@ -148,7 +104,6 @@ function togglePasswordVisibility() {
         : '../assets/img/icon/visibility_off.svg';
 }
 
-// Die restlichen Validierungsfunktionen bleiben unverändert...
 function checkValueInput() {
     let input = checkValues();
     if (input) {
@@ -161,7 +116,7 @@ function checkValueInput() {
 function checkValues() {
     let { email, password } = readsTheInputValues();
     if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email";
-    if (checkEmptyInput(password) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(password)) return "Password";
+    if (checkEmptyInput(password)) return "Password";
 }
 
 function readsTheInputValues() {
@@ -185,7 +140,7 @@ function inputError(inputLabel) {
 function errorMessage(key) {
     const messages = {
         "Email": "Please check your email entry!",
-        "Password": "Please use 6 - 15 characters!"
+        "Password": "Please check your password!"
     };
     return messages[key] || "Unknown error!";
 }
