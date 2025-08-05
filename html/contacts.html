@@ -5,23 +5,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacts</title>
+
+    <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/header.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/fonts.css" />
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../css/contacts.css">
     <link rel="stylesheet" href="../css/contact_overlay.css">
     <link rel="stylesheet" href="../css/contact_media.css">
-    <link rel="stylesheet" href="../css/board_task_overlay.css">
-    <link rel="stylesheet" href="../css/fonts.css">
-    <link rel="icon" type="image/x-icon" href="../assets/img/icon/logo_favicon.svg">
+    <link rel="stylesheet" href="../css/board_overlay.css">
+
     <script src="../script.js"></script>
     <script src="/js/contacts_controllers.js"></script>
     <script src="../js/contacts_services.js"></script>
     <script src="../js/db.js"></script>
     <script src="../js/templates_contact.js"></script>
+    <script src="../js/header.js" defer></script> 
+
 </head>
 
 <body class="resp-over-screen" onload="initContactsPage()">
     <div id="rotate-warning-placeholder"></div>
-    <nav id="navbar-section" class="navbar-section"></nav>
+
+    <div style="display: none;">
+        <nav id="navbar-section"></nav>
+        <header id="header-placeholder"></header>
+    </div>
+
+    <div class="board-page">
+        <div class="board-page__card">
+
+            <nav class="sidebar" aria-label="Main Navigation">
+                <div class="sidebar__logo">
+                    <a href="../index.html">
+                        <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
+                    </a>
+                </div>
+                <section class="sidebar__menu">
+                    <a href="/html/summary.html" class="sidebar__item">
+                        <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
+                        <span class="sidebar__text">Summary</span>
+                    </a>
+                    <a href="/html/add_task.html" class="sidebar__item">
+                        <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
+                        <span class="sidebar__text">Add Task</span>
+                    </a>
+                    <a href="/html/board.html" class="sidebar__item">
+                        <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
+                        <span class="sidebar__text">Board</span>
+                    </a>
+                    <a href="/html/contacts.html" class="sidebar__item">
+                        <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
+                        <span class="sidebar__text">Contacts</span>
+                    </a>
+                </section>
+                <section class="sidebar__legal">
+                    <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
+                    <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
+                </section>
+            </nav>
+
+            <div class="kanban">
+                <header class="header">
+                    <h1 class="header__title">Kanban Project Management Tool</h1>
+                    <div class="header__container">
+                        <a href="/html/help.html" class="header__help">?</a>
+                        <div class="header__user" id="header__user"></div>
+                    </div>
+                </header>
+
+                <main>
+                    <div class="contact-background">
+                        <section id="contactContainer" class="user-container">
+                            <div class="list-header flex-box-center-center">
+                                <div id="add-contact-btn" class="add-contact-container flex-box-center-center" onclick="openNewContactDialog()">
+                                    <button>Add new contact</button>
+                                    <img src="../assets/img/icon/person_add.svg" alt="">
+                                </div>
+                            </div>
+                            <div id="contactList" class="user-list"></div>
+                        </section>
+                        <section id="contactInfoContainer" class="content-contact">
+                            <div id="backBtnResp">
+                                <div class="back-btn-resp" onclick="showRespContactList()">
+                                    <img class="contact-img" src="../assets/img/icon/arrow-left-line.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="headline">
+                                <h2>Contacts</h2>
+                                <hr>
+                                <p>Better with a Team</p>
+                            </div>
+                            <div id="contactInformation" class="user-info-container"></div>
+                        </section>
+                    </div> 
+                </main>
+            </div>
+        </div>
+    </div>
+
     <section id="overlayContact" class="overlay-content-container d-none" onclick="closeOverlay(event)"></section>
     <div id="successContainer" class="overlay-successful-container d-none">
         <div id="success" class="overlay-successful d-none">
@@ -33,33 +116,5 @@
             <img class="contact-img" src="../assets/img/icon/person_add.svg" alt="">
         </div>
     </div>
-    <main>
-        <header id="header-placeholder"></header>
-        <div class="contact-background">
-            <section id="contactContainer" class="user-container">
-                <div class="list-header flex-box-center-center">
-                    <div id="add-contact-btn" class="add-contact-container flex-box-center-center" onclick="openNewContactDialog()"> <button>Add new contact</button>
-                        <button>Add new contact</button>
-                        <img src="../assets/img/icon/person_add.svg" alt="">
-                    </div>
-                </div>
-                <div id="contactList" class="user-list"></div>
-            </section>
-            <section id="contactInfoContainer" class="content-contact">
-                <div id="backBtnResp">
-                    <div class="back-btn-resp" onclick="showRespContactList()">
-                        <img class="contact-img" src="../assets/img/icon/arrow-left-line.svg" alt="">
-                    </div>
-                </div>
-                <div class="headline">
-                    <h2>Contacts</h2>
-                    <hr>
-                    <p>Better with a Team</p>
-                </div>
-                <div id="contactInformation" class="user-info-container"></div>    
-            </section>
-        </div> 
-    </main>
 </body>
-
 </html>
