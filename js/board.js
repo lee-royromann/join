@@ -102,6 +102,7 @@ async function boardInit() {
     await loadTasksFromFirebase();
     await loadContactsFromFirebase();
     renderTasks();
+    getUsernameInitals();
 }
 
 async function saveTaskToFirebase(taskId, fullTaskObject) {
