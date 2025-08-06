@@ -155,6 +155,7 @@ function addSubtask() {
     inputField.value = "";
     increaseSubtaskCount();
     increaseSubtaskIdCount();
+    clearSubtaskInput();
 }
 
 
