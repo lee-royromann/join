@@ -21,9 +21,7 @@ document.addEventListener('click', function (event) {
 
 /**
  * Function to prevent a form submission by pressing the enter key
- * It adds a eventlistener to every inputfield
- * By a keydown event (enter) it prevents the default behavior
- * This function is getting called by init
+ * It adds a eventlistener to every inputfield by a keydown event (enter) it prevents the default behavior
  * @param {string} formId 
  * @returns 
  */
@@ -44,10 +42,8 @@ function preventFormSubmitOnEnter(formId) {
 /**
  * Function to get the username initials for the header logo
  * It's going to load the username from the local storage.
- * If it's a guest login it going to display "G" by default
- * If user is logged in it splits the fullname into first- and surname.
- * After that it's going to grab the first letter of each name
- * Finally it puts them together and writes it in the element.
+ * If it's a guest login it going to display "G" by default, if user is logged in it splits the fullname into first- and surname.
+ * After that it's going to grab the first letter of each name. Finally it puts them together and writes it in the element.
  * @returns {void}
  */
 function getUsernameInitals() {
@@ -108,8 +104,7 @@ function pickDate(event) {
 /**
  * Function to populate the contacts to the assignee dropdown list.
  * It iterates through the contacts and appends each user to the dropdown list.
- * If the contact's full name matches the currently logged-in user,
- * a "(You)" label will be added to the logged in user.
+ * If the contact's full name matches the currently logged-in user, a "(You)" label will be added to the logged in user.
  * This function is called after loading the contacts from Firebase.
  * It uses a helper function to move the logged-in user to the top of the list.
  * Each contact object should have properties like 'prename', 'surname', and 'id'.
@@ -308,6 +303,58 @@ function filterDropdown(inputId, listSelector) {
 
 
 /**
+ * Function to handle changes in the subtask input field.
+ * It checks if the input value is empty or not.
+ * If the input is empty, it shows the plus icon and hides the action icons.
+ * If the input has a value, it hides the plus icon and shows the action icons.
+ * This function is typically called when the user types in the subtask input field to provide visual feedback.
+ */
+function handleSubtaskInputChange() {
+    const subtaskInput = document.getElementById('subtask-input');
+    const plusIconContainer = document.getElementById('task-subtask-icons-1');
+    const actionIconsContainer = document.getElementById('task-subtask-icons-2'); 
+    if (subtaskInput.value.trim() === '') {
+        plusIconContainer.classList.remove('d_none');
+        actionIconsContainer.classList.add('d_none');
+    } else {
+        plusIconContainer.classList.add('d_none');
+        actionIconsContainer.classList.remove('d_none');
+    }
+}
+
+
+/**
+ * Event listener to handle input changes in the subtask input field.
+ * It listens for both 'input' and 'keyup' events to ensure the icons are updated in real-time.
+ * This function is called when the DOM content is fully loaded to set up the initial state.
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    if (!document.getElementById('subtask-input')) return;
+    const subtaskInput = document.getElementById('subtask-input');
+    subtaskInput.addEventListener('input', handleSubtaskInputChange);
+    subtaskInput.addEventListener('keyup', handleSubtaskInputChange);
+    handleSubtaskInputChange();
+});
+
+
+/**
+ * Function to clear the subtask input field and reset the subtask icons.
+ * It sets the input value to an empty string, hides the plus icon container,
+ * shows the action icons container, and focuses the input field for immediate user interaction.
+ * This function is typically called after a subtask is added or when the user wants to clear the input.
+ */
+function clearSubtaskInput() {
+    const subtaskInput = document.getElementById('subtask-input');
+    subtaskInput.value = '';
+    const plusIconContainer = document.getElementById('task-subtask-icons-1');
+    const actionIconsContainer = document.getElementById('task-subtask-icons-2');
+    plusIconContainer.classList.remove('d_none');
+    actionIconsContainer.classList.add('d_none');
+    subtaskInput.focus();
+}
+
+
+/**
  * Function to validate the task form inputs.
  * It checks if the required fields (title, due date, category) are filled out.
  * It highlights the required fields with a red frame and shows a hint if they are empty.
@@ -383,12 +430,9 @@ function getRequiredInputfieldValues() {
 
 /**
  * Function to reset the taskform to its initial state.
- * Unchecks all selected contacts.
- * Resets the priority state of all buttons.
- * Sets the default task priority.
- * Removes all contact badges below the assigned to field.
- * Resets internal subtask counters.
- * Deletes all existing subtasks from the DOM.
+ * Unchecks all selected contacts, resets the priority state of all buttons.
+ * Sets the default task priority and removes all contact badges below the assigned to field.
+ * Resets internal subtask counters and deletes all existing subtasks from the DOM.
  */
 function clearForm() {
     const form = document.getElementById('form-add-task');
