@@ -78,7 +78,7 @@
     }
 
     .kanban__subtitle-text {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .card__badge-technical-task,
@@ -87,6 +87,18 @@
     .card__header--description {
         font-size: 14px;
    } 
+
+   .kanban__grid-wrapper {
+        gap: 16px;
+    }
+
+    .kanban__section {
+        gap: 8px;
+    }
+
+    .kanban__subtitle {
+        font-size: 18px;
+    }
 
    .card__content {
         gap: 8px;

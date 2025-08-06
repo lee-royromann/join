@@ -11,10 +11,7 @@ const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedataba
 const searchInput = document.getElementById("search-task");
 const noResults = document.getElementById("no-results");
 
-/**
- * Lädt Tasks aus Firebase und speichert sie in `tasksFirebase`.
- * @returns {Promise<void>}
- */
+
 async function loadTasksFromFirebase() {
     let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
@@ -22,18 +19,14 @@ async function loadTasksFromFirebase() {
     tasksFirebase = Object.values(responseToJson).filter(task => task != null);
   }
 
-//Achtung, diese Funktion gibt es schon in db.js kann final einfach gelöscht werden
-/**
- * Loads contacts from Firebase and assigns them to `contactsFirebase`.
- * @returns {Promise<void>}
- */
+
 async function loadContactsFromFirebase() {
   let response = await fetch(BASE_URL + "/join/contacts.json");
   let unsortedContacts = [];
   if (response.ok) {
     let data = await response.json();
     unsortedContacts = Object.values(data || {});
-    contactsFirebase = sortContactsByPrename(unsortedContacts);     //prüfen, wann sortierung sinnvoll ist
+    contactsFirebase = sortContactsByPrename(unsortedContacts);     
   } else {
     contactsFirebase = [];
   }
@@ -145,7 +138,7 @@ async function deleteTaskFromFirebase(taskId) {
   }
 
   async function handleDeleteTask(taskId) {
-  if (confirm("Willst du diese Aufgabe wirklich löschen?")) {
+  // if (confirm("Willst du diese Aufgabe wirklich löschen?")) {
     try {
       await deleteTaskFromFirebase(taskId); // Auf das Löschen warten
       tasksFirebase = []; 
@@ -155,7 +148,7 @@ async function deleteTaskFromFirebase(taskId) {
     } catch (error) {
       console.error("Fehler beim Löschen der Aufgabe:", error);
     }
-  }
+  // }
 }
 
 function renderTasks() {
@@ -445,8 +438,8 @@ async function toggleSubtaskStatus(index, taskId) {
  * Function to set the selected task priority.
  * Resets all priority buttons and applies the specifically choosen priority css class to it.
  */
-function setPriority(priority) {
-    resetPriorityButtons();
+function setEditPriority(priority) {
+    resetEditPriorityButtons();
     let button = document.getElementById(`edit__btn-${priority}`);
     let icon = document.getElementById(`edit__btn-${priority}-icon`);
     button.classList.add(`edit__button-prio--${priority}`);
@@ -457,7 +450,7 @@ function setPriority(priority) {
 
 function setInitialTaskPriority(task) {
     const taskPriority = task.priority.toLowerCase();
-    setPriority(taskPriority);
+    setEditPriority(taskPriority);
 }
 
  
@@ -465,7 +458,7 @@ function setInitialTaskPriority(task) {
  * Function to reset all priority buttons to their default state.
  * Removes any applied priority-specific modifier classes from each button.
  */
-function resetPriorityButtons() {
+function resetEditPriorityButtons() {
     const priorities = ['urgent', 'medium', 'low'];
 
     priorities.forEach(priority => {

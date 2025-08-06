@@ -220,10 +220,6 @@ flex: 1;
     font-weight: 700;
 }
 
-/* .kanban__subtitle-text {
-    margin-right: 8px;
-} */
-
 .kanban__subtitle-plus {
     display: inline-flex;
     align-items: center;
