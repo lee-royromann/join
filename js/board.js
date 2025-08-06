@@ -446,8 +446,8 @@ async function toggleSubtaskStatus(index, taskId) {
  * Function to set the selected task priority.
  * Resets all priority buttons and applies the specifically choosen priority css class to it.
  */
-function setPriority(priority) {
-    resetPriorityButtons();
+function setPriorityEdit(priority) {
+    resetPriorityButtonsEdit();
     let button = document.getElementById(`edit__btn-${priority}`);
     let icon = document.getElementById(`edit__btn-${priority}-icon`);
     button.classList.add(`edit__button-prio--${priority}`);
@@ -458,7 +458,7 @@ function setPriority(priority) {
 
 function setInitialTaskPriority(task) {
     const taskPriority = task.priority.toLowerCase();
-    setPriority(taskPriority);
+    setPriorityEdit(taskPriority);
 }
 
  
@@ -466,7 +466,7 @@ function setInitialTaskPriority(task) {
  * Function to reset all priority buttons to their default state.
  * Removes any applied priority-specific modifier classes from each button.
  */
-function resetPriorityButtons() {
+function resetPriorityButtonsEdit() {
     const priorities = ['urgent', 'medium', 'low'];
 
     priorities.forEach(priority => {
