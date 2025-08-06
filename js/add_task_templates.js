@@ -1,3 +1,11 @@
+/**
+ * Function to generate a contact list item HTML template.
+ * It formats the contact's prename and surname, creates initials,
+ * and returns a list item with the contact's details.
+ * @param {Object} contact - The contact object containing id, prename, surname, color.
+ * @param {string} you - A string to indicate if the contact is "you" (e.g., " (You)" for the current logged in user).
+ * @returns {string} - The HTML template for the contact list item.
+ */
 function getContactListItem(contact, you) {   
     if (!contact || !contact.prename || !contact.surname) {
         // console.warn('Incomplete Contact:', contact);
@@ -33,6 +41,17 @@ function getContactListItem(contact, you) {
 }
 
 
+/**
+ * Function to generate a badge HTML template for a selected contact.
+ * It uses the contact's id, color, prename, and surname to create a badge.
+ * The badge displays the initials of the contact in uppercase.
+ * @param {Object} contact - The contact object containing id, prename, surname, and color.
+ * @property {number} contact.id - The unique identifier of the contact.
+ * @property {string} contact.prename - The first name of the contact.
+ * @property {string} contact.surname - The last name of the contact.
+ * @property {string} contact.color - The color associated with the contact.
+ * @returns {string} - The HTML template for the selected contact badge.
+ */
 function getSelectedContactBadge(contact) {
     return `
         <span class="form__contact-badge" id="contact-badge-${contact.id}" data-id="${contact.id}" style="background-color: ${contact.color};">${contact.prename.charAt(0).toUpperCase() + contact.surname.charAt(0).toUpperCase()}</span>
@@ -40,6 +59,14 @@ function getSelectedContactBadge(contact) {
 };
 
 
+/**
+ * Function to generate a category list item HTML template.
+ * It formats the category string by capitalizing the first letter of each word,
+ * and returns a list item with the category name.
+ * @param {number} id - The unique identifier for the category.
+ * @param {string} category - The category name.
+ * @returns {string} - The HTML template for the category list item.
+ */
 function getCategoryListItem(id, category) {
     const categoryFromated = category.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');        
     return `
@@ -47,6 +74,13 @@ function getCategoryListItem(id, category) {
     `
 };
 
+
+/**
+ * Function to generate a subtask HTML template.
+ * @param {number} id - The unique identifier for the subtask.
+ * @param {string} text - The text content of the subtask.
+ * @returns {string} - The HTML template for the subtask.
+ */
 function getSubtaskRegularTemplate(id, text) {
     return `
         <li class="form__subtask-item" data-id="${id}" data-text="${text}">
@@ -60,6 +94,13 @@ function getSubtaskRegularTemplate(id, text) {
     `;
 }
 
+
+/**
+ * Function to generate a subtask edit HTML template.
+ * @param {number} id - The unique identifier for the subtask.
+ * @param {string} text - The text content of the subtask.
+ * @returns {string} - The HTML template for the subtask edit.
+ */
 function getSubtaskEditTemplate(id, text) {
     return `
         <li class="form__subtask-item-edit" data-id="${id}">
@@ -75,6 +116,12 @@ function getSubtaskEditTemplate(id, text) {
     `;
 }
 
+
+/**
+ * Function to generate the HTML template for the add task overlay.
+ * @param {string} status - The status of the task (e.g., "edit" or "add").
+ * @returns {string} - The HTML template for the add task overlay.
+ */
 function getAddTaskOverlayTemplate(status) {
     return `
         <!-- Content -->
