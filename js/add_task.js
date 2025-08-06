@@ -31,6 +31,8 @@ async function initAddTask() {
  * It adds a eventlistener to every inputfield
  * By a keydown event (enter) it prevents the default behavior
  * This function is getting called by init
+ * @param {string} formId 
+ * @returns 
  */
 function preventFormSubmitOnEnter(formId) {
     const form = document.getElementById(formId);
@@ -46,47 +48,40 @@ function preventFormSubmitOnEnter(formId) {
 }
 
 
-/** Function to get the username initials for the header logo
+/**
+ * Function to get the username initials for the header logo
  * It's going to load the username from the local storage.
  * If it's a guest login it going to display "G" by default
  * If user is logged in it splits the fullname into first- and surname.
  * After that it's going to grab the first letter of each name
  * Finally it puts them together and writes it in the element.
+ * @returns {void}
  */
 function getUsernameInitals() {
     const element = document.getElementById('header__user');
-    // Besserer Weg, um auf den localStorage zuzugreifen
     const username = localStorage.getItem('username');
-
     if (!username || username === "Guest") {
         element.innerHTML = "G";
         return;
     }
-
-    // Teilt den Namen und entfernt leere Teile (z.B. bei doppelten Leerzeichen)
     const nameParts = username.trim().split(' ').filter(Boolean);
-    
-    // Fallback, falls der Name nur aus Leerzeichen bestand
     if (nameParts.length === 0) {
         element.innerHTML = "G";
         return;
     }
-
-    // Nimmt den ersten Buchstaben des ersten Namens
     let initials = nameParts[0].charAt(0).toUpperCase();
-    
-    // Wenn es mehr als einen Namensteil gibt, nimm den ersten Buchstaben des letzten Teils
     if (nameParts.length > 1) {
         initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
     }
-    
     element.innerHTML = initials;
 }
 
 
 /**
- * Function to initialize the Flatpickr instance for the due date input field.
- * This setup includes localization, date formatting, and ISO output handling.
+ * Function to initialize the Flatpickr date picker.
+ * It sets up the date picker with specific options such as locale, date format,
+ * disabling mobile view, setting minimum date to today, and allowing input.
+ * It assigns the Flatpickr instance to a global variable for later use.
  * This code snippet I found on https://flatpickr.js.org/
  */
 function initFlatpickr() {
@@ -103,6 +98,10 @@ function initFlatpickr() {
 
 /**
  * Function to open the Flatpickr calendar when triggered via icon or inputfield
+ * It stops the event propagation to prevent any unwanted bubbling effects.
+ * If the Flatpickr instance is initialized, it opens the calendar and focuses the input field.
+ * This function is typically called when a user clicks on a date picker icon or the date input field.
+ * @param {Event} event - The event object representing the click event.
  */
 function pickDate(event) {
     stopEventPropagation(event);
@@ -113,11 +112,16 @@ function pickDate(event) {
 }
 
 
-/** 
+/**
  * Function to populate the contacts to the assignee dropdown list.
- * It iterates through the contacts and appends each user to the dropdown list. 
- * If the contact's full name matches the currently logged-in user, 
+ * It iterates through the contacts and appends each user to the dropdown list.
+ * If the contact's full name matches the currently logged-in user,
  * a "(You)" label will be added to the logged in user.
+ * This function is called after loading the contacts from Firebase.
+ * It uses a helper function to move the logged-in user to the top of the list.
+ * Each contact object should have properties like 'prename', 'surname', and 'id'.
+ * The function generates HTML list items for each contact and appends them to the dropdown.
+ * @param {Array} contacts - An array of contact objects to be displayed in the dropdown.
  */
 function populateContactsToDropdown(contacts) {
     const contactsRef = document.getElementById("contact-list-ul");
@@ -138,6 +142,9 @@ function populateContactsToDropdown(contacts) {
  * It searches through the contact list for a contact match (pre- & fullname)
  * If no logged-in contact is found, it does nothing and returns the original array.
  * If logged-in user found and not at index 0, it moves the contact to the beginning of the array and returns reordered array.
+ * @param {Array} contacts - The array of contact objects.
+ * @param {string} loggedInUser - The full name of the logged-in user.
+ * @returns {Array} - The reordered array with the logged-in user at the top.
  */
 function moveLoggedInUserToTop(contacts, loggedInUser) {
     let index = -1;
@@ -180,16 +187,17 @@ function populateCategoriesToDropdown() {
 
 /**
  * Function to load the contacts from Firebase.
+ * It uses the Firebase URL to fetch the contacts data from the "/join/contacts.json" endpoint.
+ * It handles the response and ensures that the contacts are sorted by their prenames.
  * After loading is finished, the contacts are getting populated to the dropdown.
+ * It also handles the case where the response is not OK, setting an empty array in that case.
  */
 async function loadFirebaseContacts() {
     let response = await fetch(FIREBASE_URL + "/join/contacts.json");
     let loadedContacts = [];
     if (response.ok) {
         let data = await response.json();
-        // Stellt sicher, dass auch bei leeren Daten ein Array verwendet wird
         loadedContacts = data ? Object.values(data) : []; 
-        // Ruft die jetzt sichere Sortierfunktion auf
         firebaseContacts = sortContactsByPrename(loadedContacts); 
         populateContactsToDropdown(firebaseContacts);
     } else {
@@ -199,18 +207,17 @@ async function loadFirebaseContacts() {
 
 
 /**
- * Function to sort the contacts descending (a-z) by their prenames
- * It returns the sorted array back
- * NEU & BEHOBEN: Jetzt 100% sicher gegen null-Werte oder ungültige Einträge.
+ * Function to sort the contacts by their prenames
+ * It filters out invalid entries first, ensuring that only valid contact objects are processed.
+ * Valid contacts are defined as objects that are not null.
+ * It then sorts the valid contacts by their 'prename' property in a case-insensitive manner.
+ * This function uses the `localeCompare` method to ensure proper sorting according to the German locale.
+ * @param {Array} contacts - The array of contact objects.
+ * @returns {Array} - The sorted array of contact objects.
  */
 function sortContactsByPrename(contacts) {
-    // Filtert zuallererst alle ungültigen Einträge heraus.
-    // Ein gültiger Kontakt MUSS ein Objekt sein und darf nicht null sein.
     const validContacts = contacts.filter(contact => contact && typeof contact === 'object');
-
-    // Sortiert die bereinigte Liste.
     return validContacts.sort((a, b) => {
-        // Weist Standardwerte zu, falls 'prename' fehlt, um Fehler zu vermeiden.
         const prenameA = a.prename?.toLowerCase() || '';
         const prenameB = b.prename?.toLowerCase() || '';
         return prenameA.localeCompare(prenameB, 'de');
@@ -218,8 +225,10 @@ function sortContactsByPrename(contacts) {
 }
 
 
-/** 
- * Function to avoid the unwant bubbling effect 
+/**
+ * Function to stop event propagation.
+ * This is useful to prevent events from bubbling up the DOM tree.
+ * @param {Event} event - The event object to stop propagation for.
  */
 function stopEventPropagation(event) {
     event.stopPropagation();
@@ -249,7 +258,8 @@ document.addEventListener('click', function (event) {
 
 /**
  * Function to set the selected task priority.
- * Resets all priority buttons and applies the specifically choosen priority css class to it.
+ * Resets all priority buttons and applies the specifically chosen priority CSS class to it.
+ * @param {string} priority - The priority level to set.
  */
 function setPriority(priority) {
     resetPriorityButtons();
@@ -261,6 +271,7 @@ function setPriority(priority) {
 
 /**
  * Function to show an element by its ID.
+ * @param {string} id - The ID of the element to show.
  */
 function showElement(id) {
     let element = document.getElementById(id);
@@ -268,8 +279,9 @@ function showElement(id) {
 }
 
 
-/** 
+/**
  * Function to hide an element by its ID.
+ * @param {string} id - The ID of the element to hide.
  */
 function hideElement(id) {
     let element = document.getElementById(id);
@@ -291,9 +303,10 @@ function emptySearchField(id, listSelector) {
 }
 
 
-/** 
+/**
  * Function to reset the filtered view.
- * It is going to display all choosable items. 
+ * It is going to display all choosable items.
+ * @param {string} listSelector - The CSS selector for the list items to be reset.
  */
 function resetSearchFilter(listSelector) {
     document.querySelectorAll(listSelector).forEach(item => {
@@ -302,9 +315,10 @@ function resetSearchFilter(listSelector) {
 }
 
 
-/** 
- * Function to rotate the arrow icon in on of the dropdown-fields.
+/**
+ * Function to rotate the arrow icon in one of the dropdown-fields.
  * It's going to toggle a specific css-class which rotates the icon.
+ * @param {string} arrowIconId - The ID of the arrow icon to rotate.
  */
 function rotateArrowIcon(arrowIconId) {
     const arrowIcon = document.getElementById(arrowIconId);
@@ -316,6 +330,9 @@ function rotateArrowIcon(arrowIconId) {
  * Function to toggle the visibility of a dropdown menu and rotate its arrow icon.
  * If another dropdown is currently open, it will be closed before opening the new one.
  * Keeps track of the currently open dropdown to ensure only one is open at a time.
+ * @param {Event} event - The event object from the click event.
+ * @param {string} dropdownId - The ID of the dropdown menu to toggle.
+ * @param {string} arrowIconId - The ID of the arrow icon to rotate.
  */
 function toggleDropdown(event, dropdownId, arrowIconId) {
     event.stopPropagation();
@@ -344,6 +361,7 @@ function toggleDropdown(event, dropdownId, arrowIconId) {
  * Highlights or unhighlights the contact visually.
  * Adds or removes the corresponding badge.
  * Clears the search input after each selection change.
+ * @param {string} id - The ID of the contact to select.
  */
 function selectContact(id) {
     const checkbox = document.getElementById(`contact-checkbox-${id}`);
@@ -357,6 +375,10 @@ function selectContact(id) {
 /**
  * Function to update the visual state and badge logic for a contact,
  * based on it's actual selection state (checked or not).
+ * @param {string} id - The ID of the contact.
+ * @param {HTMLElement} checkbox - The checkbox element for the contact.
+ * @param {HTMLElement} listItem - The list item element for the contact.
+ * @param {boolean} isSelected - The selection state of the contact.
  */
 function updateContactSelectionState(id, checkbox, listItem, isSelected) {
     const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
@@ -376,6 +398,8 @@ function updateContactSelectionState(id, checkbox, listItem, isSelected) {
 /**
  * Function to display the badge of a selected contact.
  * Appends the corresponding badge using the rendered template.
+ * @param {string} id - The ID of the contact to display the badge for.
+ * @returns {void}
  */
 function displayBadgeOfSelectedContact(id) {
     let contactBadgesRef = document.getElementById("contact-badges");
@@ -397,6 +421,7 @@ function displayBadgeOfSelectedContact(id) {
  * Function to remove the badge of a deselected contact.
  * Searches for the badge element by contact ID and removes it from the DOM.
  * Logs a warning in the console if the badge element is not found.
+ * @param {string} id - The ID of the contact to remove the badge for.
  */
 function deleteContactBadge(id) {
     const badge = document.getElementById(`contact-badge-${id}`);   
@@ -411,6 +436,7 @@ function deleteContactBadge(id) {
 /**
  * Function to visually highlight a selected contact.
  * Adds a CSS class to the parent element of the given checkbox, to indicate the selected state.
+ * @param {HTMLElement} checkbox - The checkbox element for the contact.
  */
 function highlightContact(checkbox) {
     if (checkbox) {
@@ -422,6 +448,7 @@ function highlightContact(checkbox) {
 /**
  * Function to remove the visual highlight from a deselected contact.
  * Removes the CSS class from the parent element of the given checkbox, to indicate the unselected state.
+ * @param {HTMLElement} checkbox - The checkbox element for the contact.
  */
 function unhighlightContact(checkbox) {
     if (checkbox) {
@@ -433,6 +460,8 @@ function unhighlightContact(checkbox) {
 /**
  * Function to filter dropdown list items based on user input.
  * Compares the lowercase search value with the text content of each list item and toggles their visibility accordingly.
+ * @param {string} inputId - The ID of the input element.
+ * @param {string} listSelector - The selector for the list items to filter.
  */
 function filterDropdown(inputId, listSelector) {
     const value = document.getElementById(inputId).value.toLowerCase();
@@ -446,6 +475,8 @@ function filterDropdown(inputId, listSelector) {
  * Function to select a category from the dropdown.
  * Sets the selected category value into the input field based on the clicked item.
  * Hides the dropdown menu after selection and resets the arrow icon rotation.
+ * @param {string} id - The ID of the category to select.
+ * @param {string} arrowIconId - The ID of the arrow icon element to rotate.
  */
 function selectCategory(id, arrowIconId) {
     const item = document.getElementById(`category-id-${id}`);
@@ -485,6 +516,7 @@ function addSubtask() {
 /**
  * Function to add a subtask when the "Enter" key is pressed inside the input field.
  * It prevents default behavior to avoid form submission, when key is pressed down.
+ * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
  */
 function handleEnterToAddSubtask(event) {   
     if (event.key === 'Enter') {
@@ -497,6 +529,8 @@ function handleEnterToAddSubtask(event) {
 /**
  * Function to save a edited subtask when the "Enter" key is pressed inside the input field in edit-mode.
  * It prevents default behavior to avoid form submission, when key is pressed down.
+ * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
+ * @param {number} id - The ID of the subtask being edited.
  */
 function handleEnterToSaveEditedSubtask(event, id) {
     if (event.key === 'Enter') {
@@ -509,8 +543,9 @@ function handleEnterToSaveEditedSubtask(event, id) {
 /**
  * Function to change a subtask from display mode to edit mode.
  * It finds the subtask by its ID, reads the current text from the dataset,
- * generates the editable version using a template, and replaces 
+ * generates the editable version using a template, and replaces
  * the static view with an input-enabled version.
+ * @param {number} id - The ID of the subtask to edit.
  */
 function editSubtask(id) {
     const defaultSubtask = document.querySelector(`.form__subtask-item[data-id="${id}"]`);
@@ -525,6 +560,8 @@ function editSubtask(id) {
  * It finds the subtask in "edit" mode using its ID, grabs the input text,
  * and if the input isn’t empty, replaces the editable version with
  * the regular/default subtask display element.
+ * @param {number} id - The ID of the subtask being saved.
+ * @returns {void}
  */
 function saveSubtask(id) {
     const editSubtask = document.querySelector(`.form__subtask-item-edit[data-id="${id}"]`);
@@ -540,6 +577,8 @@ function saveSubtask(id) {
  * Function to delete a specific subtask from the DOM.
  * Locates the subtask element using its ID and a selector suffix,
  * removes it from the DOM if found, and updates the subtask counter.
+ * @param {HTMLElement} element - The subtask element to delete.
+ * @param {number} id - The ID of the subtask to delete.
  */
 function deleteSubtask(element, id) {
     const item = document.querySelector(`.form__subtask-item${element}[data-id="${id}"]`);
@@ -549,10 +588,12 @@ function deleteSubtask(element, id) {
 
 
 /**
- * Funtcion to convert an HTML string into a real DOM element.
+ * Function to convert an HTML string into a real DOM element.
  * Creates a <template> element to parse the string,
  * then returns the first element inside it. Useful when dynamic
  * HTML needs to be inserted into the DOM as a real node.
+ * @param {string} htmlString - The HTML string to convert.
+ * @returns {HTMLElement} - The resulting DOM element.
  */
 function convertHtmlStringToDomElement(htmlString) {
     const template = document.createElement('template');
@@ -590,10 +631,11 @@ function increaseSubtaskIdCount() {
 }
 
 
-/**
- * Function to collect all assignes contact ID's and pushes them to the array.
+ /**
+ * Function to collect all assigned contact ID's and pushes them to the array.
  * The Array will be returned to the calling function.
-*/
+ * @returns {Array} - An array of selected contact IDs.
+ */
 function getSelectedContactIds() {
     const contactBadges = document.querySelectorAll('#contact-badges .form__contact-badge');
     const contactIDs = [];
@@ -611,6 +653,7 @@ function getSelectedContactIds() {
 /**
  * Function to collect all created subtasks below the subtask inputfield.
  * The Array will be returned to the calling function.
+ * @returns {Array} - An array of subtask objects, each containing a title and done status.
  */
 function getSubtasks() {
     const listItems = document.querySelectorAll('#subtask-list .form__subtask-item');
@@ -630,6 +673,8 @@ function getSubtasks() {
  * Function to convert the selected category name into the database format.
  * Example: Technical Task -> technical-task
  * It uses a regualar expression to convert the string.
+ * @param {string} category - The category name to convert.
+ * @returns {string} - The converted category name in database format.
  */
 function convertCategoryTextToDbFormat(category) {
     return category.toLowerCase().replace(/\s+/g, '-');
@@ -637,9 +682,11 @@ function convertCategoryTextToDbFormat(category) {
 
 
 /**
- * Function to indentify the highest task ID currently stored in the firebase DB.
+ * Function to get the last Firebase task ID from the provided data.
  * The ID is needed to generate the next higher ID for creating a new task.
  * If there is no task in the DB or something is invalid, the function returns "-1".
+ * @param {Object} data - The Firebase data object containing tasks.
+ * @returns {string} - The last task ID as a string, or "-1" if not found.
  */
 function getLastFirebaseTaskId(data) {
     if (!data || typeof data !== "object") {
@@ -679,7 +726,6 @@ function clearForm() {
         form.reset();
     }
 }
-
 
 
 /**
@@ -757,6 +803,8 @@ function deleteAllSubtasks() {
 
 /**
  * Function to fetch specific data from the server base by the choosen path.
+ * @param {string} path - The path to the specific data in the Firebase database.
+ * @returns {Promise<Object|null>} - A promise that resolves to the fetched data or null if not found.
  */
 async function getDataFromServer(path) {
     try {
@@ -775,13 +823,17 @@ async function getDataFromServer(path) {
 
 
 /**
- * Function to handle the event when the create task buttons gets clicked.
+ * Function to create a new task.
  * It validates the inputs and adds the task to DB if everything is valid.
  * It also checks the origin, where the function get called from.
  * -> When function call comes from the board-page, then it will close the overlay
  * and reloads the page, to display the new added task.
  * -> When the funtction call comes from another page than board-page it redirects to the board-page.
  * OPTIMIZATION: Maybee better to refresh the page by fetching tasks from DB instead of reloading the page.
+ * @param {Event} event - The event object from the form submission.
+ * @param {string} taskStatus - The status of the task (e.g., "todo", "in-progress", "done").
+ * @param {string} origin - The origin of the task creation (e.g., "board-page", "modal").
+ * @returns {Promise<void>}
  */
 async function createTask(event, taskStatus, origin) {
     event.preventDefault();
@@ -808,7 +860,10 @@ async function createTask(event, taskStatus, origin) {
 
 /**
  * Function to validate the task form inputs.
- * It returns true if valid or false when not.
+ * It checks if the required fields (title, due date, category) are filled out.
+ * It highlights the required fields with a red frame and shows a hint if they are empty.
+ * It returns an object containing the validation results for each field.
+ * @returns {Object} - An object containing validation results for title, due date, and category.
  */
 function validateFormData() {
     const fields = getRequiredInputfieldValues();
@@ -820,10 +875,11 @@ function validateFormData() {
 }
 
 
-
 /**
  * Function to validate if the input is empty after trimming.
  * It returns true when field input is not empty.
+ * @param {string} value
+ * @returns {boolean}
  */
 function isFieldValid(value) {
     return value && value.trim() !== "";
@@ -831,7 +887,10 @@ function isFieldValid(value) {
 
 
 /**
- * Function to remove validation classes and hint visibility based on input validity.
+ * Function to highlight required fields based on their validity.
+ * @param {string} inputId
+ * @param {string} value
+ * @returns {boolean}
  */
 function highlightRequiredFields(inputId, value) {
     const input = document.getElementById(inputId);
@@ -863,6 +922,7 @@ function clearHighlightetRequiredFields() {
 
 /**
  * Function to return trimmed values of required input fields.
+ * @returns {Object} - An object containing the trimmed values of title, due date, and category.
  */
 function getRequiredInputfieldValues() {
     const title = document.getElementById("task-title").value.trim();
@@ -873,8 +933,10 @@ function getRequiredInputfieldValues() {
 
 
 /**
- * Function to collect task form input data by calling helper functions.
+ * Function to get task data for a specific status.
  * It returns a structured task object.
+ * @param {string} status - The status of the task (e.g., "todo", "in-progress", "done").
+ * @returns {Promise<Object>} - A promise that resolves to the task data object.
  */
 async function getTaskData(status) {
     const inputs = collectFormInputs();
@@ -896,6 +958,7 @@ async function getTaskData(status) {
 
 /**
  * Function to collect form input values from the DOM elements.
+ * @returns {Object} - An object containing the collected form inputs.
  */
 function collectFormInputs() {
     return {
@@ -917,6 +980,8 @@ function collectFormInputs() {
  * Firebase DB is not saving empty arrays for some reason.
  * Its using ternary operators to keep the function size small
  * Uses the object spread operator (...inputs) to include all input fields and overrides specific keys with normalized values.
+ * @param {Object} inputs - The raw form data collected from the input fields.
+ * @returns {Object} - An object containing the processed form data with normalized values.
  */
 function processFormData(inputs) {
     const categoryRaw = inputs.category ? convertCategoryTextToDbFormat(inputs.category) : "no category";
@@ -935,6 +1000,7 @@ function processFormData(inputs) {
  * Function to generate the next available Task ID.
  * It checks the ID of the last added task and is taking the next higher id.
  * If there is no task so far, it will start with id -> 0.
+ * @returns {Promise<string>} - A promise that resolves to the new task ID as a string.
  */
 async function generateTaskId() {
     const data = await getDataFromServer("/join/tasks");
@@ -952,6 +1018,7 @@ async function generateTaskId() {
  * Function to handle a successfully added task.
  * It logs messages to the console so far.
  * Next step will be to implement some visible user feedback.
+ * @param {Object} task - The task object that was created.
  */
 function handleTaskCreationSuccess(task) {
     console.log("Task created:", task);
@@ -963,6 +1030,7 @@ function handleTaskCreationSuccess(task) {
  * Function to handle a unsuccessfully added task -> error.
  * It logs a message to the console so far.
  * Next step will be to implement some visible user feedback.
+ * @param {Error} error - The error object containing error details.
  */
 function handleTaskCreationError(error) {
     console.error("Fehler beim Hinzufügen der Aufgabe:", error.message);
@@ -971,6 +1039,7 @@ function handleTaskCreationError(error) {
 
 /**
  * Function to add a task object to the Firebase realtime database.
+ * @param {Object} task - The task object to add.
  */
 async function addTaskToDB(task) {
     try {
@@ -1000,6 +1069,7 @@ async function addTaskToDB(task) {
  * Next it's going eas-in the backdrop and roundabout one cycle later it slides-in the template from the right side.
  * After that it's going to preset the priority and populates all the data to the dropdowns.
  * Finally it's initalizing the datepicker and shows the overlay after all is done.
+ * @param {string} taskStatus - The status of the task to be created (e.g., "todo", "in-progress", "done").
  */
 function showTaskOverlay(taskStatus) {
     const templateContainer = document.getElementById('task__overlay');
