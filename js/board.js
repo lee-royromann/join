@@ -95,6 +95,7 @@ async function boardInit() {
     await loadTasksFromFirebase();
     await loadContactsFromFirebase();
     renderTasks();
+    getUsernameInitals();
 }
 
 async function saveTaskToFirebase(taskId, fullTaskObject) {
@@ -438,8 +439,13 @@ async function toggleSubtaskStatus(index, taskId) {
  * Function to set the selected task priority.
  * Resets all priority buttons and applies the specifically choosen priority css class to it.
  */
+<<<<<<< HEAD
 function setEditPriority(priority) {
     resetEditPriorityButtons();
+=======
+function setPriorityEdit(priority) {
+    resetPriorityButtonsEdit();
+>>>>>>> bbea70e84a4be683dd5a6525e624ba85a79d2023
     let button = document.getElementById(`edit__btn-${priority}`);
     let icon = document.getElementById(`edit__btn-${priority}-icon`);
     button.classList.add(`edit__button-prio--${priority}`);
@@ -450,7 +456,11 @@ function setEditPriority(priority) {
 
 function setInitialTaskPriority(task) {
     const taskPriority = task.priority.toLowerCase();
+<<<<<<< HEAD
     setEditPriority(taskPriority);
+=======
+    setPriorityEdit(taskPriority);
+>>>>>>> bbea70e84a4be683dd5a6525e624ba85a79d2023
 }
 
  
@@ -458,7 +468,11 @@ function setInitialTaskPriority(task) {
  * Function to reset all priority buttons to their default state.
  * Removes any applied priority-specific modifier classes from each button.
  */
+<<<<<<< HEAD
 function resetEditPriorityButtons() {
+=======
+function resetPriorityButtonsEdit() {
+>>>>>>> bbea70e84a4be683dd5a6525e624ba85a79d2023
     const priorities = ['urgent', 'medium', 'low'];
 
     priorities.forEach(priority => {

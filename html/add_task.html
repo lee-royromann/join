@@ -32,6 +32,7 @@
     <link rel="icon" href="../assets/img/icon/favicon.ico" type="image/x-icon">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="../css/fonts.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/add_task.css">
@@ -42,7 +43,11 @@
 
     <!-- JS -->
     <script src="../js/add_task.js" defer></script>
+    <script src="../js/add_task_data_utils.js" defer></script>
+    <script src="../js/add_task_form_utils.js" defer></script>
     <script src="../js/add_task_templates.js" defer></script>
+    <script src="../js/header.js" defer></script>
+    <script src="../script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js" defer></script>
 </head>
@@ -92,17 +97,23 @@
 
             <!-- Header -->
             <header class="header">
-                <h1 class="header__title">Kanban Project Management Tool</h1>
+                <div class="header__title">Kanban Project Management Tool</div>
                 <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
                 <div class="header__container">
-                    <div class="header__help">?</div>
-                    <div class="header__user" id="header__user"></div>
+                    <a class="header__help" href="/html/help.html">?</a>
+                    <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
+                </div>
+                <div class="header__burger-menu" id="burger-menu">
+                    <a href="../html/help.html">Help</a>
+                    <a href="../html/legal_notice.html">Legal notice</a>            
+                    <a href="../html/privacy_policy.html">Privacy policy</a>
+                    <a onclick="logOut()">Log out</a>
                 </div>
             </header>
             
             <!-- Content -->
             <section class="content">
-                <h2 class="title">Add Task</h2>
+                <h1 class="title">Add Task</h1>
 
                 <!-- Form -->
                 <form class="form" id="form-add-task">
@@ -227,18 +238,18 @@
 
                                     <!-- Subtask plus icon -->
                                     <div class="form__wrapper-subtask-icons" id="task-subtask-icons-1">
-                                        <div class="form__icon-subtask" onclick="addSubtask()">
+                                        <div class="form__icon-subtask" onclick="handleSubtaskInputChange()">
                                             <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                                         </div>
                                     </div>
 
-                                    <!-- Subtask delte / check icons -->
+                                    <!-- Subtask delete / check icons -->
                                     <div class="form__wrapper-subtask-icons d_none" id="task-subtask-icons-2">
-                                        <div class="form__icon-subtask">
+                                        <div class="form__icon-subtask" onclick="clearSubtaskInput()">
                                             <img src="../assets/img/icon/close.svg" alt="Subtask icon to delete subtask">
                                         </div>
                                         <span class="form__icon-separator"></span>
-                                        <div class="form__icon-subtask">
+                                        <div class="form__icon-subtask" onclick="addSubtask()">
                                             <img src="../assets/img/icon/done.svg" alt="Subtask icon to mark subtask as done">
                                         </div>
                                     </div>

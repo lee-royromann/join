@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="../css/privacy_legal_help.css">
 
     <!-- JS -->
-    <script src="../js/add_task.js" defer></script>
+    <script src="../script.js" defer></script>
+    <script src="../js/header.js" defer></script>
 </head>
 
 <body onload="getUsernameInitals()">
@@ -27,7 +28,7 @@
 
             <!-- Logo -->
             <div class="sidebar__logo">
-                <a href="../index.html">
+                <a href="/html/summary.html">
                     <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
                 </a>
             </div>
@@ -63,11 +64,17 @@
             
             <!-- Header -->
             <header class="header">
-                <p class="header__title">Kanban Project Management Tool</p>
-                <a href="/index.html"><img class="header__logo" src="../assets/img/logo/join_1.svg" alt="Join Logo Header" hidden></a>
+                <div class="header__title">Kanban Project Management Tool</div>
+                <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
                 <div class="header__container">
-                    <div class="header__help">?</div>
-                    <div class="header__user" id="header__user"></div>
+                    <a class="header__help" href="/html/help.html">?</a>
+                    <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
+                </div>
+                <div class="header__burger-menu" id="burger-menu">
+                    <a href="../html/help.html">Help</a>
+                    <a href="../html/legal_notice.html">Legal notice</a>            
+                    <a href="../html/privacy_policy.html">Privacy policy</a>
+                    <a onclick="logOut()">Log out</a>
                 </div>
             </header>
 

@@ -19,10 +19,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         
         <!-- <script src="../js/db.js" defer></script> -->
+        <script src="../js/add_task_data_utils.js" defer></script>
+        <script src="../js/add_task_form_utils.js" defer></script>
         <script src="../js/add_task_templates.js" defer></script>
         <script src="../js/add_task.js" defer></script>
+        <script src="../js/header.js" defer></script>
         <script src="../js/board.js" defer></script>
         <script src="../js/board_templates.js" defer></script>
+        <script src="../script.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js" defer></script>
 
@@ -37,7 +41,7 @@
 
                     <!-- Logo -->
                     <div class="sidebar__logo">
-                        <a href="../index.html">
+                        <a href="/html/summary.html">
                             <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
                         </a>
                     </div>
@@ -70,11 +74,19 @@
                 </nav>
 
                 <div class="kanban">
+                    <!-- Header -->
                     <header class="header">
-                        <h1 class="header__title">Kanban Project Management Tool</h1>
+                        <div class="header__title">Kanban Project Management Tool</div>
+                        <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
                         <div class="header__container">
-                            <div class="header__help">?</div>    
-                            <div class="header__user">SM</div>
+                            <a class="header__help" href="/html/help.html">?</a>
+                            <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
+                        </div>
+                        <div class="header__burger-menu" id="burger-menu">
+                            <a href="../html/help.html">Help</a>
+                            <a href="../html/legal_notice.html">Legal notice</a>            
+                            <a href="../html/privacy_policy.html">Privacy policy</a>
+                            <a onclick="logOut()">Log out</a>
                         </div>
                     </header>
 

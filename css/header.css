@@ -110,3 +110,48 @@
     color: var(--header-color-text-help);
     cursor: pointer;
 }
+
+.header__help:hover {
+    height: 25px;
+    width: 25px;
+    border: 2.5px solid var(--header-color-border-help);
+}
+
+.header__burger-menu {
+    position: absolute;
+    top: 96px;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    width: 150px;
+    padding: 16px;
+    border-radius: 20px 0 20px 20px;
+    background-color: #2a3647;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 10000;
+}
+
+.header__burger-menu--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.header__burger-menu a {
+  color: #cdcdcd;
+  text-decoration: none;
+  padding: 16px 0;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.header__burger-menu a:hover {
+  background-color: #091931;
+  color: white;
+  border-radius: 20px;
+}

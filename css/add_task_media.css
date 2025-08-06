@@ -89,7 +89,7 @@
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 820px) {
     .title {
         font-size: 40px;
     }
@@ -103,18 +103,13 @@
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 700px) {
     .header__title {
         display: none;
     }
 
     .header__logo {
         display: block;
-    }
-
-    .content {
-        padding-top: 40px;
-        padding-bottom: 120px;
     }
 
     .sidebar {
@@ -165,6 +160,12 @@
         display: block;
         font-size: 14px;
     }
+
+    .content {
+        padding-top: 40px;
+        padding-bottom: 120px;
+    }
+
 }
 
 @media (max-width: 540px) {
