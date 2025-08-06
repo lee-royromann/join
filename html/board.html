@@ -26,6 +26,7 @@
         <script src="../js/header.js" defer></script>
         <script src="../js/board.js" defer></script>
         <script src="../js/board_templates.js" defer></script>
+        <script src="../script.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js" defer></script>
 
@@ -78,7 +79,13 @@
                         <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
                         <div class="header__container">
                             <div class="header__help"><a href="/html/help.html">?</a></div>
-                            <div class="header__user" id="header__user"></div>
+                        <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
+                        </div>
+                        <div class="header__burger-menu" id="burger-menu">
+                            <a href="../html/help.html">Help</a>
+                            <a href="../html/legal_notice.html">Legal notice</a>            
+                            <a href="../html/privacy_policy.html">Privacy policy</a>
+                            <a onclick="logOut()">Log out</a>
                         </div>
                     </header>
 

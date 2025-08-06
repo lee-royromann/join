@@ -24,4 +24,17 @@ function getUsernameInitals() {
     element.innerHTML = initials;
 }
 
+
+/**
+ * Function to toggle the visibility of the user menu in the header
+ * It toggles the class 'header__burger-menu--visible' on the element with id 'burger-menu'.
+ * This class controls the visibility of the user menu.
+ */
+function toggleUserMenu() {
+    const userMenu = document.getElementById('burger-menu');
+    userMenu.classList.toggle('header__burger-menu--visible');
+}
+
+
+// Initialize the header with the username initials
 getUsernameInitals();

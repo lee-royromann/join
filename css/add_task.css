@@ -793,6 +793,9 @@ input[type="date"] {
     z-index: 1;
 }
 
+
+/* DEBUGGING WITH BACKGROUND COLORS */
+
 /* html { background: red; }
 body { background: orange; }
 .page { background: yellow; }
