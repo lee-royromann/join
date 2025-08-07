@@ -1,129 +1,151 @@
+// ===================================================================
+// HINWEIS:
+// Diese Datei benötigt Zugriff auf die Funktionen aus `db.js`.
+// Benötigte Funktionen: `loadUsers()`, `addUser()`, `addContact()`, `getNextId()`
+// ===================================================================
+
+let textPasswdError = "Ups! Your passwords don't match!";
+let textEmailError = "The e-mail address already exists!";
+
 /**
- * Die Basis-URL für die Firebase Realtime Database.
- * @type {string}
+ * Registriert einen neuen Benutzer mit fortlaufender ID.
  */
-const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+async function registerUser() {
+    // Verhindert, dass das Formular die Seite neu lädt
+    if (event) {
+        event.preventDefault();
+    }
 
-// HINWEIS: Die globalen Arrays sind für andere Funktionen eventuell noch nützlich,
-// aber die Lade-Funktionen sollten die Daten direkt zurückgeben.
-let usersFirebase = [];
-let contactsFirebase = [];
+    if (checkValueInput()) return;
+    spinningLoaderStart();
 
-// =================================================================================
-// GENERIC API FUNCTIONS
-// =================================================================================
+    const userInput = getFormElements();
+    const emailValue = userInput.email.value;
+    const usernameValue = userInput.username.value;
+    const passwordValue = userInput.password.value;
+    const confirmValue = userInput.confirm.value;
 
-async function firebaseRequest(path, method = 'GET', body = null) {
-    const url = `${BASE_URL}${path}.json`;
-    const options = {
-        method: method,
-        headers: { 'Content-Type': 'application/json' },
+    if (!checkSamePasswd(passwordValue, confirmValue)) return;
+
+    try {
+        await loadUsers();
+        const emailExists = usersFirebase.some(user => user && user.email === emailValue);
+
+        if (emailExists) {
+            spinningLoaderEnd();
+            showEmailExistsError();
+            return;
+        }
+
+        // Holt die nächste freie ID für Benutzer.
+        const newUserId = await getNextId('/join/users');
+        
+        // Finale Sicherheitsprüfung
+        if (newUserId === undefined || newUserId === null) {
+            console.error("Konnte keine gültige User-ID erhalten. Der Prozess wird abgebrochen.");
+            spinningLoaderEnd();
+            return;
+        }
+
+        const nameParts = usernameValue.trim().split(' ');
+        const prename = nameParts.shift() || '';
+        const surname = nameParts.join(' ') || '';
+        const userColor = getUniqueAvatarColor();
+
+        const newUser = {
+            id: newUserId,
+            prename: prename,
+            surname: surname,
+            email: emailValue,
+            password: passwordValue,
+            phone: "",
+            color: userColor
+        };
+
+        await addUser(newUser, newUserId);
+
+        // Dasselbe für den Kontakt-Eintrag
+        const newContactId = await getNextId('/join/contacts');
+        
+        if (newContactId === undefined || newContactId === null) {
+            console.error("Konnte keine gültige Kontakt-ID erhalten. Der Prozess wird abgebrochen.");
+            spinningLoaderEnd();
+            return;
+        }
+
+        const newContact = { ...newUser, id: newContactId };
+        await addContact(newContact, newContactId);
+
+        spinningLoaderEnd();
+        showOverlaySuccessful();
+
+    } catch (error) {
+        console.error("Ein Fehler ist während des Registrierungsprozesses aufgetreten:", error);
+        spinningLoaderEnd();
+    }
+}
+
+// ===================================================================
+// HILFSFUNKTIONEN 
+// ===================================================================
+
+function getUniqueAvatarColor() {
+    const letters = '89ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * letters.length)];
+    }
+    return color;
+}
+
+function getFormElements() {
+    return {
+        username: document.getElementById('username'),
+        email: document.getElementById('emailSignUp'),
+        password: document.getElementById('passwordReg'),
+        confirm: document.getElementById('passwordConf')
     };
-    if (body) {
-        options.body = JSON.stringify(body);
-    }
-    try {
-        const response = await fetch(url, options);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        if (method === 'DELETE' || response.status === 204) return null;
-        return await response.json();
-    } catch (error) {
-        console.error(`Firebase-Anfrage an ${path} fehlgeschlagen.`, error);
-        throw error;
-    }
 }
 
-// =================================================================================
-// ID MANAGEMENT
-// =================================================================================
+function checkSamePasswd(a, b) {
+    let labelPassw = document.getElementById('labelPasswordConf');
+    let poppinError = document.getElementById('errorPoppin');
+    labelPassw.classList.remove('error-border');
+    if (poppinError) poppinError.classList.add('opacity');
 
-async function getNextId(path) {
-    try {
-        const data = await firebaseRequest(path);
-        if (!data) return 0;
-        const items = Array.isArray(data) ? data : Object.values(data);
-        if (items.length === 0) return 0;
-        const maxId = items.reduce((max, item) => (item && item.id > max ? item.id : max), -1);
-        return maxId + 1;
-    } catch (error) {
-        console.error(`Fehler beim Ermitteln der nächsten ID für ${path}:`, error);
-        return 0;
-    }
-}
-
-// =================================================================================
-// USER FUNCTIONS (KORRIGIERT)
-// =================================================================================
-
-/**
- * Lädt alle Benutzer aus Firebase und GIBT SIE ZURÜCK.
- * @returns {Promise<Array<Object>>} Ein Array mit den Benutzerobjekten.
- */
-async function loadUsers() {
-    try {
-        const data = await firebaseRequest("/join/users");
-        console.log("Rohdaten von /join/users empfangen:", data);
-
-        let loadedUsers = [];
-        if (Array.isArray(data)) {
-            loadedUsers = data.filter(Boolean);
-        } else if (data) {
-            loadedUsers = Object.values(data);
+    if (a !== b) {
+        spinningLoaderEnd();
+        labelPassw.classList.add('error-border');
+        if (poppinError) {
+            poppinError.classList.remove('opacity');
+            poppinError.innerHTML = textPasswdError;
         }
-        
-        // Die globale Variable für andere Skripte aktualisieren (optional, aber sicher)
-        usersFirebase = loadedUsers;
-        // WICHTIG: Die geladenen Daten zurückgeben!
-        return loadedUsers;
-        
-    } catch (error) {
-        console.error("Fehler beim Laden der Benutzer:", error);
-        usersFirebase = []; // Im Fehlerfall zurücksetzen
-        return []; // Leeres Array im Fehlerfall zurückgeben
+        return false;
+    }
+    return true;
+}
+
+function showEmailExistsError() {
+    const label = document.getElementById('labelEmailSignUp');
+    const errorMsg = document.getElementById('errorPoppin');
+    label.classList.add('error-border');
+    if (errorMsg) {
+        errorMsg.classList.remove('opacity');
+        errorMsg.innerHTML = textEmailError;
     }
 }
 
-async function addUser(user, id) {
-    return firebaseRequest(`/join/users/${id}`, 'PUT', user);
-}
-
-// =================================================================================
-// CONTACTS FUNCTIONS (KORRIGIERT)
-// =================================================================================
-
-/**
- * Lädt alle Kontakte aus Firebase und GIBT SIE ZURÜCK.
- * @returns {Promise<Array<Object>>} Ein Array mit den Kontaktobjekten.
- */
-async function loadContacts() {
-    try {
-        const data = await firebaseRequest("/join/contacts");
-        console.log("Rohdaten von /join/contacts empfangen:", data);
-
-        let loadedContacts = [];
-        if (data) {
-            const items = Array.isArray(data) ? data : Object.values(data);
-            loadedContacts = items
-                .filter(contact => contact)
-                .map(contact => ({
-                    ...contact,
-                    username: `${contact.prename || ''} ${contact.surname || ''}`.trim()
-                }));
-        }
-        
-        contactsFirebase = loadedContacts;
-        return loadedContacts;
-
-    } catch (error) {
-        console.error("Fehler beim Laden der Kontakte:", error);
-        contactsFirebase = [];
-        return [];
+function showOverlaySuccessful() {
+    let overlay = document.getElementById('success');
+    if (overlay) {
+        overlay.classList.remove('d-none');
+        overlay.classList.add('overlay-successful');
+        setTimeout(() => {
+            window.location.href = '../index.html?msg=You have successfully registered.';
+        }, 1500);
     }
 }
 
-async function addContact(contactData, id) {
-    return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
-}
 
 
 
