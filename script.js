@@ -12,7 +12,6 @@ async function init(page) {
     activePageHiglight(page);
     setUserCircleInitials();
 
-
     if (page === 'summary_page') {
         initGreeting();
         initGreetingRepeat();
@@ -88,7 +87,6 @@ document.addEventListener("click", function(event) {
     let menu = document.getElementById("burger_menu");
     let userLogo = document.querySelector(".user-logo");
 
-    // Abbrechen, wenn das Menü gar nicht existiert oder nicht sichtbar ist
     if (!menu || !menu.classList.contains("visible")) return;
 
     let clickedInsideMenu = menu.contains(event.target);
@@ -122,11 +120,9 @@ async function loadHeaderNavbarIntern() {
     await Promise.all([
         loadHTML("/html/header.html", "header-placeholder"),
         loadHTML("/html/navbar.html", "navbar-section")
-
     ]);
     markLegalPrivacyActiveLink();
     setUserCircleInitials();
-
 }
 /**
  * Loads the external header and navbar for guest (unauthenticated) users.
@@ -193,8 +189,7 @@ function cookiesStillValid() {
 function enableLogin() {
     let loginArea = document.getElementById("loginArea");
     if (loginArea) loginArea.classList.remove("d-none");
-}
-/**
+}/**
  * Disables both the standard login and guest login buttons.
  *
  * @function disableLoginButtons
@@ -227,14 +222,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         console.warn("⚠️ rotate_warning.html konnte nicht geladen werden:", err);
     }
 
-    const path = window.location.pathname;
-    const isLegalPage = path.includes("privacy_policy.html") || path.includes("legal_notice.html");
-
-    if (isLegalPage) {
-        // Die Funktion initLayout() wird hier nicht mehr aufgerufen, 
-        // da die HTML-Seiten bereits alle benötigten Elemente enthalten.
-    }
-
     initCookies();
     initBackButton();
     checkOrientation();
@@ -255,18 +242,9 @@ async function loadRotateWarning() {
  * @function initLayout
  */
 async function initLayout() {
-    window.location.pathname.includes("privacy_policy.html") ||
-        window.location.pathname.includes("legal_notice.html");
-
-    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
-    const hasUsername = !!localStorage.getItem("username");
-    const layout = localStorage.getItem("layout");
-
-    if ((isLoggedIn || hasUsername) && layout === "intern") {
-        await loadHeaderNavbarIntern();
-    } else {
-        await loadHeaderNavbarIntern();
-    }
+    // Optimiert: Die vorherige if/else-Logik war redundant und lud immer den internen Header.
+    await loadHeaderNavbarIntern();
+    // Der Layout-Schlüssel wird nach der Entscheidung entfernt, um den Zustand sauber zu halten.
     localStorage.removeItem("layout");
 }
 /**
@@ -320,7 +298,6 @@ function checkOrientation() {
     warning.style.display = (isMobile && smallScreen && isLandscape) ? "flex" : "none";
 }
 
-
 window.addEventListener("load", checkOrientation);
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
@@ -341,8 +318,7 @@ function spinningLoaderStart() {
 function spinningLoaderEnd() {
     let spinner = document.getElementById('spinnerOverLay');
     spinner.classList.add('d-none');
-}
-/**
+}/**
  * Sets the user's initials inside the circle in the header.
  * If the user is a guest, it shows "G".
  * This function should be called after the header has been injected into the DOM.
@@ -367,7 +343,8 @@ function setUserCircleInitials() {
 }
 /**
  * Returns a set of regular expression patterns used to validate input fields.
- * * @function inputValidations
+ *
+ * @function inputValidations
  * @returns {Object} An object containing validation regex for username, email, password, and phoneNumber.
  */
 function inputValidations() {
@@ -381,7 +358,8 @@ function inputValidations() {
 /**
  * Validates the input value based on its ID and updates the label style accordingly.
  * Removes the error class and adds a success class if validation passes.
- * * @function correctedInput
+ *
+ * @function correctedInput
  * @param {string} labelID - The ID of the label element to modify.
  * @param {string} inputID - The ID of the input element to validate.
  */
@@ -401,7 +379,8 @@ function correctedInput(labelID, inputID) {
 }
 /**
  * Determines the validation type (e.g., username, email, etc.) based on the input ID.
- * * @function validationType
+ *
+ * @function validationType
  * @param {string} inputID - The ID of the input element to analyze.
  * @returns {string} The corresponding validation type key.
  */
@@ -423,7 +402,8 @@ function validationType(inputID) {
 }
 /**
  * Removes the success styling from a label, used to reset the state after input was corrected.
- * * @function finishTheCorrection
+ *
+ * @function finishTheCorrection
  * @param {string} labelID - The ID of the label element to reset.
  */
 function finishTheCorrection(labelID) {
