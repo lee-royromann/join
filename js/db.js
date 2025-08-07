@@ -1,149 +1,188 @@
-// ===================================================================
-// HINWEIS:
-// Diese Datei benötigt Zugriff auf die Funktionen aus `db.js`.
-// Benötigte Funktionen: `loadUsers()`, `addUser()`, `addContact()`, `getNextId()`
-// ===================================================================
+/**
+ * Die Basis-URL für die Firebase Realtime Database.
+ * @type {string}
+ */
+const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
-let textPasswdError = "Ups! Your passwords don't match!";
-let textEmailError = "The e-mail address already exists!";
+// Globale Variablen für den Fall, dass andere Skripte sie benötigen.
+// Es ist jedoch besser, wenn Funktionen die Daten direkt von den Ladefunktionen erhalten.
+let usersFirebase = [];
+let contactsFirebase = [];
+
+// =================================================================================
+// GENERISCHE API-FUNKTION
+// =================================================================================
 
 /**
- * Registriert einen neuen Benutzer mit fortlaufender ID.
+ * Sendet eine Anfrage an die Firebase Realtime Database.
+ * @param {string} path - Der Pfad zur Ressource (z.B. '/join/users').
+ * @param {string} [method='GET'] - Die HTTP-Methode.
+ * @param {Object|null} [body=null] - Der zu sendende Body (wird in JSON umgewandelt).
+ * @returns {Promise<any>} Das Ergebnis der Anfrage.
  */
-async function registerUser() {
-    // Verhindert, dass das Formular die Seite neu lädt
-    if (event) {
-        event.preventDefault();
+async function firebaseRequest(path, method = 'GET', body = null) {
+    // Stellt sicher, dass der Pfad nicht mit einem Slash beginnt, um doppelte Slashes zu vermeiden.
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    const url = `${BASE_URL}${cleanPath}.json`;
+
+    const options = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    if (body) {
+        options.body = JSON.stringify(body);
     }
-
-    if (checkValueInput()) return;
-    spinningLoaderStart();
-
-    const userInput = getFormElements();
-    const emailValue = userInput.email.value;
-    const usernameValue = userInput.username.value;
-    const passwordValue = userInput.password.value;
-    const confirmValue = userInput.confirm.value;
-
-    if (!checkSamePasswd(passwordValue, confirmValue)) return;
 
     try {
-        await loadUsers();
-        const emailExists = usersFirebase.some(user => user && user.email === emailValue);
-
-        if (emailExists) {
-            spinningLoaderEnd();
-            showEmailExistsError();
-            return;
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            // Wirft einen Fehler, wenn die Antwort nicht erfolgreich war.
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        // Holt die nächste freie ID für Benutzer.
-        const newUserId = await getNextId('/join/users');
-        
-        // Finale Sicherheitsprüfung
-        if (newUserId === undefined || newUserId === null) {
-            console.error("Konnte keine gültige User-ID erhalten. Der Prozess wird abgebrochen.");
-            spinningLoaderEnd();
-            return;
+        // Bei DELETE oder leerem Inhalt (204) null zurückgeben.
+        if (method === 'DELETE' || response.status === 204) {
+            return null;
         }
+        // Versucht, die Antwort als JSON zu parsen.
+        return await response.json();
+    } catch (error) {
+        console.error(`Firebase-Anfrage an '${path}' fehlgeschlagen.`, error);
+        // Wirft den Fehler weiter, damit die aufrufende Funktion ihn behandeln kann.
+        throw error;
+    }
+}
 
-        const nameParts = usernameValue.trim().split(' ');
-        const prename = nameParts.shift() || '';
-        const surname = nameParts.join(' ') || '';
-        const userColor = getUniqueAvatarColor();
+// =================================================================================
+// ID-VERWALTUNG (PRODUKTIVE VERSION MIT SICHERHEITSNETZ)
+// =================================================================================
 
-        const newUser = {
-            id: newUserId,
-            prename: prename,
-            surname: surname,
-            email: emailValue,
-            password: passwordValue,
-            phone: "",
-            color: userColor
-        };
+/**
+ * Ermittelt die nächste freie numerische ID für einen gegebenen Pfad.
+ * Diese Funktion ist jetzt maximal robust und kann kein 'undefined' zurückgeben.
+ * @param {string} path - Der Firebase-Pfad (z.B. '/join/users').
+ * @returns {Promise<number>} Die nächste verfügbare ID.
+ */
+async function getNextId(path) {
+    let nextId; // Variable, um das Ergebnis zu speichern
 
-        await addUser(newUser, newUserId);
+    try {
+        const data = await firebaseRequest(path);
 
-        // Dasselbe für den Kontakt-Eintrag
-        const newContactId = await getNextId('/join/contacts');
-        
-        if (newContactId === undefined || newContactId === null) {
-            console.error("Konnte keine gültige Kontakt-ID erhalten. Der Prozess wird abgebrochen.");
-            spinningLoaderEnd();
-            return;
+        if (!data) {
+            nextId = 0; // Wenn der Pfad nicht existiert, ist die erste ID 0
+        } else {
+            const items = Object.values(data);
+            if (items.length === 0) {
+                nextId = 0; // Wenn der Pfad leer ist, ist die erste ID 0
+            } else {
+                const maxId = items.reduce((max, item) => {
+                    if (typeof item === 'object' && item !== null && typeof item.id !== 'undefined') {
+                        const currentId = parseInt(item.id, 10);
+                        if (!isNaN(currentId) && currentId > max) {
+                            return currentId;
+                        }
+                    }
+                    return max;
+                }, -1);
+                nextId = maxId + 1;
+            }
         }
+    } catch (error) {
+        console.error(`Fehler beim Ermitteln der nächsten ID für '${path}':`, error);
+        nextId = 0; // Sicherer Fallback-Wert bei einem Fehler
+    }
 
-        const newContact = { ...newUser, id: newContactId };
-        await addContact(newContact, newContactId);
+    // FINALES SICHERHEITSNETZ: Stellt sicher, dass niemals 'undefined' zurückgegeben wird.
+    if (nextId === undefined || nextId === null || isNaN(nextId)) {
+        const errorMsg = `FATAL: getNextId für Pfad '${path}' konnte keine gültige ID ermitteln. Ergebnis war: ${nextId}`;
+        console.error(errorMsg);
+        return 0; // Gibt einen absolut sicheren Wert zurück, um einen Absturz zu verhindern.
+    }
 
-        spinningLoaderEnd();
-        showOverlaySuccessful();
+    console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
+    return nextId;
+}
+
+
+// =================================================================================
+// BENUTZER-FUNKTIONEN (MIT ID-PRÜFUNG)
+// =================================================================================
+
+/**
+ * Lädt alle Benutzer aus Firebase.
+ * @returns {Promise<Array<Object>>} Ein Array mit den Benutzerobjekten.
+ */
+async function loadUsers() {
+    try {
+        const data = await firebaseRequest("/join/users");
+        const loadedUsers = data ? Object.values(data) : [];
+        usersFirebase = loadedUsers;
+        return loadedUsers;
+    } catch (error) {
+        console.error("Fehler beim Laden der Benutzer:", error);
+        usersFirebase = [];
+        return [];
+    }
+}
+
+/**
+ * Fügt einen neuen Benutzer mit einer spezifischen ID hinzu.
+ * @param {Object} user - Das Benutzerobjekt.
+ * @param {number|string} id - Die ID, unter der der Benutzer gespeichert wird.
+ */
+async function addUser(user, id) {
+    if (id === undefined || id === null) {
+        const errorMsg = `FATAL: addUser wurde mit einer ungültigen ID aufgerufen: ${id}`;
+        console.error(errorMsg, user);
+        throw new Error(errorMsg);
+    }
+    return firebaseRequest(`/join/users/${id}`, 'PUT', user);
+}
+
+// =================================================================================
+// KONTAKT-FUNKTIONEN (MIT ID-PRÜFUNG)
+// =================================================================================
+
+/**
+ * Lädt alle Kontakte aus Firebase.
+ * @returns {Promise<Array<Object>>} Ein Array mit den Kontaktobjekten.
+ */
+async function loadContacts() {
+    try {
+        const data = await firebaseRequest("/join/contacts");
+        const loadedContacts = data ? Object.values(data) : [];
+
+        const contactsWithUsername = loadedContacts
+            .filter(contact => contact)
+            .map(contact => ({
+                ...contact,
+                username: `${contact.prename || ''} ${contact.surname || ''}`.trim()
+            }));
+
+        contactsFirebase = contactsWithUsername;
+        return contactsWithUsername;
 
     } catch (error) {
-        console.error("Ein Fehler ist während des Registrierungsprozesses aufgetreten:", error);
-        spinningLoaderEnd();
+        console.error("Fehler beim Laden der Kontakte:", error);
+        contactsFirebase = [];
+        return [];
     }
 }
 
-// ===================================================================
-// HILFSFUNKTIONEN 
-// ===================================================================
-
-function getUniqueAvatarColor() {
-    const letters = '89ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * letters.length)];
+/**
+ * Fügt einen neuen Kontakt mit einer spezifischen ID hinzu.
+ * @param {Object} contactData - Das Kontaktobjekt.
+ * @param {number|string} id - Die ID, unter der der Kontakt gespeichert wird.
+ */
+async function addContact(contactData, id) {
+    if (id === undefined || id === null) {
+        const errorMsg = `FATAL: addContact wurde mit einer ungültigen ID aufgerufen: ${id}`;
+        console.error(errorMsg, contactData);
+        throw new Error(errorMsg);
     }
-    return color;
-}
-
-function getFormElements() {
-    return {
-        username: document.getElementById('username'),
-        email: document.getElementById('emailSignUp'),
-        password: document.getElementById('passwordReg'),
-        confirm: document.getElementById('passwordConf')
-    };
-}
-
-function checkSamePasswd(a, b) {
-    let labelPassw = document.getElementById('labelPasswordConf');
-    let poppinError = document.getElementById('errorPoppin');
-    labelPassw.classList.remove('error-border');
-    if (poppinError) poppinError.classList.add('opacity');
-
-    if (a !== b) {
-        spinningLoaderEnd();
-        labelPassw.classList.add('error-border');
-        if (poppinError) {
-            poppinError.classList.remove('opacity');
-            poppinError.innerHTML = textPasswdError;
-        }
-        return false;
-    }
-    return true;
-}
-
-function showEmailExistsError() {
-    const label = document.getElementById('labelEmailSignUp');
-    const errorMsg = document.getElementById('errorPoppin');
-    label.classList.add('error-border');
-    if (errorMsg) {
-        errorMsg.classList.remove('opacity');
-        errorMsg.innerHTML = textEmailError;
-    }
-}
-
-function showOverlaySuccessful() {
-    let overlay = document.getElementById('success');
-    if (overlay) {
-        overlay.classList.remove('d-none');
-        overlay.classList.add('overlay-successful');
-        setTimeout(() => {
-            window.location.href = '../index.html?msg=You have successfully registered.';
-        }, 1500);
-    }
+    return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
 }
 
 
