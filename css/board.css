@@ -56,12 +56,12 @@ body {
 .kanban__header {
     position: relative;
     width: 100%;
-    height: 180px;
+    /* height: 180px; */
     display: flex;
     flex-direction: column;
     justify-content:center;
     align-items: center;
-    padding: 0 64px;
+    padding: 40px 64px;
 }
 
 .kanban__headline {
@@ -259,9 +259,7 @@ body {
 .card--notasks {
     font-family: "Open Sans";    
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
     gap: 10px;
     background-color: #E7E7E7;
     color: #A8A8A8;
@@ -325,11 +323,17 @@ body {
     align-items: start;
 }
     
-.card__header-title {
+.card__header--title {
     font-weight: 700;
     color: #2A3647;
     text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
+
 
 .card__header--description{
     color: #A8A8A8;
