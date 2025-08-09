@@ -13,166 +13,73 @@
   <link rel="stylesheet" href="../css/fonts.css">
   <link rel="stylesheet" href="../css/summary_mobile.css">
 
+  <!-- Templates -->
   <script src="../js/summary_templates.js"></script>
+
+  <!-- Haupt-Skripte -->
   <script src="../script.js"></script>
   <script src="../js/header.js" defer></script>
 </head>
 
-<body>
+<body onload="loadSummaryTemplate(); initSummary();">
   <div class="layout-page">
     <div class="layout-page__card">
 
-        <!-- Navigation -->
-        <nav class="sidebar" aria-label="Main Navigation">
+      <!-- Navigation -->
+      <nav class="sidebar" aria-label="Main Navigation">
 
-            <!-- Logo -->
-            <div class="sidebar__logo">
-                <a href="./summary.html">
-                    <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
-                </a>
-            </div>
+        <!-- Logo -->
+        <div class="sidebar__logo">
+          <a href="./summary.html">
+            <img class="sidebar__logo-image" src="../assets/img/logo/join_2.svg" alt="Join Logo">
+          </a>
+        </div>
 
-            <!-- Page Links -->
-            <section class="sidebar__menu">
-                <a href="/html/summary.html" class="sidebar__item">
-                    <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
-                    <span class="sidebar__text">Summary</span>
-                </a>
-                <a href="/html/add_task.html" class="sidebar__item">
-                    <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
-                    <span class="sidebar__text">Add Task</span>
-                </a>
-                <a href="/html/board.html" class="sidebar__item">
-                    <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
-                    <span class="sidebar__text">Board</span>
-                </a>
-                <a href="/html/contacts.html" class="sidebar__item">
-                    <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
-                    <span class="sidebar__text">Contacts</span>
-                </a>
-            </section>
+        <!-- Page Links -->
+        <section class="sidebar__menu">
+          <a href="/html/summary.html" class="sidebar__item">
+            <img class="sidebar__icon" src="../assets/img/icon/summary.svg" alt="" aria-hidden="true">
+            <span class="sidebar__text">Summary</span>
+          </a>
+          <a href="/html/add_task.html" class="sidebar__item">
+            <img class="sidebar__icon" src="../assets/img/icon/add_task.svg" alt="" aria-hidden="true">
+            <span class="sidebar__text">Add Task</span>
+          </a>
+          <a href="/html/board.html" class="sidebar__item">
+            <img class="sidebar__icon" src="../assets/img/icon/board.svg" alt="" aria-hidden="true">
+            <span class="sidebar__text">Board</span>
+          </a>
+          <a href="/html/contacts.html" class="sidebar__item">
+            <img class="sidebar__icon" src="../assets/img/icon/contacts.svg" alt="" aria-hidden="true">
+            <span class="sidebar__text">Contacts</span>
+          </a>
+        </section>
 
-            <!-- Legal Links -->
-            <section class="sidebar__legal">
-                <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
-                <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
-            </section>
-        </nav>
-
+        <!-- Legal Links -->
+        <section class="sidebar__legal">
+          <a href="/html/privacy_policy.html" class="sidebar__text">Privacy Policy</a>
+          <a href="/html/legal_notice.html" class="sidebar__text">Legal Notice</a>
+        </section>
+      </nav>
 
       <!-- Content Area -->
       <div class="content">
         <!-- Header -->
         <header class="header">
-            <div class="header__title">Kanban Project Management Tool</div>
-            <div class="header__container">
-                <a class="header__help" href="/html/help.html">?</a>
-                <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
-            </div>
-            <div class="header__burger-menu" id="burger-menu">
-                <a href="../html/help.html">Help</a>
-                <a href="../html/legal_notice.html">Legal notice</a>            
-                <a href="../html/privacy_policy.html">Privacy policy</a>
-                <a onclick="logOut()">Log out</a>
-            </div>
+          <div class="header__title">Kanban Project Management Tool</div>
+          <div class="header__container">
+            <a class="header__help" href="/html/help.html">?</a>
+            <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
+          </div>
+          <div class="header__burger-menu" id="burger-menu">
+            <a href="../html/help.html">Help</a>
+            <a href="../html/legal_notice.html">Legal notice</a>
+            <a href="../html/privacy_policy.html">Privacy policy</a>
+            <a onclick="logOut()">Log out</a>
+          </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="main">
-          <section class="dashboard">
-            <div class="dashboard__header">
-              <h1 class="dashboard__title">Join 360</h1>
-              <div class="dashboard__seperator"></div>
-              <p class="dashboard__subtitle">Key Metrics at a Glance</p>
-            </div>
-
-            <!-- First Row: To-do & Done -->
-            <div class="card__row">
-              <a href="board.html" class="card__link">
-                <div class="card">
-                  <div class="card__header">
-                    <div class="card__icon">
-                      <img src="../assets/img/icon/edit_white.svg" alt="Tasks Icon">
-                    </div>
-                    <div class="card__number-label">
-                      <p class="card__number" id="count-todo">0</p>
-                      <p class="card__label">To-do</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-
-              <a href="board.html" class="card__link">
-                <div class="card">
-                  <div class="card__header">
-                    <div class="card__icon">
-                      <img src="../assets/img/icon/done_white.svg" alt="Done Icon">
-                    </div>
-                    <div class="card__number-label">
-                      <p class="card__number" id="count-done">0</p>
-                      <p class="card__label">Done</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Second Row: Urgent & Greeting -->
-            <div class="card__row">
-              <a href="board.html" class="card__link">
-                <div class="card__urgent card__urgent-inline">
-                  <div class="card__urgent-left">
-                    <div class="card__urgent-content">
-                      <span class="card__urgent-icon">
-                        <img src="../assets/img/icon/urgent_white.svg" alt="Urgent">
-                      </span>
-                      <div class="card__urgent-number-label">
-                        <span class="card__number" id="count-urgent">0</span>
-                        <p class="card__label">Urgent</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card__urgent-seperator"></div>
-                  <div class="card__urgent-right">
-                    <p class="card__date" id="upcoming-deadline-date">October 16, 2022</p>
-                    <p class="card__deadline">Upcoming Deadline</p>
-                  </div>
-                </div>
-              </a>
-
-              <div class="card__greeting card__greeting-inline">
-                <div>
-                  <p class="card__greetings-text" id="greeting-text">Good morning,</p>
-                  <p class="card__username" id="greeting-username">Sofia Müller</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Third Row: Overview Cards -->
-            <div class="card__row">
-              <a href="board.html" class="card__link">
-                <div class="card__overview">
-                  <p class="card__number" id="count-board">0</p>
-                  <p class="card__label">Tasks in Board</p>
-                </div>
-              </a>
-
-              <a href="board.html" class="card__link">
-                <div class="card__overview">
-                  <p class="card__number" id="count-progress">0</p>
-                  <p class="card__label">Tasks In Progress</p>
-                </div>
-              </a>
-
-              <a href="board.html" class="card__link">
-                <div class="card__overview">
-                  <p class="card__number" id="count-feedback">0</p>
-                  <p class="card__label">Awaiting Feedback</p>
-                </div>
-              </a>
-            </div>
-          </section>
-        </main>
+        <!-- Main Content wird aus summary_templates.js geladen -->
       </div>
     </div>
   </div>
