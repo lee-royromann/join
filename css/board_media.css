@@ -191,6 +191,7 @@
          min-width: 0;
     }
 }
+ 
 
 @media (max-width: 556px) {
     /* Kanban Grid Layout - Vertikal scrollbar */
@@ -213,15 +214,6 @@
         margin-bottom: 24px; /* Abstand zwischen Sections */
     }
 
-    /* .kanban__title {
-        font-size: 48px;
-        width: 100%;
-        max-width: 100%;
-        display: flex;
-        justify-content: center;
-        margin: 40px 0;
-    } */
-
     .kanban__headline {
         gap: 0px;
     }
@@ -239,14 +231,17 @@
     }
 
     /* Scrollbar ausblenden */
+
     .kanban__grid-wrapper::-webkit-scrollbar,
-    .kanban__column::-webkit-scrollbar {
+    .kanban__column::-webkit-scrollbar
+    .overlay__content::-webkit-scrollbar {
         display: none;
     }
     
     /* Firefox Scrollbar ausblenden */
     .kanban__grid-wrapper,
-    .kanban__column {
+    .kanban__column,
+    .overlay__content {
         scrollbar-width: none;
     }
 
@@ -337,8 +332,7 @@
         flex-direction: row;
         width: 100%;
         gap: 24px;
-        align-items: center;
-        
+        align-items: center;  
     }
 
     /* Search Wrapper auf volle Breite */
@@ -358,4 +352,77 @@
         min-width: 280px;
         flex-shrink: 0;
     }
+
+    .overlay__content {
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        max-height: none;
+        padding: 40px; 
+        overflow-x: hidden; /* Horizontales Scrollen aktivieren */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */
+        
+    }
+
+    .overlay__badgeframe span, 
+    .overlay__action--activate span {
+        font-size: 24px;
+    }
+
+    .overlay__badgeframe {
+        margin-bottom: 32px;;
+    }
+
+    .overlay__close--button {
+    width: 44px;
+    height: 44px;
+    }
+    
+    .overlay__story {
+        gap: 32px;
+        display: flex;
+        align-items: center;
+    }
+
+    .overlay__title {
+        display: -webkit-box;    
+        -webkit-line-clamp: 1;          /* Maximal 2 Zeilen */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+  
+}
+
+    .overlay__description {
+        font-size: 24px;
+        line-height: 24px;
+        display: -webkit-box;    
+        -webkit-line-clamp: 3;          /* Maximal 2 Zeilen */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-Bottom: 40px;
+        line-height: 120%;
+        
+    }
+
+    .overlay__assigned {
+        margin: 16px 0;
+    } 
+
+    .overlay__subtasks {
+       margin-bottom: 16px;
+        
+    }
+
+    .overlay__action--activate svg {
+        width: 21px !important;
+        height: 24px !important;
+    }
+
+   
 }
