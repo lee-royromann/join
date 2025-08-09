@@ -38,7 +38,7 @@
     font-size: 14px;
   }
 
-  /* Urgent Card */
+  
   .card__urgent {
     width: 400px;
     height: 130px;
@@ -91,7 +91,7 @@
     font-size: 12px;
   }
 
-  /* Overview Cards */
+  
   .card__overview {
     width: 120px;
     height: 120px;
@@ -122,7 +122,7 @@
     display: none;
   }
 
-  /* Card greeting einblenden */
+ 
 }
 
 @media (max-width: 927px) {
@@ -134,24 +134,24 @@
     font-size: 20px;
   }
 
-  /* Card greeting einblenden */
+
 }
 
 @media (max-width: 763px) {
   .sidebar {
-   position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: none;
-        width: 100%;
-        height: 80px;
-        padding: 0;
-        background-color: #2A3647;
-        z-index: 1000;
+    position: fixed;
+    bottom: 0;
+    left: 0;               
+    transform: none;       
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: none;
+    width: 100%;            
+    height: 80px;
+    padding: 0;
+    background-color: #2A3647;
+    z-index: 1000;
   }
 
   .sidebar__logo,
@@ -188,14 +188,14 @@
         font-size: 14px;
   }
 
-  /* Header-Anpassungen */
+ 
   .header__help,
   .header__title,
   .card__greeting {
     display: none;
   }
 
-  /* Logo im Header anzeigen */
+  
   .header::before {
     content: "";
     display: inline-block;
@@ -234,7 +234,7 @@
  
 @media (max-width: 768px){
  .sidebar {
-     width: calc(100% - 20px);
+     width: 100%;
     }
    .dashboard__header {
     flex-direction: column;
@@ -339,7 +339,7 @@
     margin: 0;
   }
 
-  /* Cards - Desktop-Design mit kleineren Größen */
+ 
   .card {
     width: 190px;
     height: 130px;
@@ -369,7 +369,7 @@
     font-size: 14px;
   }
 
-  /* Urgent Card */
+  
   .card__urgent {
     width: 400px;
     height: 130px;
@@ -422,7 +422,7 @@
     font-size: 12px;
   }
 
-  /* Overview Cards */
+
   .card__overview {
     width: 120px;
     height: 120px;
@@ -442,7 +442,7 @@
   }
 }
 
-/* Weitere Verkleinerung für 480px und kleiner */
+
 @media (max-width: 480px) {
   .sidebar {
     width: 100vw;
@@ -481,7 +481,7 @@
     width: 70px;
   }
 
-  /* Cards weiter verkleinern */
+  
   .card {
     width: 160px;
     height: 120px;
@@ -510,7 +510,7 @@
     font-size: 13px;
   }
 
-  /* Urgent Card */
+  
   .card__urgent {
     width: 330px;
     height: 120px;
@@ -560,7 +560,7 @@
     font-size: 11px;
   }
 
-  /* Overview Cards */
+  
   .card__overview {
     width: 102px;
     height: 102px;
@@ -575,13 +575,13 @@
     font-size: 13px;
   }
 
-  /* Cards Row - bessere Flexibilität */
+ 
   .card__row {
     gap: 12px;
   }
 }
 
-/* Weitere Verkleinerung für 360px und kleiner */
+
 @media (max-width: 360px) {
   .dashboard {
     padding: 10px;
@@ -600,7 +600,7 @@
     width: 60px;
   }
 
-  /* Cards weiter verkleinern */
+ 
   .card {
     width: 140px;
     height: 110px;
@@ -629,7 +629,7 @@
     font-size: 12px;
   }
 
-  /* Urgent Card */
+  
   .card__urgent {
     width: 290px;
     height: 110px;
@@ -679,7 +679,7 @@
     font-size: 10px;
   }
 
-  /* Overview Cards */
+  
   .card__overview {
     width: 89px;
     height: 89px;
@@ -694,13 +694,13 @@
     font-size: 12px;
   }
 
-  /* Cards Row */
+  
   .card__row {
     gap: 10px;
   }
 }
 
-/* Minimum für 320px */
+
 @media (max-width: 320px) {
   .dashboard {
     padding: 8px;
@@ -719,7 +719,7 @@
     width: 50px;
   }
 
-  /* Cards minimal */
+ 
   .card {
     width: 125px;
     height: 100px;
@@ -798,7 +798,7 @@
     font-size: 9px;
   }
 
-  /* Overview Cards */
+  
   .card__overview {
     width: 79px;
     height: 79px;
@@ -813,7 +813,7 @@
     font-size: 11px;
   }
 
-  /* Cards Row */
+  
   .card__row {
     gap: 8px;
   }
