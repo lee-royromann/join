@@ -5,6 +5,7 @@ let contactsFirebase = [];
 
 let currentDraggedID; 
 let currentTask; 
+let idToKey = {};
 
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
@@ -13,10 +14,19 @@ const noResults = document.getElementById("no-results");
 
 
 async function loadTasksFromFirebase() {
-    let response = await fetch(BASE_URL + "join/tasks.json");
-    let responseToJson = await response.json();
-    tasksFirebase = [];
-    tasksFirebase = Object.values(responseToJson).filter(task => task != null);
+    const res = await fetch(BASE_URL + "join/tasks.json");
+  const data = await res.json() || {};
+
+  tasksFirebase = [];
+  idToKey = {};
+
+  for (const [key, task] of Object.entries(data)) {
+    if (!task) continue;
+    tasksFirebase.push(task);
+    if (task.id != null) {
+      idToKey[String(task.id)] = key; // z.B. "19" -> "17"
+    }
+  }
   }
 
 
@@ -30,7 +40,6 @@ async function loadContactsFromFirebase() {
   } else {
     contactsFirebase = [];
   }
-  console.log(contactsFirebase);
 }
 
 
@@ -45,6 +54,7 @@ function openOverlay(taskId) {
     document.body.style.overflow = 'hidden';
     story.classList.remove("d-none");
     renderOverlayTask(taskId);
+    console.log("Aktueller Task:", taskId); // Debugging
 }
 
 async function closeOverlay() {
@@ -97,44 +107,40 @@ async function boardInit() {
     renderTasks();
     getUsernameInitals();
 }
-
-async function saveTaskToFirebase(taskId, fullTaskObject) {
-    try {
-        const response = await fetch(`${BASE_URL}join/tasks/${taskId}.json`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(fullTaskObject), // GANZES OBJEKT speichern
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Fehler beim Speichern in Firebase:", errorText);
-        } else {
-            console.log("Task erfolgreich gespeichert:", taskId);
-        }
-    } catch (error) {
-        console.error("Netzwerkfehler beim Speichern des Tasks:", error);
-    }
+// ''''''''''''''''''''''''
+async function saveTaskToFirebase(task) {
+  if (!task || task.id == null) {
+    console.warn("saveTaskToFirebase: task oder task.id fehlt");
+    return;
+  }
+  const url = `${BASE_URL}join/tasks/${encodeURIComponent(String(task.id))}.json`;
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(task),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Firebase PUT fehlgeschlagen (${res.status}): ${text}`);
+  }
 }
 
 async function deleteTaskFromFirebase(taskId) {
-    try {
-        const response = await fetch(`${BASE_URL}join/tasks/${taskId}.json`, {
-            method: "DELETE"
-        });
+  const key = idToKey[String(taskId)] || String(taskId); // Altfall abfangen
+  const url = `${BASE_URL}join/tasks/${encodeURIComponent(key)}.json`;
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Fehler beim Löschen in Firebase:", errorText);
-        } else {
-            console.log("Task erfolgreich gelöscht:", taskId);
-        }
-    } catch (error) {
-        console.error("Netzwerkfehler beim Löschen des Tasks:", error);
-    }
-    console.log("Task gelöscht:", taskId);
+  const res = await fetch(url, { method: "DELETE" });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Firebase DELETE fehlgeschlagen (${res.status}): ${text}`);
+  }
+
+  // lokal entfernen
+  const idx = tasksFirebase.findIndex(t => String(t.id) === String(taskId));
+  if (idx !== -1) tasksFirebase.splice(idx, 1);
+  delete idToKey[String(taskId)];
+
+  console.log("Task gelöscht:", taskId, "(key:", key, ")");
     
   }
 
@@ -165,14 +171,13 @@ function clearAllColumns() {
 
 function renderAllTasks() {
   const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-  Object.entries(tasksFirebase).forEach(([id, task]) => {
-  task.id = id; // falls noch nicht vorhanden
+
+  tasksFirebase.forEach(task => {
     const column = document.getElementById(task.status);
     if (column) {
-      column.innerHTML += getTaskTemplate(task);
+      column.innerHTML += getTaskTemplate(task); 
       counts[task.status]++;
     }
-    console.log(task.id);  //final löschen
   });
   return counts;
 }
@@ -229,8 +234,8 @@ function renderFilteredTasks(filteredTasks) {
 
   const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
 
-  Object.entries(filteredTasks).forEach(([id, task]) => {
-    task.id = id;
+  Object.values(filteredTasks).forEach(task => {
+    
     const column = document.getElementById(task.status);
     if (column) {
       column.innerHTML += getTaskTemplate(task);
@@ -344,10 +349,14 @@ function allowDrop(event) {
 }
 
 async function moveTo(status) {
-    tasksFirebase[currentDraggedID]['status'] = status;
-    renderTasks();  
-    const updatedTask = tasksFirebase[currentDraggedID];
-    await saveTaskToFirebase(currentDraggedID, updatedTask);
+    const idx = tasksFirebase.findIndex(t => String(t.id) === String(currentDraggedID));
+  if (idx === -1) return;
+
+  const updatedTask = { ...tasksFirebase[idx], status };
+  tasksFirebase[idx] = updatedTask;
+
+  renderTasks();
+  await saveTaskToFirebase(updatedTask); // <-- statt "task"
 }
 
 function renderOverlayTask(taskId) {
@@ -431,7 +440,7 @@ async function toggleSubtaskStatus(index, taskId) {
   }
 
   // Änderungen an Firebase zurückschreiben
-  await saveTaskToFirebase(taskId, task);
+  await saveTaskToFirebase(task);
 }
 
 
@@ -695,7 +704,7 @@ async function saveEditTask() {
     if (!validateEditForm()) return;
 
     updateEditBoardData();
-    await saveTaskToFirebase(currentTask.id, currentTask);
+    await saveTaskToFirebase(currentTask);;
     await closeEditOverlay();
 }
 

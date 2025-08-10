@@ -223,8 +223,8 @@
         display: flex;    
         flex-direction: row;
         gap: 16px;
-        overflow-x: auto; /* Horizontales Scrollen aktivieren */
-        overflow-y: hidden;
+        overflow-x: hidden; /* Horizontales Scrollen aktivieren */
+        overflow-y: auto;
         padding-bottom: 8px; /* Platz für versteckte Scrollbar */
         -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */
         max-width: 100vw;
@@ -233,7 +233,7 @@
     /* Scrollbar ausblenden */
 
     .kanban__grid-wrapper::-webkit-scrollbar,
-    .kanban__column::-webkit-scrollbar
+    .kanban__column::-webkit-scrollbar,
     .overlay__content::-webkit-scrollbar {
         display: none;
     }
