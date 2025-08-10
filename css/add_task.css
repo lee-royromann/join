@@ -676,7 +676,9 @@ fieldset {
 .page::-webkit-scrollbar,
 .form__subtask-list::-webkit-scrollbar,
 .overlay__credentials::-webkit-scrollbar,
-.overlay__subtasks--frame::-webkit-scrollbar {
+.overlay__subtasks--frame::-webkit-scrollbar,
+.edit__wrapper-list::-webkit-scrollbar,
+.edit__subtasklist::-webkit-scrollbar {
   width: 6px;
 }
 
@@ -686,7 +688,9 @@ fieldset {
 .page::-webkit-scrollbar-thumb,
 .form__subtask-list::-webkit-scrollbar-thumb,
 .overlay__credentials::-webkit-scrollbar-thumb,
-.overlay__subtasks--frame::-webkit-scrollbar-thumb {
+.overlay__subtasks--frame::-webkit-scrollbar-thumb,
+.edit__wrapper-list::-webkit-scrollbar-thumb,
+.edit__subtasklist::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
@@ -697,7 +701,9 @@ fieldset {
 .page::-webkit-scrollbar-track,
 .form__subtask-list::-webkit-scrollbar-track,
 .overlay__credentials::-webkit-scrollbar-track,
-.overlay__subtasks--frame::-webkit-scrollbar-track {
+.overlay__subtasks--frame::-webkit-scrollbar-track
+.edit__wrapper-list::-webkit-scrollbar-track,
+.edit__subtasklist::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
 

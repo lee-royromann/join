@@ -356,17 +356,17 @@
     .overlay__content {
         border-radius: 0;
         position: fixed;
-        top: 0;
-        left: 0;
+        inset: 0;                  /* top:0; right:0; bottom:0; left:0 */
         width: 100%;
         height: 100vh;
         max-height: none;
         padding: 40px; 
-        overflow-x: hidden; /* Horizontales Scrollen aktivieren */
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */
-        
-    }
+        -webkit-overflow-scrolling: touch;
+  }
 
     .overlay__badgeframe span, 
     .overlay__action--activate span {
@@ -382,10 +382,16 @@
     height: 44px;
     }
     
-    .overlay__story {
-        gap: 32px;
+      /* Eltern-Container der Action-Leiste füllt die Höhe und schneidet nicht ab */
+    .overlay__story,
+    .overlay__edit {
+        flex: 1;
+        min-height: 100%;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        gap: 32px !important;
+        overflow: visible;         /* wichtig für sticky-Kind */
+        align-items: stretch;      /* keine Zentrierung, volle Breite */
     }
 
     .overlay__title {
@@ -394,7 +400,6 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-  
 }
 
     .overlay__description {
@@ -406,17 +411,17 @@
         overflow: hidden;
         text-overflow: ellipsis;
         margin-Bottom: 40px;
-        line-height: 120%;
-        
+        line-height: 120%; 
     }
 
     .overlay__assigned {
         margin: 16px 0;
+        line-height: 120%;
     } 
 
     .overlay__subtasks {
-       margin-bottom: 16px;
-        
+       margin-bottom: 16px; 
+       line-height: 120%; 
     }
 
     .overlay__action--activate svg {
@@ -424,5 +429,22 @@
         height: 24px !important;
     }
 
+    /* Aktionsleiste: wirklich ganz unten, ohne Shadow */
+    .overlay__action {
+        position: sticky;
+        bottom: calc(-1 * var(--ov-pad));   
+        z-index: 2;
+        margin-top: auto;
+    }
    
+    .overlay__edit--selections {
+        gap: 24px;
+    }
+
+    .overlay__edit {
+        height: auto;
+        max-height: 100vh;
+    }
+
+  
 }
