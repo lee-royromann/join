@@ -103,6 +103,16 @@ body {
     outline: none; 
 }
 
+.kanban__search-input,
+.kanban__search-input:focus,
+.kanban__search-input:focus-visible,
+.kanban__search-input:active {
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
 .kanban__search-icon-group {
     display: flex;
     flex-direction: row;
@@ -259,7 +269,9 @@ body {
 .card--notasks {
     font-family: "Open Sans";    
     width: 100%;
-    text-align: center;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
     gap: 10px;
     background-color: #E7E7E7;
     color: #A8A8A8;

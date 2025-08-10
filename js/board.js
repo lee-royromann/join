@@ -57,32 +57,57 @@ function openOverlay(taskId) {
     console.log("Aktueller Task:", taskId); // Debugging
 }
 
-async function closeOverlay() {
-    const overlay = document.getElementById("overlay");
-    const story = document.getElementById("story");
-    overlay.style.display = "none";
-    overlay.classList.remove("overlay--visible");
-    overlay.classList.remove('overlay--slide-in');
+// 1) Hilfsfunktion: Overlay ausblenden (wartet auf die Transition statt fixem Timeout)
+function hideOverlay(overlay) {
+  overlay.classList.remove('overlay--slide-in');
 
+  // Promise, das sich mit dem Ende der Transition erfüllt (Fallback: Timeout)
+  return new Promise(resolve => {
+    const onEnd = (e) => {
+      if (e.target !== overlay) return;
+      overlay.removeEventListener('transitionend', onEnd);
+      resolve();
+    };
+    overlay.addEventListener('transitionend', onEnd, { once: true });
+
+    // Fallback, falls kein transitionend feuert (z. B. keine Animation aktiv)
+    setTimeout(resolve, 200);
+  }).then(() => {
+    overlay.classList.remove('overlay--visible');
+    overlay.style.display = 'none';
     document.body.style.overflow = '';
-    await loadTasksFromFirebase(); // Neu laden, um Änderungen zu reflektieren
-    story.classList.add("d-none");
-    renderTasks(); // Tasks neu rendern
+  });
+}
+
+// 2) Hilfsfunktion: Daten neu laden & rendern
+async function refreshTasks() {
+  await loadTasksFromFirebase();
+  renderTasks();
+}
+
+
+async function closeAnyOverlay({ contentId, resetCurrentTask = false }) {
+  const overlay = document.getElementById('overlay');
+  const content = document.getElementById(contentId);
+
+  if (!overlay || !content) return;
+
+  await hideOverlay(overlay);
+  content.classList.add('d-none');
+
+  if (resetCurrentTask) {
+      window.currentTask = null;
+  }
+
+  await refreshTasks();
+}
+
+async function closeOverlay() {
+  return closeAnyOverlay({ contentId: 'story' });
 }
 
 async function closeEditOverlay() {
-    const overlay = document.getElementById("overlay");
-    const edit = document.getElementById("edit");
-    overlay.style.display = "none";
-    overlay.classList.remove("overlay--visible");
-    overlay.classList.remove('overlay--slide-in');
-
-    document.body.style.overflow = '';
-    await loadTasksFromFirebase(); // Neu laden, um Änderungen zu reflektieren
-    edit.classList.add("d-none");
-    currentTask = null; // Aktuellen Task zurücksetzen
-    renderTasks(); // Tasks neu rendern
-    
+  return closeAnyOverlay({ contentId: 'edit', resetCurrentTask: true });
 }
 
 function openEditOverlay(taskId) {

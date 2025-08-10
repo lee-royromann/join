@@ -33,6 +33,12 @@
 
 .overlay--slide-in .overlay__content {
     transform: translateX(0);
+    opacity: 1;
+}
+
+.overlay--slide-out .overlay__content {
+    transform: translateX(100%);
+    opacity: 0;
 }
 
 /* === Der Inhalt, der im Editmode ausgeblendet wird === */
