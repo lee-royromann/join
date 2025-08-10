@@ -430,6 +430,7 @@
     }
 
     /* Aktionsleiste: wirklich ganz unten, ohne Shadow */
+    .edit__action-buttons,
     .overlay__action {
         position: sticky;
         bottom: calc(-1 * var(--ov-pad));   
@@ -446,5 +447,23 @@
         max-height: 100vh;
     }
 
-  
+    .overlay__edit--wrapper {
+        max-height: none;
+    }
+}
+
+@media (max-width: 440px) {
+    .overlay__content {
+        padding: 20px;
+    }
+
+    .edit__wrapper-priority {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .edit__icon-contact, .edit__icon-calendar, .edit__wrapper-subtask-icons {
+        right: 4px
+    }
+
 }
