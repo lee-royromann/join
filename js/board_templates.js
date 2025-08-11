@@ -6,8 +6,13 @@ function getTaskTemplate(task) {
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
                                 <div class="card__content">
-                                    <div class="card__badge ${categoryInfo.className}">
-                                        <span>${categoryInfo.name}</span>
+                                    <div class="card__badgeline">
+                                        <div class="card__badge ${categoryInfo.className}">
+                                            <span>${categoryInfo.name}</span>
+                                        </div>
+                                        <div class="card__upanddown-icon" onclick="">
+                                            <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
+                                        </div>
                                     </div>
                                     <div class="card__header">
                                         <div class="card__header--title">${task.title}</div>

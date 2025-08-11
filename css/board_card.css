@@ -1,0 +1,158 @@
+.card {
+    width: 100%;
+    max-width: 220px;
+    border-radius: 24px;
+    padding: 16px;
+    gap: 4px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    margin-bottom: 8px;
+}   
+
+.card-transform {
+    transform: rotate(5deg) scale(1.02);
+    box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 10;
+}
+
+.card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.card__content:hover {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out 0.1s;
+}
+
+.card__badge {
+    padding: 4px 16px;
+    border-radius: 8px;
+    color: #FFFFFF;
+    align-self: flex-start;
+}
+
+.card__badge-user-story {
+    background-color: #0038FF;
+}
+
+.card__badge-technical-task {
+    background-color: #1FD7C1;
+}
+
+.card__upanddown-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;   
+    display: none;     
+}
+
+.card__upanddown-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   
+  display: block;        
+}
+
+.card__badgeline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card__header {
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+    gap: 8px;
+    flex-direction: column;;
+    align-items: start;
+}
+    
+.card__header--title {
+    font-weight: 700;
+    color: #2A3647;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.card__header--description{
+    color: #A8A8A8;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.card__subtasks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.card__subtasks-bar {
+    background: #F4F4F4;
+    width: 128px;
+    height: 6px;
+    border-radius: 8px;
+    overflow: hidden;
+    gap: 10px
+}
+
+.card__subtasks-progress {
+    background: #4589FF;
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.3s ease;
+}
+
+.card__subtasks-text {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: right;
+}
+
+.card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__credentials{
+    display: flex;
+}
+
+.card__credential {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: orange;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card__credential + .card__credential {
+    margin-left: -10px;
+}
+
+.card__priority img {
+    width: 20px;
+    height: 20px;
+}

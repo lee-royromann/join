@@ -277,6 +277,11 @@
         min-height: 0;    
     }
 
+    .card__upanddown-icon {
+        display: flex;
+    }
+      
+
     /* Subtasks wieder horizontal für mobile */
     .card__subtasks {
         flex-direction: row;
