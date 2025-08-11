@@ -223,7 +223,7 @@
         display: flex;    
         flex-direction: row;
         gap: 16px;
-        overflow-x: hidden; /* Horizontales Scrollen aktivieren */
+        overflow-x: auto; /* Horizontales Scrollen aktivieren */
         overflow-y: auto;
         padding-bottom: 8px; /* Platz für versteckte Scrollbar */
         -webkit-overflow-scrolling: touch; /* Smooth scrolling auf iOS */

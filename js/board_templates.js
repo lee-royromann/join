@@ -2,7 +2,8 @@ function getTaskTemplate(task) {
     const { total, done, percent } = getSubtaskProgress(task);
     const categoryInfo = getCategoryInfo(task.category);
     const priorityIcon = getPriorityIcon(task.priority);
-    const assignedAvatar = renderAssignedAvatars(task);  
+    const assignedAvatar = renderAssignedAvatars(task);
+    const moveTaskTemplate = getMoveTaskTemplate(task);
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
                                 <div class="card__content">
@@ -10,8 +11,12 @@ function getTaskTemplate(task) {
                                         <div class="card__badge ${categoryInfo.className}">
                                             <span>${categoryInfo.name}</span>
                                         </div>
-                                        <div class="card__upanddown-icon" onclick="">
+                                        <div class="card__upanddown-icon" onclick="toggleBoardTaskMenu(event, '${task.id}')">
                                             <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
+                                        </div>
+                                        <div class="card__burger-menu" id="card-menu-${task.id}">
+                                            <div><strong>Move to</strong></div>
+                                            ${moveTaskTemplate}
                                         </div>
                                     </div>
                                     <div class="card__header">
@@ -36,6 +41,18 @@ function getTaskTemplate(task) {
                             </div>
     `;
 }
+
+/**
+ * Function to toggle the visibility of the user menu in the header
+ * It toggles the class 'header__burger-menu--visible' on the element with id 'burger-menu'.
+ * This class controls the visibility of the user menu.
+ */
+function toggleBoardTaskMenu(event, taskId) {
+    event.stopPropagation();
+    const userMenu = document.getElementById('card-menu-' + taskId);
+    userMenu.classList.toggle('card__burger-menu--visible');
+}
+
 
 function getEmptyColumnTemplate(status) {
   const statusLabels = {
@@ -323,3 +340,12 @@ function getOverlaySubtaskEditTemplate(id, text) {
   `;
 }
 
+function getMoveTaskTemplate(task) {
+    let status = ['to-do', 'in-progress', 'await-feedback', 'done'];
+    status = status.filter(s => s !== task.status);
+    return`
+            <span>${status[0]}</span>            
+            <span>${status[1]}</span>
+            <span>${status[2]}</span>
+    `;
+}
