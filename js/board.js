@@ -229,6 +229,19 @@ function searchTask() {
     updateTaskDisplay(filtered, warning);
 }
 
+
+/**
+ * Function to find a Task when the "Enter" key is pressed inside the input field.
+ * It prevents default behavior to avoid form submission, when key is pressed down.
+ * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
+ */
+function handleEnterToFindSubtask(event) {   
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchTask();
+    }
+};
+
 function updateTaskDisplay(filtered, warning) {
   if (Object.keys(filtered).length > 0) {
     renderFilteredTasks(filtered);
