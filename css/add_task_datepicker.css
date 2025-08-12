@@ -1,0 +1,13 @@
+/* DATE PICKER */
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 1;
+    display: none;
+    pointer-events: none;
+    position: absolute;
+}
+
+input[type="date"] {
+    position: relative;
+    z-index: 1;
+}

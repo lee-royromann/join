@@ -1,0 +1,76 @@
+/* ACTIONS BUTTONS > CREATE & CLEAR */
+
+.form__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.form__action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    max-width: 440px;
+    width: 100%;
+    gap: 20px;
+}
+
+.form__button-create {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 120%;
+    max-width: 183px;
+    width: 100%;
+    height: 56px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2a3647;
+    color: white;
+    gap: 8px;
+}
+
+.form__button-create:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    background-color: #29ABE2;
+    cursor: pointer;
+}
+
+.form__button-create img {
+    width: 15.5px;
+}
+
+.form__button-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f7f8;
+    border-radius: 10px;
+    max-width: 126px;
+    width: 100%;
+    height: 56px;
+    gap: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #2a3647;
+    cursor: pointer;
+    border: 2px solid #d1d1d1;
+    gap: 8px;
+}
+
+.form__button-clear:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border-color: #29ABE2;
+    color: #29ABE2;
+}
+
+.form__button-clear:hover svg {
+    color: #29ABE2;
+}

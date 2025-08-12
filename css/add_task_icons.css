@@ -1,0 +1,44 @@
+/* ICONS */
+
+.form__description-icon {
+    position: absolute;
+    right: 6px;
+    bottom: -6px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+}
+
+.form__icon-contact,
+.form__icon-category,
+.form__icon-calendar {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.form__icon-subtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
+}
+
+.form__icon-contact:hover,
+.form__icon-category:hover,
+.form__icon-subtask:hover {
+    background-color: #eeeeee;
+    border-radius: 50%;
+}

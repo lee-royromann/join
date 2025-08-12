@@ -1,0 +1,23 @@
+/* REQUIRED ELEMENTS */
+
+.required-asterisk {
+    color: #ff8190;
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.required-text {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.required-hint {
+    font-size: 12px;
+    font-weight: 400;
+    color: #ff8190;
+}
+
+.required-frame {
+    border: 1px solid #ff8190;
+    border-radius: 4px;
+}
