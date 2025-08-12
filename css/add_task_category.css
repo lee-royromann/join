@@ -1,0 +1,27 @@
+/* CATEGORY */
+
+.form__category {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+}
+
+.form__category:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+#category-input {
+    cursor: pointer;
+}
+
+#task-category-dropdown {
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}

@@ -1,0 +1,79 @@
+/* PRIORITY */
+
+.form__button-prio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    height: 56px;
+    max-width: 136px;
+    width: 100%;
+    gap: 8px;
+}
+
+.form__button-prio:hover {
+    box-shadow: 0px 3.5px 3px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+}
+
+.form__button-prio svg {
+    width: 20px;
+}
+
+#edit__btn-urgent-icon,
+#btn-urgent-icon {
+    color: #ff3e01;
+}
+
+#edit__btn-medium-icon,
+#btn-medium-icon {
+    color: #ffa700;
+}
+
+#edit__btn-low-icon,
+#btn-low-icon {
+    color: #7ae229;
+}
+
+.form__button-prio--urgent,
+.edit__button-prio--urgent {
+    background-color: #ff3e01;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.form__button-prio--medium,
+.edit__button-prio--medium {
+    background-color: #ffa700;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.form__button-prio--low,
+.edit__button-prio--low {
+    background-color: #7ae229;
+    color: white;
+    font-weight: 700;
+    font-size: 21px;
+}
+
+.form__button-prio--urgent:hover,
+.form__button-prio--medium:hover,
+.form__button-prio--low:hover {
+    box-shadow: none;
+}
+
+.form__button-prio--urgent #btn-urgent-icon,
+.form__button-prio--medium #btn-medium-icon,
+.form__button-prio--low #btn-low-icon {
+    color: white;
+}

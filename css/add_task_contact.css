@@ -1,0 +1,108 @@
+/* CONTACT */
+
+.form__contact {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+}
+
+.form__contact:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+}
+
+.form__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.form__contact-badges {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: auto;
+    padding-top: 4px;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    max-width: 440px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.form__contact-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.form__contact-name {
+    flex-grow: 1;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.form__contact-checkbox {
+    min-width: 18px;
+    min-height: 18px;
+    accent-color: #2a2a2a;
+    margin-right: 16px;
+    appearance: none; /* For modern browsers */
+    -webkit-appearance: none; /* For safari */
+    -moz-appearance: none; /* For firefox */
+}
+
+.form__contact-checkbox--checked {
+    background-color: #2a3547;
+    color: white;
+}
+
+.form__contact-checkbox--checked:hover {
+    background-color: #081831;
+}
+
+.form__contact-checkbox-icon-unchecked,
+.form__contact-checkbox-icon-checked {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+#contact-arrow-icon,
+#category-arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+#contact-search {
+    padding-right: 40px;
+    color: #2a3647;
+}
+
+#contact-search:focus::placeholder {
+  color: transparent;
+}
+
+#contact-you {
+    color: #b3b3b3;
+    font-weight: 400;
+    font-size: 20px;
+}
