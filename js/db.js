@@ -145,14 +145,29 @@ async function addUser(user, id) {
 // KONTAKT-FUNKTIONEN (MIT ID-PRÜFUNG)
 // =================================================================================
 
+// In db.js
+
 /**
  * Lädt alle Kontakte aus Firebase.
+ * Im Gastmodus werden sensible Daten wie E-Mail und Telefonnummer maskiert.
  * @returns {Promise<Array<Object>>} Ein Array mit den Kontaktobjekten.
  */
 async function loadContacts() {
     try {
         const data = await firebaseRequest("/join/contacts");
-        const loadedContacts = data ? Object.values(data) : [];
+        let loadedContacts = data ? Object.values(data) : [];
+
+        // NEU: Wenn der Gastmodus aktiv ist, die Daten maskieren
+        if (isGuest()) {
+            loadedContacts = loadedContacts.map(contact => {
+                if (!contact) return null; // Leere Einträge überspringen
+                return {
+                    ...contact,
+                    email: 'gast@beispiel.de', // Gültiges, aber unbrauchbares Format
+                    phone: '0123 45678910'      // Gültiges, aber unbrauchbares Format
+                };
+            }).filter(Boolean); // Entfernt eventuelle null-Einträge
+        }
 
         const contactsWithUsername = loadedContacts
             .filter(contact => contact)
@@ -184,6 +199,18 @@ async function addContact(contactData, id) {
     }
     return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
 }
+/**
+ * Prüft, ob der Gastmodus im sessionStorage aktiv ist.
+ * @returns {boolean} True, wenn der Benutzer ein Gast ist.
+ */
+function isGuest() {
+  return sessionStorage.getItem('userMode') === 'guest';
+}
+
+
+
+
+
 
 
 
