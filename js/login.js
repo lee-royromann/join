@@ -24,7 +24,7 @@ if (msg) {
 // ===================================================================
 
 async function login() {
-    // KORREKTUR 1: Stellt sicher, dass ein eventueller Gast-Status entfernt wird.
+    // Stellt sicher, dass ein eventueller Gast-Status entfernt wird.
     sessionStorage.removeItem('userMode');
 
     if (checkValueInput()) return;
@@ -42,9 +42,18 @@ async function login() {
         );
 
         if (user) {
+            // Erfolgreicher Login
             const username = `${user.prename || ''} ${user.surname || ''}`.trim();
             localStorage.setItem("username", username);
             localStorage.setItem("loggedIn", "true");
+
+            // ================================================================
+            // NEU: HIER IST DIE ENTSCHEIDENDE ERGÄNZUNG
+            // Speichere die E-Mail und die ID des Benutzers für spätere Aktionen.
+            localStorage.setItem("currentUserEmail", user.email);
+            localStorage.setItem("currentUserId", user.id); // Annahme: Ihr User-Objekt hat eine Eigenschaft 'id'
+            // ================================================================
+
             window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
         } else {
             displayErrorLogin();
@@ -68,7 +77,6 @@ function displayErrorLogin() {
  * @param {Event} event - Das Klick-Event des Buttons, um die Standard-Formularaktion zu verhindern.
  */
 function guestLogin(event) {
-    // KORREKTUR 2: Dies ist die einzige, korrekte Version der Funktion.
     event.preventDefault();
     console.log("Gastmodus wird aktiviert...");
     sessionStorage.setItem('userMode', 'guest');
