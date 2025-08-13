@@ -1,9 +1,8 @@
 // ===================================================================
 // HINWEIS:
 // Diese Datei wurde angepasst, um mit der neuen, sauberen `db.js` zu funktionieren.
-// Sie benötigt Zugriff auf: `loadContacts()`, `saveContacts()`, `addContact()`, `getNextId()`
+// Sie benötigt Zugriff auf: `loadContacts()`, `addContact()`, `getNextId()`
 // ===================================================================
-
 
 /**
  * Initializes the contacts page, loading contact data and rendering UI.
@@ -29,51 +28,125 @@ async function renderContacts() {
 }
 
 
+// In contacts_controllers.js
+
 /**
- * Saves the changes to an existing contact.
- * @param {string|number} id - The ID of the contact to save.
+ * KORRIGIERT: Speichert die Änderungen an einem bestehenden Kontakt.
+ * Im Gastmodus werden Änderungen nur lokal (temporär) vorgenommen.
  */
 async function saveContact(id) {
-    // 1. Lokale Daten im 'contactsFirebase'-Array aktualisieren.
-    updateUserData(id); // Annahme: Diese Funktion aus contacts_services.js ist korrekt.
+    // GASTMODUS-LOGIK
+    if (isGuest()) {
+        updateUserData(id); // Lokale Daten im Array aktualisieren
+        renderContacts();
+        clearMainContact();
+        closeOverlay();
+        console.log("GASTMODUS: Änderungen werden nicht gespeichert.");
+        return; // Funktion beenden, keine Firebase-Aktion
+    }
 
-    // 2. Das gesamte, aktualisierte Array in Firebase speichern.
-    await saveContacts(); // Nutzt die neue, saubere Funktion aus db.js
-
-    // 3. UI aktualisieren (unverändert).
-    renderContacts();
-    clearMainContact();
-    closeOverlay();
-    
-    // 4. Erfolgsmeldung anzeigen (unverändert).
-    clearSuccessfulContainer();
-    successfulAddContact();
-    successChange(); 
+    // Original-Logik für echte Benutzer
+    updateUserData(id); 
+    const contactToSave = findContact(id);
+    if (!contactToSave) {
+        console.error(`Konnte Kontakt mit ID ${id} nicht zum Speichern finden.`);
+        return;
+    }
+    try {
+        await firebaseRequest(`/join/contacts/${id}`, 'PUT', contactToSave);
+        await renderContacts();
+        clearMainContact();
+        closeOverlay();
+        clearSuccessfulContainer();
+        successfulAddContact();
+        successChange();
+    } catch (error) {
+        console.error("Fehler beim Speichern des Kontakts:", error);
+        alert("Der Kontakt konnte nicht gespeichert werden.");
+    }
 }
 
-
 /**
- * Deletes a contact and updates the database.
- * @param {Event} event - The triggering event.
- * @param {number} id - ID of the contact to delete.
+ * KORRIGIERT: Löscht einen Kontakt.
+ * Im Gastmodus wird der Kontakt nur lokal (temporär) aus der Ansicht entfernt.
  */
 async function deleteContact(event, id) {
     suppressActionEvent(event);
-    
-    // 1. Lokale Daten anpassen.
-    deleteUserData(id); // Annahme: Diese Funktionen sind korrekt.
-    reSortUser();
 
-    // 2. Das gesamte, aktualisierte Array in Firebase speichern.
-    await saveContacts();
+    // GASTMODUS-LOGIK
+    if (isGuest()) {
+        deleteUserData(id); // Kontakt nur aus dem lokalen Array löschen
+        if (window.innerWidth <= 900) {
+            showRespContactList();
+        }
+        renderContacts();
+        clearMainContact();
+        console.log("GASTMODUS: Kontakt wird nicht aus der Datenbank gelöscht.");
+        return; // Funktion beenden, keine Firebase-Aktion
+    }
 
-    // 3. UI aktualisieren (unverändert).
-    showRespContactList();
-    renderContacts();
-    clearMainContact();
-    clearSuccessfulContainer();
-    successfulDeleteContact();
-    successChange();
+    // Original-Logik für echte Benutzer
+    try {
+        await firebaseRequest(`/join/contacts/${id}`, 'DELETE');
+        await loadContacts();
+        if (window.innerWidth <= 900) {
+            showRespContactList();
+        }
+        renderContacts();
+        clearMainContact();
+        clearSuccessfulContainer();
+        successfulDeleteContact();
+        successChange();
+    } catch (error) {
+        console.error("Fehler beim Löschen des Kontakts:", error);
+        alert("Der Kontakt konnte nicht gelöscht werden.");
+    }
+}
+
+/**
+ * KORRIGIERT: Erstellt einen neuen Kontakt.
+ * Im Gastmodus wird der Kontakt nur lokal (temporär) hinzugefügt.
+ */
+async function createNewContact() {
+    if (checkValueInput()) return;
+
+    // GASTMODUS-LOGIK
+    if (isGuest()) {
+        // Die Funktion pushNewContact fügt den Kontakt nur dem lokalen Array hinzu
+        pushNewContact(); 
+        renderContacts();
+        closeOverlay();
+        clearSuccessfulContainer();
+        successfulAddContact();
+        successChange();
+        console.log("GASTMODUS: Neuer Kontakt wird nicht in der Datenbank gespeichert.");
+        return; // Funktion beenden, keine Firebase-Aktion
+    }
+
+    // Original-Logik für echte Benutzer
+    try {
+        const newContactId = await getNextId('/join/contacts');
+        const { n: name, e: email, p: phone } = readsTheInputValues();
+        const nameParts = name.trim().split(' ');
+        const newContact = {
+            id: newContactId,
+            prename: nameParts.shift() || '',
+            surname: nameParts.join(' ') || '',
+            email: email,
+            phone: phone,
+            color: getUniqueAvatarColor()
+        };
+        await addContact(newContact, newContactId);
+        await loadContacts();
+        renderContacts();
+        closeOverlay();
+        clearSuccessfulContainer();
+        successfulAddContact();
+        successChange();
+    } catch (error) {
+        console.error("Fehler beim Erstellen des neuen Kontakts:", error);
+        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+    }
 }
 
 
@@ -100,7 +173,7 @@ async function createNewContact() {
             surname: nameParts.join(' ') || '',
             email: email,
             phone: phone,
-            color: getUniqueAvatarColor() // Annahme: Diese Funktion existiert.
+            color: getUniqueAvatarColor() // Annahme: Diese Funktion existiert in contacts_services.js
         };
 
         // 4. Fügt den neuen Kontakt gezielt mit seiner ID hinzu.
@@ -124,7 +197,7 @@ async function createNewContact() {
 
 
 // ===================================================================
-// Restliche UI- und Validierungsfunktionen
+// Restliche UI- und Validierungsfunktionen (unverändert)
 // ===================================================================
 
 function chooseContact(id) {
