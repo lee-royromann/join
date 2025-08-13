@@ -132,7 +132,7 @@ async function boardInit() {
     renderTasks();
     getUsernameInitals();
 }
-// ''''''''''''''''''''''''
+
 async function saveTaskToFirebase(task) {
   if (!task || task.id == null) {
     console.warn("saveTaskToFirebase: task oder task.id fehlt");
@@ -170,7 +170,7 @@ async function deleteTaskFromFirebase(taskId) {
   }
 
   async function handleDeleteTask(taskId) {
-  // if (confirm("Willst du diese Aufgabe wirklich löschen?")) {
+ 
     try {
       await deleteTaskFromFirebase(taskId); // Auf das Löschen warten
       tasksFirebase = []; 
@@ -394,7 +394,7 @@ async function moveTo(status) {
   tasksFirebase[idx] = updatedTask;
 
   renderTasks();
-  await saveTaskToFirebase(updatedTask); // <-- statt "task"
+  await saveTaskToFirebase(updatedTask); 
 }
 
 function renderOverlayTask(taskId) {
@@ -793,3 +793,42 @@ function updateEditBoardData() {
     }
 }
 
+
+/**
+ * Function to toggle the visibility of the user menu in the header
+ * It toggles the class 'header__burger-menu--visible' on the element with id 'burger-menu'.
+ * This class controls the visibility of the user menu.
+ */
+function toggleBoardTaskMenu(event, taskId) {
+    event.stopPropagation();
+    document.querySelectorAll('.card__burger-menu--visible')
+        .forEach(menu => menu.classList.remove('card__burger-menu--visible'));
+    const userMenu = document.getElementById('card-menu-' + taskId);
+    userMenu.classList.toggle('card__burger-menu--visible');
+}
+
+document.addEventListener('click', function () {
+    document.querySelectorAll('.card__burger-menu--visible')
+        .forEach(menu => menu.classList.remove('card__burger-menu--visible'));
+});
+
+
+async function moveEditStatus(taskId, newStatus, event) {
+    event.stopPropagation();
+    
+    const idx = tasksFirebase.findIndex(t => String(t.id) === String(taskId));
+    if (idx === -1) return;
+
+    const updatedTask = { ...tasksFirebase[idx], status: newStatus };
+    tasksFirebase[idx] = updatedTask;
+
+    
+    await saveTaskToFirebase(updatedTask); 
+    const userMenu = document.getElementById('card-menu-' + taskId);
+      if (userMenu) {
+          userMenu.classList.remove('card__burger-menu--visible');
+      }
+
+    renderTasks();
+
+}

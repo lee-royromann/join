@@ -42,17 +42,6 @@ function getTaskTemplate(task) {
     `;
 }
 
-/**
- * Function to toggle the visibility of the user menu in the header
- * It toggles the class 'header__burger-menu--visible' on the element with id 'burger-menu'.
- * This class controls the visibility of the user menu.
- */
-function toggleBoardTaskMenu(event, taskId) {
-    event.stopPropagation();
-    const userMenu = document.getElementById('card-menu-' + taskId);
-    userMenu.classList.toggle('card__burger-menu--visible');
-}
-
 
 function getEmptyColumnTemplate(status) {
   const statusLabels = {
@@ -344,8 +333,8 @@ function getMoveTaskTemplate(task) {
     let status = ['to-do', 'in-progress', 'await-feedback', 'done'];
     status = status.filter(s => s !== task.status);
     return`
-            <span>${status[0]}</span>            
-            <span>${status[1]}</span>
-            <span>${status[2]}</span>
+        <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[0]}', event)">${status[0]}</span>
+        <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[1]}', event)">${status[1]}</span>
+        <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[2]}', event)">${status[2]}</span>
     `;
 }

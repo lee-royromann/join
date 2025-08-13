@@ -452,6 +452,10 @@ textarea:focus {
     color: white
 }
 
+.form__contact.bg-blue:hover {
+  background-color: #091931;
+}
+
 li:hover {
     background-color: #081831         
 }

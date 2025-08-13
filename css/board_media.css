@@ -216,6 +216,7 @@
 
     .kanban__headline {
         gap: 0px;
+    
     }
 
     /* Kanban Column - Horizontales Scrollen */
@@ -280,6 +281,19 @@
     .card__upanddown-icon {
         display: flex;
     }
+
+    .card__burger-menu {
+       width: 160px !important
+    }
+
+    .burger-item::before {
+        content: "•";
+        margin-right: 2px;
+        color: #CDCDCD;;
+        font-size: 16px;
+        display: inline-block;
+        transform: translateY(-1px); /* optional: vertikale Feinjustierung */
+    }
       
 
     /* Subtasks wieder horizontal für mobile */
@@ -327,7 +341,7 @@
 
     /* Header Anpassungen für mobile */
     .kanban__header {
-        padding: 0 20px;
+        padding: 0 12px;
         height: auto;
     }
 
@@ -354,7 +368,7 @@
   
     /* Empty Column Template für mobile */
     .card--notasks {
-        min-width: 280px;
+        max-width: 200px;
         flex-shrink: 0;
     }
 
