@@ -28,102 +28,123 @@ async function renderContacts() {
 }
 
 
-// In contacts_controllers.js
-
 /**
  * KORRIGIERT: Speichert die Änderungen an einem bestehenden Kontakt.
- * Im Gastmodus werden Änderungen nur lokal (temporär) vorgenommen.
+ * @param {string|number} id - Die ID des zu speichernden Kontakts.
  */
 async function saveContact(id) {
-    // GASTMODUS-LOGIK
-    if (isGuest()) {
-        updateUserData(id); // Lokale Daten im Array aktualisieren
-        renderContacts();
-        clearMainContact();
-        closeOverlay();
-        console.log("GASTMODUS: Änderungen werden nicht gespeichert.");
-        return; // Funktion beenden, keine Firebase-Aktion
-    }
+    // 1. Lokale Daten im 'contactsFirebase'-Array aktualisieren.
+    updateUserData(id); // Aktualisiert den Kontakt im lokalen Array
 
-    // Original-Logik für echte Benutzer
-    updateUserData(id); 
+    // 2. Den aktualisierten Kontakt finden, um ihn zu speichern.
     const contactToSave = findContact(id);
     if (!contactToSave) {
         console.error(`Konnte Kontakt mit ID ${id} nicht zum Speichern finden.`);
         return;
     }
+
     try {
+        // 3. Den einzelnen Kontakt gezielt in Firebase mit seiner ID überschreiben.
         await firebaseRequest(`/join/contacts/${id}`, 'PUT', contactToSave);
+
+        // 4. UI aktualisieren
         await renderContacts();
         clearMainContact();
         closeOverlay();
+
+        // 5. Erfolgsmeldung anzeigen
         clearSuccessfulContainer();
-        successfulAddContact();
+        successfulAddContact(); // Zeigt "Contact successfully created" an.
         successChange();
+
     } catch (error) {
         console.error("Fehler beim Speichern des Kontakts:", error);
-        alert("Der Kontakt konnte nicht gespeichert werden.");
+        alert("Der Kontakt konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
     }
 }
 
+
 /**
- * KORRIGIERT: Löscht einen Kontakt.
- * Im Gastmodus wird der Kontakt nur lokal (temporär) aus der Ansicht entfernt.
+ * NEU & ROBUST: Löscht einen Kontakt und den zugehörigen User-Account.
+ * Holt alle benötigten Daten direkt aus Firebase, um Fehler zu minimieren.
+ * Enthält Diagnose-Logs zur Fehlersuche.
+ * @param {Event} event - Das auslösende Event.
+ * @param {number|string} contactId - ID des zu löschenden Kontakts.
  */
-async function deleteContact(event, id) {
+async function deleteContact(event, contactId) {
     suppressActionEvent(event);
+    console.log(`--- deleteContact gestartet für contactId: ${contactId} ---`);
 
-    // GASTMODUS-LOGIK
-    if (isGuest()) {
-        deleteUserData(id); // Kontakt nur aus dem lokalen Array löschen
-        if (window.innerWidth <= 900) {
-            showRespContactList();
-        }
-        renderContacts();
-        clearMainContact();
-        console.log("GASTMODUS: Kontakt wird nicht aus der Datenbank gelöscht.");
-        return; // Funktion beenden, keine Firebase-Aktion
-    }
-
-    // Original-Logik für echte Benutzer
     try {
-        await firebaseRequest(`/join/contacts/${id}`, 'DELETE');
-        await loadContacts();
-        if (window.innerWidth <= 900) {
-            showRespContactList();
+        // Schritt 1: E-Mail des eingeloggten Benutzers holen
+        const loggedInUserEmail = getLoggedInUserEmail();
+        console.log('Diagnose 1: E-Mail des eingeloggten Benutzers:', loggedInUserEmail);
+
+        if (!loggedInUserEmail) {
+            console.error('Fehler: E-Mail des eingeloggten Benutzers konnte nicht aus dem localStorage gelesen werden.');
+            alert('Sicherheitsfehler: Ihre Sitzung ist ungültig. Bitte neu anmelden.');
+            return;
         }
-        renderContacts();
+
+        // Schritt 2: Kontaktdaten direkt aus Firebase holen, um die E-Mail zu bekommen
+        console.log(`Diagnose 2: Rufe Kontaktdaten für ID ${contactId} aus Firebase ab...`);
+        const contactToDelete = await firebaseRequest(`/join/contacts/${contactId}`, 'GET');
+        console.log('Diagnose 3: Antwort von Firebase für den Kontakt:', contactToDelete);
+
+        if (!contactToDelete || !contactToDelete.email) {
+            console.error(`Fehler: Kontakt mit ID ${contactId} oder dessen E-Mail wurde in Firebase nicht gefunden.`);
+            await loadContacts();
+            await renderContacts();
+            return;
+        }
+        const contactEmail = contactToDelete.email;
+        console.log(`Diagnose 4: E-Mail des zu löschenden Kontakts ist "${contactEmail}"`);
+
+        // Schritt 3: Den Kontakt-Eintrag löschen
+        await firebaseRequest(`/join/contacts/${contactId}`, 'DELETE');
+        console.log(`Diagnose 5: Kontakt-Eintrag mit ID ${contactId} wurde in Firebase gelöscht.`);
+
+        // Schritt 4: Prüfen, ob der Benutzer sich selbst löscht (Vergleich der E-Mails)
+        console.log(`Diagnose 6: Vergleiche "${loggedInUserEmail}" mit "${contactEmail}"`);
+        if (loggedInUserEmail === contactEmail) {
+            console.log('%cDiagnose 7: Selbst-Löschung ERKANNT! User-Account wird jetzt gesucht und gelöscht.', 'color: orange; font-weight: bold;');
+
+            const userIdToDelete = await findUserIdByEmail(contactEmail);
+
+            if (userIdToDelete) {
+                await firebaseRequest(`/join/users/${userIdToDelete}`, 'DELETE');
+                console.log(`%cDiagnose 8: User-Account mit ID ${userIdToDelete} wurde gelöscht.`, 'color: green; font-weight: bold;');
+            } else {
+                console.warn(`Diagnose 8: Kein passender User-Account für E-Mail ${contactEmail} gefunden.`);
+            }
+
+            console.log('Diagnose 9: Führe Logout durch und leite zur Login-Seite weiter.');
+            localStorage.removeItem('currentUserEmail');
+            localStorage.removeItem('currentUserId');
+            window.location.href = '/index.html'; // <-- WICHTIG: PFAD ANPASSEN!
+            return;
+        }
+
+        console.log('Diagnose 7: Keine Selbst-Löschung. Aktualisiere nur die Kontaktliste.');
+        await loadContacts();
+        await renderContacts();
         clearMainContact();
-        clearSuccessfulContainer();
         successfulDeleteContact();
         successChange();
+
     } catch (error) {
-        console.error("Fehler beim Löschen des Kontakts:", error);
-        alert("Der Kontakt konnte nicht gelöscht werden.");
+        console.error('FATALER FEHLER im deleteContact-Prozess:', error);
+        alert("Ein unerwarteter Fehler ist aufgetreten. Der Vorgang wurde abgebrochen.");
     }
 }
 
+
 /**
- * KORRIGIERT: Erstellt einen neuen Kontakt.
- * Im Gastmodus wird der Kontakt nur lokal (temporär) hinzugefügt.
+ * Creates a new contact, assigns a sequential ID, and saves it to Firebase.
  */
 async function createNewContact() {
     if (checkValueInput()) return;
 
-    // GASTMODUS-LOGIK
-    if (isGuest()) {
-        // Die Funktion pushNewContact fügt den Kontakt nur dem lokalen Array hinzu
-        pushNewContact(); 
-        renderContacts();
-        closeOverlay();
-        clearSuccessfulContainer();
-        successfulAddContact();
-        successChange();
-        console.log("GASTMODUS: Neuer Kontakt wird nicht in der Datenbank gespeichert.");
-        return; // Funktion beenden, keine Firebase-Aktion
-    }
-
-    // Original-Logik für echte Benutzer
     try {
         const newContactId = await getNextId('/join/contacts');
         const { n: name, e: email, p: phone } = readsTheInputValues();
@@ -136,13 +157,16 @@ async function createNewContact() {
             phone: phone,
             color: getUniqueAvatarColor()
         };
+
         await addContact(newContact, newContactId);
         await loadContacts();
+
         renderContacts();
         closeOverlay();
         clearSuccessfulContainer();
         successfulAddContact();
         successChange();
+
     } catch (error) {
         console.error("Fehler beim Erstellen des neuen Kontakts:", error);
         alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
@@ -151,47 +175,36 @@ async function createNewContact() {
 
 
 /**
- * Creates a new contact, assigns a sequential ID, and saves it to Firebase.
- * HINWEIS: Diese Funktion sollte vom "Create Contact"-Button im Overlay aufgerufen werden.
- * Beispiel: <button onclick="createNewContact()">Create Contact</button>
+ * HILFSFUNKTION: Ruft die E-Mail des aktuell eingeloggten Benutzers ab.
  */
-async function createNewContact() {
-    if (checkValueInput()) return; // Eingabevalidierung (unverändert)
+function getLoggedInUserEmail() {
+    return localStorage.getItem('currentUserEmail');
+}
 
+
+/**
+ * HILFSFUNKTION: Findet eine User-ID in der `/join/users` Collection basierend auf der E-Mail-Adresse.
+ */
+async function findUserIdByEmail(email) {
+    console.log(`--- findUserIdByEmail gestartet für E-Mail: ${email} ---`);
     try {
-        // 1. Holt die nächste freie ID von der Datenbank.
-        const newContactId = await getNextId('/join/contacts');
-
-        // 2. Holt die Eingabewerte.
-        const { n: name, e: email, p: phone } = readsTheInputValues();
-        const nameParts = name.trim().split(' ');
-
-        // 3. Erstellt das neue Kontakt-Objekt mit der korrekten ID.
-        const newContact = {
-            id: newContactId,
-            prename: nameParts.shift() || '',
-            surname: nameParts.join(' ') || '',
-            email: email,
-            phone: phone,
-            color: getUniqueAvatarColor() // Annahme: Diese Funktion existiert in contacts_services.js
-        };
-
-        // 4. Fügt den neuen Kontakt gezielt mit seiner ID hinzu.
-        await addContact(newContact, newContactId);
-
-        // 5. Lädt die Kontaktliste neu, um den neuen Eintrag zu erhalten.
-        await loadContacts();
-
-        // 6. UI aktualisieren und Erfolgsmeldung anzeigen.
-        renderContacts();
-        closeOverlay();
-        clearSuccessfulContainer();
-        successfulAddContact();
-        successChange();
-
+        const users = await firebaseRequest('/join/users', 'GET');
+        if (!users) {
+            console.warn('Antwort von /join/users war leer oder null.');
+            return null;
+        }
+        console.log('Gefundene User-Daten:', users);
+        for (const userId in users) {
+            if (users[userId].email === email) {
+                console.log(`Passender User gefunden! ID: ${userId}`);
+                return userId;
+            }
+        }
+        console.warn('Kein User mit passender E-Mail in den Daten gefunden.');
+        return null;
     } catch (error) {
-        console.error("Fehler beim Erstellen des neuen Kontakts:", error);
-        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+        console.error("Fehler bei der Suche nach dem Benutzer via E-Mail:", error);
+        return null;
     }
 }
 
@@ -207,12 +220,6 @@ function chooseContact(id) {
     userInfo(id);
 }
 
-/**
- * KORRIGIERT: Umbenannt, um Namenskonflikte zu vermeiden.
- * Öffnet das Overlay, um einen neuen Kontakt hinzuzufügen.
- * HINWEIS: Diese Funktion sollte vom "Add contact"-Button aufgerufen werden.
- * Beispiel: <button onclick="openNewContactDialog()">Add contact</button>
- */
 function openNewContactDialog() {
     clerOverlay();
     openAddContact();
