@@ -1,16 +1,11 @@
 // ===================================================================
 // Globale Variablen und Initialisierung
 // ===================================================================
-
-// HINWEIS: Die `userFirebase`-Variable wurde hier entfernt, um Konflikte zu vermeiden.
-// Wir holen die Daten direkt von der `loadUsers()`-Funktion.
-
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get('msg');
 let info = document.getElementById('poppin');
 let isPasswordVisible = false;
 
-// UI-Initialisierung...
 setTimeout(() => {
     document.getElementById('logoImg').classList.remove('d-none');
 }, 1060);
@@ -24,12 +19,14 @@ if (msg) {
     info.classList.remove('poppins-success');
 }
 
-
 // ===================================================================
 // LOGIN-FUNKTIONEN (KORRIGIERT)
 // ===================================================================
 
 async function login() {
+    // KORREKTUR 1: Stellt sicher, dass ein eventueller Gast-Status entfernt wird.
+    sessionStorage.removeItem('userMode');
+
     if (checkValueInput()) return;
     spinningLoaderStart();
 
@@ -37,25 +34,19 @@ async function login() {
     let passwordInput = document.getElementById('password');
 
     try {
-        // KORREKTUR: Die geladenen Benutzer werden in einer lokalen Konstante gespeichert.
         const users = await loadUsers();
         spinningLoaderEnd();
 
-        console.log("Benutzerdaten, die für den Login-Check bereitstehen:", users);
-
-        // Wir verwenden die lokale `users`-Konstante für die Prüfung.
         let user = users.find(
             u => u && u.email === emailInput.value && u.password === passwordInput.value
         );
 
         if (user) {
             const username = `${user.prename || ''} ${user.surname || ''}`.trim();
-            console.log("Login erfolgreich für Benutzer:", username);
             localStorage.setItem("username", username);
             localStorage.setItem("loggedIn", "true");
             window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
         } else {
-            console.error("Login fehlgeschlagen. E-Mail oder Passwort falsch.");
             displayErrorLogin();
         }
     } catch (error) {
@@ -71,16 +62,22 @@ function displayErrorLogin() {
     info.innerHTML = "Check your e-mail and password.<br> Please try again.";
 }
 
+/**
+ * Loggt einen Benutzer als Gast ein, indem ein Flag im sessionStorage gesetzt wird,
+ * und leitet ihn dann zur Hauptseite weiter.
+ * @param {Event} event - Das Klick-Event des Buttons, um die Standard-Formularaktion zu verhindern.
+ */
+function guestLogin(event) {
+    // KORREKTUR 2: Dies ist die einzige, korrekte Version der Funktion.
+    event.preventDefault();
+    console.log("Gastmodus wird aktiviert...");
+    sessionStorage.setItem('userMode', 'guest');
+    window.location.href = 'html/summary.html';
+}
+
 // ===================================================================
 // HILFSFUNKTIONEN (unverändert)
 // ===================================================================
-
-function guestLogin(event) {
-    event.preventDefault();
-    localStorage.setItem("username", "Guest");
-    localStorage.setItem("loggedIn", "true");
-    window.location.href = "html/summary.html?name=Guest&login=true";
-}
 
 function updatePasswdIcon() {
     const passwdInput = document.getElementById('password');
@@ -151,4 +148,3 @@ function errorInputField(inputLabel) {
         label.classList.add('error-border');
     }
 }
-
