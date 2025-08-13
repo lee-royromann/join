@@ -65,67 +65,55 @@ async function saveContact(id) {
 
 
 /**
- * NEU & ROBUST: Löscht einen Kontakt und den zugehörigen User-Account.
- * Holt alle benötigten Daten direkt aus Firebase, um Fehler zu minimieren.
- * Enthält Diagnose-Logs zur Fehlersuche.
- * @param {Event} event - Das auslösende Event.
- * @param {number|string} contactId - ID des zu löschenden Kontakts.
+ * FINAL & KORREKT: Löscht Kontakt & User-Account.
+ * Holt die User-ID direkt aus dem localStorage, statt sie unsicher zu suchen.
+ * @param {Event} event
+ * @param {string} contactId
  */
 async function deleteContact(event, contactId) {
     suppressActionEvent(event);
     console.log(`--- deleteContact gestartet für contactId: ${contactId} ---`);
 
     try {
-        // Schritt 1: E-Mail des eingeloggten Benutzers holen
         const loggedInUserEmail = getLoggedInUserEmail();
-        console.log('Diagnose 1: E-Mail des eingeloggten Benutzers:', loggedInUserEmail);
-
-        if (!loggedInUserEmail) {
-            console.error('Fehler: E-Mail des eingeloggten Benutzers konnte nicht aus dem localStorage gelesen werden.');
-            alert('Sicherheitsfehler: Ihre Sitzung ist ungültig. Bitte neu anmelden.');
-            return;
-        }
-
-        // Schritt 2: Kontaktdaten direkt aus Firebase holen, um die E-Mail zu bekommen
-        console.log(`Diagnose 2: Rufe Kontaktdaten für ID ${contactId} aus Firebase ab...`);
         const contactToDelete = await firebaseRequest(`/join/contacts/${contactId}`, 'GET');
-        console.log('Diagnose 3: Antwort von Firebase für den Kontakt:', contactToDelete);
 
-        if (!contactToDelete || !contactToDelete.email) {
-            console.error(`Fehler: Kontakt mit ID ${contactId} oder dessen E-Mail wurde in Firebase nicht gefunden.`);
-            await loadContacts();
-            await renderContacts();
+        if (!contactToDelete) {
+            console.error(`Fehler: Kontakt mit ID ${contactId} wurde in Firebase nicht gefunden.`);
             return;
         }
-        const contactEmail = contactToDelete.email;
-        console.log(`Diagnose 4: E-Mail des zu löschenden Kontakts ist "${contactEmail}"`);
 
-        // Schritt 3: Den Kontakt-Eintrag löschen
+        // Kontakt-Eintrag löschen
         await firebaseRequest(`/join/contacts/${contactId}`, 'DELETE');
-        console.log(`Diagnose 5: Kontakt-Eintrag mit ID ${contactId} wurde in Firebase gelöscht.`);
+        console.log(`Kontakt mit ID ${contactId} wurde gelöscht.`);
 
-        // Schritt 4: Prüfen, ob der Benutzer sich selbst löscht (Vergleich der E-Mails)
-        console.log(`Diagnose 6: Vergleiche "${loggedInUserEmail}" mit "${contactEmail}"`);
-        if (loggedInUserEmail === contactEmail) {
-            console.log('%cDiagnose 7: Selbst-Löschung ERKANNT! User-Account wird jetzt gesucht und gelöscht.', 'color: orange; font-weight: bold;');
+        // Prüfen, ob der Benutzer sich selbst löscht
+        if (loggedInUserEmail && loggedInUserEmail === contactToDelete.email) {
+            console.log('%cSelbst-Löschung erkannt! Zugehöriger User-Account wird jetzt gelöscht.', 'color: orange; font-weight: bold;');
 
-            const userIdToDelete = await findUserIdByEmail(contactEmail);
+            // KORREKTUR: ID direkt aus dem Speicher holen, statt zu suchen
+            const userIdToDelete = localStorage.getItem('currentUserId');
+            console.log(`User-ID aus localStorage geholt: "${userIdToDelete}"`);
 
             if (userIdToDelete) {
+                // User-Account löschen
                 await firebaseRequest(`/join/users/${userIdToDelete}`, 'DELETE');
-                console.log(`%cDiagnose 8: User-Account mit ID ${userIdToDelete} wurde gelöscht.`, 'color: green; font-weight: bold;');
+                console.log(`%cUser-Account mit ID ${userIdToDelete} wurde erfolgreich gelöscht.`, 'color: green; font-weight: bold;');
             } else {
-                console.warn(`Diagnose 8: Kein passender User-Account für E-Mail ${contactEmail} gefunden.`);
+                console.warn('FEHLER: Konnte User-ID nicht aus localStorage lesen. User-Account wurde NICHT gelöscht.');
             }
 
-            console.log('Diagnose 9: Führe Logout durch und leite zur Login-Seite weiter.');
+            // Logout durchführen
+            console.log('Führe Logout durch...');
             localStorage.removeItem('currentUserEmail');
             localStorage.removeItem('currentUserId');
-            window.location.href = '/index.html'; // <-- WICHTIG: PFAD ANPASSEN!
+            localStorage.removeItem('username');
+            localStorage.removeItem('loggedIn');
+            window.location.href = '/index.html'; // Pfad zur Login-Seite anpassen
             return;
         }
 
-        console.log('Diagnose 7: Keine Selbst-Löschung. Aktualisiere nur die Kontaktliste.');
+        // UI aktualisieren, wenn ein anderer Kontakt gelöscht wurde
         await loadContacts();
         await renderContacts();
         clearMainContact();
@@ -134,7 +122,7 @@ async function deleteContact(event, contactId) {
 
     } catch (error) {
         console.error('FATALER FEHLER im deleteContact-Prozess:', error);
-        alert("Ein unerwarteter Fehler ist aufgetreten. Der Vorgang wurde abgebrochen.");
+        alert("Ein unerwarteter Fehler ist aufgetreten.");
     }
 }
 
@@ -182,31 +170,7 @@ function getLoggedInUserEmail() {
 }
 
 
-/**
- * HILFSFUNKTION: Findet eine User-ID in der `/join/users` Collection basierend auf der E-Mail-Adresse.
- */
-async function findUserIdByEmail(email) {
-    console.log(`--- findUserIdByEmail gestartet für E-Mail: ${email} ---`);
-    try {
-        const users = await firebaseRequest('/join/users', 'GET');
-        if (!users) {
-            console.warn('Antwort von /join/users war leer oder null.');
-            return null;
-        }
-        console.log('Gefundene User-Daten:', users);
-        for (const userId in users) {
-            if (users[userId].email === email) {
-                console.log(`Passender User gefunden! ID: ${userId}`);
-                return userId;
-            }
-        }
-        console.warn('Kein User mit passender E-Mail in den Daten gefunden.');
-        return null;
-    } catch (error) {
-        console.error("Fehler bei der Suche nach dem Benutzer via E-Mail:", error);
-        return null;
-    }
-}
+// Die Funktion "findUserIdByEmail" wurde entfernt, da sie fehlerhaft und unnötig war.
 
 
 // ===================================================================
@@ -328,5 +292,4 @@ function checkValues() {
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
     if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone";
 }
-
 
