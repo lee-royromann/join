@@ -1,408 +1,346 @@
 /**
- * Prevents event propagation during bubbling phase.
- * @param {Event} event - The event object.
+ * Verhindert die Event-Weitergabe in der Bubbling-Phase.
+ * @param {Event} event Das Event-Objekt.
  */
 function eventBubbling(event) {
-    event.stopPropagation();
+	event.stopPropagation();
 }
 
 
-/**
- * Clears the contact list display.
- */
+/** Leert die Kontaktliste im HTML. */
 function cleanContactsList() {
-    let list = document.getElementById('contactList');
-    list.innerHTML = "";
+	document.getElementById("contactList").innerHTML = "";
 }
 
 
-/**
- * Groups contacts by the first letter of their name and triggers HTML generation.
- */
+/** Gruppiert Kontakte nach Initialen und rendert die HTML-Liste. */
 function groupInitials() {
-    let group = {};
-    contactsFirebase.forEach(contact => {
-        if (contact && contact.username.trim() !== ""){
-            const initial = contact.username.trim()[0].toUpperCase();
-            
-            if (!group[initial]) {
-                group[initial] = [];
-            }
-            group[initial].push(contact);
-        }
-    });
-    createHTML(group);
+	let group = {};
+	contactsFirebase.forEach((contact) => {
+		if (contact && contact.username.trim() !== "") {
+			const initial = contact.username.trim()[0].toUpperCase();
+			if (!group[initial]) {
+				group[initial] = [];
+			}
+			group[initial].push(contact);
+		}
+	});
+	createHTML(group);
 }
 
 
 /**
- * Creates HTML elements for each initial group.
- * @param {Object} list - Grouped contact list.
+ * Erstellt die HTML-Elemente für jede Buchstabengruppe.
+ * @param {Object} list Die gruppierte Kontaktliste.
  */
 function createHTML(list) {
-    let containerList = document.getElementById('contactList');
-    Object.keys(list).sort().forEach(letter => {
-        const section = document.createElement("div");
-        section.classList.add('tab');
-        section.innerHTML = `<h3>${letter}</h3><hr>`;
-        userData(list, letter, section);
-        containerList.appendChild(section);
-    });
+	let containerList = document.getElementById("contactList");
+	Object.keys(list)
+		.sort()
+		.forEach((letter) => {
+			const section = document.createElement("div");
+			section.classList.add("tab");
+			section.innerHTML = `<h3>${letter}</h3><hr>`;
+			userData(list, letter, section);
+			containerList.appendChild(section);
+		});
 }
 
 
 /**
- * Appends user data HTML to a section based on their initials.
- * @param {Object} list - Grouped contact list.
- * @param {string} letter - Initial letter.
- * @param {HTMLElement} section - Section to append to.
+ * Fügt die Benutzerdaten-HTML zu einer Sektion hinzu.
+ * @param {Object} list Die gruppierte Kontaktliste.
+ * @param {string} letter Der Buchstabe der Gruppe.
+ * @param {HTMLElement} section Die Sektion, zu der hinzugefügt wird.
  */
 function userData(list, letter, section) {
-    list[letter].forEach(contact => {
-        const initials = contact.username.split(" ").map(n => n[0]).join("");
-        section.innerHTML += showUserInformation(contact, initials);
-    });
+	list[letter].forEach((contact) => {
+		const initials = contact.username
+			.split(" ")
+			.map((n) => n[0])
+			.join("");
+		section.innerHTML += showUserInformation(contact, initials);
+	});
 }
 
 
 /**
- * Adds active class to selected contact.
- * @param {string|number} id - Contact ID.
+ * Hebt einen ausgewählten Kontakt hervor.
+ * @param {string|number} id Die ID des Kontakts.
  */
 function setClassChoooseContact(id) {
-    let contact = document.getElementById(`contact${id}`);
-    contact.classList.add('choose-contact');
+	document.getElementById(`contact${id}`)?.classList.add("choose-contact");
 }
 
 
-/**
- * Resets the selected class from all contact elements.
- */
+/** Entfernt die Hervorhebung von allen Kontakten. */
 function resetClassChooseContact() {
-    let allContacts = document.querySelectorAll('.contact');
-    allContacts.forEach((element) => {
-        element.classList.remove('choose-contact');
-    });
+	document.querySelectorAll(".contact").forEach((element) => {
+		element.classList.remove("choose-contact");
+	});
 }
 
 
 /**
- * Finds a contact object by ID.
- * @param {string|number} id - Contact ID.
- * @returns {Object|undefined} - Found contact.
+ * Findet ein Kontakt-Objekt anhand der ID.
+ * @param {string|number} id Die ID des Kontakts.
+ * @returns {Object|undefined} Der gefundene Kontakt.
  */
 function findContact(id) {
-    return contactsFirebase.find(c => c.id == id);
+	return contactsFirebase.find((c) => c.id == id);
 }
 
 
-/**
- * Clears the main contact display area.
- */
+/** Leert den Bereich für die Kontaktinformationen. */
 function clearMainContact() {
-    let contactInformation = document.getElementById('contactInformation');
-    contactInformation.innerHTML = "";
+	document.getElementById("contactInformation").innerHTML = "";
 }
 
 
 /**
- * Displays full information for selected contact.
- * @param {string|number} id - Contact ID.
+ * Zeigt die Detailinformationen für einen Kontakt an.
+ * @param {string|number} id Die ID des Kontakts.
  */
 function userInfo(id) {
-    let individualContact = findContact(id);
-    let contactInformation = document.getElementById('contactInformation');
-    contactInformation.innerHTML += showContact(individualContact);
-    slideIn();
+	let individualContact = findContact(id);
+	document.getElementById("contactInformation").innerHTML += showContact(individualContact);
+	slideIn();
 }
 
 
-/**
- * Animates sliding in the contact details pane.
- */
+/** Animiert das Hereinschieben der Kontaktdetails. */
 function slideIn() {
-    setTimeout(() => {
-        document.getElementById('slide').classList.add('active');
-    }, 10);
+	setTimeout(() => document.getElementById("slide")?.classList.add("active"), 10);
 }
 
 
-/**
- * Opens the contact overlay with animation.
- */
+/** Öffnet das Kontakt-Overlay mit einer Animation. */
 function openOverlay() {
-    document.getElementById('overlayContact').classList.remove('d-none');
-    document.getElementById('overlay').classList.remove('d-none');
-    setTimeout(() => {
-        document.getElementById('overlay').classList.add('slide');
-    }, 10);
+	document.getElementById("overlayContact").classList.remove("d-none");
+	const overlay = document.getElementById("overlay");
+	overlay.classList.remove("d-none");
+	setTimeout(() => overlay.classList.add("slide"), 10);
 }
 
 
 /**
- * Closes the contact overlay.
- * @param {Event} event - The event to suppress.
+ * Schließt das Kontakt-Overlay.
+ * @param {Event} event Das zu unterdrückende Event.
  */
 function closeOverlay(event) {
-    suppressActionEvent(event);
-    document.getElementById('overlay').classList.remove('slide');
-    setTimeout(() => {
-        document.getElementById('overlay').classList.add('d-none');
-    }, 200);
-    setTimeout(() => {
-        document.getElementById('overlayContact').classList.add('d-none');
-    }, 100);
+	suppressActionEvent(event);
+	const overlay = document.getElementById("overlay");
+	overlay.classList.remove("slide");
+	setTimeout(() => overlay.classList.add("d-none"), 200);
+	setTimeout(() => document.getElementById("overlayContact").classList.add("d-none"), 100);
 }
 
 
 /**
- * Prevents default action of an event if defined.
- * @param {Event} event - The event object.
+ * Verhindert die Standardaktion eines Events.
+ * @param {Event} event Das Event-Objekt.
  */
 function suppressActionEvent(event) {
-    if (event) {
-        event.preventDefault();
-    }
+	if (event) {
+		event.preventDefault();
+	}
 }
 
 
-/**
- * Clears the content inside the contact overlay.
- */
+/** Leert den Inhalt des Kontakt-Overlays. */
 function clerOverlay() {
-    let overlay = document.getElementById('overlayContact');
-    overlay.innerHTML = "";
+	document.getElementById("overlayContact").innerHTML = "";
 }
 
 
-/**
- * Renders the overlay with add contact form.
- */
+/** Zeigt das "Kontakt hinzufügen"-Formular im Overlay an. */
 function openAddContact() {
-    let overlay = document.getElementById('overlayContact');
-    overlay.innerHTML = showOverlayAddContact();
+	document.getElementById("overlayContact").innerHTML = showOverlayAddContact();
 }
 
 
 /**
- * Renders the overlay with edit contact form.
- * @param {string|number} id - Contact ID.
+ * Zeigt das "Kontakt bearbeiten"-Formular im Overlay an.
+ * @param {string|number} id Die ID des Kontakts.
  */
 function openEditContact(id) {
-    let contact = findContact(id);
-    let overlay = document.getElementById('overlayContact');
-    overlay.innerHTML = overlayEditContact(contact);
+	let contact = findContact(id);
+	document.getElementById("overlayContact").innerHTML = overlayEditContact(contact);
 }
 
 
-/**
- * Renders the overlay with responsible add contact form.
- */
+/** Zeigt das responsive "Kontakt hinzufügen"-Formular an. */
 function openAddRespContact() {
-    let overlay = document.getElementById('overlayContact');
-    overlay.innerHTML = showOverlayAddResp();
+	document.getElementById("overlayContact").innerHTML = showOverlayAddResp();
 }
 
 
 /**
- * Renders the overlay with responsible edit contact form.
- * @param {string|number} id - Contact ID.
+ * Zeigt das responsive "Kontakt bearbeiten"-Formular an.
+ * @param {string|number} id Die ID des Kontakts.
  */
 function openEditRespContact(id) {
-    let contact = findContact(id);
-    let overlay = document.getElementById('overlayContact');
-    overlay.innerHTML = showOverlayEditResp(contact);
-}
-
-// Änderung Danny zum erhalt des surname
-function updateUserData(id) {
-    // Werte aus den Formularfeldern auslesen
-    let nameValue = document.getElementById('contactname').value;
-    let emailValue = document.getElementById('email').value;
-    let phoneValue = document.getElementById('phone').value;
-    let contact = contactsFirebase.find(c => c.id === id);
-
-    if (contact) {
-        // Den vollen Namen aufteilen in Vor- und Nachname
-        let nameParts = nameValue.trim().split(/\s+/);
-        
-        // Die Felder im bestehenden Kontakt-Objekt aktualisieren
-        contact.prename = nameParts[0]; // Wichtig: prename aktualisieren
-        contact.surname = nameParts.length > 1 ? nameParts.slice(1).join(' ') : ''; // Wichtig: surname aktualisieren
-        contact.username = nameValue.trim(); // username für die sofortige Anzeige
-        contact.email = emailValue;
-        contact.phone = phoneValue;
-    } else {
-        console.log("Kontakt nicht gefunden");
-    }
+	let contact = findContact(id);
+	document.getElementById("overlayContact").innerHTML = showOverlayEditResp(contact);
 }
 
 
 /**
- * Retrieves the color assigned to a contact by ID.
- * @param {string|number} id - Contact ID.
- * @returns {string} The color string or default 'brown'.
+ * Aktualisiert die Daten eines Kontakts basierend auf den Formularfeldern.
+ * @param {string|number} id Die ID des Kontakts.
+ */
+function updateUserData(id) {
+	let contact = findContact(id);
+	if (contact) {
+		let nameValue = document.getElementById("contactname").value;
+		let nameParts = nameValue.trim().split(/\s+/);
+		contact.prename = nameParts[0];
+		contact.surname = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+		contact.username = nameValue.trim();
+		contact.email = document.getElementById("email").value;
+		contact.phone = document.getElementById("phone").value;
+	}
+}
+
+
+/**
+ * Holt die Farbe eines Kontakts anhand seiner ID.
+ * @param {string|number} id Die ID des Kontakts.
+ * @returns {string} Die Farbe als String oder 'brown' als Standard.
  */
 function getContactColorById(id) {
-    const contact = contactsFirebase.find(c => c.id === id);
-    return contact ? contact.color : "brown";
+	const contact = contactsFirebase.find((c) => c.id === id);
+	return contact ? contact.color : "brown";
 }
 
 
 /**
- * Removes a contact from the contacts array by ID.
- * @param {number} id - ID of the contact to remove.
+ * Löscht einen Kontakt aus dem lokalen Array anhand der ID.
+ * @param {number} id Die ID des zu löschenden Kontakts.
  */
 function deleteUserData(id) {
-    contactsFirebase = contactsFirebase.filter(user => user.id !== id);
+	contactsFirebase = contactsFirebase.filter((user) => user.id !== id);
 }
 
 
-/**
- * Re-indexes contact IDs to maintain sequential order.
- */
+/** Ordnet die IDs der Kontakte neu, um sie sequenziell zu halten. */
 function reSortUser() {
-    contactsFirebase.forEach((user, index) => { user.id = index; });
+	contactsFirebase.forEach((user, index) => {
+		user.id = index;
+	});
 }
 
-// Änderung Danny zwecks erhalt des surname
+
+/** Erstellt einen neuen Kontakt aus den Formularfeldern und fügt ihn zum Array hinzu. */
 function pushNewContact() {
-    // Werte aus den Formularfeldern auslesen
-    let nameValue = document.getElementById('contactname').value;
-    let emailValue = document.getElementById('email').value;
-    let phoneValue = document.getElementById('phone').value;
-
-    // Den vollen Namen aufteilen in Vor- und Nachname
-    let nameParts = nameValue.trim().split(/\s+/);
-    let prename = nameParts[0];
-    let surname = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
-
-    // Neues Kontakt-Objekt mit korrekten Feldern erstellen
-    let newContact = {
-        id: contactsFirebase.length,
-        prename: prename, // Wichtig: prename speichern
-        surname: surname, // Wichtig: surname speichern
-        username: nameValue.trim(), // username für die sofortige Anzeige
-        email: emailValue,
-        phone: phoneValue,
-        color: getUniqueAvatarColor()  // Hier könnte man auch eine Zufallsfarbe einfügen
-    };
-    contactsFirebase.push(newContact);
+	let nameValue = document.getElementById("contactname").value;
+	let nameParts = nameValue.trim().split(/\s+/);
+	let newContact = {
+		id: contactsFirebase.length,
+		prename: nameParts[0],
+		surname: nameParts.length > 1 ? nameParts.slice(1).join(" ") : "",
+		username: nameValue.trim(),
+		email: document.getElementById("email").value,
+		phone: document.getElementById("phone").value,
+		color: getUniqueAvatarColor(),
+	};
+	contactsFirebase.push(newContact);
 }
 
 
-/**
- * Animates the success feedback container.
- */
+/** Animiert das Erfolgs-Feedback. */
 function successChange() {
-    setTimeout(() => {
-        let success = document.getElementById('success');
-        let succContainer = document.getElementById('successContainer');
-        success.classList.remove('d-none');
-        succContainer.classList.remove('d-none');
-        setTimeout(() => { success.classList.add('show-successful'); }, 10);
-        setTimeout(() => { success.classList.remove('show-successful'); }, 1510);
-        setTimeout(() => {
-            success.classList.add('d-none');
-            succContainer.classList.add('d-none');
-        }, 1730);
-    }, 500);
+	setTimeout(() => {
+		let success = document.getElementById("success");
+		let succContainer = document.getElementById("successContainer");
+		success.classList.remove("d-none");
+		succContainer.classList.remove("d-none");
+		setTimeout(() => success.classList.add("show-successful"), 10);
+		setTimeout(() => success.classList.remove("show-successful"), 1510);
+		setTimeout(() => {
+			success.classList.add("d-none");
+			succContainer.classList.add("d-none");
+		}, 1730);
+	}, 500);
 }
 
 
-/**
- * Clears success message container content.
- */
+/** Leert den Container für Erfolgsmeldungen. */
 function clearSuccessfulContainer() {
-    let success = document.getElementById('success');
-    success.innerHTML = "";
+	document.getElementById("success").innerHTML = "";
 }
 
 
-/**
- * Displays success message for contact creation.
- */
+/** Zeigt eine Erfolgsmeldung für das Erstellen von Kontakten. */
 function successfulAddContact() {
-    let success = document.getElementById('success');
-    success.innerHTML = showSuccessfulCreated();
+	document.getElementById("success").innerHTML = showSuccessfulCreated();
 }
 
 
-/**
- * Displays success message for contact deletion.
- */
+/** Zeigt eine Erfolgsmeldung für das Löschen von Kontakten. */
 function successfulDeleteContact() {
-    let success = document.getElementById('success');
-    success.innerHTML = showSuccessfulDeleted();
+	document.getElementById("success").innerHTML = showSuccessfulDeleted();
 }
 
 
-/**
- * Clears responsive add button container.
- */
+/** Leert den Container für den responsiven Button. */
 function cleanContainerBtn() {
-    document.getElementById('addBtnResp').innerHTML = "";
+	document.getElementById("addBtnResp").innerHTML = "";
 }
 
 
-/**
- * Changes add button to show 'more' in responsive view.
- */
+/** Ändert den responsiven Button zu "Mehr". */
 function changeOfMoreBtn() {
-    document.getElementById('addBtnResp').innerHTML = changeBtnMore();
+	document.getElementById("addBtnResp").innerHTML = changeBtnMore();
 }
 
 
-/**
- * Opens the responsive tools overlay.
- */
+/** Öffnet das responsive Tools-Overlay. */
 function openToolsResp() {
-    let toolOverlay = document.getElementById('toolsRespContainer');
-    let toolcontainer = document.getElementById('toolsResp');
-    toolOverlay.classList.remove('d-none');
-    toolcontainer.classList.remove('d-none');
-    setTimeout(() => {
-        toolcontainer.classList.add('tools-resp-active');
-    }, 10);
+	let toolOverlay = document.getElementById("toolsRespContainer");
+	let toolcontainer = document.getElementById("toolsResp");
+	toolOverlay.classList.remove("d-none");
+	toolcontainer.classList.remove("d-none");
+	setTimeout(() => toolcontainer.classList.add("tools-resp-active"), 10);
 }
 
 
-/**
- * Closes the responsive tools overlay.
- */
+/** Schließt das responsive Tools-Overlay. */
 function closeToolsresp() {
-    let toolOverlay = document.getElementById('toolsRespContainer');
-    let toolcontainer = document.getElementById('toolsResp');
-    if (toolcontainer) {
-        toolcontainer.classList.remove('tools-resp-active');
-        setTimeout(() => {
-            toolcontainer.classList.add('d-none');
-            toolOverlay.classList.add('d-none');
-        }, 200);
-    }
+	let toolcontainer = document.getElementById("toolsResp");
+	if (toolcontainer) {
+		toolcontainer.classList.remove("tools-resp-active");
+		setTimeout(() => {
+			toolcontainer.classList.add("d-none");
+			document.getElementById("toolsRespContainer").classList.add("d-none");
+		}, 200);
+	}
 }
 
 
-/**
- * Displays back button for responsive view.
- */
+/** Zeigt den responsiven Zurück-Button an. */
 function setBackBtn() {
-    document.querySelector('.back-btn-resp').classList.add('d-opacity');
+	document.querySelector(".back-btn-resp").classList.add("d-opacity");
 }
 
 
-/**
- * Removes back button for responsive view.
- */
+/** Versteckt den responsiven Zurück-Button. */
 function removeBackBtn() {
-    document.querySelector('.back-btn-resp').classList.remove('d-opacity');
+	document.querySelector(".back-btn-resp").classList.remove("d-opacity");
+}
+
+
+/** Ändert den Button zu "Person hinzufügen". */
+function changeOfAddPersoneBtn() {
+	document.getElementById("addBtnResp").innerHTML = changeAddBtnPerson();
 }
 
 
 /**
- * Changes button in responsive view to "Add Person".
+ * Generiert eine zufällige Farbe für Avatare.
+ * @returns {string} Ein Hex-Farbcode.
  */
-function changeOfAddPersoneBtn() {
-    document.getElementById('addBtnResp').innerHTML = changeAddBtnPerson();
+function getUniqueAvatarColor() {
+	const colors = ["#FF7A00", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B"];
+	return colors[Math.floor(Math.random() * colors.length)];
 }
-
