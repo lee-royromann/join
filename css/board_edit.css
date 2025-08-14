@@ -41,14 +41,14 @@
 
 .overlay__edit--selections::-webkit-scrollbar-button:single-button:vertical:decrement {
     background-image: url('../assets/img/icon/triangle_upwards.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 10px;
-    height: 4px;
 }
 
 .overlay__edit--selections::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url('../assets/img/icon/triangle_downwards.svg');
+}
+
+.overlay__edit--selections::-webkit-scrollbar-button:single-button:vertical:decrement,
+.overlay__edit--selections::-webkit-scrollbar-button:single-button:vertical:increment {
     background-repeat: no-repeat;
     background-position: center;
     width: 10px;
@@ -311,7 +311,6 @@ textarea:focus {
     background-color: #081831;
 }
 
-
 .edit__icon-separator,
 .edit__subtask-separator {
     min-width: 1px;
@@ -374,7 +373,7 @@ textarea:focus {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 6px 16px 6px 0px; 
+  padding: 4px 16px 4px 0px; 
   border-bottom: 2px solid #28abe2;
   background-color: white;
 }
@@ -385,6 +384,7 @@ textarea:focus {
   border: none;
   background-color: transparent;
   outline: none;
+  font-size: 16px;
 }
 
 .edit__subtask-icons{
