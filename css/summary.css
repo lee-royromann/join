@@ -411,13 +411,12 @@ a.card__link:active {
   border-radius: 30px;
 }
 
-/* Mobile Greeting Overlay Styles */
 .mobile-greeting-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw; 
+    height: 100vh; 
     background: linear-gradient(135deg, #F6F7F8 0%, #E3E7ED 100%);
     display: flex;
     align-items: center;
@@ -438,7 +437,7 @@ a.card__link:active {
 
 .mobile-greeting-text {
     font-family: 'Inter', sans-serif;
-    font-size: 2.5rem;
+    font-size: 40px; 
     font-weight: 500;
     color: #2A3647;
     margin-bottom: 10px;
@@ -447,7 +446,7 @@ a.card__link:active {
 
 .mobile-greeting-username {
     font-family: 'Inter', sans-serif;
-    font-size: 3rem;
+    font-size: 48px;
     font-weight: 700;
     color: #29ABE2;
     margin-bottom: 20px;
@@ -456,7 +455,7 @@ a.card__link:active {
 
 .mobile-greeting-subtitle {
     font-family: 'Inter', sans-serif;
-    font-size: 1.2rem;
+    font-size: 19px;
     font-weight: 400;
     color: #6b7280;
     margin-top: 20px;
@@ -485,32 +484,32 @@ a.card__link:active {
     }
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
     .mobile-greeting-text {
-        font-size: 2rem;
+        font-size: 32px; 
     }
     
     .mobile-greeting-username {
-        font-size: 2.5rem;
+        font-size: 40px; 
     }
     
     .mobile-greeting-subtitle {
-        font-size: 1rem;
+        font-size: 16px;
     }
 }
 
 @media (max-width: 480px) {
     .mobile-greeting-text {
-        font-size: 1.8rem;
+        font-size: 29px; 
     }
     
     .mobile-greeting-username {
-        font-size: 2.2rem;
+        font-size: 35px; 
     }
     
     .mobile-greeting-subtitle {
-        font-size: 0.9rem;
+        font-size: 14px; 
     }
     
     .mobile-greeting-content {
@@ -518,7 +517,7 @@ a.card__link:active {
     }
 }
 
-/* Hide main content during greeting for mobile */
+
 @media (max-width: 1040px) {
     body.showing-mobile-greeting .content {
         visibility: hidden;
