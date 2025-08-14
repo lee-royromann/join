@@ -100,3 +100,21 @@ function loadSummaryTemplate() {
         </main>
     `;
 }
+
+
+/**
+ * Creates the mobile greeting template
+ * @param {string} greetingText - The greeting text (Good morning, etc.)
+ * @param {string} username - The username to display
+ * @param {boolean} isGuest - Whether the user is a guest
+ * @returns {string} HTML template string
+ */
+function getMobileGreetingTemplate(greetingText, username, isGuest) {
+    return `
+        <div class="mobile-greeting-content">
+            <div class="mobile-greeting-text">${greetingText}</div>
+            ${!isGuest ? `<div class="mobile-greeting-username">${username}</div>` : ''}
+            ${!isGuest ? '<div class="mobile-greeting-subtitle"></div>' : ''}
+        </div>
+    `;
+}

@@ -1,16 +1,94 @@
 let tasks = [];
 let tasksFirebase = [];
+let isGreetingShown = false;
 
 async function initSummary() {
     try {
-        
         await loadTasksFromFirebase();
-        updateDashboardCounters(tasksFirebase);
+        
+        // Check if we're on mobile and should show greeting first
+        if (shouldShowMobileGreeting()) {
+            // Hide main content initially on mobile
+            hideMainContent();
+            showMobileGreeting();
+        } else {
+            // Desktop behavior - show dashboard immediately
+            showMainContent();
+            updateDashboardCounters(tasksFirebase);
+            initGreeting();
+        }
     } catch (error) {
         console.error("Fehler beim Laden der Tasks:", error);
     }
+}
 
+function shouldShowMobileGreeting() {
+    return window.innerWidth <= 1040 && !isGreetingShown;
+}
+
+function showMobileGreeting() {
+    const username = localStorage.getItem("username") || "Guest";
+    const isGuest = !username || username === "Guest";
+    
+    // Create and show greeting overlay
+    const greetingOverlay = createMobileGreetingOverlay(username, isGuest);
+    document.body.appendChild(greetingOverlay);
+    
+    isGreetingShown = true;
+    
+    // For guests, show greeting for 2 seconds, then transition
+    if (isGuest) {
+        setTimeout(() => {
+            hideMobileGreeting(greetingOverlay);
+        }, 2000);
+        return;
+    }
+    
+    // For logged-in users, transition to dashboard after longer delay
+    setTimeout(() => {
+        hideMobileGreeting(greetingOverlay);
+    }, 3000);
+}
+
+function createMobileGreetingOverlay(username, isGuest) {
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-greeting-overlay';
+    
+    const greetingText = getGreetingText();
+    overlay.innerHTML = getMobileGreetingTemplate(greetingText, username, isGuest);
+    
+    return overlay;
+}
+
+function hideMobileGreeting(overlay) {
+    // First show the main content again
+    showMainContent();
+    
+    // Then load the dashboard content
+    updateDashboardCounters(tasksFirebase);
     initGreeting();
+    
+    // Then fade out the overlay
+    overlay.classList.add('fade-out');
+    
+    setTimeout(() => {
+        overlay.remove();
+    }, 500);
+}
+
+function getGreetingText() {
+    const now = new Date();
+    const hours = now.getHours();
+    const username = localStorage.getItem("username") || "Guest";
+    const isGuest = !username || username === "Guest";
+    
+    if (hours >= 5 && hours < 12) {
+        return isGuest ? "Good morning" : "Good morning,";
+    } else if (hours >= 12 && hours < 18) {
+        return isGuest ? "Good afternoon" : "Good afternoon,";
+    } else {
+        return isGuest ? "Good evening" : "Good evening,";
+    }
 }
 
 async function loadTasksFromFirebase() {
@@ -23,9 +101,7 @@ async function loadTasksFromFirebase() {
     } else {
         tasksFirebase = [];
     }
-    console.log("Tasks loaded for summary:", tasksFirebase);
 }
-
 
 function initGreeting() {
     const now = new Date();
@@ -68,12 +144,22 @@ function updateDashboardCounters(tasks) {
 
     const upcomingDeadline = findUpcomingUrgentDeadline(tasks);
 
-    document.getElementById("count-todo").textContent = todo;
-    document.getElementById("count-done").textContent = done;
-    document.getElementById("count-urgent").textContent = urgent;
-    document.getElementById("count-board").textContent = all;
-    document.getElementById("count-progress").textContent = inProgress;
-    document.getElementById("count-feedback").textContent = feedback;
+    // Check if elements exist before updating
+    const elements = {
+        'count-todo': todo,
+        'count-done': done,
+        'count-urgent': urgent,
+        'count-board': all,
+        'count-progress': inProgress,
+        'count-feedback': feedback
+    };
+
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    });
 
     const deadlineElement = document.getElementById("upcoming-deadline-date");
     if (deadlineElement && upcomingDeadline) {
@@ -81,10 +167,6 @@ function updateDashboardCounters(tasks) {
     } else if (deadlineElement) {
         deadlineElement.textContent = "No urgent deadlines";
     }
-
-    console.log("Dashboard counters updated:", {
-        todo, done, urgent, all, inProgress, feedback
-    });
 }
 
 /**
@@ -117,6 +199,23 @@ function findUpcomingUrgentDeadline(tasks) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    initSummary();
+function hideMainContent() {
+    const content = document.querySelector('.content');
+    if (content) {
+        content.style.visibility = 'hidden';
+    }
+}
+
+function showMainContent() {
+    const content = document.querySelector('.content');
+    if (content) {
+        content.style.visibility = 'visible';
+    }
+}
+
+// Handle window resize to reset greeting state if needed
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 1040) {
+        isGreetingShown = false;
+    }
 });

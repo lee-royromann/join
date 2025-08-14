@@ -122,6 +122,13 @@
     display: none;
   }
 
+  .content {
+        visibility: hidden;
+    }
+    
+    .content.show-content {
+        visibility: visible;
+    }
  
 }
 
