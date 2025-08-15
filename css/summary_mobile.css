@@ -122,6 +122,13 @@
     display: none;
   }
 
+  .content {
+        visibility: hidden;
+    }
+    
+    .content.show-content {
+        visibility: visible;
+    }
  
 }
 
@@ -138,6 +145,11 @@
 }
 
 @media (max-width: 763px) {
+
+  .header {
+    padding-left: 40px;
+  }
+
   .sidebar {
     position: fixed;
     bottom: 0;
@@ -266,6 +278,21 @@
     top: auto;
     margin: 0;
   }
+  }
+
+@media (max-width: 480px) {
+    .header {
+        padding-left: 32px;
+        padding-right: 20px;
+        height: 80px;
+    }
+
+      .header__user {
+        height: 40px;
+        width: 40px;
+        font-size: 16px;
+        border: 2px solid var(--header-color-border-user);
+    }
   }
 
 @media (max-width: 400px) {

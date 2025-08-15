@@ -112,6 +112,10 @@
         display: block;
     }
 
+    .header__help {
+        display: none;
+    }
+
     .sidebar {
         position: fixed;
         bottom: 0;

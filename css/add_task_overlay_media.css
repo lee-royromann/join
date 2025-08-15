@@ -5,7 +5,8 @@
     }
 
     .task__overlay-content {
-        padding: 40px;
+        padding-left: 40px;
+        padding-right: 40px;
     }
 }
 
@@ -72,6 +73,10 @@
 }
 
 @media (max-width: 690px) {
+    .task__overlay-header {
+        align-items: center;
+    }
+
     .form__columns {
         gap: 30px;
     }
@@ -85,6 +90,7 @@
         scroll-behavior: smooth;
         height: 100%;
         border-radius: 0%;
+        padding-top: 40px;
     }
     
     .form__columns {
@@ -110,12 +116,14 @@
 
     .required-text {
         align-self: flex-start;
+        padding-top: 20px;
         padding-bottom: 20px;
     }
 
     .form__action-buttons {
         max-width: 100%;
         justify-content: space-between;
+        padding-bottom: 20px;
     }
 }
 
@@ -123,6 +131,11 @@
     .task__overlay-content {
         padding-left: 20px;
         padding-right: 20px;
+        padding-top: 20px;
+    }
+
+    .task__overlay-title {
+        font-size: 30px;
     }
 }
 

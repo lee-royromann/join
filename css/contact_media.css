@@ -51,7 +51,7 @@
 
 .editing-tools-resp {
     position: fixed;
-    bottom: 120px;
+    bottom: 200px;
     right: 5px;
     z-index: 60;
     display: flex;

@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/scrollbars.css">
         <link rel="stylesheet" href="../css/add_task_overlay.css">
-        <link rel="stylesheet" href="../css/add_task_overlay_media.css">
         <link rel="stylesheet" href="../css/add_task_contact.css">
         <link rel="stylesheet" href="../css/add_task.css">
         <link rel="stylesheet" href="../css/add_task_icons.css">
@@ -28,7 +27,7 @@
         <link rel="stylesheet" href="../css/add_task_buttons.css">
         <link rel="stylesheet" href="../css/add_task_datepicker.css">
         <link rel="stylesheet" href="../css/add_task_required.css">
-        <link rel="stylesheet" href="../css/add_task_media.css">
+        <link rel="stylesheet" href="../css/add_task_overlay_media.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         
         <script src="../js/add_task_data_utils.js" defer></script>
@@ -86,7 +85,7 @@
 
                     <header class="header">
                         <div class="header__title">Kanban Project Management Tool</div>
-                        <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
+                        <a href="/html/summary.html"><img class="header__logo" src="../assets/img/logo/join_1.svg" alt="Join Logo Header" hidden></a>
                         <div class="header__container">
                             <a class="header__help" href="/html/help.html">?</a>
                             <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
@@ -101,8 +100,7 @@
 
                     <div class="kanban__header">
                         <div class="kanban__headline">
-                            <span class="kanban__title">Board</span>
-                            
+                            <h1 class="kanban__title">Board</h1>
                             <div class="kanban__tools">
                                 <div class="kanban__search-wrapper">
                                     <input type="text" class="kanban__search-input" placeholder="Find Task" id="search-task" onkeydown="handleEnterToFindSubtask(event)">
