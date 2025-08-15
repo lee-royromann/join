@@ -1,3 +1,8 @@
+/**
+ * Build a task board html.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function getTaskTemplate(task) {
     const { total, done, percent } = getSubtaskProgress(task);
     const categoryInfo = getCategoryInfo(task.category);
@@ -43,6 +48,11 @@ function getTaskTemplate(task) {
 }
 
 
+/**
+ * Rendering empty card when no cases are available.
+ * @param {TaskStatus} status
+ * @returns {string} HTML string.
+ */
 function getEmptyColumnTemplate(status) {
   const statusLabels = {
     "to-do": "To Do",
@@ -53,6 +63,12 @@ function getEmptyColumnTemplate(status) {
   return `<div class="card--notasks"><p>No task ${statusLabels[status]}</p></div>`;
 }
 
+
+/**
+ * Build the read-only overlay HTML for a task.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function getOverlayTemplate(task) {
     const categoryInfo = getCategoryInfo(task.category);
     const priorityIcon = getPriorityIcon(task.priority);
@@ -113,6 +129,14 @@ function getOverlayTemplate(task) {
     `;
 }
 
+
+/**
+ * Avatar + name row for overlay assignee list.
+ * @param {Contact} contact
+ * @param {string} initials
+ * @param {string} color
+ * @returns {string} HTML string.
+ */
 function getContactTemplate(contact, initials, color) {
   return `
     <div class="overlay__credentials--individual">
@@ -122,6 +146,32 @@ function getContactTemplate(contact, initials, color) {
   `;
 }
 
+
+/**
+ * Render subtask list inside the overlay for a given task.
+ * @param {Subtask[]|undefined} subtasks
+ * @param {string|number} taskId
+ * @returns {string|undefined} HTML string or undefined if no subtasks.
+ */
+function getSubtask(subtasks, taskId) {
+  if (!subtasks || subtasks.length === 0) {
+    return ;
+  }
+  return subtasks.map((sub, index) => `
+    <div class="overlay__subtask" data-index="${index}">
+      <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
+      <img src="../assets/img/icon/checkbox.svg" class="${sub.done ? 'd-none' : ''}" alt="unchecked" id="uncheck-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
+      <span>${sub.title}</span>
+    </div>
+  `).join("");
+}
+
+
+/**
+ * Build the edit overlay HTML for a task (form fields, priority, assignees, subtasks).
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function getEditTemplate(task) {
     const assignedAvatar = renderAssignedEditAvatars(task);
     const subtasksHTML = renderSubtasks(task.subtask);
@@ -132,11 +182,8 @@ function getEditTemplate(task) {
                 <img src="../assets/img/icon/close.svg" alt="close-icon">
             </div>
         </div>
-        
         <div class="overlay__edit--wrapper">
-
             <div class="overlay__edit--selections" id="edit-scroll-wrapper">
-
                 <div class="edit__group">
                     <label class="edit__label" for="edit-title">Title</label>
                     <div class="edit__group--input-wrapper">
@@ -144,13 +191,11 @@ function getEditTemplate(task) {
                         <div class="edit__required-note"></div>
                     </div>
                 </div>
-
                 <div class="edit__group">
                     <label class="edit__label" for="edit-description">Description</label>
                     <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
                     <div class="edit__required-note"></div>
                 </div>
-
                 <div class="edit__group">
                     <label class="edit__label" for="edit-due-date">Due date</label>
                     <div class="edit__wrapper-date">
@@ -161,7 +206,6 @@ function getEditTemplate(task) {
                     </div>
                     <div class="edit__required-note"></div>
                 </div>
-
                 <div class="edit__group">
                     <label class="edit__label">Priority</label>
                     <div class="edit__wrapper-priority">
@@ -188,7 +232,6 @@ function getEditTemplate(task) {
                         </button>
                     </div>
                 </div>
-
                 <div class="edit__group">
                     <label class="edit__label" for="contact-search">Assigned to</label>
                     <div>
@@ -206,9 +249,7 @@ function getEditTemplate(task) {
                             </div>
                         </div>
                         <div class="edit__wrapper-list d_none" id="edit-contact-list-wrapper">
-                            <ul class="edit__contact-list" id="edit-contact-list">
-                                  
-                                
+                            <ul class="edit__contact-list" id="edit-contact-list">                                
                             </ul>
                         </div>
                     </div>
@@ -216,47 +257,43 @@ function getEditTemplate(task) {
                         ${assignedAvatar}
                     </div>
                 </div>
-
                 <div class="edit__group">
                     <label class="edit__label" for="task-subtask-input">Subtasks</label>
-
-                    <!-- Subtasks Input -->
                     <div class="edit__wrapper-input">
-
                         <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" placeholder="Add new subtask"/>
                         <div class="edit__wrapper-subtask-icons" id="task-subtask-icons-1">
                             <div class="edit__icon-subtask edit__icon-add" onclick="addEditSubtask()">
                                 <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                             </div>
                         </div>
-
                     </div>   
-        
-                    <ul class="edit__subtasklist">
+                            <ul class="edit__subtasklist">
                         ${subtasksHTML}    
                     </ul>   
-
                 </div>
-
             </div>
-    
         </div>  
-    
         <footer class="edit__action-buttons">
             <button type="submit" class="edit__button-ok" onclick="saveEditTask()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
         </footer>
     `;
 }
 
+
+/**
+ * Build a selectable contact list item for the edit dropdown.
+ * @param {Contact} contact
+ * @param {string} you - "(You)" label or empty string.
+ * @param {boolean} isAssigned
+ * @returns {string} HTML string.
+ */
 function getEditContactListItem(contact, you, isAssigned) {
     if (!contact || !contact.prename || !contact.surname) return '';
-
     const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
     const surnameInitial = contact.surname.charAt(0).toUpperCase();
     const prenameInitial = contact.prename.charAt(0).toUpperCase();
     const surnameFull = surnameInitial + contact.surname.slice(1);
     const initials = prenameInitial + surnameInitial;
-
     const checkedClass = isAssigned ? "" : "d_none";
     const uncheckedClass = isAssigned ? "d_none" : "";
     const isChecked = isAssigned ? "checked" : "";
@@ -285,6 +322,12 @@ function getEditContactListItem(contact, you, isAssigned) {
 }
 
 
+/**
+ * Build a single subtask list item for the edit overlay.
+ * @param {Subtask} subtask
+ * @param {number} id - Original subtask index.
+ * @returns {string} HTML string.
+ */
 function getSubtaskTemplate(subtask, id) {
   return `
     <li class="edit__subtask" data-id="${id}">   
@@ -304,6 +347,13 @@ function getSubtaskTemplate(subtask, id) {
   `;
 }
 
+
+/**
+ * Build the "editing" version of a subtask list item (inline input & actions).
+ * @param {number} id - Original subtask index.
+ * @param {string} text - Current subtask title.
+ * @returns {string} HTML string.
+ */
 function getOverlaySubtaskEditTemplate(id, text) {
   return `
     <li class="edit__subtask is-editing">
@@ -329,6 +379,11 @@ function getOverlaySubtaskEditTemplate(id, text) {
   `;
 }
 
+/**
+ * Build the "Move to ..." menu items for a task, excluding its current status.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function getMoveTaskTemplate(task) {
     let status = ['to-do', 'in-progress', 'await-feedback', 'done'];
     status = status.filter(s => s !== task.status);

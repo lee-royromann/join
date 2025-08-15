@@ -1,48 +1,20 @@
-// Transfer to db.js
-
+/**
+ * Global Array and Variables for board menue incl. overlay and edit
+ */
 let tasksFirebase = [];
 let contactsFirebase = [];
-
 let currentDraggedID; 
 let currentTask; 
 let idToKey = {};
-
-const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
-
 const searchInput = document.getElementById("search-task");
 const noResults = document.getElementById("no-results");
 
 
-async function loadTasksFromFirebase() {
-    const res = await fetch(BASE_URL + "join/tasks.json");
-  const data = await res.json() || {};
-
-  tasksFirebase = [];
-  idToKey = {};
-
-  for (const [key, task] of Object.entries(data)) {
-    if (!task) continue;
-    tasksFirebase.push(task);
-    if (task.id != null) {
-      idToKey[String(task.id)] = key; // z.B. "19" -> "17"
-    }
-  }
-  }
-
-
-async function loadContactsFromFirebase() {
-  let response = await fetch(BASE_URL + "/join/contacts.json");
-  let unsortedContacts = [];
-  if (response.ok) {
-    let data = await response.json();
-    unsortedContacts = Object.values(data || {});
-    contactsFirebase = sortContactsByPrename(unsortedContacts);     
-  } else {
-    contactsFirebase = [];
-  }
-}
-
-
+/**
+ * Open the task detail overlay for a given task ID.
+ * Locks body scrolling and triggers slide-in animation.
+ * @param {number} taskId 
+ */
 function openOverlay(taskId) {
     const overlay = document.getElementById("overlay");
     const story = document.getElementById("story");
@@ -54,62 +26,38 @@ function openOverlay(taskId) {
     document.body.style.overflow = 'hidden';
     story.classList.remove("d-none");
     renderOverlayTask(taskId);
-    console.log("Aktueller Task:", taskId); // Debugging
+    console.log("Aktueller Task:", taskId); 
 }
 
-// 1) Hilfsfunktion: Overlay ausblenden (wartet auf die Transition statt fixem Timeout)
+
+/**
+ * Hide the overlay and wait for its CSS transition to finish.
+ * @param {HTMLElement} overlay
+ * @returns {Promise<void>} Resolves after the transition (or a short fallback timeout).
+ */
 function hideOverlay(overlay) {
-  overlay.classList.remove('overlay--slide-in');
-
-  // Promise, das sich mit dem Ende der Transition erfüllt (Fallback: Timeout)
-  return new Promise(resolve => {
-    const onEnd = (e) => {
-      if (e.target !== overlay) return;
-      overlay.removeEventListener('transitionend', onEnd);
-      resolve();
-    };
-    overlay.addEventListener('transitionend', onEnd, { once: true });
-
-    // Fallback, falls kein transitionend feuert (z. B. keine Animation aktiv)
-    setTimeout(resolve, 200);
-  }).then(() => {
-    overlay.classList.remove('overlay--visible');
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-  });
-}
-
-// 2) Hilfsfunktion: Daten neu laden & rendern
-async function refreshTasks() {
-  await loadTasksFromFirebase();
-  renderTasks();
+    overlay.classList.remove('overlay--slide-in');
+    return new Promise(resolve => {
+        const onEnd = (e) => {
+            if (e.target !== overlay) return;
+            overlay.removeEventListener('transitionend', onEnd);
+            resolve();
+        };
+        overlay.addEventListener('transitionend', onEnd, { once: true });
+        setTimeout(resolve, 200);
+    }).then(() => {
+        overlay.classList.remove('overlay--visible');
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    });
 }
 
 
-async function closeAnyOverlay({ contentId, resetCurrentTask = false }) {
-  const overlay = document.getElementById('overlay');
-  const content = document.getElementById(contentId);
-
-  if (!overlay || !content) return;
-
-  await hideOverlay(overlay);
-  content.classList.add('d-none');
-
-  if (resetCurrentTask) {
-      window.currentTask = null;
-  }
-
-  await refreshTasks();
-}
-
-async function closeOverlay() {
-  return closeAnyOverlay({ contentId: 'story' });
-}
-
-async function closeEditOverlay() {
-  return closeAnyOverlay({ contentId: 'edit', resetCurrentTask: true });
-}
-
+/**
+ * Open the edit overlay for the given task.
+ * @param {number} taskId
+ * @returns {void}
+ */
 function openEditOverlay(taskId) {
     const story = document.getElementById("story");
     const edit = document.getElementById("edit");
@@ -117,114 +65,96 @@ function openEditOverlay(taskId) {
     story.classList.add("d-none");
     edit.classList.remove("d-none");
     currentTask = tasksFirebase[taskIndex];
-    currentTask.index = taskIndex;  // wenn du später noch speichern willst
+    currentTask.index = taskIndex;  
     if (!currentTask) return;
-
     renderEditTask(taskId); 
-    console.log("Aktueller Task:", currentTask); // Debugging
-    console.log("Aktuelle Task-ID:", taskId); // Debugging
+    console.log("Aktueller Task:", currentTask); 
+    console.log("Aktuelle Task-ID:", taskId); 
 }
 
 
-async function boardInit() {
-    await loadTasksFromFirebase();
-    await loadContactsFromFirebase();
-    renderTasks();
-    getUsernameInitals();
-}
 
-async function saveTaskToFirebase(task) {
-  if (!task || task.id == null) {
-    console.warn("saveTaskToFirebase: task oder task.id fehlt");
-    return;
-  }
-  const url = `${BASE_URL}join/tasks/${encodeURIComponent(String(task.id))}.json`;
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(task),
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Firebase PUT fehlgeschlagen (${res.status}): ${text}`);
-  }
-}
-
-async function deleteTaskFromFirebase(taskId) {
-  const key = idToKey[String(taskId)] || String(taskId); // Altfall abfangen
-  const url = `${BASE_URL}join/tasks/${encodeURIComponent(key)}.json`;
-
-  const res = await fetch(url, { method: "DELETE" });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Firebase DELETE fehlgeschlagen (${res.status}): ${text}`);
-  }
-
-  // lokal entfernen
-  const idx = tasksFirebase.findIndex(t => String(t.id) === String(taskId));
-  if (idx !== -1) tasksFirebase.splice(idx, 1);
-  delete idToKey[String(taskId)];
-
-  console.log("Task gelöscht:", taskId, "(key:", key, ")");
-    
-  }
-
-  async function handleDeleteTask(taskId) {
- 
+/**
+ * Controller for deleting a task via UI.
+ * Ensures deletion, reload, overlay close, and re-render.
+ * @async
+ * @param {string|number} taskId
+ * @returns {Promise<void>}
+ */
+async function handleDeleteTask(taskId) {
     try {
-      await deleteTaskFromFirebase(taskId); // Auf das Löschen warten
-      tasksFirebase = []; 
-      await loadTasksFromFirebase();        // Tasks neu laden
-      closeOverlay();                       // Overlay schließen
-      renderTasks();                        // Tasks neu rendern
+        await deleteTaskFromFirebase(taskId); 
+        tasksFirebase = []; 
+        await loadTasksFromFirebase();        
+        closeOverlay();                       
+        renderTasks();                        
     } catch (error) {
-      console.error("Fehler beim Löschen der Aufgabe:", error);
+        console.error("Fehler beim Löschen der Aufgabe:", error);
     }
-  // }
 }
 
+
+/**
+ * Render the entire board: clear columns, render tasks, and placeholders for empty columns.
+ */
 function renderTasks() {
     clearAllColumns();
     const taskCounts = renderAllTasks();
     renderEmptyColumns(taskCounts);
 }
 
+
+/**
+ * Clear all four status columns.
+ */
 function clearAllColumns() {
-  ["to-do", "in-progress", "await-feedback", "done"]
-    .forEach(id => document.getElementById(id).innerHTML = "");
+    ["to-do", "in-progress", "await-feedback", "done"]
+      .forEach(id => document.getElementById(id).innerHTML = "");
 }
 
+
+/**
+ * Render all tasks into their respective status columns.
+ * @returns {StatusCounts} Count of tasks per status.
+ */
 function renderAllTasks() {
-  const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-
-  tasksFirebase.forEach(task => {
-    const column = document.getElementById(task.status);
-    if (column) {
-      column.innerHTML += getTaskTemplate(task); 
-      counts[task.status]++;
-    }
-  });
-  return counts;
+    const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
+    tasksFirebase.forEach(task => {
+        const column = document.getElementById(task.status);
+        if (column) {
+            column.innerHTML += getTaskTemplate(task); 
+            counts[task.status]++;
+        }
+    });
+    return counts;
 }
 
+
+/**
+ * Insert "empty column" placeholders where no tasks exist.
+ * @param {StatusCounts} counts
+ */
 function renderEmptyColumns(counts) {
-  Object.entries(counts).forEach(([status, count]) => {
-    if (count === 0) {
-      document.getElementById(status).innerHTML = getEmptyColumnTemplate(status);
-    }
-  });
+    Object.entries(counts).forEach(([status, count]) => {
+        if (count === 0) {
+        document.getElementById(status).innerHTML = getEmptyColumnTemplate(status);
+        }
+    });
 }
 
+
+/**
+ * Search tasks by title/description using the current input value.
+ * Clears warning when input is empty, otherwise shows "no results" if none match.
+ */
 function searchTask() {
     const searchTerm = document.getElementById("search-task").value.trim();
     const warning = document.getElementById("no-results");
-
     if (searchTerm === "") {
         renderTasks();  
         warning.style.display = "none";
         return;
     }
-
     const filtered = filterTasks(searchTerm);
     updateTaskDisplay(filtered, warning);
 }
@@ -242,161 +172,202 @@ function handleEnterToFindSubtask(event) {
     }
 };
 
+
+/**
+ * Apply filtered results to the UI, or show warning if empty.
+ * @param {Record<string, Task>} filtered
+ * @param {HTMLElement} warning
+ */
 function updateTaskDisplay(filtered, warning) {
-  if (Object.keys(filtered).length > 0) {
-    renderFilteredTasks(filtered);
-    warning.style.display = "none";
-  } else {
-    renderTasks();
-    warning.style.display = "block";
-  }
-}
-
-
-function filterTasks(searchTerm) {
-  const lowerSearchTerm = searchTerm.toLowerCase();
-
-  return Object.entries(tasksFirebase)
-    .filter(([_, task]) =>
-      task.title.toLowerCase().includes(lowerSearchTerm) ||
-      task.description.toLowerCase().includes(lowerSearchTerm)
-    )
-    .reduce((acc, [id, task]) => {
-      acc[id] = task;
-      return acc;
-    }, {});
-}
-
-function renderFilteredTasks(filteredTasks) {
-  clearAllColumns();
-
-  const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-
-  Object.values(filteredTasks).forEach(task => {
-    
-    const column = document.getElementById(task.status);
-    if (column) {
-      column.innerHTML += getTaskTemplate(task);
-      counts[task.status]++;
+    if (Object.keys(filtered).length > 0) {
+        renderFilteredTasks(filtered);
+        warning.style.display = "none";
+    } else {
+        renderTasks();
+        warning.style.display = "block";
     }
-  });
-
-  renderEmptyColumns(counts);
 }
 
 
-function getCategoryInfo(category) {
-  
-  const formattedName = category
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
-  const badgeClassMap = {
-    "user-story": "card__badge-user-story",
-    "technical-task": "card__badge-technical-task"
-  };
-
-  const badgeClass = badgeClassMap[category];
-
-  return {
-    name: formattedName,
-    className: badgeClass
-  };
+/**
+ * Filter tasks by search term (case-insensitive) over title and description.
+ * @param {string} searchTerm
+ * @returns {Record<string, Task>} A map of index->Task for matches.
+ */
+function filterTasks(searchTerm) {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return Object.entries(tasksFirebase)
+        .filter(([_, task]) =>
+            task.title.toLowerCase().includes(lowerSearchTerm) ||
+            task.description.toLowerCase().includes(lowerSearchTerm)
+        )
+        .reduce((acc, [id, task]) => {
+            acc[id] = task;
+            return acc;
+        }, {});
 }
 
+
+/**
+ * Render only the filtered set of tasks and update empty columns.
+ * @param {Record<string, Task>} filteredTasks
+ */
+function renderFilteredTasks(filteredTasks) {
+    clearAllColumns();
+    const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
+    Object.values(filteredTasks).forEach(task => {
+    const column = document.getElementById(task.status);
+        if (column) {
+          column.innerHTML += getTaskTemplate(task);
+          counts[task.status]++;
+        }
+    });
+    renderEmptyColumns(counts);
+}
+
+
+/**
+ * Steers to get the right description and layout for user-story / technical task.
+ * @param {string} category 
+ * @returns {{name: string, className: string|undefined}}
+ */
+function getCategoryInfo(category) { 
+    const formattedName = category
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    const badgeClassMap = {
+        "user-story": "card__badge-user-story",
+        "technical-task": "card__badge-technical-task"
+    };
+    const badgeClass = badgeClassMap[category];
+    return {
+        name: formattedName,
+        className: badgeClass
+    };
+}
+
+/**
+ * Compute subtask progress stats.
+ * @param {Task} task
+ * @returns {{ total: number, done: number, percent: number }}
+ */
 function getSubtaskProgress(task) {
-  const total = task.subtask?.length || 0;
-  const done = task.subtask?.filter(st => st.done).length || 0;
-  const percent = total > 0 ? (done / total) * 100 : 0;
-
-  return { total, done, percent };
+    const total = task.subtask?.length || 0;
+    const done = task.subtask?.filter(st => st.done).length || 0;
+    const percent = total > 0 ? (done / total) * 100 : 0;
+    return { total, done, percent };
 }
 
+
+/**
+ * Map priority to icon URL.
+ * @param {TaskPriority} priority
+ * @returns {string|undefined} icon URL
+ */
 function getPriorityIcon(priority) {
-  const iconMap = {
-    low: "../assets/img/icon/low_green.svg",
-    medium: "../assets/img/icon/medium_yellow.svg",
-    urgent: "../assets/img/icon/urgent_red.svg"
-  };
-
-  return iconMap[priority];
+    const iconMap = {
+        low: "../assets/img/icon/low_green.svg",
+        medium: "../assets/img/icon/medium_yellow.svg",
+        urgent: "../assets/img/icon/urgent_red.svg"
+    };
+    return iconMap[priority];
 }
 
+/**
+ * Get checkbox icon path for subtask status.
+ * @param {boolean} status
+ * @returns {string} Icon URL.
+ */
 function getSubtaskIcon(status) {
-  return status 
-    ? "../assets/img/icon/checkbox_checked.svg" 
-    : "../assets/img/icon/checkbox.svg";
-}
-
-function getSubtask(subtasks, taskId) {
-  if (!subtasks || subtasks.length === 0) {
-    return ;
-  }
-
-  return subtasks.map((sub, index) => `
-    <div class="overlay__subtask" data-index="${index}">
-      <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
-      <img src="../assets/img/icon/checkbox.svg" class="${sub.done ? 'd-none' : ''}" alt="unchecked" id="uncheck-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
-      <span>${sub.title}</span>
-    </div>
-  `).join("");
+    return status 
+        ? "../assets/img/icon/checkbox_checked.svg" 
+        : "../assets/img/icon/checkbox.svg";
 }
 
 
+/**
+ * Render overlay subtasks into the container with id "subtaskFrame".
+ * @param {Task} task
+ * @returns {void}
+ */
 function renderSubtask(task) {
-  const container = document.getElementById("subtaskFrame"); // z. B. <div id="subtaskFrame"></div>
-  container.innerHTML = getSubtask(task.subtask);
+    const container = document.getElementById("subtaskFrame"); // z. B. <div id="subtaskFrame"></div>
+    container.innerHTML = getSubtask(task.subtask);
 }
 
 
+/**
+ * Map assigned contact IDs to rendered content using a supplied renderer.
+ * @param {Task} task
+ * @param {(contact: Contact, initials: string, color: string) => string} renderFn
+ * @returns {string} Concatenated HTML string.
+ */
 function mapAssignedContacts(task, renderFn) {
-  return task.assignedTo.map(userId => {
-    const contact = contactsFirebase.find(c => c.id === userId);
-    if (!contact) return '';
-
-    const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
-    const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
-    const initials = `${prenameInitial}${surnameInitial}`;
-    const color = contact.color || "#cccccc";
-
-    return renderFn(contact, initials, color);
-  }).join('');
+    return task.assignedTo.map(userId => {
+        const contact = contactsFirebase.find(c => c.id === userId);
+        if (!contact) return '';
+        const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
+        const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
+        const initials = `${prenameInitial}${surnameInitial}`;
+        const color = contact.color || "#cccccc";
+        return renderFn(contact, initials, color);
+    }).join('');
 }
 
+
+/**
+ * Render small circular avatar badges for assigned contacts.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function renderAssignedAvatars(task) {
-  return mapAssignedContacts(task, (contact, initials, color) =>
-    `<div class="card__credential" style="background-color: ${color};">${initials}</div>`
-  );
+    return mapAssignedContacts(task, (contact, initials, color) =>
+        `<div class="card__credential" style="background-color: ${color};">${initials}</div>`
+    );
 }
 
+
+/**
+ * Render assigned contacts (avatar + full name) for overlay.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function renderAssignedContacts(task) {
-  return mapAssignedContacts(task, (contact, initials, color) =>
-    getContactTemplate(contact, initials, color)
-  );
+    return mapAssignedContacts(task, (contact, initials, color) =>
+        getContactTemplate(contact, initials, color)
+    );
 }
 
 
+/**
+ * Start drag operation for a task card.
+ * @param {string|number} id
+ */
 function startDragging(id) {
     currentDraggedID = String(id);  
     document.getElementById(id).classList.add("card-transform")  // achtung muss noch irgendwo removed werden
 }
 
+
+/**
+ * Allow drop on droppable targets.
+ * @param {DragEvent} event
+ * @returns {void}
+ */
 function allowDrop(event) {
     event.preventDefault();
 }
 
-async function moveTo(status) {
-    const idx = tasksFirebase.findIndex(t => String(t.id) === String(currentDraggedID));
-  if (idx === -1) return;
 
-  const updatedTask = { ...tasksFirebase[idx], status };
-  tasksFirebase[idx] = updatedTask;
+// *****************************************************************************
+// *****************************************************************************
 
-  renderTasks();
-  await saveTaskToFirebase(updatedTask); 
-}
-
+/**
+ * Render the read-only task overlay for a given task ID.
+ * @param {string|number} taskId
+ * @returns {void}
+ */
 function renderOverlayTask(taskId) {
     const task = tasksFirebase.find(t => t.id === taskId);
     if (!task) return;
@@ -405,80 +376,79 @@ function renderOverlayTask(taskId) {
     contentRef.innerHTML = getOverlayTemplate(task);
 }
 
+
+/**
+ * Render the edit overlay for a given task.
+ * @param {string|number} taskId
+ * @returns {void}
+ */
 function renderEditTask(taskId) {
     overrideEmptySearchField();
     const task = findTaskById(taskId);
     if (!task) return;
-
     prepareEditOverlay();
     insertEditContent(task);
     initializeEditComponents(task);
 }
 
+
+/**
+ * No-op override for a global `emptySearchField` if present.
+ * Prevents side effects while edit overlay is open.
+ */
 function overrideEmptySearchField() {
     window.emptySearchField = () => {};
 }
 
+
+/**
+ * Find a task in memory by ID.
+ * @param {string|number} id
+ * @returns {Task|undefined}
+ */
 function findTaskById(id) {
     return tasksFirebase.find(t => t.id === id);
 }
 
+
+/**
+ * Prepare the edit overlay DOM container and remove stale ghost elements.
+ * @returns {void}
+ */
 function prepareEditOverlay() {
     const contentRef = document.getElementById("edit");
     if (!contentRef) return;
-
     contentRef.innerHTML = '';
-
     const ghostInput = document.getElementById('contact-search');
     if (ghostInput) ghostInput.remove();
-
     const ghostList = document.getElementById('contact-list');
     if (ghostList) ghostList.remove();
 }
 
+
+/**
+ * Insert edit overlay HTML for a task.
+ * @param {Task} task
+ */
 function insertEditContent(task) {
     const contentRef = document.getElementById("edit");
     contentRef.innerHTML = getEditTemplate(task);
 }
 
+
+/**
+ * Initialize widgets and populate data inside the editOverlay.
+ * @param {Task} task
+ * @returns {void}
+ */
 function initializeEditComponents(task) {
     initFlatpickrEdit();
     setInitialTaskPriority(task);
     populateContactsToEditDropdown(contactsFirebase, task.assignedTo);
-
     const badgeContainer = document.querySelector('.edit__contact-badges');
     if (badgeContainer) {
         badgeContainer.innerHTML = renderAssignedEditAvatars(task);
     }
-}
-
-
-async function toggleSubtaskStatus(index, taskId) {
- 
-  // Task in tasksFirebase finden
-  const task = tasksFirebase.find(t => t.id === taskId);
-  if (!task || !task.subtask || !task.subtask[index]) {
-    console.warn("Task oder Subtask nicht gefunden");
-    return;
-  }
-
-  // Status umschalten
-  task.subtask[index].done = !task.subtask[index].done;
-
-  // DOM aktualisieren
-  const checkEl = document.getElementById(`check-${taskId}-${index}`);
-  const uncheckEl = document.getElementById(`uncheck-${taskId}-${index}`);
-
-  if (task.subtask[index].done) {
-    checkEl.classList.remove("d-none");
-    uncheckEl.classList.add("d-none");
-  } else {
-    checkEl.classList.add("d-none");
-    uncheckEl.classList.remove("d-none");
-  }
-
-  // Änderungen an Firebase zurückschreiben
-  await saveTaskToFirebase(task);
 }
 
 
@@ -492,10 +462,14 @@ function setPriorityEdit(priority) {
     let icon = document.getElementById(`edit__btn-${priority}-icon`);
     button.classList.add(`edit__button-prio--${priority}`);
     icon.classList.add(`icon-white`);
-    choosenPriority = priority;    //speichert die gewählte Priorität in der globalen Variable
+    choosenPriority = priority;    
 }
 
 
+/**
+ * Apply the task's current priority to the edit overlay.
+ * @param {Task} task
+ */
 function setInitialTaskPriority(task) {
     const taskPriority = task.priority.toLowerCase();
     setPriorityEdit(taskPriority);
@@ -508,7 +482,6 @@ function setInitialTaskPriority(task) {
  */
 function resetPriorityButtonsEdit() {
     const priorities = ['urgent', 'medium', 'low'];
-
     priorities.forEach(priority => {
         const button = document.getElementById(`edit__btn-${priority}`);
         button.classList.remove(`edit__button-prio--${priority}`);
@@ -517,9 +490,13 @@ function resetPriorityButtonsEdit() {
     });
 }
 
+
+/**
+ * Open the date picker (Flatpickr) for the edit due date field.
+ * @param {MouseEvent} event
+ */
 function pickDateEdit(event) {
     event.stopPropagation();
-   
     if (flatpickrEditInstance) {
         flatpickrEditInstance.open();
         flatpickrEditInstance.input.focus();
@@ -527,10 +504,14 @@ function pickDateEdit(event) {
 }
 
 
+/**
+ * Initialize Flatpickr for the edit due date input.
+ * Expects global `flatpickr` and `flatpickrEditInstance`.
+ * @returns {void}
+ */
 function initFlatpickrEdit() {
     const input = document.getElementById('edit-due-date');
     if (!input) return;
-
     flatpickrEditInstance = flatpickr(input, {
         locale: 'de',
         dateFormat: 'd.m.Y',
@@ -541,12 +522,17 @@ function initFlatpickrEdit() {
 }
 
 
+/**
+ * Populate the edit contact dropdown list, moving the logged-in user to the top.
+ * @param {Contact[]} contacts
+ * @param {Array<number|string>} [assignedIds=[]]
+ * @returns {void}
+ */
 function populateContactsToEditDropdown(contacts, assignedIds = []) {
     const contactsRef = document.getElementById("edit-contact-list");
     contactsRef.innerHTML = "";
     const loggedInUser = localStorage.username;
     const sortedContacts = moveLoggedInUserToTop(contacts, loggedInUser);
-
     for (let contact of sortedContacts) {
         const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
         const isAssigned = assignedIds.map(Number).includes(Number(contact.id));
@@ -594,21 +580,22 @@ function toggleEditDropdown(event, dropdownId, arrowIconId) {
     if (search) filterContactsInDropdown(search);
     else populateContactsToEditDropdown(contactsFirebase, currentTask?.assignedTo || []);
   }
-
     scrollToBottom("edit-scroll-wrapper");
 }
 
+
+/**
+ * Filter contacts in the edit dropdown list by a search value.
+ * @param {string} searchValue
+ */
 function filterContactsInDropdown(searchValue) {
     const filteredContacts = contactsFirebase.filter(contact => {
         const fullName = `${contact.prename} ${contact.surname}`.toLowerCase();
         return fullName.includes(searchValue);
     });
-
     const listContainer = document.getElementById("edit-contact-list");
     listContainer.innerHTML = "";
-
     const assignedIds = currentTask?.assignedTo || [];
-
     for (let contact of filteredContacts) {
         const isAssigned = assignedIds.includes(Number(contact.id));
         const youLabel = (`${contact.prename} ${contact.surname}` === localStorage.username) ? "(You)" : "";
@@ -617,6 +604,10 @@ function filterContactsInDropdown(searchValue) {
 }
 
 
+/**
+ * Smoothly scroll an element to its bottom.
+ * @param {string} elementId
+ */
 function scrollToBottom(elementId) {
     const el = document.getElementById(elementId);
     if (el) {
@@ -641,13 +632,19 @@ function selectEditContact(id) {
     document.querySelector('.edit__contact-badges').innerHTML = renderAssignedEditAvatars(currentTask);
 }
 
+/**
+ * Update visual selection state for a contact row in the edit dropdown.
+ * @param {number|string} id
+ * @param {HTMLInputElement} checkbox
+ * @param {HTMLElement} listItem
+ * @param {boolean} isSelected
+ */
 function updateEditContactSelectionState(id, checkbox, listItem, isSelected) {
     const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
     const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
     iconChecked.classList.toggle('d_none', !isSelected);
     iconUnchecked.classList.toggle('d_none', isSelected);
- listItem.classList.toggle('bg-blue', isSelected);
-
+    listItem.classList.toggle('bg-blue', isSelected);
     if (isSelected) {
       highlightContact(checkbox);
     } else {
@@ -656,15 +653,17 @@ function updateEditContactSelectionState(id, checkbox, listItem, isSelected) {
 }
 
 
-
-
+/**
+ * Update the `assignedTo` array of a task after selecting/deselecting a contact.
+ * @param {Task} task
+ * @param {number|string} contactId
+ * @param {boolean} isChecked
+ */
 function updateAssignedContacts(task, contactId, isChecked) {
     if (!Array.isArray(task.assignedTo)) {
         task.assignedTo = [];
     }
-
     const idNum = Number(contactId); 
-
     if (isChecked && !task.assignedTo.includes(idNum)) {
         task.assignedTo.push(idNum);
     } else if (!isChecked) {
@@ -672,101 +671,120 @@ function updateAssignedContacts(task, contactId, isChecked) {
     }
 }
 
+
+
+/**
+ * Render assignee badges for the edit overlay.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
 function renderAssignedEditAvatars(task) {
-  return mapAssignedContacts(task, (contact, initials, color) =>
-    `<div class="edit__contact-badge" style="background-color: ${color};">${initials}</div>`
-  );
+    return mapAssignedContacts(task, (contact, initials, color) =>
+        `<div class="edit__contact-badge" style="background-color: ${color};">${initials}</div>`
+    );
 }
 
 
+/**
+ * Render list items for all *open* (not done) subtasks.
+ * Keeps original indices, so edit/delete continues to work.
+ * @param {Subtask[]} subtasks
+ * @returns {string} HTML string.
+ */
 function renderSubtasks(subtasks) {
-  
-  return subtasks
-    .map((subtask, originalIndex) => ({ subtask, originalIndex })) // 1. Index merken
-    .filter(({ subtask }) => subtask.done === false)               // 2. Nur unerledigte
-    .map(({ subtask, originalIndex }) => 
-      getSubtaskTemplate(subtask, originalIndex))                  // 3. Index mitgeben
-    .join('');
-    
+    return subtasks
+        .map((subtask, originalIndex) => ({ subtask, originalIndex })) 
+        .filter(({ subtask }) => subtask.done === false)               
+        .map(({ subtask, originalIndex }) => 
+            getSubtaskTemplate(subtask, originalIndex))                  
+        .join(''); 
 }
 
+
+/**
+ * Delete a subtask by index in the current edit task and re-render the list.
+ * @param {number} id - Original subtask index.
+ */
 function deleteEditSubtask(id) {
     currentTask.subtask.splice(id, 1); 
-
     const list = document.querySelector('.edit__subtasklist');
     list.innerHTML = renderSubtasks(currentTask.subtask);
 }
 
+
+/**
+ * Switch a subtask list item into "editing" mode (inline input).
+ * @param {number} id - Original subtask index.
+ * @returns {void}
+ */
 function editEditSubtask(id) {
-  
-  const subtask = currentTask.subtask[id];
-  if (!subtask) return;
-  const text = subtask.title;
-  
-  const targetElement = document.querySelector(`.edit__subtask[data-id="${id}"]`);
-  if (!targetElement) return;
-
-  const editElement = convertHtmlStringToDomElement(getOverlaySubtaskEditTemplate(id, text));
-  targetElement.replaceWith(editElement);
- 
+    const subtask = currentTask.subtask[id];
+    if (!subtask) return;
+    const text = subtask.title;
+    const targetElement = document.querySelector(`.edit__subtask[data-id="${id}"]`);
+    if (!targetElement) return;
+    const editElement = convertHtmlStringToDomElement(getOverlaySubtaskEditTemplate(id, text));
+    targetElement.replaceWith(editElement);
 }
 
+
+/**
+ * Persist edited subtask title and re-render the list.
+ * @param {number} id - Original subtask index.
+ * @returns {void}
+ */
 function saveEditedSubtask(id) {
-  const input = document.getElementById(`subtaskEdit-${id}`);
-  if (!input) return;
-
-  const newTitle = input.value.trim();
-  if (newTitle === '') return;
-
-  currentTask.subtask[id].title = newTitle;
-  document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
+    const input = document.getElementById(`subtaskEdit-${id}`);
+    if (!input) return;
+    const newTitle = input.value.trim();
+    if (newTitle === '') return;
+    currentTask.subtask[id].title = newTitle;
+    document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
 }
 
+
+/**
+ * Add a new subtask to the current edit task and re-render.
+ * Ignores empty input.
+ */
 function addEditSubtask () {
     const input = document.getElementById("task-subtask-input");
-    
-    if (!input || input.value.trim() === '') return;  //brauche ich hier einen Untertitel?
-
+    if (!input || input.value.trim() === '') return;  
     const newSubtask = {
         title: input.value.trim(),
         done: false
     };
-
     currentTask.subtask.push(newSubtask);
     document.querySelector('.edit__subtasklist').innerHTML = renderSubtasks(currentTask.subtask);
     input.value = ''; 
 }
 
 
-async function saveEditTask() {
-    if (!validateEditForm()) return;
-
-    updateEditBoardData();
-    await saveTaskToFirebase(currentTask);;
-    await closeEditOverlay();
-}
-
-
-
+/**
+ * Validate required edit fields (title, description, date).
+ * @returns {boolean} True if all required fields are filled.
+ */
 function validateEditForm() {
     const titleInput = document.getElementById("edit-title");
     const descriptionInput = document.getElementById("edit-description");
     const dateInput = document.getElementById("edit-due-date");
-
     let isValid = true;
-
     if (!checkField(titleInput)) isValid = false;
     if (!checkField(descriptionInput)) isValid = false;
     if (!checkField(dateInput)) isValid = false;
-
     return isValid;
 }
 
 
+/**
+ * Check a single input field for non-empty value and show/hide error note.
+ * @param {HTMLInputElement|HTMLTextAreaElement} input
+ * @param {string} [message="This field is required"]
+ * @returns {boolean} True if valid.
+ */
 function checkField(input, message = "This field is required") {
     const wrapper = input.closest(".edit__group--input-wrapper") || input.parentElement;
     const note = wrapper.querySelector(".edit__required-note");
-
     if (!input.value.trim()) {
         note.textContent = message;
         note.style.display = "block";
@@ -779,15 +797,17 @@ function checkField(input, message = "This field is required") {
     }
 }
 
+/**
+ * Sync values from edit form inputs into `currentTask`.
+ * Applies selected priority if available.
+ */
 function updateEditBoardData() {
     const title = document.getElementById("edit-title").value.trim();
     const description = document.getElementById("edit-description").value.trim();
     const date = document.getElementById("edit-due-date").value.trim();
-
     currentTask.title = title;
     currentTask.description = description;
     currentTask.date = date;
-
     if (typeof choosenPriority !== 'undefined' && choosenPriority) {
         currentTask.priority = choosenPriority;
     }
@@ -807,28 +827,33 @@ function toggleBoardTaskMenu(event, taskId) {
     userMenu.classList.toggle('card__burger-menu--visible');
 }
 
+/**
+ * Close any open per-card menu when clicking elsewhere.
+ */
 document.addEventListener('click', function () {
     document.querySelectorAll('.card__burger-menu--visible')
         .forEach(menu => menu.classList.remove('card__burger-menu--visible'));
 });
 
 
+/**
+ * Move a task to a new status via the card's burger menu, persist, and re-render.
+ * @async
+ * @param {string|number} taskId
+ * @param {TaskStatus} newStatus
+ * @param {MouseEvent} event
+ * @returns {Promise<void>}
+ */
 async function moveEditStatus(taskId, newStatus, event) {
     event.stopPropagation();
-    
     const idx = tasksFirebase.findIndex(t => String(t.id) === String(taskId));
     if (idx === -1) return;
-
     const updatedTask = { ...tasksFirebase[idx], status: newStatus };
     tasksFirebase[idx] = updatedTask;
-
-    
     await saveTaskToFirebase(updatedTask); 
     const userMenu = document.getElementById('card-menu-' + taskId);
       if (userMenu) {
           userMenu.classList.remove('card__burger-menu--visible');
       }
-
     renderTasks();
-
 }
