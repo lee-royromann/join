@@ -60,7 +60,7 @@ body {
     flex-direction: column;
     justify-content:center;
     align-items: center;
-    padding: 40px 64px;
+    padding: 40px 80px;
 }
 
 .kanban__headline {
@@ -202,7 +202,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 28px;
-    padding: 0 64px 16px 64px;
+    padding: 0 80px 16px 80px;
     overflow: hidden;
 }
 

@@ -84,7 +84,7 @@
 
                     <header class="header">
                         <div class="header__title">Kanban Project Management Tool</div>
-                        <a href="/html/summary.html"><img class="header__logo d_none" src="../assets/img/logo/join_1.svg" alt="Join Logo Header"></a>
+                        <a href="/html/summary.html"><img class="header__logo" src="../assets/img/logo/join_1.svg" alt="Join Logo Header" hidden></a>
                         <div class="header__container">
                             <a class="header__help" href="/html/help.html">?</a>
                             <div class="header__user" id="header__user" onclick="toggleUserMenu()"></div>
@@ -99,8 +99,7 @@
 
                     <div class="kanban__header">
                         <div class="kanban__headline">
-                            <span class="kanban__title">Board</span>
-                            
+                            <h1 class="kanban__title">Board</h1>
                             <div class="kanban__tools">
                                 <div class="kanban__search-wrapper">
                                     <input type="text" class="kanban__search-input" placeholder="Find Task" id="search-task" onkeydown="handleEnterToFindSubtask(event)">

@@ -33,7 +33,6 @@
     border-radius: 30px;
     border: 1px solid var(--border-modal);
     overflow: hidden;
-    /* box-shadow: 0px 0px 15px rgba(32, 26, 19, 0.186); */
     transform: translateX(100vw);
     transition: transform 0.15s ease-in-out;
 }
@@ -50,7 +49,6 @@
 }
 
 .task__overlay-form {
-    /* position: relative; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -63,7 +61,6 @@
     font-family: 'Inter', sans-serif;
     font-size: 61px;
     font-weight: 700;
-    /* padding-bottom: 30px; */
 }
 
 .task__overlay-close {
