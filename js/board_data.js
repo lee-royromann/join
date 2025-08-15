@@ -1,4 +1,11 @@
 /**
+ * Die Basis-URL für die Firebase Realtime Database.
+ * @type {string}
+ */
+const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+
+
+/**
  * Load all tasks from Firebase into memory and build an ID->key map.
  * Supports legacy structures where the Firebase key differs from task.id.
  * @async
