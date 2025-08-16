@@ -267,7 +267,7 @@ function getEditTemplate(task) {
                             </div>
                         </div>
                     </div>   
-                            <ul class="edit__subtasklist">
+                    <ul class="edit__subtasklist">
                         ${subtasksHTML}    
                     </ul>   
                 </div>

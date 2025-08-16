@@ -68,6 +68,14 @@
     border: 1px solid #D1D1D1;
 }
 
+.edit__input {
+    flex: 1;
+    padding-right: 70px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
 .edit__textarea {
     height: 120px;
     color: #000000;
@@ -96,6 +104,7 @@ textarea:focus {
     position: relative;
     display: flex;
     justify-content: space-between;
+    
 }
 
 .edit__icon-contact,
@@ -266,13 +275,20 @@ textarea:focus {
     color: #000000;
 }
 
+.edit__subtask-text {
+    white-space: nowrap;        
+    overflow: hidden;           
+    text-overflow: ellipsis; 
+    padding-right: 40px;  
+}
+
 .edit__subtask-text::before {
   content: "•";
   margin-right: 8px;
   color: #000;
   font-size: 18px;
   display: inline-block;
-  transform: translateY(-1px); /* optional: vertikale Feinjustierung */
+  transform: translateY(-1px); 
 }
 
 .edit__subtask:hover {
@@ -310,6 +326,10 @@ textarea:focus {
   background-color: transparent;
   outline: none;
   font-size: 16px;
+  padding-right: 40px; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 
 .edit__subtask-icons{
