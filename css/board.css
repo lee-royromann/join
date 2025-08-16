@@ -265,6 +265,12 @@ body {
     display: none;                
 }
 
+.drag-area-highlight {
+    border: 2px dashed #A8A8A8;
+    width: 100%;
+    max-width: 220px;
+}
+
 .card--notasks {
     font-family: "Open Sans";    
     width: 100%;

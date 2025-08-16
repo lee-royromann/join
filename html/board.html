@@ -155,7 +155,7 @@
                             <span class="kanban__subtitle-text">To do</span>
                             <span class="kanban__subtitle-plus" onclick="showTaskOverlay('to-do')"></span>
                             </div>
-                            <div class="kanban__column" id="to-do" ondrop="moveTo('to-do')" ondragover="allowDrop(event)"></div>
+                            <div class="kanban__column" id="to-do" ondrop="moveTo('to-do')" ondragleave="removeHighlight('to-do')" ondragover="allowDrop(event); highlight('to-do')"></div>
                         </div>
 
                         <div class="kanban__section">
@@ -163,7 +163,7 @@
                             <span class="kanban__subtitle-text">In progress</span>
                             <span class="kanban__subtitle-plus" onclick="showTaskOverlay('in-progress')"></span>
                             </div>
-                            <div class="kanban__column" id="in-progress" ondrop="moveTo('in-progress')" ondragover="allowDrop(event)"></div>
+                            <div class="kanban__column" id="in-progress" ondrop="moveTo('in-progress')" ondragleave="removeHighlight('in-progress')" ondragover="allowDrop(event); highlight('in-progress')"></div>
                         </div>
 
                         <div class="kanban__section">
@@ -171,14 +171,14 @@
                             <span class="kanban__subtitle-text">Await feedback</span>
                             <span class="kanban__subtitle-plus" onclick="showTaskOverlay('await-feedback')"></span>
                             </div>
-                            <div class="kanban__column" id="await-feedback" ondrop="moveTo('await-feedback')" ondragover="allowDrop(event)"></div>
+                            <div class="kanban__column" id="await-feedback" ondrop="moveTo('await-feedback')" ondragleave="removeHighlight('await-feedback')" ondragover="allowDrop(event); highlight('await-feedback')"></div>
                         </div>
 
                         <div class="kanban__section">
                             <div class="kanban__subtitle">
                             <span class="kanban__subtitle-text">Done</span>
                             </div>
-                            <div class="kanban__column" id="done" ondrop="moveTo('done')" ondragover="allowDrop(event)"></div>
+                            <div class="kanban__column" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')" ondragover="allowDrop(event); highlight('done')"></div>
                         </div>
 
                     </div>

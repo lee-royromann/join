@@ -186,6 +186,8 @@ async function moveTo(status) {
     if (idx === -1) return;
     const updatedTask = { ...tasksFirebase[idx], status };
     tasksFirebase[idx] = updatedTask;
+    document.querySelectorAll('.kanban__column')
+        .forEach(col => col.classList.remove('drag-area-highlight'));
     renderTasks();
     await saveTaskToFirebase(updatedTask); 
 }

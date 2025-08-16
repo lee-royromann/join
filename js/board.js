@@ -277,6 +277,22 @@ function allowDrop(event) {
 
 
 /**
+ * Highlights the potential droparea by adding futher class to the column
+ */
+function highlight(id) {
+    document.getElementById(id).classList.add('drag-area-highlight');
+}
+
+
+/**
+ * Remove the highlight of a droparea when column is not chosen
+ */
+function removeHighlight(id) {
+    document.getElementById(id).classList.remove('drag-area-highlight');
+}
+
+
+/**
  * Render the edit overlay for a given task.
  * @param {string|number} taskId
  * @returns {void}
