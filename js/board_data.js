@@ -156,6 +156,26 @@ async function deleteTaskFromFirebase(taskId) {
 
 
 /**
+ * Controller for deleting a task via UI.
+ * Ensures deletion, reload, overlay close, and re-render.
+ * @async
+ * @param {string|number} taskId
+ * @returns {Promise<void>}
+ */
+async function handleDeleteTask(taskId) {
+    try {
+        await deleteTaskFromFirebase(taskId); 
+        tasksFirebase = []; 
+        await loadTasksFromFirebase();        
+        closeOverlay();                       
+        renderTasks();                        
+    } catch (error) {
+        console.error("Fehler beim Löschen der Aufgabe:", error);
+    }
+}
+
+
+/**
  * Move the currently dragged task to a new status and persist the change.
  * @async
  * @param {TaskStatus} status
@@ -211,3 +231,25 @@ async function saveEditTask() {
     await closeEditOverlay();
 }
 
+
+/**
+ * Move a task to a new status via the card's burger menu, persist, and re-render.
+ * @async
+ * @param {string|number} taskId
+ * @param {TaskStatus} newStatus
+ * @param {MouseEvent} event
+ * @returns {Promise<void>}
+ */
+async function moveEditStatus(taskId, newStatus, event) {
+    event.stopPropagation();
+    const idx = tasksFirebase.findIndex(t => String(t.id) === String(taskId));
+    if (idx === -1) return;
+    const updatedTask = { ...tasksFirebase[idx], status: newStatus };
+    tasksFirebase[idx] = updatedTask;
+    await saveTaskToFirebase(updatedTask); 
+    const userMenu = document.getElementById('card-menu-' + taskId);
+      if (userMenu) {
+          userMenu.classList.remove('card__burger-menu--visible');
+      }
+    renderTasks();
+}
