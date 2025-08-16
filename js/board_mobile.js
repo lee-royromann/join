@@ -12,7 +12,7 @@ function toggleBoardTaskMenu(event, taskId) {
 }
 
 /**
- * Close any open per-card menu when clicking elsewhere.
+ * Close burger menue when clicking somewhere else
  */
 document.addEventListener('click', function () {
     document.querySelectorAll('.card__burger-menu--visible')

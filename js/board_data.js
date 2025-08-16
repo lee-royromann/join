@@ -229,8 +229,8 @@ async function toggleSubtaskStatus(index, taskId) {
 async function saveEditTask() {
     if (!validateEditForm()) return;
     updateEditBoardData();
-    await saveTaskToFirebase(currentTask);;
-    await closeEditOverlay();
+    await saveTaskToFirebase(currentTask);
+    await closeEditOverlay()
 }
 
 
