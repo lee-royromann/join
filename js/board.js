@@ -77,16 +77,22 @@ function searchTask() {
 
 
 /**
- * Function to find a Task when the "Enter" key is pressed inside the input field.
+ * Function to confirm Input value with "Enter" key. Used on field search, board edit - subtasks
  * It prevents default behavior to avoid form submission, when key is pressed down.
  * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
  */
-function handleEnterToFindSubtask(event) {   
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        searchTask();
-    }
-};
+function handleEnterEvent(event) {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    const { action, id } = event.currentTarget.dataset; 
+    switch (action) {
+        case 'search-task':
+            searchTask();
+            break;
+        case 'confirm-add-subtask':
+            addEditSubtask();
+            break;
+}}
 
 
 /**

@@ -260,7 +260,7 @@ function getEditTemplate(task) {
                 <div class="edit__group">
                     <label class="edit__label" for="task-subtask-input">Subtasks</label>
                     <div class="edit__wrapper-input">
-                        <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" placeholder="Add new subtask"/>
+                        <input type="text" class="edit__input edit__input--textgrey" id="task-subtask-input" data-action="confirm-add-subtask" placeholder="Add new subtask" onkeydown="handleEnterEvent(event)"/>
                         <div class="edit__wrapper-subtask-icons" id="task-subtask-icons-1">
                             <div class="edit__icon-subtask edit__icon-add" onclick="addEditSubtask()">
                                 <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
@@ -335,7 +335,12 @@ function getSubtaskTemplate(subtask, id) {
         ${subtask.title}
       </span>
       <div class="edit__subtask-icons right-padding">
-        <div class="edit__icon-subtasklist" onclick="editEditSubtask(${id})">
+        <div 
+            class="edit__icon-subtasklist"
+            data-action="confirm-edit-subtask" 
+            onclick="editEditSubtask(${id})" 
+            onkeydown="handleEnterEvent(event)"
+        >
           <img src="../assets/img/icon/edit.svg" alt="Edit subtask">
         </div>
         <span class="edit__subtask-separator"></span>
