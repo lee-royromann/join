@@ -260,17 +260,58 @@
     }
 }
 
-@media (max-width: 440px) {
+@media (max-width: 480px) {
+    .edit__label,
+    .edit__input,
+    .edit__textarea,
+    #edit-due-date,
+    .edit__button-prio span,
+    #task-subtask-input,
+    #task-subtask-input::placeholder,
+    .edit__subtask-text,
+    .edit__button-ok {
+        font-size: 16px;
+    }
+
+    .edit__input {
+        height: 40px;
+    }
+
+    .edit__button-prio {
+        max-width: 120px;
+        height: 41px;
+    }
+
+    .edit__button-prio svg,
+    .edit__button-ok img {
+        width: 15px;
+        height: 20px;
+    }
+
+    .edit__contact-badge {
+        height: 32px;
+        width: 32px;
+    }
+
+    .edit__button-ok {
+        height: 40px;
+    }
+}
+
+@media (max-width: 460px) {
     .overlay__content {
         padding: 20px;
     }
 
-    .edit__wrapper-priority {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .edit__icon-contact, .edit__icon-calendar, .edit__wrapper-subtask-icons {
+    .edit__icon-contact,
+    .edit__icon-calendar,
+    .edit__wrapper-subtask-icons {
         right: 4px
+    }
+}
+
+@media (max-width: 400px) {
+    .edit__button-prio svg {
+        display: none;
     }
 }

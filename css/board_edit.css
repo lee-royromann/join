@@ -271,6 +271,7 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 36px;
     padding: 6px 22px 6px 22px;
     color: #000000;
 }
@@ -294,7 +295,7 @@ textarea:focus {
 .edit__subtask:hover {
     width: 100%;
     background-color: #EEEEEE;
-    border-radius: 10px;
+    border-radius: 15px;
     transition:  background-color 0.1s ease-in-out;
     cursor: pointer;
 }
@@ -348,6 +349,10 @@ textarea:focus {
 
 .edit__subtask:hover .edit__subtask-icons { 
     display: flex;
+}
+
+.edit__icon-subtasklist img {
+    height: 16px;
 }
 
 .edit__icon-subtasklist:hover {

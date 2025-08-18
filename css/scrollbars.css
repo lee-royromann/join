@@ -9,7 +9,8 @@
 .overlay__subtasks--frame::-webkit-scrollbar,
 .edit__wrapper-list::-webkit-scrollbar,
 .edit__subtasklist::-webkit-scrollbar,
-.task__overlay-content::-webkit-scrollbar {
+.task__overlay-content::-webkit-scrollbar,
+.overlay__edit-selections::-webkit-scrollbar {
   width: 6px;
 }
 
@@ -22,7 +23,8 @@
 .overlay__subtasks--frame::-webkit-scrollbar-thumb,
 .edit__wrapper-list::-webkit-scrollbar-thumb,
 .edit__subtasklist::-webkit-scrollbar-thumb,
-.task__overlay-content::-webkit-scrollbar-thumb {
+.task__overlay-content::-webkit-scrollbar-thumb,
+.overlay__edit-selections::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
@@ -36,6 +38,7 @@
 .overlay__subtasks--frame::-webkit-scrollbar-track
 .edit__wrapper-list::-webkit-scrollbar-track,
 .edit__subtasklist::-webkit-scrollbar-track,
-.task__overlay-content::-webkit-scrollbar-track {
+.task__overlay-content::-webkit-scrollbar-track,
+.overlay__edit-selections::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
