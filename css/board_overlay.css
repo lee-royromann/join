@@ -26,7 +26,7 @@
     border-radius: 30px;
     padding: 48px 40px;
     box-shadow: 0px 0px 4px 0px #00000029;
-    overflow: visible;
+    overflow: hidden;
     transform: translateX(100vw);
     transition: transform 0.3s ease-in-out;
 }
@@ -48,6 +48,9 @@
     gap: 24px !important;
     position: relative;
     overflow: hidden;
+    flex: 1;
+    min-height: 0;    /* erlaubt, dass Eltern scrollen dürfen */
+    align-items: stretch;
 }
 
 .overlay__badgeframe {
@@ -61,7 +64,7 @@
     border-radius: 8px;    
     padding: 4px 24px;
     gap: 10px;
-    font-size: 23px;
+    font-size: 24px !important;
     display: flex;
     align-items: center;
 }
@@ -89,6 +92,23 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.overlay__title,
+.overlay__description {
+    overflow-wrap: anywhere;  
+    word-break: normal;
+    hyphens: auto;            
+    white-space: normal;      
+    min-width: 0;
+    flex: 0 0 auto;  
+}
+
+.overlay__content,
+.overlay__story,
+.overlay__edit {
+    min-height: 0;              
+    min-width: 0;               
 }
 
 .overlay__parameters {
@@ -190,7 +210,6 @@
 
 .overlay__subtask:hover {
    background-color: #eeeeee;
-
 }
 
 .overlay__action {
@@ -199,6 +218,7 @@
     justify-content: flex-end;
     align-items: center;
     gap: 8px;
+    padding-bottom: 16px;
 }
 
 .overlay__action--activate {
@@ -208,6 +228,10 @@
     fill: #2A3647;
     color: #2A3647;
     text-decoration: none;
+}
+
+.overlay__action--activate span {
+    font-size: 20px;
 }
 
 .overlay__action--separator {
