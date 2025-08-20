@@ -7,8 +7,13 @@
 let textPasswdError = "Ups! Your passwords don't match!";
 let textEmailError = "The e-mail address already exists!";
 
+
 /**
- * Registriert einen neuen Benutzer mit fortlaufender ID.
+ * Registriert einen neuen Benutzer asynchron.
+ * Diese Funktion verarbeitet die Eingaben aus dem Registrierungsformular,
+ * validiert die Daten, prüft auf doppelte E-Mail-Adressen, erstellt
+ * einen neuen Benutzer sowie einen zugehörigen Kontakt und speichert
+ * diese in der Datenbank.
  */
 async function registerUser() {
     // Verhindert, dass das Formular die Seite neu lädt
@@ -85,10 +90,17 @@ async function registerUser() {
     }
 }
 
+
 // ===================================================================
 // HILFSFUNKTIONEN 
 // ===================================================================
 
+
+/**
+ * Generiert einen zufälligen, hellen Hex-Farbcode für Benutzer-Avatare.
+ * Verwendet nur Zeichen, die zu helleren Farbtönen führen.
+ * @returns {string} Ein Hex-Farbcode im Format '#RRGGBB'.
+ */
 function getUniqueAvatarColor() {
     const letters = '89ABCDEF';
     let color = '#';
@@ -98,6 +110,11 @@ function getUniqueAvatarColor() {
     return color;
 }
 
+
+/**
+ * Sammelt die DOM-Elemente des Registrierungsformulars.
+ * @returns {object} Ein Objekt, das die Referenzen auf die Formular-Input-Elemente enthält.
+ */
 function getFormElements() {
     return {
         username: document.getElementById('username'),
@@ -107,6 +124,13 @@ function getFormElements() {
     };
 }
 
+
+/**
+ * Überprüft, ob zwei Passwörter übereinstimmen und aktualisiert die Benutzeroberfläche entsprechend.
+ * @param {string} a - Das erste Passwort.
+ * @param {string} b - Das zweite Passwort zur Bestätigung.
+ * @returns {boolean} Gibt `true` zurück, wenn die Passwörter übereinstimmen, andernfalls `false`.
+ */
 function checkSamePasswd(a, b) {
     let labelPassw = document.getElementById('labelPasswordConf');
     let poppinError = document.getElementById('errorPoppin');
@@ -125,6 +149,11 @@ function checkSamePasswd(a, b) {
     return true;
 }
 
+
+/**
+ * Zeigt eine Fehlermeldung im UI an, wenn die E-Mail-Adresse bereits existiert.
+ * Hebt das E-Mail-Feld hervor und blendet eine entsprechende Nachricht ein.
+ */
 function showEmailExistsError() {
     const label = document.getElementById('labelEmailSignUp');
     const errorMsg = document.getElementById('errorPoppin');
@@ -135,6 +164,11 @@ function showEmailExistsError() {
     }
 }
 
+
+/**
+ * Zeigt ein Overlay für eine erfolgreiche Registrierung an und leitet
+ * den Benutzer nach einer kurzen Verzögerung zur Startseite weiter.
+ */
 function showOverlaySuccessful() {
     let overlay = document.getElementById('success');
     if (overlay) {
@@ -145,5 +179,3 @@ function showOverlaySuccessful() {
         }, 1500);
     }
 }
-
-
