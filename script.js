@@ -1,10 +1,8 @@
 /**
- * Initializes the application layout by loading the header and navbar,
- * and triggers the greeting functionality if the user is on the summary page.
- *
+ * Initialisiert das grundlegende Layout der Anwendung, indem Header und Navbar geladen werden.
+ * Löst zusätzlich die Begrüßungsfunktionalität aus, wenn sich der Benutzer auf der Übersichtsseite befindet.
  * @async
- * @function init
- * @param {string} page - The ID of the current page (e.g., 'summary_page').
+ * @param {string} page - Die ID der aktuellen Seite (z.B. 'summary_page').
  */
 async function init(page) {
     await loadHTML("header.html", "header-placeholder");
@@ -17,11 +15,11 @@ async function init(page) {
         initGreetingRepeat();
     }
 }
+
+
 /**
- * Checks the login status stored in localStorage.
- * If the user is not logged in, redirects them to the index (login) page.
- *
- * @function isUserLoged
+ * Überprüft den im localStorage gespeicherten Anmeldestatus.
+ * Leitet den Benutzer zur Index- (Login-) Seite weiter, wenn er nicht angemeldet ist.
  */
 function isUserLoged() {
     let isLoggedIn = localStorage.getItem("loggedIn");
@@ -31,11 +29,11 @@ function isUserLoged() {
         setUserCircleInitials();
     }
 }
+
+
 /**
- * Logs the user out by resetting the login and layout information in localStorage.
- * Redirects to the index (login) page afterwards.
- *
- * @function logOut
+ * Meldet den Benutzer ab, indem die Anmelde- und Layoutinformationen im localStorage zurückgesetzt werden.
+ * Leitet anschließend zur Index- (Login-) Seite weiter.
  */
 function logOut() {
     localStorage.setItem("loggedIn", "false");
@@ -43,13 +41,13 @@ function logOut() {
     localStorage.removeItem("username");
     window.location.href = "../index.html";
 }
+
+
 /**
- * Loads an external HTML file and injects it into a specified container element on the page.
- *
+ * Lädt eine externe HTML-Datei und fügt deren Inhalt in ein angegebenes Container-Element auf der Seite ein.
  * @async
- * @function loadHTML
- * @param {string} file - The path to the HTML file.
- * @param {string} elementId - The ID of the target container element to load content into.
+ * @param {string} file - Der Pfad zur HTML-Datei.
+ * @param {string} elementId - Die ID des Ziel-Container-Elements.
  */
 async function loadHTML(file, elementId) {
     let response = await fetch(file);
@@ -57,12 +55,12 @@ async function loadHTML(file, elementId) {
     let container = document.getElementById(elementId);
     if (container) container.innerHTML = html;
 }
+
+
 /**
- * Highlights the currently active page by adding an "active-menu" class
- * to the relevant navigation element and removing it from all others.
- *
- * @function activePageHiglight
- * @param {string} page - The ID of the current active page.
+ * Hebt die aktuell aktive Seite hervor, indem dem entsprechenden Navigationselement
+ * eine "active-menu"-Klasse hinzugefügt und von allen anderen entfernt wird.
+ * @param {string} page - Die ID der aktuell aktiven Seite.
  */
 function activePageHiglight(page) {
     let ids = ["summary_page", "add_task_page", "board_page", "contact_page", "help_page"];
@@ -73,15 +71,19 @@ function activePageHiglight(page) {
     let current = document.getElementById(page);
     if (current) current.classList.add("active-menu");
 }
+
+
 /**
- * Toggles the burger menu open/close with fade animation.
+ * Schaltet das Burger-Menü mit einer Einblendanimation ein oder aus.
  */
 function burgerMenuSliding() {
     let menu = document.getElementById("burger_menu");
     menu.classList.toggle("visible");
 }
+
+
 /**
- * Closes the burger menu when clicking outside of it.
+ * Schließt das Burger-Menü, wenn außerhalb davon geklickt wird.
  */
 document.addEventListener("click", function(event) {
     let menu = document.getElementById("burger_menu");
@@ -96,25 +98,25 @@ document.addEventListener("click", function(event) {
         menu.classList.remove("visible");
     }
 });
+
+
 /**
- * Stores the layout type (internal or external) in localStorage
- * and redirects the user to a given URL.
- *
- * @function setLayoutAndRedirect
- * @param {string} layout - The layout type ('intern' or 'extern').
- * @param {string} url - The destination URL to redirect the user to.
+ * Speichert den Layout-Typ (intern oder extern) im localStorage
+ * und leitet den Benutzer zu einer angegebenen URL weiter.
+ * @param {string} layout - Der Layout-Typ ('intern' oder 'extern').
+ * @param {string} url - Die Ziel-URL, zu der der Benutzer weitergeleitet wird.
  */
 function setLayoutAndRedirect(layout, url) {
     localStorage.removeItem('layout');
     localStorage.setItem('layout', layout);
     window.location.href = url;
 }
+
+
 /**
- * Loads the internal header and navbar for authenticated users.
- * Also highlights the current page for legal/privacy pages.
- *
+ * Lädt den internen Header und die Navbar für authentifizierte Benutzer.
+ * Hebt auch die aktuelle Seite für Rechts- und Datenschutzseiten hervor.
  * @async
- * @function loadHeaderNavbarIntern
  */
 async function loadHeaderNavbarIntern() {
     await Promise.all([
@@ -124,11 +126,11 @@ async function loadHeaderNavbarIntern() {
     markLegalPrivacyActiveLink();
     setUserCircleInitials();
 }
+
+
 /**
- * Loads the external header and navbar for guest (unauthenticated) users.
- *
+ * Lädt den externen Header und die Navbar für Gastbenutzer (nicht authentifiziert).
  * @async
- * @function loadHeaderNavbarExtern
  */
 async function loadHeaderNavbarExtern() {
     await Promise.all([
@@ -136,11 +138,11 @@ async function loadHeaderNavbarExtern() {
         loadHTML("/html/navbar_extern.html", "navbar-section")
     ]);
 }
+
+
 /**
- * Adds the 'active-menu' class to the correct navigation item
- * on legal and privacy policy pages.
- *
- * @function markLegalPrivacyActiveLink
+ * Fügt dem korrekten Navigationselement auf den Seiten für Impressum und Datenschutz
+ * die Klasse 'active-menu' hinzu.
  */
 function markLegalPrivacyActiveLink() {
     let path = window.location.pathname;
@@ -153,11 +155,11 @@ function markLegalPrivacyActiveLink() {
         if (el) el.classList.add("active-menu");
     }
 }
+
+
 /**
- * Accepts cookies, stores the acceptance timestamp in localStorage,
- * hides the cookie banner, and enables the login buttons.
- *
- * @function acceptCookies
+ * Akzeptiert Cookies, speichert den Zeitstempel der Annahme im localStorage,
+ * blendet das Cookie-Banner aus und aktiviert die Anmelde-Buttons.
  */
 function acceptCookies() {
     let now = new Date().getTime();
@@ -166,12 +168,12 @@ function acceptCookies() {
     enableLogin();
     enableLoginButtons();
 }
+
+
 /**
- * Validates whether the user's cookie acceptance is still valid
- * by checking if it occurred within the past year.
- *
- * @function cookiesStillValid
- * @returns {boolean} True if still valid, otherwise false.
+ * Überprüft, ob die Cookie-Zustimmung des Benutzers noch gültig ist,
+ * indem geprüft wird, ob sie innerhalb des letzten Jahres erfolgte.
+ * @returns {boolean} True, wenn noch gültig, andernfalls false.
  */
 function cookiesStillValid() {
     let timestamp = localStorage.getItem("cookiesAcceptedAt");
@@ -181,18 +183,19 @@ function cookiesStillValid() {
     let oneYear = 1000 * 60 * 60 * 24 * 365;
     return now - acceptedAt < oneYear;
 }
+
+
 /**
- * Makes the login area visible.
- *
- * @function enableLogin
+ * Macht den Anmeldebereich sichtbar.
  */
 function enableLogin() {
     let loginArea = document.getElementById("loginArea");
     if (loginArea) loginArea.classList.remove("d-none");
-}/**
- * Disables both the standard login and guest login buttons.
- *
- * @function disableLoginButtons
+}
+
+
+/**
+ * Deaktiviert sowohl den Standard-Login- als auch den Gast-Login-Button.
  */
 function disableLoginButtons() {
     let logInBtn = document.getElementById("logIn");
@@ -200,10 +203,10 @@ function disableLoginButtons() {
     if (logInBtn) logInBtn.disabled = true;
     if (guestBtn) guestBtn.disabled = true;
 }
+
+
 /**
- * Enables both the standard login and guest login buttons.
- *
- * @function enableLoginButtons
+ * Aktiviert sowohl den Standard-Login- als auch den Gast-Login-Button.
  */
 function enableLoginButtons() {
     let logInBtn = document.getElementById("logIn");
@@ -211,9 +214,11 @@ function enableLoginButtons() {
     if (logInBtn) logInBtn.disabled = false;
     if (guestBtn) guestBtn.disabled = false;
 }
+
+
 /**
- * Runs once the DOM has fully loaded.
- * Initializes rotate warning, layout loading, cookie logic, and back button.
+ * Wird ausgeführt, sobald das DOM vollständig geladen ist.
+ * Initialisiert die Rotationswarnung, das Laden des Layouts, die Cookie-Logik und den Zurück-Button.
  */
 window.addEventListener("DOMContentLoaded", async () => {
     try {
@@ -226,29 +231,29 @@ window.addEventListener("DOMContentLoaded", async () => {
     initBackButton();
     checkOrientation();
 });
+
+
 /**
- * Loads the rotate warning overlay into the DOM.
- *
+ * Lädt das Overlay für die Rotationswarnung in das DOM.
  * @async
- * @function loadRotateWarning
  */
 async function loadRotateWarning() {
     await loadHTML("/html/rotate_warning.html", "rotate-warning-placeholder");
 }
+
+
 /**
- * Initializes the layout based on login status and current page.
- * Resets layout value every time to ensure clean state.
- *
- * @function initLayout
+ * Initialisiert das Layout basierend auf dem Anmeldestatus und der aktuellen Seite.
+ * Setzt den Layout-Wert jedes Mal zurück, um einen sauberen Zustand zu gewährleisten.
  */
 async function initLayout() {
-    // Optimiert: Die vorherige if/else-Logik war redundant und lud immer den internen Header.
     await loadHeaderNavbarIntern();
-    // Der Layout-Schlüssel wird nach der Entscheidung entfernt, um den Zustand sauber zu halten.
     localStorage.removeItem("layout");
 }
+
+
 /**
- * Handles cookie banner visibility and login button state.
+ * Steuert die Sichtbarkeit des Cookie-Banners und den Zustand der Anmelde-Buttons.
  */
 function initCookies() {
     let stillValid = cookiesStillValid();
@@ -270,10 +275,10 @@ function initCookies() {
         acceptBtn.addEventListener("click", acceptCookies);
     }
 }
+
+
 /**
- * Attaches functionality to the back arrow to go to previous page.
- *
- * @function initBackButton
+ * Fügt dem Zurück-Pfeil die Funktionalität hinzu, zur vorherigen Seite zu navigieren.
  */
 function initBackButton() {
     let backClick = document.getElementById("backArrow");
@@ -281,11 +286,11 @@ function initBackButton() {
         backClick.addEventListener("click", () => history.back());
     }
 }
+
+
 /**
- * Checks the current orientation of the user's device.
- * If on a mobile device in landscape mode, shows a fullscreen warning overlay.
- *
- * @function checkOrientation
+ * Überprüft die aktuelle Ausrichtung des Geräts des Benutzers.
+ * Zeigt bei einem mobilen Gerät im Querformat ein bildschirmfüllendes Warn-Overlay an.
  */
 function checkOrientation() {
     let warning = document.getElementById("rotateWarning");
@@ -298,32 +303,34 @@ function checkOrientation() {
     warning.style.display = (isMobile && smallScreen && isLandscape) ? "flex" : "none";
 }
 
+
 window.addEventListener("load", checkOrientation);
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
+
+
 /**
- * Displays the full-screen loading spinner overlay.
- *
- * @function spinningLoaderStart
+ * Zeigt das bildschirmfüllende Lade-Spinner-Overlay an.
  */
 function spinningLoaderStart() {
     let spinner = document.getElementById('spinnerOverLay');
     spinner.classList.remove('d-none');
 }
+
+
 /**
- * Hides the full-screen loading spinner overlay.
- *
- * @function spinningLoaderEnd
+ * Versteckt das bildschirmfüllende Lade-Spinner-Overlay.
  */
 function spinningLoaderEnd() {
     let spinner = document.getElementById('spinnerOverLay');
     spinner.classList.add('d-none');
-}/**
- * Sets the user's initials inside the circle in the header.
- * If the user is a guest, it shows "G".
- * This function should be called after the header has been injected into the DOM.
- *
- * @function setUserCircleInitials
+}
+
+
+/**
+ * Setzt die Initialen des Benutzers in den Kreis im Header.
+ * Wenn der Benutzer ein Gast ist, wird "G" angezeigt.
+ * Diese Funktion sollte aufgerufen werden, nachdem der Header in das DOM eingefügt wurde.
  */
 function setUserCircleInitials() {
     let userCircle = document.querySelector('.user-logo-text');
@@ -341,11 +348,11 @@ function setUserCircleInitials() {
         userCircle.textContent = "G";
     }
 }
+
+
 /**
- * Returns a set of regular expression patterns used to validate input fields.
- *
- * @function inputValidations
- * @returns {Object} An object containing validation regex for username, email, password, and phoneNumber.
+ * Gibt eine Reihe von regulären Ausdrücken zurück, die zur Validierung von Eingabefeldern verwendet werden.
+ * @returns {Object} Ein Objekt mit Validierungs-Regex für Benutzername, E-Mail, Passwort und Telefonnummer.
  */
 function inputValidations() {
     return {
@@ -355,13 +362,13 @@ function inputValidations() {
         phoneNumber: /^\d+$/,
     };
 }
+
+
 /**
- * Validates the input value based on its ID and updates the label style accordingly.
- * Removes the error class and adds a success class if validation passes.
- *
- * @function correctedInput
- * @param {string} labelID - The ID of the label element to modify.
- * @param {string} inputID - The ID of the input element to validate.
+ * Validiert den Eingabewert basierend auf seiner ID und aktualisiert den Stil des Labels entsprechend.
+ * Entfernt die Fehlerklasse und fügt eine Erfolgsklasse hinzu, wenn die Validierung erfolgreich ist.
+ * @param {string} labelID - Die ID des zu ändernden Label-Elements.
+ * @param {string} inputID - Die ID des zu validierenden Input-Elements.
  */
 function correctedInput(labelID, inputID) {
     let label = document.getElementById(labelID);
@@ -377,12 +384,12 @@ function correctedInput(labelID, inputID) {
         }
     }
 }
+
+
 /**
- * Determines the validation type (e.g., username, email, etc.) based on the input ID.
- *
- * @function validationType
- * @param {string} inputID - The ID of the input element to analyze.
- * @returns {string} The corresponding validation type key.
+ * Bestimmt den Validierungstyp (z.B. Benutzername, E-Mail usw.) basierend auf der Input-ID.
+ * @param {string} inputID - Die ID des zu analysierenden Input-Elements.
+ * @returns {string} Der entsprechende Schlüssel für den Validierungstyp.
  */
 function validationType(inputID) {
     let validationType = "";
@@ -400,11 +407,11 @@ function validationType(inputID) {
 
     return validationType;
 }
+
+
 /**
- * Removes the success styling from a label, used to reset the state after input was corrected.
- *
- * @function finishTheCorrection
- * @param {string} labelID - The ID of the label element to reset.
+ * Entfernt das Erfolgs-Styling von einem Label, um den Zustand nach der Korrektur der Eingabe zurückzusetzen.
+ * @param {string} labelID - Die ID des zurückzusetzenden Label-Elements.
  */
 function finishTheCorrection(labelID) {
     let label = document.getElementById(labelID);

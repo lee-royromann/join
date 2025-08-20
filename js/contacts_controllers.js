@@ -4,8 +4,9 @@
 // Sie benötigt Zugriff auf: `loadContacts()`, `addContact()`, `getNextId()`
 // ===================================================================
 
+
 /**
- * Initializes the contacts page, loading contact data and rendering UI.
+ * Initialisiert die Kontaktseite, lädt die Kontaktdaten und rendert die Benutzeroberfläche.
  */
 async function initContactsPage() {
     // isUserLoged(); // Annahme: Diese Funktion existiert in einer anderen Datei.
@@ -20,7 +21,7 @@ async function initContactsPage() {
 
 
 /**
- * Renders all contacts grouped by initials. (Unverändert)
+ * Rendert alle Kontakte, gruppiert nach Initialen.
  */
 async function renderContacts() {
     cleanContactsList(); // Annahme: Diese Funktion existiert.
@@ -29,7 +30,7 @@ async function renderContacts() {
 
 
 /**
- * KORRIGIERT: Speichert die Änderungen an einem bestehenden Kontakt.
+ * Speichert die Änderungen an einem bestehenden Kontakt.
  * @param {string|number} id - Die ID des zu speichernden Kontakts.
  */
 async function saveContact(id) {
@@ -65,10 +66,10 @@ async function saveContact(id) {
 
 
 /**
- * FINAL & KORREKT: Löscht Kontakt & User-Account.
- * Holt die User-ID direkt aus dem localStorage, statt sie unsicher zu suchen.
- * @param {Event} event
- * @param {string} contactId
+ * Löscht einen Kontakt und, falls es der eigene Account ist, auch den zugehörigen Benutzer-Account.
+ * Holt die User-ID sicher aus dem localStorage.
+ * @param {Event} event - Das auslösende Event.
+ * @param {string} contactId - Die ID des zu löschenden Kontakts.
  */
 async function deleteContact(event, contactId) {
     suppressActionEvent(event);
@@ -91,7 +92,6 @@ async function deleteContact(event, contactId) {
         if (loggedInUserEmail && loggedInUserEmail === contactToDelete.email) {
             console.log('%cSelbst-Löschung erkannt! Zugehöriger User-Account wird jetzt gelöscht.', 'color: orange; font-weight: bold;');
 
-            // KORREKTUR: ID direkt aus dem Speicher holen, statt zu suchen
             const userIdToDelete = localStorage.getItem('currentUserId');
             console.log(`User-ID aus localStorage geholt: "${userIdToDelete}"`);
 
@@ -128,7 +128,7 @@ async function deleteContact(event, contactId) {
 
 
 /**
- * Creates a new contact, assigns a sequential ID, and saves it to Firebase.
+ * Erstellt einen neuen Kontakt, weist eine fortlaufende ID zu und speichert ihn in Firebase.
  */
 async function createNewContact() {
     if (checkValueInput()) return;
@@ -163,20 +163,23 @@ async function createNewContact() {
 
 
 /**
- * HILFSFUNKTION: Ruft die E-Mail des aktuell eingeloggten Benutzers ab.
+ * Hilfsfunktion: Ruft die E-Mail des aktuell eingeloggten Benutzers aus dem localStorage ab.
+ * @returns {string|null} Die E-Mail des Benutzers oder null, wenn nicht gefunden.
  */
 function getLoggedInUserEmail() {
     return localStorage.getItem('currentUserEmail');
 }
 
 
-// Die Funktion "findUserIdByEmail" wurde entfernt, da sie fehlerhaft und unnötig war.
-
-
 // ===================================================================
-// Restliche UI- und Validierungsfunktionen (unverändert)
+// Restliche UI- und Validierungsfunktionen
 // ===================================================================
 
+
+/**
+ * Wählt einen Kontakt aus, hebt ihn hervor und zeigt seine Details an.
+ * @param {string|number} id - Die ID des ausgewählten Kontakts.
+ */
 function chooseContact(id) {
     resetClassChooseContact();
     setClassChoooseContact(id);
@@ -184,24 +187,42 @@ function chooseContact(id) {
     userInfo(id);
 }
 
+
+/**
+ * Öffnet den Dialog zum Erstellen eines neuen Kontakts.
+ */
 function openNewContactDialog() {
     clerOverlay();
     openAddContact();
     openOverlay();
 }
 
+
+/**
+ * Öffnet den Dialog zum Bearbeiten eines bestehenden Kontakts.
+ * @param {string|number} id - Die ID des zu bearbeitenden Kontakts.
+ */
 function editContact(id) {
     clerOverlay();
     openEditContact(id);
     openOverlay();
 }
 
+
+/**
+ * Öffnet den responsiven Dialog zum Hinzufügen eines neuen Kontakts.
+ */
 function addRespContact() {
     clerOverlay();
     openAddRespContact();
     openOverlay();
 }
 
+
+/**
+ * Öffnet den responsiven Dialog zum Bearbeiten eines Kontakts.
+ * @param {string|number} id - Die ID des zu bearbeitenden Kontakts.
+ */
 function editRespContact(id) {
     clerOverlay();
     openEditRespContact(id);
@@ -209,6 +230,10 @@ function editRespContact(id) {
     closeToolsresp();
 }
 
+
+/**
+ * Passt die Ansicht für mobile Geräte an, um die Benutzerinformationen anzuzeigen.
+ */
 function showRespUserInfo() {
     if (window.innerWidth <= 900) {
         document.getElementById('contactContainer').classList.add('d-none');
@@ -219,6 +244,10 @@ function showRespUserInfo() {
     }
 }
 
+
+/**
+ * Stellt die Ansicht für mobile Geräte wieder her, um die Kontaktliste anzuzeigen.
+ */
 function showRespContactList() {
     let container = document.getElementById('contactContainer');
     if (!container.classList.contains('d-none')) return;
@@ -229,6 +258,11 @@ function showRespContactList() {
     changeOfAddPersoneBtn();
 }
 
+
+/**
+ * Überprüft die Eingabewerte des Formulars und zeigt bei Bedarf Fehler an.
+ * @returns {boolean} `true`, wenn ein Fehler vorliegt, sonst `false`.
+ */
 function checkValueInput() {
     let input = checkValues();
     if (input) {
@@ -238,6 +272,11 @@ function checkValueInput() {
     return false;
 }
 
+
+/**
+ * Zeigt eine Fehlermeldung für ein bestimmtes Eingabefeld an.
+ * @param {string} inputLabel - Der Name des fehlerhaften Feldes (z.B. "Email").
+ */
 function inputError(inputLabel) {
     let info = document.getElementById('poppin');
     info.classList.remove('opacity');
@@ -245,6 +284,10 @@ function inputError(inputLabel) {
     errorInputField(inputLabel);
 }
 
+
+/**
+ * Entfernt alle Fehlermeldungen und Markierungen von den Formularfeldern.
+ */
 function removeErrorText() {
     const labels = ["Contactname", "Email", "Phone"];
     const info = document.getElementById('poppin');
@@ -258,6 +301,12 @@ function removeErrorText() {
     });
 }
 
+
+/**
+ * Gibt eine spezifische Fehlermeldung für ein bestimmtes Feld zurück.
+ * @param {string} key - Der Schlüssel des Feldes ("Contactname", "Email", "Phone").
+ * @returns {string} Die entsprechende Fehlermeldung.
+ */
 function errorMessage(key) {
     const messages = {
         "Contactname": "Please check your name entry!",
@@ -267,6 +316,11 @@ function errorMessage(key) {
     return messages[key] || "Unknown error!";
 }
 
+
+/**
+ * Markiert ein Eingabefeld visuell als fehlerhaft.
+ * @param {string} inputLabel - Der Name des zu markierenden Feldes.
+ */
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);
     if (label) {
@@ -274,10 +328,21 @@ function errorInputField(inputLabel) {
     }
 }
 
+
+/**
+ * Überprüft, ob ein Wert leer ist oder nur aus Leerzeichen besteht.
+ * @param {string} value - Der zu prüfende Wert.
+ * @returns {boolean} `true`, wenn der Wert leer ist, sonst `false`.
+ */
 function checkEmptyInput(value) {
     return value.trim() === "";
 }
 
+
+/**
+ * Liest die aktuellen Werte aus den Formularfeldern.
+ * @returns {Object} Ein Objekt mit den Werten für Name (n), E-Mail (e) und Telefon (p).
+ */
 function readsTheInputValues() {
     return {
         n: document.getElementById('contactname').value,
@@ -286,10 +351,14 @@ function readsTheInputValues() {
     };
 }
 
+
+/**
+ * Validiert die Werte aus den Formularfeldern.
+ * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`, wenn alle gültig sind.
+ */
 function checkValues() {
     let { n, e, p } = readsTheInputValues();
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
     if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone";
 }
-

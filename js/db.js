@@ -9,9 +9,11 @@ const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedataba
 let usersFirebase = [];
 let contactsFirebase = [];
 
+
 // =================================================================================
 // GENERISCHE API-FUNKTION
 // =================================================================================
+
 
 /**
  * Sendet eine Anfrage an die Firebase Realtime Database.
@@ -54,13 +56,15 @@ async function firebaseRequest(path, method = 'GET', body = null) {
     }
 }
 
+
 // =================================================================================
-// ID-VERWALTUNG (PRODUKTIVE VERSION MIT SICHERHEITSNETZ)
+// ID-VERWALTUNG
 // =================================================================================
+
 
 /**
  * Ermittelt die nächste freie numerische ID für einen gegebenen Pfad.
- * Diese Funktion ist jetzt maximal robust und kann kein 'undefined' zurückgeben.
+ * Diese Funktion ist robust und gibt im Fehlerfall einen sicheren Fallback-Wert zurück.
  * @param {string} path - Der Firebase-Pfad (z.B. '/join/users').
  * @returns {Promise<number>} Die nächste verfügbare ID.
  */
@@ -107,11 +111,12 @@ async function getNextId(path) {
 
 
 // =================================================================================
-// BENUTZER-FUNKTIONEN (MIT ID-PRÜFUNG)
+// BENUTZER-FUNKTIONEN
 // =================================================================================
 
+
 /**
- * Lädt alle Benutzer aus Firebase.
+ * Lädt alle Benutzer aus Firebase und speichert sie in einer globalen Variable.
  * @returns {Promise<Array<Object>>} Ein Array mit den Benutzerobjekten.
  */
 async function loadUsers() {
@@ -127,10 +132,13 @@ async function loadUsers() {
     }
 }
 
+
 /**
  * Fügt einen neuen Benutzer mit einer spezifischen ID hinzu.
+ * Wirft einen Fehler, wenn die ID ungültig ist.
  * @param {Object} user - Das Benutzerobjekt.
  * @param {number|string} id - Die ID, unter der der Benutzer gespeichert wird.
+ * @returns {Promise<any>} Das Ergebnis der Firebase-Anfrage.
  */
 async function addUser(user, id) {
     if (id === undefined || id === null) {
@@ -141,30 +149,30 @@ async function addUser(user, id) {
     return firebaseRequest(`/join/users/${id}`, 'PUT', user);
 }
 
+
 // =================================================================================
-// KONTAKT-FUNKTIONEN (MIT ID-PRÜFUNG)
+// KONTAKT-FUNKTIONEN
 // =================================================================================
 
-// In db.js
 
 /**
  * Lädt alle Kontakte aus Firebase.
  * Im Gastmodus werden sensible Daten wie E-Mail und Telefonnummer maskiert.
- * @returns {Promise<Array<Object>>} Ein Array mit den Kontaktobjekten.
+ * @returns {Promise<Array<Object>>} Ein Array mit den aufbereiteten Kontaktobjekten.
  */
 async function loadContacts() {
     try {
         const data = await firebaseRequest("/join/contacts");
         let loadedContacts = data ? Object.values(data) : [];
 
-        // NEU: Wenn der Gastmodus aktiv ist, die Daten maskieren
+        // Wenn der Gastmodus aktiv ist, die Daten maskieren
         if (isGuest()) {
             loadedContacts = loadedContacts.map(contact => {
                 if (!contact) return null; // Leere Einträge überspringen
                 return {
                     ...contact,
                     email: 'gast@beispiel.de', // Gültiges, aber unbrauchbares Format
-                    phone: '0123 45678910'      // Gültiges, aber unbrauchbares Format
+                    phone: '0123 45678910' // Gültiges, aber unbrauchbares Format
                 };
             }).filter(Boolean); // Entfernt eventuelle null-Einträge
         }
@@ -186,10 +194,13 @@ async function loadContacts() {
     }
 }
 
+
 /**
  * Fügt einen neuen Kontakt mit einer spezifischen ID hinzu.
+ * Wirft einen Fehler, wenn die ID ungültig ist.
  * @param {Object} contactData - Das Kontaktobjekt.
  * @param {number|string} id - Die ID, unter der der Kontakt gespeichert wird.
+ * @returns {Promise<any>} Das Ergebnis der Firebase-Anfrage.
  */
 async function addContact(contactData, id) {
     if (id === undefined || id === null) {
@@ -199,22 +210,12 @@ async function addContact(contactData, id) {
     }
     return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
 }
+
+
 /**
  * Prüft, ob der Gastmodus im sessionStorage aktiv ist.
  * @returns {boolean} True, wenn der Benutzer ein Gast ist.
  */
 function isGuest() {
-  return sessionStorage.getItem('userMode') === 'guest';
+    return sessionStorage.getItem('userMode') === 'guest';
 }
-
-
-
-
-
-
-
-
-
-
-
-
