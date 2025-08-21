@@ -77,21 +77,18 @@ async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
     if (!validation.isValid) {
-        console.log("Form incomplete! Please fill out all required fields.");
         return;
     }
     try {
         const task = await getTaskData(taskStatus);
         await addTaskToDB(task);
-        handleTaskCreationSuccess(task);
     } catch (error) {
-        handleTaskCreationError(error);
     }
     if (origin === 'board-page') {
         closeTaskOverlay();
         window.location.reload();
     } else {
-        window.location.href = './board.html';
+        // window.location.href = './board.html';
     }
 }
 
@@ -246,24 +243,42 @@ function selectCategory(id, arrowIconId) {
 }
 
 
-// +++ NEUE, SICHERE VERSION (verwendet firebaseRequest) +++
+/**
+ * Function to add a task object to the Firebase realtime database.
+ * @param {Object} task - The task object to add.
+ */
 async function addTaskToDB(task) {
     try {
-        // Leitet die Anfrage durch unsere sichere Funktion in db.js.
-        // Gäste werden hier blockiert.
-        const result = await firebaseRequest(`/join/tasks/${task.id}`, 'PUT', task);
-
-        // Optional: Prüfen, ob die Anfrage vom Gastmodus blockiert wurde
-        if (result && result.reason === "Guest mode is read-only") {
-             alert('As a guest, you are not permitted to create tasks.');
-             return; // Verhindert das Leeren des Formulars für Gäste
+        const response = await fetch(`${FIREBASE_URL}/join/tasks/${task.id}.json`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(task)
+            }
+        );
+        if (!response.ok) {
+            throw new Error(`Serverfehler: ${response.status}`);
         }
-
-        console.log("Added task to DB successfully!");
+        showTaskNotification();
         clearForm();
     } catch (error) {
-        console.error("Failed to add the task to the Firebase DB:", error.message);
-        // Fehler weitergeben, falls andere Teile der App darauf reagieren müssen
-        throw error;
+        console.error("Failes to add the task to the Firebase DB:", error.message);
     }
+}
+
+
+/**
+ * Function to show a notification when a task is successfully created.
+ */
+function showTaskNotification() {
+    const notification = document.getElementById('taskNotification');
+    if (!notification) return console.warn('Notification element not found.');
+    notification.classList.add('form__notification--show');
+    setTimeout(() => {
+        notification.classList.remove('form__notification--show');
+    }, 800);
+    setTimeout(() => {
+        window.location.href = './board.html';
+    }, 950);
 }
