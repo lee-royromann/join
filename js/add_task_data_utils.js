@@ -403,18 +403,6 @@ async function generateTaskId() {
 
 
 /**
- * Function to handle a successfully added task.
- * It logs messages to the console so far.
- * Next step will be to implement some visible user feedback.
- * @param {Object} task - The task object that was created.
- */
-function handleTaskCreationSuccess(task) {
-    console.log("Task created:", task);
-    console.log("Added task to DB successfully!");
-}
-
-
-/**
  * Function to handle a unsuccessfully added task -> error.
  * It logs a message to the console so far.
  * Next step will be to implement some visible user feedback.
