@@ -134,7 +134,7 @@ function overlayEditContact(individualUser) {
             </div>
             <div class="overlay-main-container flex-box-center-center">
                 <div class="info-initial info-initial-overlay flex-box-center-center" style="background-color: ${individualUser.color}">${individualUser.username.split(" ").map(n => n[0]).join("")}</div>
-                <form onsubmit="saveContact(${individualUser.id}); return false">
+                <form onsubmit="saveContact(${individualUser.id}); return false" onkeydown="return event.key != 'Enter';">
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
                             <div class="input-content">
@@ -278,7 +278,7 @@ function showOverlayEditResp(individualContact) {
             </div>
             <div class="overlay-main-container-resp">
                 <div class="profil-img-container flex-box-center-center profil-img-resp" style="background-color: ${individualContact.color}">${individualContact.username.split(" ").map(n => n[0]).join("")}</div>
-                <form onsubmit="saveContact(${individualContact.id}); return false">
+                <form onsubmit="saveContact(${individualContact.id}); return false" onkeydown="return event.key != 'Enter';">
                     <div class="dpl-fl-colu input-container-resp">
                         <label id="labelContactname" class="input-field input-field-resp">
                             <div class="input-content-resp">
