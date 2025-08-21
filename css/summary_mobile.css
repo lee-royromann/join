@@ -694,4 +694,66 @@
   .card__row {
     gap: 8px;
   }
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
+@media (max-width: 768px) {
+    .mobile-greeting-text {
+        font-size: 32px; 
+    }
+    
+    .mobile-greeting-username {
+        font-size: 40px; 
+    }
+    
+    .mobile-greeting-subtitle {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-greeting-text {
+        font-size: 29px; 
+    }
+    
+    .mobile-greeting-username {
+        font-size: 35px; 
+    }
+    
+    .mobile-greeting-subtitle {
+        font-size: 14px; 
+    }
+    
+    .mobile-greeting-content {
+        padding: 30px 15px;
+    }
+}
+
+
+@media (max-width: 1040px) {
+    body.showing-mobile-greeting .content {
+        visibility: hidden;
+    }
+}
+  }
