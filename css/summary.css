@@ -43,16 +43,7 @@ a {
     text-decoration: none;
 }
 
-/* .layout-page {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  max-width: 1920px;
-  width: 100%;
-  margin: 0;
-  height: 100vh;
-} */
+
 
 .layout-page__card {
   max-width: 1920px;
@@ -88,7 +79,6 @@ a {
   gap: 24px;
 }
 
-/* Cards */
 .dashboard__header {
   display: flex;
   align-items: baseline;

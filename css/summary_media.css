@@ -1,32 +1,24 @@
-@media (max-width: 1380px) {
+@media (max-width: 1300px) {
   .card__greetings-text {
-    font-size: 30px;
+  font-size: 30px;
   }
 
   .card__username {
-    font-size: 30px;
-  }
-}
-
-@media (max-width: 1270px) {
-  .card__greetings-text {
-    font-size: 27px;
-  }
-
-  .card__username {
-    font-size: 27px;
+    font-size: 47px;
   }
 }
 
 @media (max-width: 1187px) {
+
   .card {
     width: 190px;
     height: 130px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    justify-content: center;
+     display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: center;
   }
+
 
   .card__icon {
     width: 48px;
@@ -46,6 +38,7 @@
     font-size: 14px;
   }
 
+  
   .card__urgent {
     width: 400px;
     height: 130px;
@@ -98,6 +91,7 @@
     font-size: 12px;
   }
 
+  
   .card__overview {
     width: 120px;
     height: 120px;
@@ -113,28 +107,29 @@
   }
 }
 
-@media (max-width: 1120px) {
-  .card__greetings-text {
-    font-size: 25px;
+@media (max-width: 1007px) {
+.card__greetings-text {
+  font-size: 20px;
   }
 
   .card__username {
-    font-size: 25px;
+    font-size: 37px;
   }
 }
 
-@media (max-width: 1051px) {
+@media (max-width: 1040px) {
   .card__greeting {
     display: none;
   }
 
   .content {
-    visibility: hidden;
-  }
-
-  .content.show-content {
-    visibility: visible;
-  }
+        visibility: hidden;
+    }
+    
+    .content.show-content {
+        visibility: visible;
+    }
+ 
 }
 
 @media (max-width: 927px) {
@@ -145,46 +140,12 @@
   .dashboard__subtitle {
     font-size: 20px;
   }
-}
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-  }
 
-  .dashboard__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 30px;
-  }
-
-  .dashboard__title {
-    order: 1;
-    font-size: 42px;
-    margin-bottom: 0;
-  }
-
-  .dashboard__subtitle {
-    order: 2;
-    font-size: 18px;
-    margin-bottom: 16px;
-    position: static;
-    bottom: auto;
-  }
-
-  .dashboard__seperator {
-    order: 3;
-    width: 80px;
-    height: 3px;
-    background-color: #29ABE2;
-    position: static;
-    top: auto;
-    margin: 0;
-  }
 }
 
 @media (max-width: 763px) {
+
   .header {
     padding-left: 40px;
   }
@@ -192,13 +153,13 @@
   .sidebar {
     position: fixed;
     bottom: 0;
-    left: 0;
-    transform: none;
+    left: 0;               
+    transform: none;       
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: none;
-    width: 100%;
+    width: 100%;            
     height: 80px;
     padding: 0;
     background-color: #2A3647;
@@ -212,38 +173,41 @@
 
   .sidebar__menu {
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    padding-left: 14px;
-    padding-right: 14px;
+        justify-content: space-around;
+        align-items: center;
+        padding-left: 14px;
+        padding-right: 14px;
   }
 
   .sidebar__item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 76px;
-    width: 80px;
-    padding: 0;
-    gap: 6px;
+      display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 76px;
+        width: 80px;
+        padding: 0;
+        gap: 6px;
   }
 
+
   .sidebar__icon {
-    height: 24px;
+  height: 24px;
   }
 
   .sidebar__text {
-    display: block;
-    font-size: 14px;
+  display: block;
+        font-size: 14px;
   }
 
+ 
   .header__help,
   .header__title,
   .card__greeting {
     display: none;
   }
 
+  
   .header::before {
     content: "";
     display: inline-block;
@@ -258,9 +222,10 @@
 
   .header__title {
     font-size: 20px;
-    display: none;
+    display: none; 
   }
 
+  
   .dashboard {
     padding-left: 16px;
     padding-right: 16px;
@@ -277,3 +242,40 @@
     background-color: #091931;
   }
 }
+  
+ 
+@media (max-width: 768px){
+ .sidebar {
+     width: 100%;
+    }
+   .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+
+.dashboard__title {
+    order: 1;
+    font-size: 42px;
+    margin-bottom: 0;
+  }
+  
+  .dashboard__subtitle {
+    order: 2;
+    font-size: 18px;
+    margin-bottom: 16px;
+    position: static;
+    bottom: auto;
+  }
+  
+  .dashboard__seperator {
+    order: 3;
+    width: 80px;
+    height: 3px;
+    background-color: #29ABE2;
+    position: static;
+    top: auto;
+    margin: 0;
+  }
+  }
