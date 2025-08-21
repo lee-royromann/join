@@ -469,7 +469,7 @@
     margin-bottom: 0;
   }
 
-  .sidebar__menu {
+  /* .sidebar__menu {
     max-width: 100%;
   }
 
@@ -480,7 +480,7 @@
   .sidebar__icon {
     width: 20px;
     height: 20px;
-  }
+  } */
 
   .dashboard__header {
     margin-bottom: -10px;
