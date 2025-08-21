@@ -83,7 +83,8 @@ function showOverlayAddContact() {
             </div>
             <div class="overlay-main-container flex-box-center-center">
                 <div class="profil-img-container flex-box-center-center"><img class="profil-img" src="../assets/img/icon/person.svg" alt=""></div>
-                <form onsubmit="createNewContact(); return false">
+                
+                <form onsubmit="createNewContact(); return false" onkeydown="return event.key != 'Enter';"> 
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
                             <div class="input-content">
@@ -113,7 +114,6 @@ function showOverlayAddContact() {
             </div>
         </div>`;
 }
-
 
 /**
  * Generates the overlay HTML template to edit a specific contact.
