@@ -23,7 +23,15 @@ let contactsFirebase = [];
  * @returns {Promise<any>} Das Ergebnis der Anfrage.
  */
 async function firebaseRequest(path, method = 'GET', body = null) {
-    // Stellt sicher, dass der Pfad nicht mit einem Slash beginnt, um doppelte Slashes zu vermeiden.
+    // Die zentrale Firewall für den Gastmodus
+    const isWriteOperation = method !== 'GET';
+    if (isGuest() && isWriteOperation) {
+        console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
+        // Die Anfrage wird hier gestoppt und erreicht Firebase nie.
+        return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
+    }
+
+    // Stellt sicher, dass der Pfad nicht mit einem Slash beginnt...
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
     const url = `${BASE_URL}${cleanPath}.json`;
 
