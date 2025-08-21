@@ -246,26 +246,24 @@ function selectCategory(id, arrowIconId) {
 }
 
 
-/**
- * Function to add a task object to the Firebase realtime database.
- * @param {Object} task - The task object to add.
- */
+// +++ NEUE, SICHERE VERSION (verwendet firebaseRequest) +++
 async function addTaskToDB(task) {
     try {
-        const response = await fetch(`${FIREBASE_URL}/join/tasks/${task.id}.json`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(task)
-            }
-        );
-        if (!response.ok) {
-            throw new Error(`Serverfehler: ${response.status}`);
+        // Leitet die Anfrage durch unsere sichere Funktion in db.js.
+        // Gäste werden hier blockiert.
+        const result = await firebaseRequest(`/join/tasks/${task.id}`, 'PUT', task);
+
+        // Optional: Prüfen, ob die Anfrage vom Gastmodus blockiert wurde
+        if (result && result.reason === "Guest mode is read-only") {
+             alert('As a guest, you are not permitted to create tasks.');
+             return; // Verhindert das Leeren des Formulars für Gäste
         }
+
         console.log("Added task to DB successfully!");
         clearForm();
     } catch (error) {
-        console.error("Failes to add the task to the Firebase DB:", error.message);
+        console.error("Failed to add the task to the Firebase DB:", error.message);
+        // Fehler weitergeben, falls andere Teile der App darauf reagieren müssen
+        throw error;
     }
 }
