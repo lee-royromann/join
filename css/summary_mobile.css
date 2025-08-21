@@ -4,7 +4,7 @@
   }
 
   .card__username {
-    font-size: 47px;
+    font-size: 30px;
   }
 }
 
@@ -14,7 +14,7 @@
   }
 
   .card__username {
-    font-size: 32px;
+    font-size: 27px;
   }
 }
 
@@ -115,11 +115,11 @@
 
 @media (max-width: 1120px) {
   .card__greetings-text {
-    font-size: 22px;
+    font-size: 25px;
   }
 
   .card__username {
-    font-size: 37px;
+    font-size: 25px;
   }
 }
 
