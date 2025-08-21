@@ -72,6 +72,13 @@ async function saveContact(id) {
  * @param {string} contactId - Die ID des zu löschenden Kontakts.
  */
 async function deleteContact(event, contactId) {
+    // NEU: Prüfung, ob der Benutzer ein Gast ist.
+    if (isGuest()) {
+        // Optional: Eine Meldung an den Gast, dass die Aktion nicht erlaubt ist.
+        alert('As a guest, you are not permitted to delete contacts.');
+        return; // Die Funktion wird hier sofort beendet.
+    }
+
     suppressActionEvent(event);
     console.log(`--- deleteContact gestartet für contactId: ${contactId} ---`);
 
