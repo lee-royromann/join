@@ -215,6 +215,7 @@ textarea:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
     width: 42px;
     height: 42px;
     border-radius: 50%;

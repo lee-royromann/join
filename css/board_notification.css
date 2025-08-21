@@ -1,0 +1,31 @@
+.form__notification {
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 280px;
+    height: 70px;
+    margin-right: 20px;
+    border-radius: 20px;
+    background: #2A3647;
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.form__notification p {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 120%;
+    color: white;
+}
+
+.form__notification--show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}

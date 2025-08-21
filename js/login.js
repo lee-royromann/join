@@ -93,7 +93,7 @@ function displayErrorLogin() {
  */
 function guestLogin(event) {
     event.preventDefault();
-    console.log("Gastmodus wird aktiviert...");
+    // console.log("Gastmodus wird aktiviert...");
     sessionStorage.setItem('userMode', 'guest');
     window.location.href = 'html/summary.html';
 }

@@ -168,7 +168,8 @@ async function handleDeleteTask(taskId) {
         tasksFirebase = []; 
         await loadTasksFromFirebase();        
         closeOverlay();                       
-        renderTasks();                        
+        renderTasks();
+        showBoardTaskNotification('delete');
     } catch (error) {
         console.error("Fehler beim Löschen der Aufgabe:", error);
     }
@@ -226,11 +227,12 @@ async function toggleSubtaskStatus(index, taskId) {
  * @async
  * @returns {Promise<void>}
  */
-async function saveEditTask() {
+async function saveEditTask(origin) {
     if (!validateEditForm()) return;
     updateEditBoardData();
     await saveTaskToFirebase(currentTask);
-    await closeEditOverlay()
+    await closeEditOverlay();
+    showBoardTaskNotification(origin);
 }
 
 
