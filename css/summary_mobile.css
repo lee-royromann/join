@@ -890,21 +890,3 @@
     visibility: hidden;
   }
 }
-
-media (max-width: 400px) {
-  .mobile-greeting-text {
-    font-size: 26px;
-  }
-
-  .mobile-greeting-username {
-    font-size: 32px;
-  }
-
-  .mobile-greeting-subtitle {
-    font-size: 12px;
-  }
-
-  .mobile-greeting-content {
-    padding: 20px 10px;
-  }
-}
