@@ -104,10 +104,6 @@ function loadSummaryTemplate() {
 
 /**
  * Creates the mobile greeting template
- * @param {string} greetingText - The greeting text (Good morning, etc.)
- * @param {string} username - The username to display
- * @param {boolean} isGuest - Whether the user is a guest
- * @returns {string} HTML template string
  */
 function getMobileGreetingTemplate(greetingText, username, isGuest) {
     return `

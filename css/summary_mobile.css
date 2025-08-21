@@ -1,6 +1,6 @@
-@media (max-width: 1300px) {
+@media (max-width: 1380px) {
   .card__greetings-text {
-  font-size: 30px;
+    font-size: 30px;
   }
 
   .card__username {
@@ -8,17 +8,25 @@
   }
 }
 
-@media (max-width: 1187px) {
+@media (max-width: 1270px) {
+  .card__greetings-text {
+    font-size: 27px;
+  }
 
+  .card__username {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 1187px) {
   .card {
     width: 190px;
     height: 130px;
-     display: flex;
-  align-items: center;
-  gap: 18px;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: center;
   }
-
 
   .card__icon {
     width: 48px;
@@ -38,7 +46,6 @@
     font-size: 14px;
   }
 
-  
   .card__urgent {
     width: 400px;
     height: 130px;
@@ -91,7 +98,6 @@
     font-size: 12px;
   }
 
-  
   .card__overview {
     width: 120px;
     height: 120px;
@@ -107,9 +113,9 @@
   }
 }
 
-@media (max-width: 1007px) {
-.card__greetings-text {
-  font-size: 20px;
+@media (max-width: 1120px) {
+  .card__greetings-text {
+    font-size: 22px;
   }
 
   .card__username {
@@ -117,19 +123,18 @@
   }
 }
 
-@media (max-width: 1040px) {
+@media (max-width: 1051px) {
   .card__greeting {
     display: none;
   }
 
   .content {
-        visibility: hidden;
-    }
-    
-    .content.show-content {
-        visibility: visible;
-    }
- 
+    visibility: hidden;
+  }
+
+  .content.show-content {
+    visibility: visible;
+  }
 }
 
 @media (max-width: 927px) {
@@ -140,12 +145,46 @@
   .dashboard__subtitle {
     font-size: 20px;
   }
+}
 
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
 
+  .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+
+  .dashboard__title {
+    order: 1;
+    font-size: 42px;
+    margin-bottom: 0;
+  }
+
+  .dashboard__subtitle {
+    order: 2;
+    font-size: 18px;
+    margin-bottom: 16px;
+    position: static;
+    bottom: auto;
+  }
+
+  .dashboard__seperator {
+    order: 3;
+    width: 80px;
+    height: 3px;
+    background-color: #29ABE2;
+    position: static;
+    top: auto;
+    margin: 0;
+  }
 }
 
 @media (max-width: 763px) {
-
   .header {
     padding-left: 40px;
   }
@@ -153,13 +192,13 @@
   .sidebar {
     position: fixed;
     bottom: 0;
-    left: 0;               
-    transform: none;       
+    left: 0;
+    transform: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: none;
-    width: 100%;            
+    width: 100%;
     height: 80px;
     padding: 0;
     background-color: #2A3647;
@@ -173,41 +212,38 @@
 
   .sidebar__menu {
     flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        padding-left: 14px;
-        padding-right: 14px;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .sidebar__item {
-      display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 76px;
-        width: 80px;
-        padding: 0;
-        gap: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 76px;
+    width: 80px;
+    padding: 0;
+    gap: 6px;
   }
 
-
   .sidebar__icon {
-  height: 24px;
+    height: 24px;
   }
 
   .sidebar__text {
-  display: block;
-        font-size: 14px;
+    display: block;
+    font-size: 14px;
   }
 
- 
   .header__help,
   .header__title,
   .card__greeting {
     display: none;
   }
 
-  
   .header::before {
     content: "";
     display: inline-block;
@@ -222,10 +258,9 @@
 
   .header__title {
     font-size: 20px;
-    display: none; 
+    display: none;
   }
 
-  
   .dashboard {
     padding-left: 16px;
     padding-right: 16px;
@@ -242,250 +277,36 @@
     background-color: #091931;
   }
 }
-  
- 
-@media (max-width: 768px){
- .sidebar {
-     width: 100%;
-    }
-   .dashboard__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 30px;
-  }
-
-.dashboard__title {
-    order: 1;
-    font-size: 42px;
-    margin-bottom: 0;
-  }
-  
-  .dashboard__subtitle {
-    order: 2;
-    font-size: 18px;
-    margin-bottom: 16px;
-    position: static;
-    bottom: auto;
-  }
-  
-  .dashboard__seperator {
-    order: 3;
-    width: 80px;
-    height: 3px;
-    background-color: #29ABE2;
-    position: static;
-    top: auto;
-    margin: 0;
-  }
-  }
 
 @media (max-width: 480px) {
-    .header {
-        padding-left: 32px;
-        padding-right: 20px;
-        height: 80px;
-    }
-
-      .header__user {
-        height: 40px;
-        width: 40px;
-        font-size: 16px;
-        border: 2px solid var(--header-color-border-user);
-    }
+  .header {
+    padding-left: 32px;
+    padding-right: 20px;
+    height: 80px;
   }
 
-@media (max-width: 400px) {
-
-  .layout-page {
-    height: 100vh;
-    max-width: none;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-
-  .layout-page__card {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .content {
-    width: 100%;
-    height: 100%;
-  }
-
-  .main {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    }
-
-  .dashboard {
-    padding: 16px;
-    padding-bottom: 100px;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
-   
-  }
-
-  .dashboard__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 30px;
-  }
-  
-  .dashboard__title {
-    order: 1;
-    font-size: 42px;
-    margin-bottom: 0;
-  }
-  
-  .dashboard__subtitle {
-    order: 2;
-    font-size: 18px;
-    margin-bottom: 16px;
-    position: static;
-    bottom: auto;
-  }
-  
-  .dashboard__seperator {
-    order: 3;
-    width: 80px;
-    height: 3px;
-    background-color: #29ABE2;
-    position: static;
-    top: auto;
-    margin: 0;
-  }
-
- 
-  .card {
-    width: 190px;
-    height: 130px;
-     display: flex;
-  align-items: center;
-  gap: 18px;
-  justify-content: center;
-  }
-
-  
-
-  .card__icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .card__icon img {
-    width: 20px;
-    height: 16px;
-  }
-
-  .card__number {
-    font-size: 42px;
-  }
-
-  .card__label {
-    font-size: 14px;
-  }
-
-  
-  .card__urgent {
-    width: 400px;
-    height: 130px;
-    padding: 14px;
-  }
-
-  .card__urgent-left {
-    padding-left: 30px;
-  }
-
-  .card__urgent-content {
-    gap: 10px;
-  }
-
-  .card__urgent-icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .card__urgent-icon img {
-    width: 20px;
-    height: 16px;
-  }
-
-  .card__urgent-number-label .card__number {
-    font-size: 42px;
-  }
-
-  .card__urgent-number-label .card__label {
-    font-size: 14px;
-  }
-
-  .card__urgent-seperator {
-    height: 80%;
-    width: 2px;
-    background-color: #D1D1D1;
-    margin: 0 10px;
-  }
-
-  .card__urgent-right {
-    margin-right: 30px;
-    gap: 8px;
-  }
-
-  .card__date {
+  .header__user {
+    height: 40px;
+    width: 40px;
     font-size: 16px;
+    border: 2px solid var(--header-color-border-user);
   }
 
-  .card__deadline {
-    font-size: 12px;
-  }
-
-
-  .card__overview {
-    width: 120px;
-    height: 120px;
-    padding: 14px;
-  }
-
-  .card__overview .card__number {
-    font-size: 42px;
-  }
-
-  .card__overview .card__label {
-    font-size: 14px;
-  }
-
-  .card__greeting {
-    display: none;
-  }
-}
-
-
-@media (max-width: 480px) {
   .sidebar {
     width: 100vw;
     left: 0;
     transform: none;
     margin: 0;
   }
-  
+
   .sidebar__menu {
     max-width: 100%;
   }
-  
+
   .sidebar__text {
     font-size: 10px;
   }
-  
+
   .sidebar__icon {
     width: 20px;
     height: 20px;
@@ -499,16 +320,15 @@
   .dashboard__title {
     font-size: 36px;
   }
-  
+
   .dashboard__subtitle {
     font-size: 16px;
   }
-  
+
   .dashboard__seperator {
     width: 70px;
   }
 
-  
   .card {
     width: 160px;
     height: 120px;
@@ -537,7 +357,6 @@
     font-size: 13px;
   }
 
-  
   .card__urgent {
     width: 330px;
     height: 120px;
@@ -587,7 +406,6 @@
     font-size: 11px;
   }
 
-  
   .card__overview {
     width: 102px;
     height: 102px;
@@ -602,12 +420,53 @@
     font-size: 13px;
   }
 
- 
   .card__row {
     gap: 12px;
   }
 }
 
+@media (max-width: 400px) {
+  .layout-page {
+    height: 100vh;
+    max-width: none;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  .layout-page__card {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+  }
+
+  .main {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .dashboard {
+    padding: 16px;
+    padding-bottom: 100px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .card__greeting {
+    display: none;
+  }
+}
 
 @media (max-width: 360px) {
   .dashboard {
@@ -618,16 +477,15 @@
   .dashboard__title {
     font-size: 32px;
   }
-  
+
   .dashboard__subtitle {
     font-size: 15px;
   }
-  
+
   .dashboard__seperator {
     width: 60px;
   }
 
- 
   .card {
     width: 140px;
     height: 110px;
@@ -656,7 +514,6 @@
     font-size: 12px;
   }
 
-  
   .card__urgent {
     width: 290px;
     height: 110px;
@@ -706,7 +563,6 @@
     font-size: 10px;
   }
 
-  
   .card__overview {
     width: 89px;
     height: 89px;
@@ -721,12 +577,10 @@
     font-size: 12px;
   }
 
-  
   .card__row {
     gap: 10px;
   }
 }
-
 
 @media (max-width: 320px) {
   .dashboard {
@@ -737,16 +591,15 @@
   .dashboard__title {
     font-size: 28px;
   }
-  
+
   .dashboard__subtitle {
     font-size: 14px;
   }
-  
+
   .dashboard__seperator {
     width: 50px;
   }
 
- 
   .card {
     width: 125px;
     height: 100px;
@@ -775,7 +628,6 @@
     font-size: 11px;
   }
 
-  /* Urgent Card */
   .card__urgent {
     width: 256px;
     height: 100px;
@@ -825,7 +677,6 @@
     font-size: 9px;
   }
 
-  
   .card__overview {
     width: 79px;
     height: 79px;
@@ -840,7 +691,6 @@
     font-size: 11px;
   }
 
-  
   .card__row {
     gap: 8px;
   }
