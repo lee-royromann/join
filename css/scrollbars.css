@@ -10,7 +10,7 @@
 .edit__wrapper-list::-webkit-scrollbar,
 .edit__subtasklist::-webkit-scrollbar,
 .task__overlay-content::-webkit-scrollbar,
-.overlay__edit-selections::-webkit-scrollbar
+.overlay__edit-selections::-webkit-scrollbar,
 .edit__textarea::-webkit-scrollbar,
 .overlay__edit--selections::-webkit-scrollbar {
   width: 6px;
