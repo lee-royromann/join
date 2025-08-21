@@ -333,9 +333,14 @@ function saveEditedSubtask(id) {
 
 /**
  * Add a new subtask to the current edit task and re-render. Ignores empty input.
+ * If the value of the first element of the currentTask array is equal to "_empty",
+ * the actual array will be emptied and afterwards replaced by the new subtask.
  */
 function addEditSubtask () {
     const input = document.getElementById("task-subtask-input");
+    if (currentTask.subtask[0] == "_empty") {
+        currentTask.subtask = [];
+    }
     if (!input || input.value.trim() === '') return;  
     const newSubtask = {
         title: input.value.trim(),

@@ -169,13 +169,21 @@ function getCategoryInfo(category) {
     };
 }
 
+
 /**
  * Compute subtask progress stats.
  * @param {Task} task
  * @returns {{ total: number, done: number, percent: number }}
  */
 function getSubtaskProgress(task) {
-    const total = task.subtask?.length || 0;
+let total;
+
+    if (task.subtask[0] == "_empty") {
+        total = 0;
+    } else {
+        total = task.subtask.length;
+    }
+
     const done = task.subtask?.filter(st => st.done).length || 0;
     const percent = total > 0 ? (done / total) * 100 : 0;
     return { total, done, percent };
@@ -195,6 +203,7 @@ function getPriorityIcon(priority) {
     };
     return iconMap[priority];
 }
+
 
 /**
  * Get checkbox icon path for subtask status.
@@ -329,4 +338,24 @@ function overrideEmptySearchField() {
  */
 function findTaskById(id) {
     return tasksFirebase.find(t => t.id === id);
+}
+
+
+/**
+ * Function to show a notification when a task is successfully edited or deleted.
+ */
+function showBoardTaskNotification(origin) {
+    const notificationContainer = document.getElementById('taskNotification');
+    let notificationMessage = document.getElementById('taskNotificationMessage');
+    if (origin === 'delete') {
+        const deleteMessage = "Task successfully deleted";
+        notificationMessage.innerHTML = deleteMessage;
+    } else if (origin === 'edit') {
+        const editMessage = "Task successfully edited";
+        notificationMessage.innerHTML = editMessage;
+    }
+    notificationContainer.classList.add('form__notification--show');
+    setTimeout(() => {
+        notificationContainer.classList.remove('form__notification--show');
+    }, 1000);
 }

@@ -37,6 +37,7 @@
         <link rel="stylesheet" href="../css/board_overlay.css">
         <link rel="stylesheet" href="../css/board_edit.css">
         <link rel="stylesheet" href="../css/board_edit_controls.css">
+        <link rel="stylesheet" href="../css/board_notification.css">
         <link rel="stylesheet" href="../css/board_media.css">
         <link rel="stylesheet" href="../css/board_media_mobile.css">
         <link rel="stylesheet" href="../css/fonts.css">
@@ -182,6 +183,10 @@
                             <div class="kanban__column" id="done" ondrop="moveTo('done')" ondragleave="removeHighlight('done')" ondragover="allowDrop(event); highlight('done')"></div>
                         </div>
 
+                        <!-- Task added successfully Overlay -->
+                        <div id="taskNotification" class="form__notification">
+                            <p id="taskNotificationMessage">Task successfully edited</p>
+                        </div>
                     </div>
                     
                 </div>

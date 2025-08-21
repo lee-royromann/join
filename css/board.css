@@ -197,6 +197,7 @@ body {
 }
 
 .kanban__grid-wrapper {
+    position: relative;
     flex: 1;
     height: 0; 
     display: grid;
@@ -232,6 +233,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     padding: 0;
     width: 24px;
     height: 24px;

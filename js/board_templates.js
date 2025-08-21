@@ -154,8 +154,12 @@ function getContactTemplate(contact, initials, color) {
  * @returns {string|undefined} HTML string or undefined if no subtasks.
  */
 function getSubtask(subtasks, taskId) {
-  if (!subtasks || subtasks.length === 0) {
-    return ;
+    console.log(subtasks);
+    
+  if (subtasks[0] == "_empty") {
+    return `
+        <p style="padding: 12px 16px; font-size: 18px; color: red">No subtasks</p>
+    `;
   }
   return subtasks.map((sub, index) => `
     <div class="overlay__subtask" data-index="${index}">
@@ -274,7 +278,7 @@ function getEditTemplate(task) {
             </div>
         </div>  
         <footer class="edit__action-buttons">
-            <button type="submit" class="edit__button-ok" onclick="saveEditTask()">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
+            <button type="submit" class="edit__button-ok" onclick="saveEditTask('edit')">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
         </footer>
     `;
 }
@@ -383,6 +387,7 @@ function getOverlaySubtaskEditTemplate(id, text) {
     </li>
   `;
 }
+
 
 /**
  * Build the "Move to ..." menu items for a task, excluding its current status.
