@@ -2,22 +2,18 @@ body {
     flex-direction: column;
 }
 
-
 .d-none {
     display: none !important;
 }
-
 
 .opacity {
     opacity: 0;
 }
 
-
 .dpl-fl-colu {
     display: flex;
     flex-direction: column;
 }
-
 
 button {
     font-weight: 700;
@@ -26,19 +22,16 @@ button {
     border-radius: 8px;
 }
 
-
 button:hover {
     cursor: pointer;
     background-color: #29ABE2;
     box-shadow: 0px 3px #d1d1d1;
 }
 
-
 a {
     text-decoration: none;
     color: #A8A8A8;
 }
-
 
 .background {
     height: 100vh;
@@ -49,7 +42,6 @@ a {
     position: relative;
 }
 
-
 .logo {
     width: 120px;
     height: 100px;
@@ -57,7 +49,6 @@ a {
     top: 80px;
     left: max(77px, calc(50% - 643px));
 }
-
 
 .login-content {
     padding: 48px 115px;
@@ -68,18 +59,15 @@ a {
     gap: 32px;
 }
 
-
 .input-icon {
     width: 24px;
     height: 24px;
 }
 
-
 .input-container {
     gap: 20px;
     height: 152px;
 }
-
 
 .input-field {
     display: flex;
@@ -91,13 +79,11 @@ a {
     background-color: white;
 }
 
-
 .input-content {
     display: flex;
     width: 380px;
     justify-content: space-between;
 }
-
 
 input {
     border: unset;
@@ -106,41 +92,33 @@ input {
     inline-size: -webkit-fill-available;
 }
 
-
 input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
 }
-
 
 input:hover {
     cursor: pointer;
 }
 
-
 label:hover {
     cursor: pointer;
 }
-
 
 .input-field:focus-within {
     border-color: #29ABE2;
 }
 
-
 .input-field-error {
     border-color: red;
 }
-
 
 .gap-small {
     gap: 10px;
 }
 
-
 .poppins-success {
     color: #2A3647;
 }
-
 
 h2 {
     width: 315px;
@@ -151,7 +129,6 @@ h2 {
     display: inline-block;
 }
 
-
 h2::after {
     content: "";
     display: block;
@@ -160,7 +137,6 @@ h2::after {
     background-color: #29ABE2;
     margin: 3px auto 0 auto;
 }
-
 
 .sign-up-container {
     display: flex;
@@ -173,7 +149,6 @@ h2::after {
     right: max(122px, calc(50% - 598px));
 }
 
-
 .sign-up-container button {
     font-size: 16px;
     padding: 15px 16px;
@@ -181,17 +156,14 @@ h2::after {
     color: white;
 }
 
-
 .sign-up-container button:hover {
     background-color: #29ABE2;
 }
-
 
 .submit-container {
     display: flex;
     gap: 35px;
 }
-
 
 .submit-container button {
     padding: 15px 24px;
@@ -200,11 +172,9 @@ h2::after {
     color: white;
 }
 
-
 .submit-container button:hover {
     background-color: #29ABE2;
 }
-
 
 #guestLogIn {
     background-color: white;
@@ -212,20 +182,17 @@ h2::after {
     border: 1px solid #2A3647;
 }
 
-
 #guestLogIn:hover {
     border-color: #29ABE2;
     color: #29ABE2;
     transform: scale(1.05);
 }
 
-
 .info-pri-pol-container {
     display: flex;
     bottom: 30px;
     position: absolute;
 }
-
 
 .info-pri-pol-container a {
     padding: 8px;
@@ -323,13 +290,11 @@ h2::after {
     }
 }
 
-
 @media (max-width: 1000px) {
     .login-content {
         padding: 30px 80px;
     }
 }
-
 
 @media (max-width: 880px) {
     .sign-up-container {
@@ -340,7 +305,6 @@ h2::after {
         padding: 20px 60px;
     }
 }
-
 
 @media (max-width: 720px) {
     .sign-up-container {
@@ -361,7 +325,6 @@ h2::after {
         font-size: 18px;
     }
 }
-
 
 @media (max-width: 540px) {
     .sign-up-container {
@@ -405,7 +368,6 @@ h2::after {
         width: 88px;
     }
 }
-
 
 @media (max-width: 420px) {
     .login-content {
