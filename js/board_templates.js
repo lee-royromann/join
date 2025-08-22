@@ -7,7 +7,7 @@ function getTaskTemplate(task) {
     const { total, done, percent } = getSubtaskProgress(task);
     const categoryInfo = getCategoryInfo(task.category);
     const priorityIcon = getPriorityIcon(task.priority);
-    const assignedAvatar = renderAssignedAvatars(task);
+    const assignedAvatar = renderAssignedAvatars(task, 4);
     const moveTaskTemplate = getMoveTaskTemplate(task);
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
@@ -142,6 +142,20 @@ function getContactTemplate(contact, initials, color) {
     <div class="overlay__credentials--individual">
       <div class="overlay__credential--icon" style="background-color: ${color};">${initials}</div>
       <span>${contact.prename} ${contact.surname}</span>
+    </div>
+  `;
+}
+
+
+/**
+ * Overflow-Element („…“) is added for more than 4 assigned contacts.
+ * @param {string} [label="…"] 
+ * @returns {string} HTML string.
+ */
+function getOverflowTemplate(label = '…') {
+  return `
+    <div class="overlay__credentials--individual overlay__credentials--overflow" aria-label="weitere Personen">
+      <div class="overlay__credential--icon overlay__credential--more">${label}</div>
     </div>
   `;
 }
@@ -384,8 +398,7 @@ function getOverlaySubtaskEditTemplate(id, text) {
             </div>
         </div>
       </div>
-    </li>
-  `;
+    </li>`;
 }
 
 
@@ -400,6 +413,5 @@ function getMoveTaskTemplate(task) {
     return`
         <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[0]}', event)">${status[0]}</span>
         <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[1]}', event)">${status[1]}</span>
-        <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[2]}', event)">${status[2]}</span>
-    `;
+        <span class="burger-item" onclick="moveEditStatus('${task.id}', '${status[2]}', event)">${status[2]}</span> `;
 }

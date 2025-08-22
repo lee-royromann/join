@@ -229,35 +229,59 @@ function renderSubtask(task) {
 
 
 /**
- * Map assigned contact IDs to rendered content using a supplied renderer.
- * @param {Task} task
+ * Maps a task’s assigned contact IDs to rendered markup using a supplied renderer.
+ * The function limits by the number of actually rendered contacts (skips missing ones)
+ * and can append an overflow indicator if more contacts exist than the limit.
+ *
+ * @param {Task} task - Task that provides the `assignedTo` contact IDs.
  * @param {(contact: Contact, initials: string, color: string) => string} renderFn
- * @returns {string} Concatenated HTML string.
+ *   Renderer that returns the HTML string for a single contact.
+ * @param {{ limit?: number, overflow?: (extra: number) => string }} [options]
+ *   Rendering options: `limit` (max contacts to render) and `overflow` (factory for a trailing indicator).
+ * @returns {string} Concatenated HTML for up to `limit` contacts plus optional overflow.
  */
-function mapAssignedContacts(task, renderFn) {
-    return task.assignedTo.map(userId => {
-        const contact = contactsFirebase.find(c => c.id === userId);
-        if (!contact) return '';
-        const prenameInitial = contact.prename?.charAt(0).toUpperCase() || '';
-        const surnameInitial = contact.surname?.charAt(0).toUpperCase() || '';
-        const initials = `${prenameInitial}${surnameInitial}`;
-        const color = contact.color || "#cccccc";
-        return renderFn(contact, initials, color);
-    }).join('');
+function mapAssignedContacts(task, renderFn, options={}) {
+    const {limit=Infinity, overflow}=options;
+    const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
+    let html='', shown=0, total=0;
+    for (const id of ids){
+        const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
+        total++;
+        if(shown<limit){
+           const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
+           html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+        }
+    }
+    return total>limit&&overflow?html+overflow(total-limit):html;
 }
 
-
 /**
- * Render small circular avatar badges for assigned contacts.
+ * Render small circular avatar badges for assigned contacts, max 4 avatar will show up.
  * @param {Task} task
  * @returns {string} HTML string.
  */
-function renderAssignedAvatars(task) {
-    return mapAssignedContacts(task, (contact, initials, color) =>
-        `<div class="card__credential" style="background-color: ${color};">${initials}</div>`
-    );
+function renderAssignedAvatars(task, max = 4) {
+  return mapAssignedContacts(
+    task,
+    (contact, initials, color) =>
+      getCardBadgeTemplate(initials, color, `${contact.prename} ${contact.surname}`),
+    {
+      limit: max,
+      limitByRendered: true,          // << hier!
+      overflow: (extra) => getCardOverflowText(extra) // oder +n
+    }
+  );
 }
 
+
+function getCardBadgeTemplate(text, color, title = '') {
+  return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
+}
+
+function getCardOverflowText(extra, showCount = false) {
+  const label = showCount ? `+${extra}` : '…';
+  return `<span class="card__more" title="+${extra} weitere" aria-label="+${extra} weitere">${label}</span>`;
+}
 
 /**
  * Render assigned contacts (avatar + full name) for overlay.

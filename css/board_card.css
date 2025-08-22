@@ -136,6 +136,7 @@
 
 .card__credentials{
     display: flex;
+    align-items: center;
 }
 
 .card__credential {
@@ -156,6 +157,11 @@
 .card__credential + .card__credential {
     margin-left: -10px;
 }
+
+.card__more { 
+    margin-left: 6px; 
+    font-weight: 600; 
+    color: #6b7280; }
 
 .card__priority img {
     width: 20px;

@@ -276,7 +276,6 @@ textarea:focus {
     justify-content: space-between;
     height: 36px;
     padding: 6px 22px 6px 22px;
-    color: #000000;
 }
 
 .edit__subtask-text {
