@@ -208,7 +208,9 @@ textarea:focus {
     flex-direction: row;
     align-items: center;
     padding-top: 4px;
-    gap: 10px;
+    gap: 8px;
+    overflow-x: auto;
+    padding-block-end: 8px;
 }
 
 .edit__contact-badge {

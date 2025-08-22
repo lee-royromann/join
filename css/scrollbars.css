@@ -26,7 +26,8 @@
 .edit__wrapper-list::-webkit-scrollbar-thumb,
 .edit__subtasklist::-webkit-scrollbar-thumb,
 .task__overlay-content::-webkit-scrollbar-thumb,
-.overlay__edit-selections::-webkit-scrollbar-thumb {
+.overlay__edit-selections::-webkit-scrollbar-thumb,
+.edit__contact-badges::-webkit-scrollbar-thumb {
   background-color: #ccccccaa;
   border-radius: 4px;
 }
@@ -41,7 +42,8 @@
 .edit__wrapper-list::-webkit-scrollbar-track,
 .edit__subtasklist::-webkit-scrollbar-track,
 .task__overlay-content::-webkit-scrollbar-track,
-.overlay__edit-selections::-webkit-scrollbar-track {
+.overlay__edit-selections::-webkit-scrollbar-track,
+.edit__contact-badges::-webkit-scrollbar-track {
   background-color: #ffffff00;
 }
 
@@ -78,6 +80,10 @@
 .edit__textarea::-webkit-scrollbar-track,
 .overlay__edit--selections::-webkit-scrollbar-track {
     margin: 20px 0;
+}
+
+.edit__contact-badges::-webkit-scrollbar {
+    height: 6px;
 }
 
 @media (max-width: 556px) {
