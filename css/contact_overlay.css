@@ -12,7 +12,7 @@
     position: absolute;
     z-index: 150;
     top: 50%;
-    left: 100%;
+    left: 20%;
     transform: translateY(-50%);
     transition: transform 0.2s ease;
 }
@@ -81,6 +81,10 @@
     width: 90px;
     background-color: #29ABE2;
     margin-top: 3px;
+}
+
+.card-title h5 {
+    font-size: 47px;
 }
 
 
@@ -375,7 +379,6 @@ label:hover {
     display: block;
     padding: 8px 21px;
 }
-
 
 .submit-container-resp {
     justify-content: center;

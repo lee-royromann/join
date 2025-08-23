@@ -78,6 +78,12 @@
     border-radius: 10px;
 }
 
+@media (max-width: 2000px) {
+    .header {
+        padding-left: 40px;
+    }
+}
+
 @media (max-width: 1360px) {
     .headline {
         flex-direction: column;
@@ -149,7 +155,23 @@
     }
 }
 
+@media (max-width: 1230px) {
+
+    .overlay-main-container {
+        padding: 45px 24px;
+        gap: 20px;
+    }
+
+    .overlay-cover {
+        padding: 45px 24px;
+    }
+}
+
 @media (max-width: 1120px) {
+    .header {
+        padding-left: 28px;
+    }
+
     .user-container {
         width: 428px;
     }
@@ -175,15 +197,6 @@
         align-self: flex-start;
     }
 
-    .overlay-main-container {
-        padding: 45px 24px;
-        gap: 20px;
-    }
-
-    .overlay-cover {
-        padding: 45px 24px;
-    }
-
     .input-container {
         width: 350px;
     }
@@ -194,6 +207,52 @@
 
     .submit-container {
         gap: 15px;
+    }
+}
+
+@media (max-width: 1030px) {
+    .profil-img-container,
+    .info-initial {
+        width: 80px;
+        height: 80px;
+    }
+
+    .profil-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dpl-fl-colu,
+    .submit-container {
+        margin-top: 0px;
+    }
+
+    .overlay-cover,
+    .overlay-main-container {
+        padding: 32px;
+        height: 450px;
+    }
+
+    .overlay-content-container form {
+        margin-top: 40px;
+    }
+
+    .close-container {
+        top: 30px;
+        right: 30px;
+    }
+
+    .close-btn {
+        width: 18px;
+        height: 18px;
+    }
+
+    .card-title h5 {
+        font-size: 32px;
+    }
+
+    .card-title p {
+        font-size: 24px;
     }
 }
 
@@ -211,7 +270,18 @@
     }
 }
 
+@media (max-width: 935px) {
+    .profil-img-container,
+    .info-initial {
+        display: none;
+    }
+}
+
 @media (max-width: 900px) {
+    .header {
+        padding-left: 20px;
+    }
+
     .contact {
         gap: 18px;
     }
@@ -235,6 +305,67 @@
 
     .tab {
         width: 300px;
+    }
+}
+
+@media (max-width: 835px) {
+    .overlay-contact {
+        flex-direction: column;
+    }
+
+    .overlay-cover,
+    .overlay-main-container {
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .overlay-cover {
+        border-radius: 20px 20px 0 0;
+        height: 352px;
+    }
+
+    .overlay-main-container {
+        border-radius: 0 0 20px 20px;
+    }
+
+    .logo-img {
+        display: none;
+    }
+
+    .profil-img-container,
+    .info-initial {
+        display: flex;
+        position: absolute;
+        top: 36%;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 120px;
+        width: 120px;
+    }
+
+    .profil-img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .blue-white-btn {
+        display: none
+    }
+
+    .card-title h5 {
+        font-size: 47px;
+    }
+
+    .motivation-text {
+        font-size: 27px;
+    }
+
+    .submit-container {
+        justify-content: center;
+    }
+
+    .input-container {
+        gap: 20px;
     }
 }
 
@@ -279,9 +410,11 @@
     .card-title h5 {
         font-size: 47px;
     }
+
     .card-title .motivation-text {
         font-size: 20px;
     }
+
     .submit-container {
         gap: 35px;
     }
@@ -301,24 +434,19 @@
 
 @media (max-width: 520px) {
     .header {
-        padding-left: 20px;
-        padding-right: 20px;
-        height: 80px;
+        padding-left: 24px;
     }
     
     .header__title {
         display: none;
     }
 
-    .header__logo {
-        display: block;
+    .header__help {
+        display: none;
     }
 
-    .header__user {
-        height: 40px;
-        width: 40px;
-        font-size: 16px;
-        border: 2px solid var(--header-color-border-user);
+    .header__logo {
+        display: block;
     }
 
     .add-btn-resp {
@@ -374,6 +502,10 @@
         display: block;
         font-size: 14px;
     }
+
+    .user-list {
+        padding-bottom: 90px;
+    }
 }
 
 @media (max-width: 450px) {
@@ -425,5 +557,130 @@
 
     .headline {
         margin-block: 15px 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .user-list {
+        padding-right: 4px;
+    }
+
+    .contact {
+        padding-left: 2px;
+        gap: 8px;
+    }
+
+    .contact-info strong {
+        font-size: 18px;
+    }
+
+    .accessibility {
+        font-size: 15px;
+    }
+
+    .user-list::-webkit-scrollbar {
+        width: 20px;
+        cursor: pointer;
+    }
+
+    .user-list::-webkit-scrollbar-button:vertical:decrement:start {
+        display: none;
+    }
+
+    .user-list::-webkit-scrollbar-button:vertical:increment:end {
+        display: none;
+    }
+}
+
+@media (max-width: 440px) {
+    .input-container {
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 420px) {
+    .input-container {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .input-container {
+        max-width: 280px;
+    }
+
+    .card-title h5 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 380px) {
+    .overlay-main-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 330px) {
+    .input-container {
+        max-width: 260px;
+    }
+
+    .card-title .motivation-text {
+        font-size: 19px;
+    }
+}
+
+@media (max-height: 970px) {
+    .overlay-cover {
+        height: 140px;
+        padding: 20px;
+        justify-content: start;
+    }
+
+    .overlay-main-container {
+        height: 320px;
+    }
+
+    .profil-img-container,
+    .info-initial {
+        width: 60px;
+        height: 60px;
+        top: 103px;
+    }
+
+    .overlay-content-container form {
+        margin-top: 0px;
+    }
+
+    .dpl-fl-colu {
+        gap: 8px;
+    }
+
+    .profil-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .card-title h5 {
+        font-size: 32px;
+    }
+    .card-title .motivation-text {
+        font-size: 16px;
+    }
+
+    .submit-container {
+        gap: 35px;
+        margin-top: 0;
+    }
+
+    .overlay-main-container {
+        padding-left: 32px;
+        padding-right: 32px;
+        padding-bottom: 32px;
+        padding-top: 48px;
+    }
+
+    .input-container {
+        height: 205px;
     }
 }

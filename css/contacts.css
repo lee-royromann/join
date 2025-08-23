@@ -31,12 +31,10 @@ main {
     align-items: center;
 }
 
-
 .dpl-fl-colu {
     display: flex;
     flex-direction: column;
 }
-
 
 .dpl-fl-al-cetr {
     display: flex;
@@ -44,13 +42,11 @@ main {
     gap: 8px;
 }
 
-
 .contact-background {
     background-color: #F6F7F8;
     display: flex;
     max-width: 1920px;
 }
-
 
 /* User List */
 
@@ -59,7 +55,6 @@ main {
     cursor: pointer;
 }
 
-
 .user-list::-webkit-scrollbar-thumb {
     background-color: #A8A8A8;
     border: 8px solid white;
@@ -67,12 +62,10 @@ main {
     cursor: pointer;
 }
 
-
 .user-list::-webkit-scrollbar-button {
     display: none;
 
 }
-
 
 /* Scrollbar-Button für nach oben */
 
@@ -85,7 +78,6 @@ main {
     cursor: pointer;
 }
 
-
 /* Scrollbar-Button für nach unten */
 
 .user-list::-webkit-scrollbar-button:vertical:increment:end {
@@ -97,18 +89,15 @@ main {
     cursor: pointer;
 }
 
-
 .user-container {
     width: 456px;
     background-color: white;
 }
 
-
 .list-header {
     width: 456px;
     height: 101px;
 }
-
 
 .add-contact-container {
     width: 352px;
@@ -120,11 +109,9 @@ main {
     cursor: pointer;
 }
 
-
 .add-contact-container:hover {
     background-color: #29ABE2;
 }
-
 
 .add-contact-container button {
     all: unset;
@@ -134,12 +121,10 @@ main {
     color: white;
 }
 
-
 .add-contact-container img {
     width: 32px;
     height: 32px;
 }
-
 
 .user-list {
     display: flex;
@@ -150,16 +135,13 @@ main {
     padding: 32px 24px;
 }
 
-
 .tab {
     width: 352px;
 }
 
-
 .tab hr {
     margin-block: 8px;
 }
-
 
 h3 {
     font-weight: 400;
@@ -167,7 +149,6 @@ h3 {
     line-height: 120%;
     margin-block: 20px;
 }
-
 
 .contact {
     display: flex;
@@ -179,11 +160,9 @@ h3 {
     border-radius: 10px;
 }
 
-
 .contact:hover {
     background: linear-gradient(180deg, #F9F9F9, #F0F0F0);
 }
-
 
 .contact-info {
     display: flex;
@@ -191,6 +170,7 @@ h3 {
     gap: 5px;
     flex: 1;
     overflow: hidden;
+    width: 100%;
 }
 
 
@@ -199,7 +179,6 @@ h3 {
     color: white;
 }
 
-
 .avatar {
     width: 42px;
     height: 42px;
@@ -207,7 +186,6 @@ h3 {
     color: white;
     border: 3px solid white;
 }
-
 
 strong {
     font-weight: 400;
@@ -218,7 +196,6 @@ strong {
     white-space: nowrap;
 }
 
-
 /* Main content header*/
 
 .headline {
@@ -226,7 +203,6 @@ strong {
     align-items: center;
     margin-block: 80px 40px;
 }
-
 
 .headline hr {
     height: 59px;
@@ -236,20 +212,17 @@ strong {
     border: 0;
 }
 
-
 .headline p {
     font-weight: 400;
     font-size: 27px;
     line-height: 120%;
 }
 
-
 h2 {
     font-weight: 700;
     font-size: 61px;
     line-height: 120%;
 }
-
 
 .content-contact {
     padding-left: 50px;
@@ -264,24 +237,20 @@ h2 {
     overflow: hidden; 
 }
 
-
 .user-slide-in {
     transform: translateX(100vh);
     transition: transform 0.2s ease;
 }
 
-
 .user-slide-in.active {
     transform: translateX(0);
 }
-
 
 .user-info-header {
     gap: 54px;
     display: flex;
     align-items: center;
 }
-
 
 .info-initial {
     background-color: #007CEE;
@@ -294,13 +263,11 @@ h2 {
     border: 3px solid white;
 }
 
-
 .info-name {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-
 
 h4 {
     margin: 0;
@@ -309,12 +276,10 @@ h4 {
     line-height: 120%;
 }
 
-
 .icon {
     width: 24px;
     height: 24px;
 }
-
 
 .icon-description {
     font-weight: 400;
@@ -322,29 +287,24 @@ h4 {
     line-height: 120%;
 }
 
-
 .container-editing-tools {
     display: flex;
     gap: 13px;
     cursor: pointer;
 }
 
-
 .tools:hover {
     color: #29ABE2;
 
 }
 
-
 .tools:hover img.tools-delete {
     content: url('../assets/img/icon/delete_blue.svg');
 }
 
-
 .tools:hover img.tools-edit {
     content: url('../assets/img/icon/edit_blue.svg');
 }
-
 
 /* Main content information */
 
@@ -355,7 +315,6 @@ h4 {
     margin-block: 45px;
 }
 
-
 .contact-box {
     display: flex;
     flex-direction: column;
@@ -363,20 +322,17 @@ h4 {
     padding-bottom: 20px;
 }
 
-
 .contact-info-box {
     display: flex;
     flex-direction: column;
     gap: 15px; 
 }
 
-
 .accessibility-description {
     font-weight: 700;
     font-size: 16px;
     line-height: 120%;
 }
-
 
 .accessibility {
     font-weight: 400;
@@ -389,4 +345,5 @@ h4 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: auto;
 }

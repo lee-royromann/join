@@ -114,6 +114,10 @@ ul li,
         display: block;
     }
 
+    .header__help {
+        display: none;
+    }
+
     .sidebar {
         position: fixed;
         bottom: 0;
@@ -170,13 +174,16 @@ ul li,
 
 @media (max-width: 500px) {
     .page-content-section {
-        padding: 30px;;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 110px;
     }
 }
 
 @media (max-width: 400px) {
     .page-content-section {
-        padding: 20px;;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
 
