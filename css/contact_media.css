@@ -367,6 +367,18 @@
     .input-container {
         gap: 20px;
     }
+
+    .close-container:hover {
+        background: #b4b4b4;
+    }
+
+    #closeBtnBlack {
+        display: none;
+    }
+
+    #closeBtnWhite {
+        display: block;
+    }
 }
 
 @media (max-width: 820px) {
@@ -646,6 +658,7 @@
         width: 60px;
         height: 60px;
         top: 103px;
+        font-size: 24px;
     }
 
     .overlay-content-container form {
@@ -664,6 +677,7 @@
     .card-title h5 {
         font-size: 32px;
     }
+
     .card-title .motivation-text {
         font-size: 16px;
     }

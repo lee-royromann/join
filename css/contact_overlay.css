@@ -7,7 +7,6 @@
     overflow: hidden;
 }
 
-
 .overlay-contact {
     position: absolute;
     z-index: 150;
@@ -17,13 +16,11 @@
     transition: transform 0.2s ease;
 }
 
-
 .slide {
     left: 50%;
     transform: translate(-50%, -50%);
     transition: transform 0.2s ease;
 }
-
 
 .overlay-cover {
     display: flex;
@@ -38,7 +35,6 @@
 
 }
 
-
 .overlay-main-container {
 
     background-color: white;
@@ -47,7 +43,6 @@
     padding: 66px 48px;
     border-radius: 0 20px 20px 0;
 }
-
 
 .close-container {
     position: absolute;
@@ -60,19 +55,21 @@
     align-items: center;
 }
 
+.close-btn {
+    width: 18px;
+    height: 18px;
+}
+
+#closeBtnWhite {
+    height: 28px;
+    width: 28px;
+}
 
 .close-container:hover {
     cursor: pointer;
     background: #D9D9D9;
     border-radius: 50%;
 }
-
-
-.close-btn {
-    width: 24px;
-    height: 24px;
-}
-
 
 .card-title::after {
     content: "";
@@ -87,7 +84,6 @@
     font-size: 47px;
 }
 
-
 h5 {
     font-weight: 700;
     font-size: 61px;
@@ -95,7 +91,6 @@ h5 {
     margin: 0;
     width: max-content;
 }
-
 
 .motivation-text {
     font-weight: 400;
@@ -105,13 +100,11 @@ h5 {
     margin-block: 5px 0;
 }
 
-
 .logo-img {
     width: 56px;
     height: 66px;
 
 }
-
 
 button {
     font-weight: 400;
@@ -123,13 +116,11 @@ button {
     cursor: pointer;
 }
 
-
 .submit-container {
     margin-top: 48px;
     display: flex;
     gap: 35px;
 }
-
 
 .white-blue-btn {
     color: white;
@@ -137,11 +128,9 @@ button {
     
 }
 
-
 .white-blue-btn:hover {
     background-color: #29ABE2;
 }
-
 
 .white-blue-btn::after {
     content: url('../assets/img/icon/check.svg');
@@ -157,7 +146,6 @@ button {
     height: 24px;
 }
 
-
 .profil-img-container {
     width: 120px;
     height: 120px;
@@ -166,12 +154,10 @@ button {
     background: #D1D1D1;
 }
 
-
 .profil-img {
     width: 64px;
     height: 64px;
 }
-
 
 .blue-white-btn {
     color: #2A3647;
@@ -179,18 +165,15 @@ button {
     border: 1px solid #2A3647;
 }
 
-
 .blue-white-btn:hover {
     border-color: #29ABE2;
     color: #29ABE2;
     transform: scale(1.05);
 }
 
-
 .opacity {
     opacity: 0;
 }
-
 
 input {
     border: unset;
@@ -199,44 +182,36 @@ input {
     inline-size: -webkit-fill-available;
 }
 
-
 input:-webkit-autofill {
     box-shadow: 0 0 0px 1000px white inset !important;
 }
-
 
 input:hover {
     cursor: pointer;
 }
 
-
 label:hover {
     cursor: pointer;
 }
-
 
 .input-field:focus-within {
     border-color: #29ABE2;
 }
 
-
 .input-field-error {
     border-color: red !important;
 }
-
 
 .input-icon {
     width: 24px;
     height: 24px;
 }
 
-
 .input-container {
     margin-top: 80px;
     gap: 32px;
     height: 262px;
 }
-
 
 .input-field {
     display: flex;
@@ -247,13 +222,11 @@ label:hover {
     background-color: white;
 }
 
-
 .input-content {
     display: flex;
     width: 380px;
     justify-content: space-between;
 }
-
 
 .overlay-successful-container {
     position: absolute;
@@ -262,7 +235,6 @@ label:hover {
     height: 100vh;
     overflow: hidden;
 }
-
 
 .overlay-successful {
     position: absolute;
@@ -280,11 +252,9 @@ label:hover {
     z-index: 100;
 }
 
-
 .show-successful {
     transform: translateX(0);
 }
-
 
 .overlay-successful p {
     font-weight: 400;
@@ -302,7 +272,6 @@ label:hover {
     align-items: center;
 }
 
-
 .overlay-cover-resp {
 	display: flex;
     flex-direction: column;
@@ -317,7 +286,6 @@ label:hover {
     position: relative;
 }
 
-
 .close-resp-overlay {
     position: absolute;
     top: 30px;
@@ -329,13 +297,11 @@ label:hover {
     align-items: center;
 }
 
-
 .close-resp-overlay:hover {
     cursor: pointer;
     background-color: #D1D1D1;
     border-radius: 50%;
 }
-
 
 .overlay-main-container-resp {
 	background-color: white;
@@ -350,7 +316,6 @@ label:hover {
     align-items: center;
 }
 
-
 .profil-img-resp {
 	position: absolute;
 	top: -60px;
@@ -360,12 +325,10 @@ label:hover {
     color: white;
 }
 
-
 .input-content-resp {
     display: flex;
     justify-content: space-between;
 }
-
 
 .input-container-resp {
     gap: 15px;
@@ -373,7 +336,6 @@ label:hover {
     width: 364px;
     margin-top: 10px;
 }
-
 
 .input-field-resp {
     display: block;

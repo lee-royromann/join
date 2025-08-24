@@ -69,11 +69,13 @@ function showContact(individualContact) {
  * 
  * @returns {string} - HTML string for the add contact overlay.
  */
-
 function showOverlayAddContact() {
     return `
         <div id="overlay" class="overlay-contact flex-box-center-center d-none" onclick="eventBubbling(event)">
-            <div class="close-container" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close.svg" alt=""></div>
+            <div class="close-container" onclick="closeOverlay(event)">
+                <img class="close-btn" id="closeBtnBlack" src="../assets/img/icon/close.svg" alt="">
+                <img class="close-btn" id="closeBtnWhite" src="../assets/img/icon/close_white.svg" alt="" hidden>
+            </div>
             <div class="overlay-cover">
                 <img class="logo-img" src="../assets/img/logo/cover_join_white.svg" alt="">
                 <div class="card-title">
@@ -115,6 +117,7 @@ function showOverlayAddContact() {
         </div>`;
 }
 
+
 /**
  * Generates the overlay HTML template to edit a specific contact.
  * 
@@ -124,7 +127,10 @@ function showOverlayAddContact() {
 function overlayEditContact(individualUser) {
     return `
         <div id="overlay" class="overlay-contact flex-box-center-center d-none" onclick="eventBubbling(event)">
-            <div class="close-container" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close.svg" alt=""></div>
+            <div class="close-container" onclick="closeOverlay(event)">
+                <img class="close-btn" id="closeBtnBlack" src="../assets/img/icon/close.svg" alt="">
+                <img class="close-btn" id="closeBtnWhite" src="../assets/img/icon/close_white.svg" alt="" hidden>
+            </div>
             <div class="overlay-cover">
                 <img class="logo-img" src="../assets/img/logo/cover_join_white.svg" alt="">
                 <div class="card-title">
