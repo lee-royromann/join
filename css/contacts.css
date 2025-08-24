@@ -252,7 +252,8 @@ h2 {
     align-items: center;
 }
 
-.info-initial {
+.info-initial,
+.info-initial-2 {
     background-color: #007CEE;
     width: 120px;
     height: 120px;

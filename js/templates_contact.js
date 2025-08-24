@@ -28,7 +28,7 @@ function showContact(individualContact) {
     return `
     <div id="slide" class="user-slide-in">
         <div class="user-info-header">
-            <div class="info-initial flex-box-center-center" style="background-color: ${individualContact.color}">${individualContact.username.split(" ").map(n => n[0]).join("")}</div>
+            <div class="info-initial-2 flex-box-center-center" style="background-color: ${individualContact.color}">${individualContact.username.split(" ").map(n => n[0]).join("")}</div>
                 <div class="info-name">
                     <h4>${individualContact.username}</h4>
                     <div class="container-editing-tools">
