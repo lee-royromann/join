@@ -1,5 +1,6 @@
 body {
   display: flex;
+  justify-content: center;
   overflow-x: hidden;
 }
 /* Generelle Regel für alle Links */
@@ -8,7 +9,7 @@ a {
 }
 
 html {
-  background-color: #000000;
+  background-color: #F6F7F8;
 }
 
 * {
@@ -404,6 +405,7 @@ header {
 }
 
 .page-content-section {
+  max-width: 1440px;
   width: 100%;
   padding: 80px;
 }
