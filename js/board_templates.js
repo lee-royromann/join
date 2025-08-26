@@ -167,9 +167,7 @@ function getOverflowTemplate(label = '…') {
  * @param {string|number} taskId
  * @returns {string|undefined} HTML string or undefined if no subtasks.
  */
-function getSubtask(subtasks, taskId) {
-    console.log(subtasks);
-    
+function getSubtask(subtasks, taskId) {    
   if (subtasks[0] == "_empty") {
     return `
         <p style="padding: 12px 16px; font-size: 18px; color: red">No subtasks</p>

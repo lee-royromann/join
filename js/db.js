@@ -26,7 +26,7 @@ async function firebaseRequest(path, method = 'GET', body = null) {
     // Die zentrale Firewall für den Gastmodus
     const isWriteOperation = method !== 'GET';
     if (isGuest() && isWriteOperation) {
-        console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
+        // console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
         // Die Anfrage wird hier gestoppt und erreicht Firebase nie.
         return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
     }
@@ -113,7 +113,7 @@ async function getNextId(path) {
         return 0; // Gibt einen absolut sicheren Wert zurück, um einen Absturz zu verhindern.
     }
 
-    console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
+    // console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
     return nextId;
 }
 

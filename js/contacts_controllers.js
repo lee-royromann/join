@@ -93,25 +93,25 @@ async function deleteContact(event, contactId) {
 
         // Kontakt-Eintrag löschen
         await firebaseRequest(`/join/contacts/${contactId}`, 'DELETE');
-        console.log(`Kontakt mit ID ${contactId} wurde gelöscht.`);
+        // console.log(`Kontakt mit ID ${contactId} wurde gelöscht.`);
 
         // Prüfen, ob der Benutzer sich selbst löscht
         if (loggedInUserEmail && loggedInUserEmail === contactToDelete.email) {
-            console.log('%cSelbst-Löschung erkannt! Zugehöriger User-Account wird jetzt gelöscht.', 'color: orange; font-weight: bold;');
+            // console.log('%cSelbst-Löschung erkannt! Zugehöriger User-Account wird jetzt gelöscht.', 'color: orange; font-weight: bold;');
 
             const userIdToDelete = localStorage.getItem('currentUserId');
-            console.log(`User-ID aus localStorage geholt: "${userIdToDelete}"`);
+            // console.log(`User-ID aus localStorage geholt: "${userIdToDelete}"`);
 
             if (userIdToDelete) {
                 // User-Account löschen
                 await firebaseRequest(`/join/users/${userIdToDelete}`, 'DELETE');
-                console.log(`%cUser-Account mit ID ${userIdToDelete} wurde erfolgreich gelöscht.`, 'color: green; font-weight: bold;');
+                // console.log(`%cUser-Account mit ID ${userIdToDelete} wurde erfolgreich gelöscht.`, 'color: green; font-weight: bold;');
             } else {
                 console.warn('FEHLER: Konnte User-ID nicht aus localStorage lesen. User-Account wurde NICHT gelöscht.');
             }
 
             // Logout durchführen
-            console.log('Führe Logout durch...');
+            // console.log('Führe Logout durch...');
             localStorage.removeItem('currentUserEmail');
             localStorage.removeItem('currentUserId');
             localStorage.removeItem('username');
