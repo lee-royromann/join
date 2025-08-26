@@ -40,12 +40,14 @@ a {
 /* STRUCTURAL ELEMENTS */
 
 .page {
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 100%;
     /* max-width: var(--page-max-width); */
     min-height: 100vh;
     background-color: #fff;
+    overflow-x: hidden;
 }
 
 .main {
