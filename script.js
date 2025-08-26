@@ -300,7 +300,7 @@ function checkOrientation() {
     let isMobile = /Mobi|Android/i.test(navigator.userAgent);
     let smallScreen = Math.min(window.innerWidth, window.innerHeight) <= 800;
 
-    warning.style.display = (isMobile && smallScreen && isLandscape) ? "flex" : "none";
+    warning.style.display = /*(isMobile && smallScreen && isLandscape) ? "flex" : */"none";
 }
 
 
