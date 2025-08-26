@@ -210,7 +210,7 @@ function openNewContactDialog() {
     } else {
         // WENN DER BILDSCHIRM GROSS IST (Desktop):
    
-        overlayContainer.innerHTML = showOverlayAddContact(individualUser);
+        overlayContainer.innerHTML = showOverlayAddContact();
     }
     
     // Mache das neu geladene Overlay sofort sichtbar
