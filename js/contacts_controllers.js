@@ -205,11 +205,11 @@ function openNewContactDialog() {
     // Prüfe die aktuelle Fensterbreite
     if (window.innerWidth <= 820) {
         // WENN DER BILDSCHIRM KLEIN IST (Mobile):
-        // Lade das korrekte responsive Template (dein Bild 1)
+     
         overlayContainer.innerHTML = showOverlayAddResp();
     } else {
         // WENN DER BILDSCHIRM GROSS IST (Desktop):
-        // Lade das normale Desktop-Template (dein Bild 2)
+   
         overlayContainer.innerHTML = showOverlayAddContact(individualUser);
     }
     
