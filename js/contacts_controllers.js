@@ -201,17 +201,8 @@ function chooseContact(id) {
 function openNewContactDialog() {
     const overlayContainer = document.getElementById('overlayContact');
     if (!overlayContainer) return;
-
-    // Prüfe die aktuelle Fensterbreite
-    if (window.innerWidth <= 820) {
-        // WENN DER BILDSCHIRM KLEIN IST (Mobile):
-     
-        overlayContainer.innerHTML = showOverlayAddResp();
-    } else {
-        // WENN DER BILDSCHIRM GROSS IST (Desktop):
    
-        overlayContainer.innerHTML = showOverlayAddContact();
-    }
+    overlayContainer.innerHTML = showOverlayAddContact();
     
     // Mache das neu geladene Overlay sofort sichtbar
     openOverlay();

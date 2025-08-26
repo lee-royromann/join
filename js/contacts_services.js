@@ -183,7 +183,7 @@ function openAddRespContact() {
  */
 function openEditRespContact(id) {
     let contact = findContact(id);
-    document.getElementById("overlayContact").innerHTML = showOverlayEditResp(contact);
+    document.getElementById("overlayContact").innerHTML = overlayEditContact(contact);
 }
 
 
