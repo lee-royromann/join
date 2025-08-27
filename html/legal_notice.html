@@ -22,6 +22,11 @@
 </head>
 
 <body onload="getUsernameInitals()">
+    <body>
+
+
+    <div class="page">
+    ...
     <div class="page">
 
         <!-- Navigation -->
@@ -132,5 +137,25 @@
             </div>
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('view') === 'extern') {
+                // 1. Sperr-Modus für die aktuelle Seite aktivieren
+                document.body.classList.add('external-view');
+
+                // 2. Dafür sorgen, dass der Sperr-Modus beim Klick auf den anderen Legal-Link erhalten bleibt
+                const linksToModify = document.querySelectorAll('a[href="/html/privacy_policy.html"], a[href="/html/legal_notice.html"], a[href="../html/privacy_policy.html"], a[href="../html/legal_notice.html"]');
+                
+                linksToModify.forEach(link => {
+                    // Fügt den Parameter an jeden gefundenen Link an
+                    link.href = link.pathname + '?view=extern';
+                });
+            }
+        });
+    </script>
+</body>
+</body>
+</body>
 </body>
 </html>

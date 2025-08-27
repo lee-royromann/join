@@ -197,3 +197,26 @@ ul li,
         padding-left: 16px;
     }
 }
+/* ==== KORRIGIERTER CODE FÜR EXTERNE ANSICHT ==== */
+
+/* Diese Klasse sperrt die Links in der Sidebar */
+body.external-view .sidebar__menu a,
+body.external-view .sidebar__logo a {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+
+
+
+/* Versteckt im Burger-Menü pauschal alle Links... */
+body.external-view .header__burger-menu a {
+    display: none;
+}
+
+/* ...und macht dann die erlaubten Links wieder sichtbar (JETZT KORRIGIERT) */
+body.external-view .header__burger-menu a[href*="legal_notice.html"],
+body.external-view .header__burger-menu a[href*="privacy_policy.html"],
+body.external-view .header__burger-menu a[onclick="logOut()"] {
+    display: block;
+}
