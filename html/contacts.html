@@ -17,12 +17,11 @@
     <link rel="stylesheet" href="../css/board_overlay.css">
 
     <script src="../script.js"></script>
-    <script src="/js/contacts_controllers.js"></script>
+    <script src="../js/contacts_controllers.js"></script> 
     <script src="../js/contacts_services.js"></script>
     <script src="../js/db.js"></script>
     <script src="../js/templates_contact.js"></script>
     <script src="../js/header.js" defer></script> 
-
 </head>
 
 <body onload="initContactsPage()">
@@ -99,7 +98,7 @@
                     </section>
                     <section id="contactInfoContainer" class="content-contact">
                         <div id="backBtnResp">
-                            <div class="back-btn-resp" onclick="showRespContactList()">
+                            <div class="back-btn-resp" onclick="window.location.reload()">
                                 <img class="contact-img" src="../assets/img/icon/arrow-left-line.svg" alt="">
                             </div>
                         </div>
