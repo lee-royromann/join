@@ -40,6 +40,7 @@ main::-webkit-scrollbar-thumb,
 .form__textarea::-webkit-scrollbar-track,
 .page::-webkit-scrollbar-track,
 .form__subtask-list::-webkit-scrollbar-track,
+.form__contact-badges::-webkit-scrollbar-track,
 .overlay__credentials::-webkit-scrollbar-track,
 .overlay__subtasks--frame::-webkit-scrollbar-track
 .edit__wrapper-list::-webkit-scrollbar-track,
@@ -50,6 +51,18 @@ main::-webkit-scrollbar-thumb,
   background-color: #ffffff00;
 }
 
+.form__contact-badges::-webkit-scrollbar {
+  height: 6px;
+}
+
+.form__contact-badges::-webkit-scrollbar-thumb {
+  background-color: #ccccccaa;
+  border-radius: 4px;
+}
+
+.form__contact-badges::-webkit-scrollbar-track {
+  background-color: #ffffff00;
+}
 
 .overlay__edit--selections::-webkit-scrollbar-button:single-button:vertical:decrement {
     background-image: url('../assets/img/icon/triangle_upwards.svg');
