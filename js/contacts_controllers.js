@@ -364,6 +364,21 @@ function readsTheInputValues() {
 }
 
 
+// +++ NEUE FUNKTION HINZUGEFÜGT +++
+/**
+ * Validiert die Werte aus den Formularfeldern beim Erstellen eines neuen Kontakts.
+ * Alle Felder sind erforderlich.
+ * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`.
+ */
+function checkValues() {
+    let { n, e, p } = readsTheInputValues();
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
+    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
+    // Stellt sicher, dass das Telefonfeld nicht leer ist und nur gültige Zeichen enthält
+    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone"; 
+}
+
+
 /**
  * Validiert die Werte aus den Formularfeldern beim Bearbeiten.
  * Die Telefonnummer ist optional, wird aber auf Format geprüft, wenn sie eingegeben wird.

@@ -197,26 +197,46 @@ ul li,
         padding-left: 16px;
     }
 }
-/* ==== KORRIGIERTER CODE FÜR EXTERNE ANSICHT ==== */
+/* ==== FINALE LÖSUNG FÜR EXTERNE ANSICHT ==== */
 
-/* Diese Klasse sperrt die Links in der Sidebar */
+/* 1. Versteckt den weißen Streifen, indem der Seitenhintergrund dunkel wird */
+body{
+    margin: 0;
+}
+
+
+/* 2. Deaktiviert die Hauptlinks und das Logo in der Sidebar */
 body.external-view .sidebar__menu a,
 body.external-view .sidebar__logo a {
-    pointer-events: none;
-    cursor: default;
-    opacity: 0.5;
+    pointer-events: none !important;
+    cursor: default !important;
+    opacity: 0.4 !important;
+    background: transparent !important;
+    border: none !important;
 }
 
+/* 3. Entfernt alle Hover- und Aktiv-Effekte von den Sidebar-Containern */
+body.external-view .sidebar__item:hover,
+body.external-view .sidebar__item.active-menu {
+    background: transparent !important;
+    border: none !important;
+}
 
+/* ----- HEADER ----- */
 
-/* Versteckt im Burger-Menü pauschal alle Links... */
+/* 4. Versteckt NUR das Fragezeichen. Der User-Kreis (Burger-Menü-Trigger) bleibt sichtbar! */
+body.external-view .header__help {
+    display: none !important;
+}
+
+/* 5. Burger-Menü: Versteckt die nicht erlaubten Links */
 body.external-view .header__burger-menu a {
-    display: none;
+    display: none !important;
 }
 
-/* ...und macht dann die erlaubten Links wieder sichtbar (JETZT KORRIGIERT) */
+/* 6. Burger-Menü: Macht die erlaubten Links wieder sichtbar */
 body.external-view .header__burger-menu a[href*="legal_notice.html"],
 body.external-view .header__burger-menu a[href*="privacy_policy.html"],
 body.external-view .header__burger-menu a[onclick="logOut()"] {
-    display: block;
+    display: block !important;
 }
