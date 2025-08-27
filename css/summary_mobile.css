@@ -43,7 +43,7 @@
   }
 
   .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent {
@@ -75,7 +75,7 @@
   }
 
   .card__urgent-number-label .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent-seperator {
@@ -95,7 +95,7 @@
   }
 
   .card__deadline {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .card__overview {
@@ -109,7 +109,7 @@
   }
 
   .card__overview .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -286,6 +286,16 @@
       display: block;
       font-size: 14px;
     }
+
+    .card__row {
+      justify-content: center;
+    }
+
+    .dashboard__title,
+    .dashboard__subtitle,
+    .dashboard__seperator {
+      align-self: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -301,10 +311,149 @@
     font-size: 16px;
     border: 2px solid var(--header-color-border-user);
   }
+
+  .sidebar {
+    width: 100vw;
+    left: 0;
+    transform: none;
+    margin-bottom: 0;
+  }
+
+  /* .sidebar__menu {
+    max-width: 100%;
+  }
+
+  .sidebar__text {
+    font-size: 10px;
+  }
+
+  .sidebar__icon {
+    width: 20px;
+    height: 20px;
+  } */
+
+  .dashboard__header {
+    margin-bottom: -10px;
+    gap: 1px;
+  }
+
+  .dashboard {
+    padding-top: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 100px;
+  }
+
+  .dashboard__title {
+    font-size: 27px;
+  }
+
+  .dashboard__subtitle {
+    font-size: 14px;
+  }
+
+  .dashboard__seperator {
+    width: 70px;
+  }
+
+  .card {
+    width: 160px;
+    height: 110px;
+    padding: 12px;
+  }
+
+  .card__header {
+    gap: 10px;
+  }
+
+  .card__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card__icon img {
+    width: 18px;
+    height: 14px;
+  }
+
+  .card__number {
+    font-size: 36px;
+  }
+
+  .card__label {
+    font-size: 14px;
+  }
+
+  .card__urgent {
+    width: 330px;
+    height: 110px;
+    padding: 12px;
+  }
+
+  .card__urgent-left {
+    padding-left: 25px;
+  }
+
+  .card__urgent-content {
+    gap: 8px;
+  }
+
+  .card__urgent-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .card__urgent-icon img {
+    width: 18px;
+    height: 14px;
+  }
+
+  .card__urgent-number-label .card__number {
+    font-size: 36px;
+  }
+
+  .card__urgent-number-label .card__label {
+    font-size: 14px;
+  }
+
+  .card__urgent-seperator {
+    margin: 0 8px;
+  }
+
+  .card__urgent-right {
+    margin-right: 25px;
+    gap: 6px;
+  }
+
+  .card__date {
+    font-size: 16px;
+  }
+
+  .card__deadline {
+    font-size: 14px;
+  }
+
+  .card__overview {
+    width: 102px;
+    height: 116px;
+    padding: 12px;
+  }
+
+  .card__overview .card__number {
+    font-size: 36px;
+  }
+
+  .card__overview .card__label {
+    font-size: 14px;
+  }
+
+  .card__row {
+    gap: 12px;
+  }
 }
 
 @media (max-width: 400px) {
-  .layout-page {
+  /* .layout-page {
     height: 100vh;
     max-width: none;
     width: 100vw;
@@ -324,7 +473,7 @@
   .content {
     width: 100%;
     height: 100%;
-  }
+  } */
 
   .main {
     padding: 0;
@@ -334,13 +483,11 @@
   }
 
   .dashboard {
-    padding: 16px;
-    padding-bottom: 100px;
-    margin: 0;
-    width: 100%;
-    box-sizing: border-box;
+    gap: 20px;
   }
 
+
+  /*
   .dashboard__header {
     flex-direction: column;
     align-items: flex-start;
@@ -467,149 +614,15 @@
 
   .card__greeting {
     display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar {
-    width: 100vw;
-    left: 0;
-    transform: none;
-    margin-bottom: 0;
-  }
-
-  /* .sidebar__menu {
-    max-width: 100%;
-  }
-
-  .sidebar__text {
-    font-size: 10px;
-  }
-
-  .sidebar__icon {
-    width: 20px;
-    height: 20px;
   } */
-
-  .dashboard__header {
-    margin-bottom: -10px;
-    gap: 1px;
-  }
-
-  .dashboard {
-    padding: 12px;
-    padding-bottom: 100px;
-  }
-
-  .dashboard__title {
-    font-size: 27px;
-  }
-
-  .dashboard__subtitle {
-    font-size: 14px;
-  }
-
-  .dashboard__seperator {
-    width: 70px;
-  }
-
-  .card {
-    width: 160px;
-    height: 120px;
-    padding: 12px;
-  }
-
-  .card__header {
-    gap: 10px;
-  }
-
-  .card__icon {
-    width: 42px;
-    height: 42px;
-  }
-
-  .card__icon img {
-    width: 18px;
-    height: 14px;
-  }
-
-  .card__number {
-    font-size: 36px;
-  }
-
-  .card__label {
-    font-size: 13px;
-  }
-
-  .card__urgent {
-    width: 330px;
-    height: 120px;
-    padding: 12px;
-  }
-
-  .card__urgent-left {
-    padding-left: 25px;
-  }
-
-  .card__urgent-content {
-    gap: 8px;
-  }
-
-  .card__urgent-icon {
-    width: 42px;
-    height: 42px;
-  }
-
-  .card__urgent-icon img {
-    width: 18px;
-    height: 14px;
-  }
-
-  .card__urgent-number-label .card__number {
-    font-size: 36px;
-  }
-
-  .card__urgent-number-label .card__label {
-    font-size: 13px;
-  }
-
-  .card__urgent-seperator {
-    margin: 0 8px;
-  }
-
-  .card__urgent-right {
-    margin-right: 25px;
-    gap: 6px;
-  }
-
-  .card__date {
-    font-size: 15px;
-  }
-
-  .card__deadline {
-    font-size: 11px;
-  }
-
-  .card__overview {
-    width: 102px;
-    height: 102px;
-    padding: 12px;
-  }
-
-  .card__overview .card__number {
-    font-size: 36px;
-  }
-
-  .card__overview .card__label {
-    font-size: 13px;
-  }
-
-  .card__row {
-    gap: 12px;
-  }
 }
 
 @media (max-width: 360px) {
+
+  .main {
+    padding: 0;
+  }
+
   .dashboard {
     padding: 10px;
     padding-bottom: 500px;
@@ -652,7 +665,7 @@
   }
 
   .card__label {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .card__urgent {
@@ -684,7 +697,7 @@
   }
 
   .card__urgent-number-label .card__label {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .card__urgent-seperator {
@@ -701,12 +714,12 @@
   }
 
   .card__deadline {
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .card__overview {
     width: 89px;
-    height: 89px;
+    height: 100px;
     padding: 10px;
   }
 
@@ -715,7 +728,7 @@
   }
 
   .card__overview .card__label {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .card__row {
@@ -723,14 +736,10 @@
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 318px) {
   .dashboard {
     padding: 8px;
     padding-bottom: 100px;
-  }
-
-  .dashboard__title {
-    font-size: 28px;
   }
 
   .dashboard__subtitle {
@@ -838,6 +847,7 @@
 }
 
 /* Animations */
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -217,6 +217,7 @@
     .form__group label,
     .form__input,
     .form__input::placeholder,
+    .form__textarea,
     .form__textarea::placeholder,
     #contact-search::placeholder,
     #category-input::placeholder,
