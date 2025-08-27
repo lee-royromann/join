@@ -1,7 +1,7 @@
 .form__notification {
     position: absolute;
+    top: 118px;
     right: 0;
-    bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
