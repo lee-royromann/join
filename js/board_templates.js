@@ -41,7 +41,7 @@ function getTaskTemplate(task) {
                                         <div class="card__priority">
                                             <img src="${priorityIcon}" alt="priority-icon">
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                             </div>
     `;
@@ -80,7 +80,7 @@ function getOverlayTemplate(task) {
             <div class="overlay__close--button" onclick="closeOverlay()">
                 <img src="../assets/img/icon/close.svg" alt="close-icon">
             </div>
-        </div>   
+        </div>
         <div class="overlay__title">${task.title}</div>
         <div class="overlay__description">${task.description}</div>
 
@@ -149,7 +149,7 @@ function getContactTemplate(contact, initials, color) {
 
 /**
  * Overflow-Element („…“) is added for more than 4 assigned contacts.
- * @param {string} [label="…"] 
+ * @param {string} [label="…"]
  * @returns {string} HTML string.
  */
 function getOverflowTemplate(label = '…') {
@@ -166,13 +166,17 @@ function getOverflowTemplate(label = '…') {
  * @param {Subtask[]|undefined} subtasks
  * @param {string|number} taskId
  * @returns {string|undefined} HTML string or undefined if no subtasks.
+ * KORRIGIERTE VERSION
  */
-function getSubtask(subtasks, taskId) {    
-  if (subtasks[0] == "_empty") {
+function getSubtask(subtasks, taskId) {
+  // Sichere Prüfung: Gibt es Subtasks? Wenn nicht, zeige eine Nachricht an.
+  if (!subtasks || !Array.isArray(subtasks) || subtasks.length === 0 || subtasks[0] === "_empty") {
     return `
-        <p style="padding: 12px 16px; font-size: 18px; color: red">No subtasks</p>
+        <p style="padding: 12px 16px; font-size: 16px; color: #888;">This task has no subtasks.</p>
     `;
   }
+
+  // Wenn Subtasks existieren, werden sie hier gerendert.
   return subtasks.map((sub, index) => `
     <div class="overlay__subtask" data-index="${index}">
       <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
@@ -237,7 +241,7 @@ function getEditTemplate(task) {
                             <svg id="edit__btn-medium-icon" width="20" height="14.51" viewBox="0 0 21 8" xmlns="http://www.w3.org/2000/svg">
                                 <path fill="currentColor" d="M19.1526 7.72528H1.34443C1.05378 7.72528 0.775033 7.60898 0.569514 7.40197C0.363995 7.19495 0.248535 6.91419 0.248535 6.62143C0.248535 6.32867 0.363995 6.0479 0.569514 5.84089C0.775033 5.63388 1.05378 5.51758 1.34443 5.51758H19.1526C19.4433 5.51758 19.722 5.63388 19.9276 5.84089C20.1331 6.0479 20.2485 6.32867 20.2485 6.62143C20.2485 6.91419 20.1331 7.19495 19.9276 7.40197C19.722 7.60898 19.4433 7.72528 19.1526 7.72528Z" />
                                 <path fill="currentColor" d="M19.1526 2.48211H1.34443C1.05378 2.48211 0.775033 2.36581 0.569514 2.1588C0.363995 1.95179 0.248535 1.67102 0.248535 1.37826C0.248535 1.0855 0.363995 0.804736 0.569514 0.597724C0.775033 0.390712 1.05378 0.274414 1.34443 0.274414L19.1526 0.274414C19.4433 0.274414 19.722 0.390712 19.9276 0.597724C20.1331 0.804736 20.2485 1.0855 20.2485 1.37826C20.2485 1.67102 20.1331 1.95179 19.9276 2.1588C19.722 2.36581 19.4433 2.48211 19.1526 2.48211Z" />
-                            </svg>                                    
+                            </svg>
                         </button>
                         <button type="button" class="edit__button-prio" id="edit__btn-low" onclick="setPriorityEdit('low')">
                             <span>Low</span>
@@ -265,7 +269,7 @@ function getEditTemplate(task) {
                             </div>
                         </div>
                         <div class="edit__wrapper-list d_none" id="edit-contact-list-wrapper">
-                            <ul class="edit__contact-list" id="edit-contact-list">                                
+                            <ul class="edit__contact-list" id="edit-contact-list">
                             </ul>
                         </div>
                     </div>
@@ -282,13 +286,13 @@ function getEditTemplate(task) {
                                 <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                             </div>
                         </div>
-                    </div>   
+                    </div>
                     <ul class="edit__subtasklist">
-                        ${subtasksHTML}    
-                    </ul>   
+                        ${subtasksHTML}
+                    </ul>
                 </div>
             </div>
-        </div>  
+        </div>
         <footer class="edit__action-buttons">
             <button type="submit" class="edit__button-ok" onclick="saveEditTask('edit')">Ok<img src="../assets/img/icon/done_white.svg" alt="Button to confirm edit"></button>
         </footer>
@@ -346,15 +350,15 @@ function getEditContactListItem(contact, you, isAssigned) {
  */
 function getSubtaskTemplate(subtask, id) {
   return `
-    <li class="edit__subtask" data-id="${id}">   
+    <li class="edit__subtask" data-id="${id}">
       <span class="edit__subtask-text ${subtask.done ? 'done' : ''}">
         ${subtask.title}
       </span>
       <div class="edit__subtask-icons right-padding">
-        <div 
+        <div
             class="edit__icon-subtasklist"
-            data-action="confirm-edit-subtask" 
-            onclick="editEditSubtask(${id})" 
+            data-action="confirm-edit-subtask"
+            onclick="editEditSubtask(${id})"
             onkeydown="handleEnterEvent(event)"
         >
           <img src="../assets/img/icon/edit.svg" alt="Edit subtask">
@@ -363,7 +367,7 @@ function getSubtaskTemplate(subtask, id) {
         <div class="edit__icon-subtasklist" onclick="deleteEditSubtask(${id})">
           <img src="../assets/img/icon/delete.svg" alt="Mark as done">
         </div>
-      </div>   
+      </div>
     </li>
   `;
 }
@@ -379,10 +383,10 @@ function getOverlaySubtaskEditTemplate(id, text) {
   return `
     <li class="edit__subtask is-editing">
       <div class="edit__subtask-edit-container">
-        <input 
+        <input
             class="edit__subtask-input"
-            type="text" 
-            value="${text}" 
+            type="text"
+            value="${text}"
             id="subtaskEdit-${id}"
             onkeydown="handleEnterToSaveEditedSubtask(event, ${id})"
         />
