@@ -34,6 +34,7 @@ async function renderContacts() {
  * @param {string|number} id - Die ID des zu speichernden Kontakts.
  */
 async function saveContact(id) {
+     if (checkEditValueInput()) return;
     // 1. Lokale Daten im 'contactsFirebase'-Array aktualisieren.
     updateUserData(id); // Aktualisiert den Kontakt im lokalen Array
 
@@ -364,12 +365,28 @@ function readsTheInputValues() {
 
 
 /**
- * Validiert die Werte aus den Formularfeldern.
- * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`, wenn alle gültig sind.
+ * Validiert die Werte aus den Formularfeldern beim Bearbeiten.
+ * Die Telefonnummer ist optional, wird aber auf Format geprüft, wenn sie eingegeben wird.
+ * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`.
  */
-function checkValues() {
+function checkEditValues() {
     let { n, e, p } = readsTheInputValues();
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
-    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone";
+    if (!checkEmptyInput(p) && !/^[\d\s()+-]+$/.test(p)) return "Phone";
+}
+
+
+/**
+ * Prüft die Formulareingaben beim Bearbeiten auf Gültigkeit. Wenn ein Fehler gefunden wird,
+ * wird eine Fehlermeldung angezeigt.
+ * @returns {boolean} `true`, wenn ein Eingabefehler vorliegt, andernfalls `false`.
+ */
+function checkEditValueInput() {
+    let input = checkEditValues();
+    if (input) {
+        inputError(input);
+        return true;
+    }
+    return false;
 }
