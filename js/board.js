@@ -174,18 +174,21 @@ function getCategoryInfo(category) {
  * Compute subtask progress stats.
  * @param {Task} task
  * @returns {{ total: number, done: number, percent: number }}
+ * KORRIGIERTE VERSION
  */
 function getSubtaskProgress(task) {
-let total;
-
-    if (task.subtask[0] == "_empty") {
-        total = 0;
-    } else {
-        total = task.subtask.length;
+    // Prüft sicher, ob Subtasks existieren und ein Array sind.
+    if (!task.subtask || !Array.isArray(task.subtask) || task.subtask.length === 0) {
+        return { total: 0, done: 0, percent: 0 };
     }
 
-    const done = task.subtask?.filter(st => st.done).length || 0;
+    // Filtert den "_empty" Platzhalter sicher heraus.
+    const actualSubtasks = task.subtask.filter(st => st && st !== "_empty");
+
+    const total = actualSubtasks.length;
+    const done = actualSubtasks.filter(st => st.done).length;
     const percent = total > 0 ? (done / total) * 100 : 0;
+    
     return { total, done, percent };
 }
 
@@ -223,7 +226,7 @@ function getSubtaskIcon(status) {
  * @returns {void}
  */
 function renderSubtask(task) {
-    const container = document.getElementById("subtaskFrame"); // z. B. <div id="subtaskFrame"></div>
+    const container = document.getElementById("subtaskFrame"); // z.B. <div id="subtaskFrame"></div>
     container.innerHTML = getSubtask(task.subtask);
 }
 
@@ -235,9 +238,9 @@ function renderSubtask(task) {
  *
  * @param {Task} task - Task that provides the `assignedTo` contact IDs.
  * @param {(contact: Contact, initials: string, color: string) => string} renderFn
- *   Renderer that returns the HTML string for a single contact.
+ * Renderer that returns the HTML string for a single contact.
  * @param {{ limit?: number, overflow?: (extra: number) => string }} [options]
- *   Rendering options: `limit` (max contacts to render) and `overflow` (factory for a trailing indicator).
+ * Rendering options: `limit` (max contacts to render) and `overflow` (factory for a trailing indicator).
  * @returns {string} Concatenated HTML for up to `limit` contacts plus optional overflow.
  */
 function mapAssignedContacts(task, renderFn, options={}) {
@@ -248,8 +251,8 @@ function mapAssignedContacts(task, renderFn, options={}) {
         const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
         total++;
         if(shown<limit){
-           const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
-           html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+            const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
+            html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
         }
     }
     return total>limit&&overflow?html+overflow(total-limit):html;
