@@ -61,7 +61,9 @@ async function login() {
             localStorage.setItem("username", username);
             localStorage.setItem("loggedIn", "true");
             localStorage.setItem("currentUserEmail", user.email);
-            localStorage.setItem("currentUserId", user.id); 
+            localStorage.setItem("currentUserId", user.id);
+
+            localStorage.removeItem("greetingShown");
 
             window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
         } else {
@@ -95,6 +97,9 @@ function guestLogin(event) {
     event.preventDefault();
     // console.log("Gastmodus wird aktiviert...");
     sessionStorage.setItem('userMode', 'guest');
+
+    localStorage.removeItem("greetingShown");
+
     window.location.href = 'html/summary.html';
 }
 

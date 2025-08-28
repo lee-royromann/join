@@ -23,20 +23,19 @@ async function initSummary() {
 }
 
 function shouldShowMobileGreeting() {
-    return window.innerWidth <= 1040 && !isGreetingShown;
+    const isGreetingAlreadyShown = localStorage.getItem("greetingShown") === "true";
+    return window.innerWidth <= 1040 && !isGreetingAlreadyShown;
 }
 
 function showMobileGreeting() {
     const username = localStorage.getItem("username") || "Guest";
     const isGuest = !username || username === "Guest";
     
-    // Create and show greeting overlay
     const greetingOverlay = createMobileGreetingOverlay(username, isGuest);
     document.body.appendChild(greetingOverlay);
     
-    isGreetingShown = true;
+    localStorage.setItem("greetingShown", "true");
     
-    // For guests, show greeting for 2 seconds, then transition
     if (isGuest) {
         setTimeout(() => {
             hideMobileGreeting(greetingOverlay);
@@ -44,7 +43,7 @@ function showMobileGreeting() {
         return;
     }
     
-    // For logged-in users, transition to dashboard after longer delay
+    
     setTimeout(() => {
         hideMobileGreeting(greetingOverlay);
     }, 3000);
@@ -61,20 +60,19 @@ function createMobileGreetingOverlay(username, isGuest) {
 }
 
 function hideMobileGreeting(overlay) {
-    // First show the main content again
+    
     showMainContent();
     
-    // Then load the dashboard content
     updateDashboardCounters(tasksFirebase);
     initGreeting();
     
-    // Then fade out the overlay
     overlay.classList.add('fade-out');
     
     setTimeout(() => {
         overlay.remove();
     }, 500);
 }
+
 
 function getGreetingText() {
     const now = new Date();
