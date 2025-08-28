@@ -148,13 +148,13 @@
 }
 
 @media (max-width: 820px) {
-    .sidebar__logo-image {
-        width: 60px;
-    }
+  .sidebar__logo-image {
+    width: 60px;
+  }
 
-    .sidebar__text{
-        display: none;
-    }
+  .sidebar__text {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -238,64 +238,72 @@
 }
 
 @media (max-width: 620px) {
-    .sidebar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      transform: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: none;
-      width: 100%;
-      height: 80px;
-      padding: 0;
-      background-color: #2A3647;
-      z-index: 1000;
-    }
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: none;
+    width: 100%;
+    height: 80px;
+    padding: 0;
+    background-color: #2A3647;
+    z-index: 1000;
+  }
 
-    .sidebar__logo,
-    .sidebar__legal {
-      display: none;
-    }
+  .sidebar__logo,
+  .sidebar__legal {
+    display: none;
+  }
 
-    .sidebar__menu {
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      padding-left: 14px;
-      padding-right: 14px;
-    }
+  .sidebar__menu {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 
-    .sidebar__item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      height: 76px;
-      width: 80px;
-      padding: 0;
-      gap: 6px;
-    }
+  .sidebar__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 76px;
+    width: 80px;
+    padding: 0;
+    gap: 6px;
+  }
 
-    .sidebar__icon {
-      height: 24px;
-    }
+  .sidebar__icon {
+    height: 24px;
+  }
 
-    .sidebar__text {
-      display: block;
-      font-size: 14px;
-    }
+  .sidebar__text {
+    display: block;
+    font-size: 14px;
+  }
 
-    .card__row {
-      justify-content: center;
-    }
+  .card__row {
+    justify-content: center;
+  }
 
-    .dashboard__title,
-    .dashboard__subtitle,
-    .dashboard__seperator {
-      align-self: center;
-    }
+  .dashboard__title,
+  .dashboard__subtitle,
+  .dashboard__seperator {
+    align-self: center;
+  }
+}
+
+@media (max-height: 644px) {
+ 
+  .dashboard {
+    height: calc(100vh - 80px); 
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 480px) {
