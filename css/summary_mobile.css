@@ -389,7 +389,7 @@
   }
 
   .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent {
@@ -421,7 +421,7 @@
   }
 
   .card__urgent-number-label .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent-seperator {
@@ -438,7 +438,7 @@
   }
 
   .card__deadline {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__overview {
@@ -452,7 +452,7 @@
   }
 
   .card__overview .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__row {
@@ -673,7 +673,7 @@
   }
 
   .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent {
@@ -705,7 +705,7 @@
   }
 
   .card__urgent-number-label .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__urgent-seperator {
@@ -718,11 +718,11 @@
   }
 
   .card__date {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__deadline {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__overview {
@@ -736,7 +736,7 @@
   }
 
   .card__overview .card__label {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .card__row {
