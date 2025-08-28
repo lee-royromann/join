@@ -679,7 +679,7 @@
   .card__urgent {
     width: 290px;
     height: 110px;
-    padding: 10px;
+    padding: 0px;
   }
 
   .card__urgent-left {
