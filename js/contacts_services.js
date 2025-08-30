@@ -191,29 +191,37 @@ function openEditRespContact(id) {
 // ===================================================================
 
 /**
- * Erstellt einen neuen Kontakt, nachdem alle Eingabefelder validiert wurden.
- * Zeigt alle Fehler an, falls die Validierung fehlschlägt.
+ * Erstellt einen neuen Kontakt, weist eine fortlaufende ID zu und speichert ihn in Firebase.
  */
 async function createNewContact() {
-    clearAllContactErrors(); // Alte Fehlermarkierungen entfernen
-    const validationErrors = validateContactInput(); // Alle Felder prüfen
+    if (checkValueInput()) return;
 
-    if (validationErrors.length > 0) {
-        displayAllContactErrors(validationErrors); // Alle gefundenen Fehler anzeigen
-        return; // Funktion abbrechen, wenn Fehler vorliegen
+    try {
+        const newContactId = await getNextId('/join/contacts');
+        const { n: name, e: email, p: phone } = readsTheInputValues();
+        const nameParts = name.trim().split(' ');
+        const newContact = {
+            id: newContactId,
+            prename: nameParts.shift() || '',
+            surname: nameParts.join(' ') || '',
+            email: email,
+            phone: phone,
+            color: getUniqueAvatarColor()
+        };
+
+        await addContact(newContact, newContactId);
+        await loadContacts();
+
+        renderContacts();
+        closeOverlay();
+        clearSuccessfulContainer();
+        successfulAddContact();
+        successChange();
+
+    } catch (error) {
+        console.error("Fehler beim Erstellen des neuen Kontakts:", error);
+        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
     }
-
-    // Wenn alles in Ordnung ist, Kontakt erstellen und speichern
-    pushNewContact(); 
-    // Annahme: Es gibt eine Funktion, die die Kontakte in der Datenbank speichert.
-    // Wenn nicht, muss hier der entsprechende Code zum Speichern (z.B. mit Firebase) hin.
-    // await saveContactsToFirebase(); 
-    
-    // UI aktualisieren und Erfolgsmeldung anzeigen
-    closeOverlay(event);
-    successfulAddContact();
-    successChange();
-    init(); // Annahme: init() lädt die Kontakte neu
 }
 
 /**
