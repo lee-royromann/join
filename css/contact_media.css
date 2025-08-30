@@ -1,7 +1,7 @@
 .add-btn-resp {
     position: fixed;
-    bottom: 60px;
-    right: 45px;
+    bottom: 25px;
+    right: 25px;
     z-index: 50;
     display: none;
     justify-content: center;
@@ -51,7 +51,7 @@
 
 .editing-tools-resp {
     position: fixed;
-    bottom: 200px;
+    bottom: 110px;
     right: 5px;
     z-index: 60;
     display: flex;
@@ -516,6 +516,10 @@
 
     .user-list {
         padding-bottom: 90px;
+    }
+
+    .editing-tools-resp {
+        bottom: 190px;
     }
 }
 
