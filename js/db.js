@@ -28,11 +28,11 @@ const isWriteOperation = method !== 'GET';
 const isCreatingContact = method === 'PUT' && path.startsWith('/join/contacts/');
 const isDeletingContact = method === 'DELETE' && path.startsWith('/join/contacts/');
 
-if (isGuest() && isWriteOperation && !isCreatingContact && !isDeletingContact) {
+/*if (isGuest() && isWriteOperation && !isCreatingContact && !isDeletingContact) {
     // console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
     // Die Anfrage wird hier gestoppt und erreicht Firebase nie.
     return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
-}
+}*/
 
     // Stellt sicher, dass der Pfad nicht mit einem Slash beginnt...
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
@@ -177,6 +177,7 @@ async function loadContacts() {
         let loadedContacts = data ? Object.values(data) : [];
 
         // Wenn der Gastmodus aktiv ist, die Daten maskieren
+        /*
         if (isGuest()) {
             loadedContacts = loadedContacts.map(contact => {
                 if (!contact) return null; // Leere Einträge überspringen
@@ -187,7 +188,7 @@ async function loadContacts() {
                 };
             }).filter(Boolean); // Entfernt eventuelle null-Einträge
         }
-
+        */
         const contactsWithUsername = loadedContacts
             .filter(contact => contact)
             .map(contact => ({
