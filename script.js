@@ -339,10 +339,15 @@ function setUserCircleInitials() {
     let name = localStorage.getItem('username') || "Guest";
 
     if (name && name.toLowerCase() !== "guest") {
-        let initials = name
-            .split(" ")
-            .map(part => part.charAt(0).toUpperCase())
-            .join("");
+        const nameParts = name.trim().split(' ').filter(Boolean);
+        let initials = '';
+
+        if (nameParts.length > 0) {
+            initials = nameParts[0].charAt(0).toUpperCase();
+            if (nameParts.length > 1) {
+                initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+            }
+        }
         userCircle.textContent = initials;
     } else {
         userCircle.textContent = "G";

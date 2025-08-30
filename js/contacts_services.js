@@ -57,14 +57,21 @@ function createHTML(list) {
  */
 function userData(list, letter, section) {
     list[letter].forEach((contact) => {
-        const initials = contact.username
-            .split(" ")
-            .map((n) => n[0])
-            .join("");
+        // Teilt den Namen in einzelne Wörter
+        const nameParts = contact.username.trim().split(' ').filter(Boolean);
+        let initials = '';
+
+        if (nameParts.length > 0) {
+            // Nimmt den ersten Buchstaben des ersten Wortes
+            initials = nameParts[0].charAt(0).toUpperCase();
+            // Wenn es mehr als ein Wort gibt, wird der erste Buchstabe des letzten Wortes hinzugefügt
+            if (nameParts.length > 1) {
+                initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+            }
+        }
         section.innerHTML += showUserInformation(contact, initials);
     });
 }
-
 
 /**
  * Hebt einen ausgewählten Kontakt in der Liste visuell hervor.
