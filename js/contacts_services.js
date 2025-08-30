@@ -105,7 +105,7 @@ function clearMainContact() {
  */
 function userInfo(id) {
     let individualContact = findContact(id);
-    document.getElementById("contactInformation").innerHTML += showContact(individualContact);
+    document.getElementById("contactInformation").innerHTML = showContact(individualContact);
     slideIn();
 }
 
@@ -186,6 +186,137 @@ function openEditRespContact(id) {
     document.getElementById("overlayContact").innerHTML = overlayEditContact(contact);
 }
 
+// ===================================================================
+// NEUE VALIDIERUNGSFUNKTIONEN
+// ===================================================================
+
+/**
+ * Erstellt einen neuen Kontakt, nachdem alle Eingabefelder validiert wurden.
+ * Zeigt alle Fehler an, falls die Validierung fehlschlägt.
+ */
+async function createNewContact() {
+    clearAllContactErrors(); // Alte Fehlermarkierungen entfernen
+    const validationErrors = validateContactInput(); // Alle Felder prüfen
+
+    if (validationErrors.length > 0) {
+        displayAllContactErrors(validationErrors); // Alle gefundenen Fehler anzeigen
+        return; // Funktion abbrechen, wenn Fehler vorliegen
+    }
+
+    // Wenn alles in Ordnung ist, Kontakt erstellen und speichern
+    pushNewContact(); 
+    // Annahme: Es gibt eine Funktion, die die Kontakte in der Datenbank speichert.
+    // Wenn nicht, muss hier der entsprechende Code zum Speichern (z.B. mit Firebase) hin.
+    // await saveContactsToFirebase(); 
+    
+    // UI aktualisieren und Erfolgsmeldung anzeigen
+    closeOverlay(event);
+    successfulAddContact();
+    successChange();
+    init(); // Annahme: init() lädt die Kontakte neu
+}
+
+/**
+ * Validiert die Eingabefelder des Kontaktformulars.
+ * @returns {Array<string>} Ein Array mit den Namen aller fehlerhaften Felder.
+ */
+function validateContactInput() {
+    const errors = [];
+    const name = document.getElementById('contactname').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+
+    if (checkEmptyInput(name)) {
+        errors.push("Contactname");
+    }
+
+    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.push("Email");
+    }
+
+    if (checkEmptyInput(phone)) {
+        errors.push("Phone");
+    }
+
+    return errors;
+}
+
+/**
+ * Zeigt eine Liste von Fehlermeldungen an und markiert die entsprechenden Eingabefelder.
+ * @param {Array<string>} errorLabels - Ein Array mit den Feldnamen, die Fehler enthalten.
+ */
+function displayAllContactErrors(errorLabels) {
+    const info = document.getElementById('poppin');
+    const errorMessages = errorLabels.map(label => errorMessage(label)); // Alle Fehlermeldungen sammeln
+
+    errorLabels.forEach(label => errorInputField(label)); // Alle fehlerhaften Felder markieren
+
+    info.classList.remove('opacity');
+    info.innerHTML = errorMessages.join('<br>'); // Alle Meldungen anzeigen
+}
+
+/**
+ * Entfernt alle Fehlermarkierungen und leert die Fehlermeldungsanzeige.
+ */
+function clearAllContactErrors() {
+    const fields = ["Contactname", "Email", "Phone"];
+    const info = document.getElementById('poppin');
+
+    fields.forEach(field => {
+        const label = document.getElementById('label' + field);
+        if (label) {
+            label.classList.remove('error-border');
+        }
+    });
+
+    if (info) {
+        info.classList.add('opacity');
+        info.innerHTML = "";
+    }
+}
+
+// ===================================================================
+// HILFSFUNKTIONEN (teilweise aus login.js wiederverwendet)
+// ===================================================================
+
+/**
+ * Überprüft, ob ein String leer ist.
+ * @param {string} value - Der zu prüfende String.
+ * @returns {boolean} - True, wenn der String leer ist.
+ */
+function checkEmptyInput(value) {
+    return value.trim() === "";
+}
+
+/**
+ * Gibt eine passende Fehlermeldung für ein bestimmtes Feld zurück.
+ * @param {string} key - Der Name des Feldes ("Contactname", "Email", "Phone").
+ * @returns {string} - Die Fehlermeldung.
+ */
+function errorMessage(key) {
+    const messages = {
+        "Contactname": "Please enter a name.",
+        "Email": "Please provide a valid email.",
+        "Phone": "Please enter a phone number.",
+        "Password": "Please check your password!"
+    };
+    return messages[key] || "An unknown error occurred.";
+}
+
+/**
+ * Markiert ein Eingabefeld visuell als fehlerhaft.
+ * @param {string} inputLabel - Der Name des Feldes (z.B. "Contactname").
+ */
+function errorInputField(inputLabel) {
+    const label = document.getElementById('label' + inputLabel);
+    if (label) {
+        label.classList.add('error-border');
+    }
+}
+
+// ===================================================================
+// BESTEHENDE FUNKTIONEN (unverändert)
+// ===================================================================
 
 /**
  * Aktualisiert die Daten eines Kontakts im `contactsFirebase`-Array basierend auf den Formularfeldern.
