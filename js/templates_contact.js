@@ -20,15 +20,27 @@ function showUserInformation(contact, initials) {
 
 /**
  * Displays the full contact details panel.
- * 
- * @param {Object} individualContact - The selected contact object.
+ * * @param {Object} individualContact - The selected contact object.
  * @returns {string} - HTML string for the contact detail panel.
  */
 function showContact(individualContact) {
+    // Teilt den Namen in einzelne Wörter
+    const nameParts = individualContact.username.trim().split(' ').filter(Boolean);
+    let initials = '';
+
+    if (nameParts.length > 0) {
+        // Nimmt den ersten Buchstaben des ersten Wortes
+        initials = nameParts[0].charAt(0).toUpperCase();
+        // Wenn es mehr als ein Wort gibt, wird der erste Buchstabe des letzten Wortes hinzugefügt
+        if (nameParts.length > 1) {
+            initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+        }
+    }
+
     return `
     <div id="slide" class="user-slide-in">
         <div class="user-info-header">
-            <div class="info-initial-2 flex-box-center-center" style="background-color: ${individualContact.color}">${individualContact.username.split(" ").map(n => n[0]).join("")}</div>
+            <div class="info-initial-2 flex-box-center-center" style="background-color: ${individualContact.color}">${initials}</div>
                 <div class="info-name">
                     <h4>${individualContact.username}</h4>
                     <div class="container-editing-tools">
