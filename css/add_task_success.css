@@ -1,31 +1,40 @@
 .form__notification {
     position: absolute;
-    top: 118px;
-    right: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 280px;
-    height: 70px;
-    margin-right: 20px;
+    height: 74px;
+    min-width: 280px;
+    padding: 15px 30px;
     border-radius: 20px;
     background: #2A3647;
-    transform: translateX(100%);
+    color: #fff;
+    font-size: 20px;
     opacity: 0;
     pointer-events: none;
     transition: transform 0.2s ease, opacity 0.2s ease;
     z-index: 1000;
 }
 
+.form__notification--show {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .form__notification p {
     font-weight: 400;
     font-size: 20px;
     line-height: 120%;
+    margin-right: 10px;
     color: white;
 }
 
-.form__notification--show {
-    transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
+.form__notification img {
+    height: 22px;
+    width: 26px;
+    color: white;
 }

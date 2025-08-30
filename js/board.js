@@ -258,6 +258,7 @@ function mapAssignedContacts(task, renderFn, options={}) {
     return total>limit&&overflow?html+overflow(total-limit):html;
 }
 
+
 /**
  * Render small circular avatar badges for assigned contacts, max 4 avatar will show up.
  * @param {Task} task
@@ -281,10 +282,12 @@ function getCardBadgeTemplate(text, color, title = '') {
   return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
 }
 
+
 function getCardOverflowText(extra, showCount = false) {
   const label = showCount ? `+${extra}` : '…';
   return `<span class="card__more" title="+${extra} weitere" aria-label="+${extra} weitere">${label}</span>`;
 }
+
 
 /**
  * Render assigned contacts (avatar + full name) for overlay.
@@ -372,14 +375,19 @@ function findTaskById(id) {
  * Function to show a notification when a task is successfully edited or deleted.
  */
 function showBoardTaskNotification(origin) {
+    console.log('showBoardTaskNotification called with origin:', origin);
+
     const notificationContainer = document.getElementById('taskNotification');
     let notificationMessage = document.getElementById('taskNotificationMessage');
     if (origin === 'delete') {
-        const deleteMessage = "Task successfully deleted";
+        const deleteMessage = "Task deleted";
         notificationMessage.innerHTML = deleteMessage;
     } else if (origin === 'edit') {
-        const editMessage = "Task successfully edited";
+        const editMessage = "Task edited";
         notificationMessage.innerHTML = editMessage;
+    } else if (origin === 'add') {
+        const addMessage = "Task added";
+        notificationMessage.innerHTML = addMessage;
     }
     notificationContainer.classList.add('form__notification--show');
     setTimeout(() => {

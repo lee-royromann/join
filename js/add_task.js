@@ -86,7 +86,7 @@ async function createTask(event, taskStatus, origin) {
     }
     if (origin === 'board-page') {
         closeTaskOverlay();
-        window.location.reload();
+        // window.location.reload();
     } else {
         // window.location.href = './board.html';
     }
