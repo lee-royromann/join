@@ -18,7 +18,7 @@
   }
 }
 
-@media (max-width: 1187px) {
+@media (max-width: 1192px) {
   .card {
     width: 190px;
     height: 130px;
@@ -196,6 +196,14 @@
     padding-left: 40px;
   }
 
+  .header__wrapper {
+    padding-right: 40px;
+  }
+
+  .header__burger-menu {
+    right: 40px;
+  }
+
   .header__help,
   .header__title,
   .card__greeting {
@@ -309,8 +317,11 @@
 @media (max-width: 480px) {
   .header {
     padding-left: 32px;
-    padding-right: 20px;
     height: 80px;
+  }
+
+  .header__wrapper {
+    padding-right: 32px;
   }
 
   .header__user {
@@ -318,6 +329,10 @@
     width: 40px;
     font-size: 16px;
     border: 2px solid var(--header-color-border-user);
+  }
+
+  .header__burger-menu {
+    right: 32px;
   }
 
   .sidebar {

@@ -1,4 +1,13 @@
-@media (max-width: 556px) {
+@media (max-width: 560px) {
+
+    .header__wrapper {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .header__burger-menu {
+        right: 12px;
+    }
 
     .kanban__title {
         padding-bottom: 20px;

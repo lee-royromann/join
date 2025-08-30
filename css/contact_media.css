@@ -78,12 +78,6 @@
     border-radius: 10px;
 }
 
-@media (max-width: 2000px) {
-    .header {
-        padding-left: 40px;
-    }
-}
-
 @media (max-width: 1360px) {
     .headline {
         flex-direction: column;
@@ -168,8 +162,13 @@
 }
 
 @media (max-width: 1120px) {
-    .header {
+    .header__wrapper {
         padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .header__burger-menu {
+        right: 28px;
     }
 
     .user-container {
@@ -278,7 +277,7 @@
 }
 
 @media (max-width: 900px) {
-    .header {
+    .header__wrapper {
         padding-left: 20px;
     }
 
@@ -445,7 +444,7 @@
 }
 
 @media (max-width: 520px) {
-    .header {
+    .header__wrapper {
         padding-left: 24px;
     }
     
@@ -629,6 +628,20 @@
 @media (max-width: 380px) {
     .overlay-main-container {
         padding: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .header__wrapper {
+        padding-right: 24px;
+    }
+
+    .header__burger-menu {
+        right: 24px;
+    }
+
+    .user-container {
+        width: 300px;
     }
 }
 

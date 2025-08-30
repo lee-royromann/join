@@ -25,6 +25,20 @@ main {
     flex: 1;
 }
 
+.header {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.header__wrapper {
+    padding-left: 48px;
+    padding-right: 48px;
+}
+
+.header__burger-menu {
+    right: 48px;
+}
+
 .flex-box-center-center {
     display: flex;
     justify-content: center;

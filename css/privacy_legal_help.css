@@ -31,6 +31,11 @@ h3 {
     background-color: #F6F7F8;
 }
 
+.header {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .main {
     display: flex;
     flex-direction: column;
@@ -93,8 +98,13 @@ ul li,
 }
 
 @media (max-width: 750px) {
-    .header {
+    .header__wrapper {
         padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .header__burger-menu {
+        right: 40px;
     }
     
     h1 {
@@ -174,6 +184,15 @@ ul li,
 }
 
 @media (max-width: 500px) {
+    .header__wrapper {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .header__burger-menu {
+        right: 30px;
+    }
+
     .page-content-section {
         padding-left: 30px;
         padding-right: 30px;
@@ -182,6 +201,15 @@ ul li,
 }
 
 @media (max-width: 400px) {
+    .header__wrapper {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .header__burger-menu {
+        right: 20px;
+    }
+
     .page-content-section {
         padding-left: 20px;
         padding-right: 20px;

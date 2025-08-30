@@ -1,16 +1,24 @@
 @media (max-width: 1320px) {
-    .header,
+    .header__wrapper,
     .content {
         padding-left: 60px;
         padding-right: 60px;
     }
+
+    .header__burger-menu {
+        right: 60px;
+    }
 }
 
 @media (max-width: 1280px) {
-    .header,
+    .header__wrapper,
     .content {
         padding-left: 40px;
         padding-right: 40px;
+    }
+
+    .header__burger-menu {
+        right: 40px;
     }
 }
 
@@ -182,7 +190,7 @@
 }
 
 @media (max-width: 510px) {
-    .header {
+    .header__wrapper {
         padding-left: 40px;
     }
 
@@ -196,7 +204,7 @@
 }
 
 @media (max-width: 480px) {
-    .header {
+    .header__wrapper {
         padding-left: 20px;
         padding-right: 20px;
         height: 80px;
@@ -207,6 +215,10 @@
         width: 40px;
         font-size: 16px;
         border: 2px solid var(--header-color-border-user);
+    }
+
+    .header__burger-menu {
+        right: 20px;
     }
 
     .content {

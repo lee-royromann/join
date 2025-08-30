@@ -1,7 +1,11 @@
 @media (max-width: 1320px) {
-    .header {
+    .header__wrapper {
         padding-left: 60px;
         padding-right: 60px;
+    }
+
+    .header__burger-menu {
+        right: 60px;
     }
 
     .kanban__header,
@@ -12,9 +16,13 @@
 }
 
 @media (max-width: 1280px) {
-    .header {
+    .header__wrapper {
         padding-left: 40px;
         padding-right: 40px;
+    }
+
+    .header__burger-menu {
+        right: 40px;
     }
 
     .kanban__header,
@@ -40,9 +48,13 @@
 }
 
 @media (max-width: 1100px) {
-    .header {
+    .header__wrapper {
         padding-left: 20px;
         padding-right: 20px;
+    }
+
+    .header__burger-menu {
+        right: 20px;
     }
 
     .kanban__headline {
@@ -277,7 +289,7 @@
 }
 
 @media (max-width: 480px) {
-    .header {
+    .header__wrapper {
         padding-left: 20px;
         padding-right: 20px;
         height: 80px;
