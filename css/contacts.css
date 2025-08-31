@@ -1,6 +1,5 @@
 body {
     display: flex;
-    /* max-width: 1920px; */
     width: 100%;
     padding: 0;
     margin: 0;
@@ -9,7 +8,6 @@ body {
 
 .page {
     position: relative;
-    /* max-width: 1920px; */
     height: 100%;
     width: 100%;
     display: flex;
@@ -61,6 +59,7 @@ main {
     flex-direction: row;
     background-color: #F6F7F8;
     max-width: 1440px;
+    min-height: 0;
     overflow: hidden;
     width: 100%;
 }
@@ -188,8 +187,8 @@ h3 {
     flex: 1;
     overflow: hidden;
     width: 100%;
+    min-width: 0;
 }
-
 
 .choose-contact {
     background: #2A3647 !important;
@@ -208,7 +207,7 @@ strong {
     font-weight: 400;
     font-size: 20px;
     line-height: 120%;
-    /* overflow: hidden; */
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -246,6 +245,8 @@ h2 {
     flex-direction: column;
     overflow: hidden;
     padding-left: 50px;
+    padding-right: 50px;
+    min-width: 0;
 }
 
 /* Main content Name*/
@@ -371,4 +372,14 @@ h4 {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: auto;
+}
+
+.info-name h4 {
+    font-size: 47px;
+    font-weight: 500;
+    color: #007CEE;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
 }
