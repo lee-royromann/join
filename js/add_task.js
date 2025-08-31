@@ -283,3 +283,17 @@ function showTaskNotification() {
         window.location.href = './board.html';
     }, 950);
 }
+/**
+ * Schließt das AddTask-Overlay, wenn auf den Hintergrund geklickt wird.
+ * Verhält sich wie der Klick auf das 'X'-Icon.
+ */
+function closeTaskOverlayOnClick(event) {
+    // Prüft, ob der Klick direkt auf den Hintergrund (id='task__overlay') erfolgte
+    if (event.target.id === 'task__overlay') {
+        // Verhindert, dass der Klick an Elemente hinter dem Overlay weitergegeben wird
+        event.stopPropagation();
+        
+        // Ruft dieselbe Schließen-Funktion auf, die auch das 'X' verwendet
+        closeTaskOverlay();
+    }
+}
