@@ -83,14 +83,19 @@ document.getElementById('signup').addEventListener("submit", function (event) {
 
 
 /**
- * Displays an error message and highlights the input field with an error.
- * * @param {string} inputLabel - The key identifying the input field with the error.
+ * Displays error messages and highlights all input fields with an error.
+ * @param {Array<string>} inputLabels - The keys identifying the input fields with errors.
  */
-function inputError(inputLabel) {
+function inputError(inputLabels) {
     let info = document.getElementById('errorPoppin');
     info.classList.remove('opacity');
-    info.innerHTML = errorMessage(inputLabel);
-    errorInputField(inputLabel);
+    
+    let errorMessages = inputLabels.map(label => errorMessage(label)).join('<br>');
+    info.innerHTML = errorMessages;
+
+    inputLabels.forEach(label => {
+        errorInputField(label);
+    });
 }
 
 
@@ -152,29 +157,40 @@ function readsTheInputValues() {
 
 /**
  * Validates all input values according to specified rules.
- * Diese Funktion prüft nur die Formate, nicht die Datenbank. Daher sind keine Änderungen nötig.
- * * @returns {string|undefined} - The key of the invalid input or undefined if all are valid.
+ * @returns {Array<string>} - An array of keys of the invalid inputs or an empty array if all are valid.
  */
 function checkValues() {
     let { username, email, passwdReg, passwdConf, checkBox } = readsTheInputValues();
-    if (checkEmptyInput(username) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(username)) return "Username";
-    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "EmailSignUp";
-    if (checkEmptyInput(passwdReg) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdReg)) return "PasswordReg";
-    if (checkEmptyInput(passwdConf) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdConf)) return "PasswordConf";
-    if (checkBox !== "true") return "Checkbox";
+    const errors = [];
+
+    if (checkEmptyInput(username) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(username)) {
+        errors.push("Username");
+    }
+    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.push("EmailSignUp");
+    }
+    if (checkEmptyInput(passwdReg) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdReg)) {
+        errors.push("PasswordReg");
+    }
+    if (checkEmptyInput(passwdConf) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdConf)) {
+        errors.push("PasswordConf");
+    }
+    if (checkBox !== "true") {
+        errors.push("Checkbox");
+    }
+    return errors;
 }
+
 
 
 /**
  * Checks input values and triggers error handling if any input is invalid.
- * Diese Funktion ruft die Logik auf, die die Eingaben vor dem Senden an die Datenbank prüft.
- * Sie ist der "Gatekeeper" und funktioniert weiterhin perfekt.
- * * @returns {boolean} - True if an error is found, otherwise false.
+ * @returns {boolean} - True if an error is found, otherwise false.
  */
 function checkValueInput() {
-    let input = checkValues();
-    if (input) {
-        inputError(input);
+    let errors = checkValues();
+    if (errors.length > 0) {
+        inputError(errors);
         return true;
     }
     return false;

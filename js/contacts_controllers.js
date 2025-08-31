@@ -289,12 +289,12 @@ function showRespContactList() {
 
 /**
  * Überprüft die Eingabewerte des Formulars und zeigt bei Bedarf Fehler an.
- * @returns {boolean} `true`, wenn ein Fehler vorliegt, sonst `false`.
+ * @returns {boolean} `true`, wenn Fehler vorliegen, sonst `false`.
  */
 function checkValueInput() {
-    let input = checkValues();
-    if (input) {
-        inputError(input);
+    let errors = checkValues();
+    if (errors.length > 0) {
+        inputError(errors);
         return true;
     }
     return false;
@@ -302,16 +302,20 @@ function checkValueInput() {
 
 
 /**
- * Zeigt eine Fehlermeldung für ein bestimmtes Eingabefeld an.
- * @param {string} inputLabel - Der Name des fehlerhaften Feldes (z.B. "Email").
+ * Zeigt Fehlermeldungen für alle fehlerhaften Eingabefelder an.
+ * @param {Array<string>} inputLabels - Ein Array der Namen der fehlerhaften Felder.
  */
-function inputError(inputLabel) {
+function inputError(inputLabels) {
     let info = document.getElementById('poppin');
     info.classList.remove('opacity');
-    info.innerHTML = errorMessage(inputLabel);
-    errorInputField(inputLabel);
-}
 
+    let errorMessages = inputLabels.map(label => errorMessage(label)).join('<br>');
+    info.innerHTML = errorMessages;
+
+    inputLabels.forEach(label => {
+        errorInputField(label);
+    });
+}
 
 /**
  * Entfernt alle Fehlermeldungen und Markierungen von den Formularfeldern.
@@ -380,31 +384,46 @@ function readsTheInputValues() {
 }
 
 
-// +++ NEUE FUNKTION HINZUGEFÜGT +++
 /**
  * Validiert die Werte aus den Formularfeldern beim Erstellen eines neuen Kontakts.
- * Alle Felder sind erforderlich.
- * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`.
+ * @returns {Array<string>} Ein Array mit den Namen der ungültigen Felder.
  */
 function checkValues() {
     let { n, e, p } = readsTheInputValues();
-    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
-    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
-    // Stellt sicher, dass das Telefonfeld nicht leer ist und nur gültige Zeichen enthält
-    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) return "Phone"; 
+    const errors = [];
+
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) {
+        errors.push("Contactname");
+    }
+    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+        errors.push("Email");
+    }
+    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) {
+        errors.push("Phone");
+    }
+    return errors;
 }
+
 
 
 /**
  * Validiert die Werte aus den Formularfeldern beim Bearbeiten.
- * Die Telefonnummer ist optional, wird aber auf Format geprüft, wenn sie eingegeben wird.
- * @returns {string|undefined} Der Name des ersten ungültigen Feldes oder `undefined`.
+ * @returns {Array<string>} Ein Array mit den Namen der ungültigen Felder.
  */
 function checkEditValues() {
     let { n, e, p } = readsTheInputValues();
-    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) return "Contactname";
-    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return "Email";
-    if (!checkEmptyInput(p) && !/^[\d\s()+-]+$/.test(p)) return "Phone";
+    const errors = [];
+
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) {
+        errors.push("Contactname");
+    }
+    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+        errors.push("Email");
+    }
+    if (!checkEmptyInput(p) && !/^[\d\s()+-]+$/.test(p)) {
+        errors.push("Phone");
+    }
+    return errors;
 }
 
 
@@ -414,9 +433,9 @@ function checkEditValues() {
  * @returns {boolean} `true`, wenn ein Eingabefehler vorliegt, andernfalls `false`.
  */
 function checkEditValueInput() {
-    let input = checkEditValues();
-    if (input) {
-        inputError(input);
+    let errors = checkEditValues();
+    if (errors.length > 0) {
+        inputError(errors);
         return true;
     }
     return false;
