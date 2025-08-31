@@ -14,10 +14,10 @@ function openOverlay(taskId) {
     document.body.style.overflow = 'hidden';
     story.classList.remove("d-none");
     renderOverlayTask(taskId);
-
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
-            hideOverlay(overlay);
+            closeOverlay();
+            closeEditOverlay();
         }
     });
 }
