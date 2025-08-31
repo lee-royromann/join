@@ -1,7 +1,6 @@
 /**
  * Generates a contact list item shown on the contacts page.
- * 
- * @param {Object} contact - The contact object.
+ * * @param {Object} contact - The contact object.
  * @param {string} initials - Initials to show in the avatar.
  * @returns {string} - HTML string for the contact list entry.
  */
@@ -120,7 +119,7 @@ function showOverlayAddContact() {
                                 <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
                             </div>
                         </label>
-                        <div id="phoneError" class="error-message d-none">Please enter a valid phone number (6-20 digits).</div>
+                        <div id="phoneError" class="error-message d-none">Please enter a valid phone number (6-15 digits).</div>
                     </div>
                     <div class="submit-container">
                         <button class="blue-white-btn cancel" type="button" onclick="closeOverlay(event)">Cancel</button>
@@ -138,6 +137,16 @@ function showOverlayAddContact() {
  * @returns {string} - HTML string for the edit contact overlay.
  */
 function overlayEditContact(individualUser) {
+    const nameParts = individualUser.username.trim().split(' ').filter(Boolean);
+    let initials = '';
+
+    if (nameParts.length > 0) {
+        initials = nameParts[0].charAt(0).toUpperCase();
+        if (nameParts.length > 1) {
+            initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+        }
+    }
+
     return `
         <div id="overlay" class="overlay-contact flex-box-center-center d-none" onclick="eventBubbling(event)">
             <div class="close-container" onclick="closeOverlay(event)">
@@ -151,7 +160,7 @@ function overlayEditContact(individualUser) {
                 </div>
             </div>
             <div class="overlay-main-container flex-box-center-center">
-                <div class="info-initial info-initial-overlay flex-box-center-center" style="background-color: ${individualUser.color}">${individualUser.username.split(" ").map(n => n[0]).join("")}</div>
+                <div class="info-initial info-initial-overlay flex-box-center-center" style="background-color: ${individualUser.color}">${initials}</div>
                 <form onsubmit="saveContact(${individualUser.id}); return false">
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
@@ -166,7 +175,7 @@ function overlayEditContact(individualUser) {
                                 <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
                             </div>
                         </label>
-                     <label id="labelPhone" class="input-field">
+                       <label id="labelPhone" class="input-field">
                             <div class="input-content">
                                 <input id="phone" type="tel" value="${individualUser.phone}" placeholder="Phone" required
                                        minlength="6"
@@ -177,7 +186,7 @@ function overlayEditContact(individualUser) {
                             </div>
                         </label>
                          <div id="phoneError" class="error-message d-none">Please enter a valid phone number (6-15 digits).</div>
-                    </div>          
+                    </div>
                     <div class="submit-container">
                         <button class="blue-white-btn" type="button" onclick="deleteContact(event, ${individualUser.id}); closeOverlay()">Delete</button>
                         <button class="white-blue-btn save-contact-btn">Save</button>
@@ -190,8 +199,7 @@ function overlayEditContact(individualUser) {
 
 /**
  * Displays a message when a contact is successfully created.
- * 
- * @returns {string} - HTML feedback message.
+ * * @returns {string} - HTML feedback message.
  */
 function showSuccessfulCreated() {
     return `<p>Contact successfully created </p>`;
@@ -200,8 +208,7 @@ function showSuccessfulCreated() {
 
 /**
  * Displays a message when a contact is successfully deleted.
- * 
- * @returns {string} - HTML feedback message.
+ * * @returns {string} - HTML feedback message.
  */
 function showSuccessfulDeleted() {
     return `<p>Contact successfully deleted </p>`;
@@ -210,8 +217,7 @@ function showSuccessfulDeleted() {
 
 /**
  * Returns a button with a vertical dot icon to open the responsive tools menu.
- * 
- * @returns {string} - HTML string for the responsive menu button.
+ * * @returns {string} - HTML string for the responsive menu button.
  */
 function changeBtnMore() {
     return `
@@ -223,8 +229,7 @@ function changeBtnMore() {
 
 /**
  * Returns a button with a person add icon to open the responsive contact form.
- * 
- * @returns {string} - HTML string for the add contact button.
+ * * @returns {string} - HTML string for the add contact button.
  */
 function changeAddBtnPerson() {
     return `
@@ -236,8 +241,7 @@ function changeAddBtnPerson() {
 
 /**
  * Returns the overlay HTML for adding a contact in responsive view.
- * 
- * @returns {string} - HTML string for the add contact overlay (responsive).
+ * * @returns {string} - HTML string for the add contact overlay (responsive).
  */
 function showOverlayAddResp() {
     return `
@@ -284,11 +288,20 @@ function showOverlayAddResp() {
 
 /**
  * Returns the overlay HTML for editing a contact in responsive view.
- * 
- * @param {Object} individualContact - The contact object to edit.
+ * * @param {Object} individualContact - The contact object to edit.
  * @returns {string} - HTML string for the edit contact overlay (responsive).
  */
 function showOverlayEditResp(individualContact) {
+    const nameParts = individualContact.username.trim().split(' ').filter(Boolean);
+    let initials = '';
+
+    if (nameParts.length > 0) {
+        initials = nameParts[0].charAt(0).toUpperCase();
+        if (nameParts.length > 1) {
+            initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+        }
+    }
+
     return `
     <div id="overlay" class="overlay-contact overlay-contact-resp" onclick="eventBubbling(event)">
             <div class="overlay-cover-resp">
@@ -299,7 +312,7 @@ function showOverlayEditResp(individualContact) {
                 </div>
             </div>
             <div class="overlay-main-container-resp">
-                <div class="profil-img-container flex-box-center-center profil-img-resp" style="background-color: ${individualContact.color}">${individualContact.username.split(" ").map(n => n[0]).join("")}</div>
+                <div class="profil-img-container flex-box-center-center profil-img-resp" style="background-color: ${individualContact.color}">${initials}</div>
                 <form onsubmit="saveContact(${individualContact.id}); return false" onkeydown="return event.key != 'Enter';">
                     <div class="dpl-fl-colu input-container-resp">
                         <label id="labelContactname" class="input-field input-field-resp">
@@ -330,3 +343,4 @@ function showOverlayEditResp(individualContact) {
             </div>
         </div>`;
 }
+
