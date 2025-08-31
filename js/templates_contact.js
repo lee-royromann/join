@@ -77,8 +77,7 @@ function showContact(individualContact) {
 
 /**
  * Returns the HTML for the overlay used to add a new contact.
- * 
- * @returns {string} - HTML string for the add contact overlay.
+ * * @returns {string} - HTML string for the add contact overlay.
  */
 function showOverlayAddContact() {
     return `
@@ -97,31 +96,35 @@ function showOverlayAddContact() {
             <div class="overlay-main-container flex-box-center-center">
                 <div class="profil-img-container flex-box-center-center"><img class="profil-img" src="../assets/img/icon/person.svg" alt=""></div>
                 
-                <form onsubmit="createNewContact(); return false" onkeydown="return event.key != 'Enter';"> 
+                <form onsubmit="createNewContact(); return false"> 
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
                             <div class="input-content">
-                                <input id="contactname" type="text" placeholder="Name" onkeyup="correctedInput('labelContactname', 'contactname')" onblur="finishTheCorrection('labelContactname')">
+                                <input id="contactname" type="text" placeholder="Name" required>
                                 <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
                             </div>
                         </label>
                         <label id="labelEmail" class="input-field">
                             <div class="input-content">
-                                <input id="email" type="text" placeholder="E-mail" onkeyup="correctedInput('labelEmail', 'email')" onblur="finishTheCorrection('labelEmail')">
+                                <input id="email" type="email" placeholder="E-mail" required>
                                 <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
                             </div>
                         </label>
                         <label id="labelPhone" class="input-field">
                             <div class="input-content">
-                                <input id="phone" type="tel" placeholder="Phone" onkeyup="correctedInput('labelPhone', 'phone')" onblur="finishTheCorrection('labelPhone')">
+                                <input id="phone" type="tel" placeholder="Phone" required
+                                       minlength="6"
+                                       maxlength="15"
+                                       pattern="[0-9+ ]+"
+                                       oninput="validatePhoneInput()">
                                 <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
                             </div>
                         </label>
-                        <p id="poppin" class="poppins opacity"></p>
+                        <div id="phoneError" class="error-message d-none">Please enter a valid phone number (6-20 digits).</div>
                     </div>
                     <div class="submit-container">
-                        <button class="blue-white-btn cancel" onclick="closeOverlay(event)">Cancel</button>
-                        <button class="white-blue-btn">Create contact</button>
+                        <button class="blue-white-btn cancel" type="button" onclick="closeOverlay(event)">Cancel</button>
+                        <button class="white-blue-btn create-contact-btn">Create contact</button>
                     </div>
                 </form>
             </div>
@@ -131,8 +134,7 @@ function showOverlayAddContact() {
 
 /**
  * Generates the overlay HTML template to edit a specific contact.
- * 
- * @param {Object} individualUser - The contact object to edit.
+ * * @param {Object} individualUser - The contact object to edit.
  * @returns {string} - HTML string for the edit contact overlay.
  */
 function overlayEditContact(individualUser) {
@@ -146,36 +148,39 @@ function overlayEditContact(individualUser) {
                 <img class="logo-img" src="../assets/img/logo/cover_join_white.svg" alt="">
                 <div class="card-title">
                     <h5>Edit Contact</h5>
-                    <p class="motivation-text">Tasks are better with a Team!</p>
                 </div>
             </div>
             <div class="overlay-main-container flex-box-center-center">
                 <div class="info-initial info-initial-overlay flex-box-center-center" style="background-color: ${individualUser.color}">${individualUser.username.split(" ").map(n => n[0]).join("")}</div>
-                <form onsubmit="saveContact(${individualUser.id}); return false" onkeydown="return event.key != 'Enter';">
+                <form onsubmit="saveContact(${individualUser.id}); return false">
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
                             <div class="input-content">
-                                <input id="contactname" type="text" value="${individualUser.username}" placeholder="Name" onkeyup="correctedInput('labelContactname', 'contactname')" onblur="finishTheCorrection('labelContactname')">
+                                <input id="contactname" type="text" value="${individualUser.username}" placeholder="Name" required>
                                 <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
                             </div>
                         </label>
                         <label id="labelEmail" class="input-field">
                             <div class="input-content">
-                                <input id="email" type="text" value="${individualUser.email}" placeholder="E-mail" onkeyup="correctedInput('labelEmail', 'email')" onblur="finishTheCorrection('labelEmail')">
+                                <input id="email" type="email" value="${individualUser.email}" placeholder="E-mail" required>
                                 <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
                             </div>
                         </label>
-                        <label id="labelPhone" class="input-field">
+                     <label id="labelPhone" class="input-field">
                             <div class="input-content">
-                                <input id="phone" type="tel" value="${individualUser.phone}" placeholder="Phone" onkeyup="correctedInput('labelPhone', 'phone')" onblur="finishTheCorrection('labelPhone')">
+                                <input id="phone" type="tel" value="${individualUser.phone}" placeholder="Phone" required
+                                       minlength="6"
+                                       maxlength="15"
+                                       pattern="[0-9+ ]+"
+                                       oninput="validatePhoneInput()">
                                 <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
                             </div>
                         </label>
-                        <p id="poppin" class="poppins opacity"></p>
-                    </div>
+                         <div id="phoneError" class="error-message d-none">Please enter a valid phone number (6-15 digits).</div>
+                    </div>          
                     <div class="submit-container">
-                        <button class="blue-white-btn" onclick="deleteContact(event, ${individualUser.id}); closeOverlay()">Delete</button>
-                        <button class="white-blue-btn">Save</button>
+                        <button class="blue-white-btn" type="button" onclick="deleteContact(event, ${individualUser.id}); closeOverlay()">Delete</button>
+                        <button class="white-blue-btn save-contact-btn">Save</button>
                     </div>
                 </form>
             </div>

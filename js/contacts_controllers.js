@@ -28,7 +28,23 @@ async function renderContacts() {
     groupInitials();     // Annahme: Diese Funktion existiert.
 }
 
+// In contacts_controllers.js
 
+async function createNewContact() {
+    // Validierung vor dem Speichern
+    if (!validatePhoneInput()) {
+        return; // Bricht die Funktion ab, wenn die Telefonnummer ungültig ist
+    }
+    // ... Ihr bestehender Code zum Erstellen des Kontakts
+}
+
+async function saveContact(contactId) {
+    // Validierung vor dem Speichern
+    if (!validatePhoneInput()) {
+        return; // Bricht die Funktion ab, wenn die Telefonnummer ungültig ist
+    }
+    // ... Ihr bestehender Code zum Speichern der Änderungen
+}
 /**
  * Speichert die Änderungen an einem bestehenden Kontakt.
  * @param {string|number} id - Die ID des zu speichernden Kontakts.
@@ -404,4 +420,27 @@ function checkEditValueInput() {
         return true;
     }
     return false;
+}
+// In join/js/contacts_controllers.js
+
+function validatePhoneInput() {
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phoneError');
+    const phoneLabel = document.getElementById('labelPhone');
+    
+    // Findet den "Create" oder "Save" Button, je nachdem, welcher gerade sichtbar ist.
+    const submitButton = document.querySelector('.create-contact-btn') || document.querySelector('.save-contact-btn');
+
+    // .checkValidity() prüft automatisch minlength, maxlength, pattern und required
+    if (phoneInput.checkValidity()) {
+        phoneError.classList.add('d-none');
+        phoneLabel.classList.remove('invalid');
+        if (submitButton) submitButton.disabled = false; // Button aktivieren
+        return true;
+    } else {
+        phoneError.classList.remove('d-none');
+        phoneLabel.classList.add('invalid');
+        if (submitButton) submitButton.disabled = true; // Button deaktivieren
+        return false;
+    }
 }

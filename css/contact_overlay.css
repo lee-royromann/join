@@ -345,3 +345,17 @@ label:hover {
 .submit-container-resp {
     justify-content: center;
 }
+
+
+.error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: -10px; /* Passt den Abstand an */
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+.input-field.invalid .input-content {
+    border-color: #ff0000 !important;
+}
