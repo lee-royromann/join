@@ -359,3 +359,12 @@ label:hover {
 .input-field.invalid .input-content {
     border-color: #ff0000 !important;
 }
+
+#contactname,
+#email,
+#phone,
+#labelEmail,
+#labelContactname,
+#labelPhone {
+    padding-right: 20px;
+}
