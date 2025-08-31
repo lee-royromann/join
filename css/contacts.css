@@ -246,6 +246,7 @@ h2 {
     overflow: hidden;
     padding-left: 50px;
     padding-right: 50px;
+    width: 100%;
     min-width: 0;
 }
 
@@ -267,9 +268,19 @@ h2 {
 }
 
 .user-info-header {
-    gap: 54px;
     display: flex;
     align-items: center;
+    gap: 54px;
+    max-width: 100%;
+}
+
+.user-info-header h4 {
+    font-size: 47px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .info-initial,
@@ -286,9 +297,27 @@ h2 {
 }
 
 .info-name {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.info-name__text {
+    margin: 0;
+    font-weight: 500;
+    font-size: 47px;
+    line-height: 120%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.contact-details {
+    flex: 1;
+    min-width: 0;
 }
 
 h4 {
@@ -296,10 +325,6 @@ h4 {
     font-weight: 500;
     font-size: 47px;
     line-height: 120%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 600px;
 }
 
 .icon {
@@ -317,6 +342,15 @@ h4 {
     display: flex;
     gap: 13px;
     cursor: pointer;
+    flex-shrink: 0;
+}
+
+.tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
 }
 
 .tools:hover {
@@ -372,14 +406,4 @@ h4 {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: auto;
-}
-
-.info-name h4 {
-    font-size: 47px;
-    font-weight: 500;
-    color: #007CEE;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
 }

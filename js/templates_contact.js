@@ -44,25 +44,23 @@ function showContact(individualContact) {
                 <div class="info-name">
                     <h4 class="info-name__text">${individualContact.username}</h4>
                     <div class="container-editing-tools">
-                        <div class="dpl-fl-al-cetr tools" onclick="editContact(${individualContact.id})">
+                        <div class="tools" onclick="editContact(${individualContact.id})">
                             <img class="icon tools-edit" src="../assets/img/icon/edit.svg" alt="">
                             <span>Edit</span>
                         </div>
-                        <div class="dpl-fl-al-cetr tools" onclick="deleteContact(event, ${individualContact.id})">
+                        <div class="tools" onclick="deleteContact(event, ${individualContact.id})">
                             <img class="icon tools-delete" src="../assets/img/icon/delete.svg" alt="">
                             <span>Delete</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <div>
-                    <p class="user-contact-info">Contact Information</p>
-                </div>
+            <div class="contact-details">
+                <p class="user-contact-info">Contact Information</p>
                 <div class="contact-box">
                     <div class="contact-info-box">
                         <p class="accessibility-description">Email</p>
-                        <a class="accessibility" href="mailto:${individualContact.email}"> ${individualContact.email}</a>
+                        <a class="accessibility" href="mailto:${individualContact.email}">${individualContact.email}</a>
                     </div>
                     <div class="contact-info-box">
                         <p class="accessibility-description">Phone</p>
@@ -70,11 +68,17 @@ function showContact(individualContact) {
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="toolsRespContainer" class="tools-overlay-Container d-none" onclick="closeToolsresp()">
-            <div id="toolsResp" class="editing-tools-resp d-none">
-                <div class="dpl-fl-al-cetr tools tools-resp" onclick="editRespContact(${individualContact.id})"><img class="icon tools-edit" src="../assets/img/icon/edit.svg" alt=""><span>Edit</span></div>
-                <div class="dpl-fl-al-cetr tools tools-resp" onclick="deleteContact(event, ${individualContact.id})"><img class="icon tools-delete" src="../assets/img/icon/delete.svg" alt=""><span>Delete</span></div>
+            <div id="toolsRespContainer" class="tools-overlay-Container d-none" onclick="closeToolsresp()">
+                <div id="toolsResp" class="editing-tools-resp d-none">
+                    <div class="tools tools-resp" onclick="editRespContact(${individualContact.id})">
+                        <img class="icon tools-edit" src="../assets/img/icon/edit.svg" alt="">
+                        <span>Edit</span>
+                    </div>
+                    <div class="tools tools-resp" onclick="deleteContact(event, ${individualContact.id})">
+                        <img class="icon tools-delete" src="../assets/img/icon/delete.svg" alt="">
+                        <span>Delete</span>
+                    </div>
+                </div>
             </div>
         </div>
     `;
