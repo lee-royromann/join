@@ -1,6 +1,5 @@
 body {
     display: flex;
-    /* max-width: 1920px; */
     width: 100%;
     padding: 0;
     margin: 0;
@@ -9,7 +8,6 @@ body {
 
 .page {
     position: relative;
-    /* max-width: 1920px; */
     height: 100%;
     width: 100%;
     display: flex;
@@ -57,9 +55,13 @@ main {
 }
 
 .contact-background {
-    background-color: #F6F7F8;
     display: flex;
-    max-width: 1920px;
+    flex-direction: row;
+    background-color: #F6F7F8;
+    max-width: 1440px;
+    min-height: 0;
+    overflow: hidden;
+    width: 100%;
 }
 
 /* User List */
@@ -185,8 +187,8 @@ h3 {
     flex: 1;
     overflow: hidden;
     width: 100%;
+    min-width: 0;
 }
-
 
 .choose-contact {
     background: #2A3647 !important;
@@ -239,8 +241,13 @@ h2 {
 }
 
 .content-contact {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     padding-left: 50px;
-    flex: 1;
+    padding-right: 50px;
+    width: 100%;
+    min-width: 0;
 }
 
 /* Main content Name*/
@@ -261,9 +268,19 @@ h2 {
 }
 
 .user-info-header {
-    gap: 54px;
     display: flex;
     align-items: center;
+    gap: 54px;
+    max-width: 100%;
+}
+
+.user-info-header h4 {
+    font-size: 47px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .info-initial,
@@ -276,12 +293,31 @@ h2 {
     line-height: 120%;
     color: white;
     border: 3px solid white;
+    flex-shrink: 0;
 }
 
 .info-name {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    flex: 1;
+    min-width: 0;
+}
+
+.info-name__text {
+    margin: 0;
+    font-weight: 500;
+    font-size: 47px;
+    line-height: 120%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.contact-details {
     flex: 1;
     min-width: 0;
 }
@@ -311,6 +347,15 @@ h4 {
     display: flex;
     gap: 13px;
     cursor: pointer;
+    flex-shrink: 0;
+}
+
+.tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
 }
 
 .tools:hover {

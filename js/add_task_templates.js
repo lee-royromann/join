@@ -299,7 +299,7 @@ function getAddTaskOverlayTemplate(status) {
                                 />
                             </svg>
                         </button>
-                        <button type="submit" class="form__button-create" onclick="createTask(event, '${status}', 'board-page'); showBoardTaskNotification('add')"><span>Create Task</span><img src="../assets/img/icon/done_white.svg" alt="Button to create task"></button>
+                        <button type="submit" class="form__button-create" onclick="createTask(event, '${status}', 'board-page')"><span>Create Task</span><img src="../assets/img/icon/done_white.svg" alt="Button to create task"></button>
                     </div>
                 </footer>
             </form>

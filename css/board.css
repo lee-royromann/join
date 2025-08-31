@@ -154,7 +154,7 @@ body {
     justify-content: center;
     max-width: 160px;
     height: 56px;
-    padding: 12px 16px;
+    padding: 8px 16px;
     gap: 4px; 
     background-color: #2A3647;
     color: white;
@@ -240,6 +240,7 @@ body {
     z-index: 1;
     gap: 8px;
     padding: 8px 0;
+    height: 56px;
     width: 100%;
     max-width: 280px;
     font-size: 24px;
@@ -278,7 +279,7 @@ body {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    width: 100%;
+    width: 130%;
 }
 
 .kanban__column::-webkit-scrollbar {

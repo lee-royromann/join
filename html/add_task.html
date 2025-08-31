@@ -198,14 +198,7 @@
                                 <label class="form__label" for="contact-search">Assigned to</label>
                                 <div>
                                     <div class="form__wrapper-assignee" id="contact-selector">
-                                        <input
-                                            type="text"
-                                            class="form__input"
-                                            id="contact-search"
-                                            onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')"
-                                            oninput="filterDropdown('contact-search', '#contact-list .form__contact')"
-                                            placeholder="Select contacts to assign"
-                                        />
+                                        <input type="text" class="form__input" id="contact-search" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')" oninput="filterDropdown('contact-search', '#contact-list .form__contact')" placeholder="Select contacts to assign"/>
                                         <div class="form__icon-contact" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')">
                                             <img id="contact-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open contact list">
                                         </div>

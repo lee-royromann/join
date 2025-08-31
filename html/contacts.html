@@ -89,6 +89,7 @@
             <!-- Main Content -->
             <div class="content">
                 <div class="contact-background">
+
                     <section id="contactContainer" class="user-container">
                         <div class="list-header flex-box-center-center">
                             <div id="add-contact-btn" class="add-contact-container flex-box-center-center" onclick="openNewContactDialog()">
@@ -98,6 +99,7 @@
                         </div>
                         <div id="contactList" class="user-list"></div>
                     </section>
+                    
                     <section id="contactInfoContainer" class="content-contact">
                         <div id="backBtnResp">
                             <div class="back-btn-resp" onclick="window.location.reload()">
@@ -114,20 +116,21 @@
                 </div> 
             </div>
         </main>
-    </div>
 
-    <section id="overlayContact" class="overlay-content-container d-none" onclick="closeOverlay(event)"></section>
-    <div id="successContainer" class="overlay-successful-container d-none">
-        <div id="success" class="overlay-successful d-none">
-            <p>Contact successfully created </p>
+
+        <section id="overlayContact" class="overlay-content-container d-none" onclick="closeOverlay(event)"></section>
+
+        <div id="successContainer" class="overlay-successful-container d-none">
+            <div id="success" class="overlay-successful d-none">
+                <p>Contact successfully created </p>
+            </div>
         </div>
-    </div>
-<div id="addBtnResp">
-    <div class="add-btn-resp" onclick="openNewContactDialog()">
-        <img class="contact-img" src="../assets/img/icon/person_add.svg" alt="">
-    </div>
-</div>
-</div>
+
+        <div id="addBtnResp">
+            <div class="add-btn-resp" onclick="openNewContactDialog()">
+                <img class="contact-img" src="../assets/img/icon/person_add.svg" alt="">
+            </div>
+        </div>
     </div>
 </body>
 </html>
