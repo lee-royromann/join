@@ -300,7 +300,7 @@ header {
   line-height: 120%;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   main {
     width: 100%;
     margin-bottom: 80px;
@@ -369,7 +369,7 @@ header {
   .active-menu {
     border-radius: 20px;
   }
-}
+} */
 
 .board-page {
     position: relative;
