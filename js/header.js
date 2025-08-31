@@ -30,10 +30,22 @@ function getUsernameInitals() {
  * It toggles the class 'header__burger-menu--visible' on the element with id 'burger-menu'.
  * This class controls the visibility of the user menu.
  */
-function toggleUserMenu() {
+function toggleUserMenu(event) {
+    event.stopPropagation();
     const userMenu = document.getElementById('burger-menu');
     userMenu.classList.toggle('header__burger-menu--visible');
 }
+
+
+/**
+ * Event listener to close the user menu when clicking outside of it
+ */
+document.addEventListener('click', (event) => {
+    const userMenu = document.getElementById('burger-menu');
+    if (userMenu.classList.contains('header__burger-menu--visible') && !userMenu.contains(event.target) && event.target.id !== 'burger-button') {
+        userMenu.classList.remove('header__burger-menu--visible');
+    }
+});
 
 
 // Initialize the header with the username initials
