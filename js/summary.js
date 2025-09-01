@@ -2,6 +2,11 @@ let tasks = [];
 let tasksFirebase = [];
 let isGreetingShown = false;
 
+
+/**
+ * Initializes the summary dashboard by loading tasks and handling greeting display
+ * Shows mobile greeting on small screens or goes directly to dashboard on desktop
+ */
 async function initSummary() {
     try {
         await loadTasksFromFirebase();
@@ -22,11 +27,21 @@ async function initSummary() {
     }
 }
 
+
+/**
+ * Determines if the mobile greeting should be shown
+ * @returns {boolean} True if on mobile screen size and greeting hasn't been shown yet
+ */
 function shouldShowMobileGreeting() {
     const isGreetingAlreadyShown = localStorage.getItem("greetingShown") === "true";
     return window.innerWidth <= 1040 && !isGreetingAlreadyShown;
 }
 
+
+/**
+ * Displays the mobile greeting overlay with appropriate timing
+ * Creates and shows greeting overlay, then auto-hides after timeout
+ */
 function showMobileGreeting() {
     const username = localStorage.getItem("username") || "Guest";
     const isGuest = !username || username === "Guest";
@@ -43,12 +58,18 @@ function showMobileGreeting() {
         return;
     }
     
-    
     setTimeout(() => {
         hideMobileGreeting(greetingOverlay);
     }, 3000);
 }
 
+
+/**
+ * Creates the mobile greeting overlay element
+ * @param {string} username - The current username
+ * @param {boolean} isGuest - Whether the user is a guest
+ * @returns {HTMLElement} The created overlay element
+ */
 function createMobileGreetingOverlay(username, isGuest) {
     const overlay = document.createElement('div');
     overlay.className = 'mobile-greeting-overlay';
@@ -59,10 +80,14 @@ function createMobileGreetingOverlay(username, isGuest) {
     return overlay;
 }
 
+
+/**
+ * Hides the mobile greeting overlay and shows main content
+ * Displays main dashboard content and removes overlay with fade animation
+ * @param {HTMLElement} overlay - The greeting overlay element to hide
+ */
 function hideMobileGreeting(overlay) {
-    
     showMainContent();
-    
     updateDashboardCounters(tasksFirebase);
     initGreeting();
     
@@ -74,6 +99,10 @@ function hideMobileGreeting(overlay) {
 }
 
 
+/**
+ * Gets time-based greeting text based on current hour
+ * @returns {string} Appropriate greeting message for current time of day
+ */
 function getGreetingText() {
     const now = new Date();
     const hours = now.getHours();
@@ -89,6 +118,11 @@ function getGreetingText() {
     }
 }
 
+
+/**
+ * Loads all tasks from Firebase database
+ * Fetches task data and filters out null values
+ */
 async function loadTasksFromFirebase() {
     const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
     let response = await fetch(BASE_URL + "join/tasks.json");
@@ -101,6 +135,11 @@ async function loadTasksFromFirebase() {
     }
 }
 
+
+/**
+ * Initializes the greeting text based on current time and user
+ * Sets greeting message and username in the DOM elements
+ */
 function initGreeting() {
     const now = new Date();
     const hours = now.getHours();
@@ -123,33 +162,20 @@ function initGreeting() {
     if (username) username.textContent = name;
 }
 
+
+
 /**
- * Zählt die geladenen Tasks
- * @param {Array<Object>} tasks - Array aller geladenen Tasks aus Firebase.
+ * Updates the counter elements in the DOM
+ * @param {Object} counts - Object containing task counts
  */
-function updateDashboardCounters(tasks) {
-    if (!tasks || !Array.isArray(tasks)) {
-        console.warn("Keine Tasks verfügbar für Dashboard-Update");
-        return;
-    }
-
-    const todo = tasks.filter(t => t.status === "to-do").length;
-    const done = tasks.filter(t => t.status === "done").length;
-    const urgent = tasks.filter(t => t.priority === "urgent").length;
-    const all = tasks.length;
-    const inProgress = tasks.filter(t => t.status === "in-progress").length;
-    const feedback = tasks.filter(t => t.status === "await-feedback").length;
-
-    const upcomingDeadline = findUpcomingUrgentDeadline(tasks);
-
-    // Check if elements exist before updating
+function updateCounterElements(counts) {
     const elements = {
-        'count-todo': todo,
-        'count-done': done,
-        'count-urgent': urgent,
-        'count-board': all,
-        'count-progress': inProgress,
-        'count-feedback': feedback
+        'count-todo': counts.todo,
+        'count-done': counts.done,
+        'count-urgent': counts.urgent,
+        'count-board': counts.all,
+        'count-progress': counts.inProgress,
+        'count-feedback': counts.feedback
     };
 
     Object.entries(elements).forEach(([id, value]) => {
@@ -158,8 +184,17 @@ function updateDashboardCounters(tasks) {
             element.textContent = value;
         }
     });
+}
 
+
+/**
+ * Updates the upcoming deadline display
+ * @param {Array<Object>} tasks - Array of tasks
+ */
+function updateDeadlineDisplay(tasks) {
+    const upcomingDeadline = findUpcomingUrgentDeadline(tasks);
     const deadlineElement = document.getElementById("upcoming-deadline-date");
+    
     if (deadlineElement && upcomingDeadline) {
         deadlineElement.textContent = upcomingDeadline;
     } else if (deadlineElement) {
@@ -167,10 +202,27 @@ function updateDashboardCounters(tasks) {
     }
 }
 
+
 /**
- * Findet die nächste Deadline von urgent Tasks
- * @param {Array<Object>} tasks - Array aller Tasks
- * @returns {string|null} - Formatiertes Datum oder null
+ * Updates all dashboard counters and deadline display
+ * @param {Array<Object>} tasks - Array of all loaded tasks from Firebase
+ */
+function updateDashboardCounters(tasks) {
+    if (!tasks || !Array.isArray(tasks)) {
+        console.warn("Keine Tasks verfügbar für Dashboard-Update");
+        return;
+    }
+
+    const counts = calculateTaskCounts(tasks);
+    updateCounterElements(counts);
+    updateDeadlineDisplay(tasks);
+}
+
+
+/**
+ * Find the next deadline of urgent tasks
+ * @param {Array<Object>} tasks - Array of all tasks
+ * @returns {string|null} - Formatted date or null
  */
 function findUpcomingUrgentDeadline(tasks) {
     const urgentTasks = tasks.filter(t => t.priority === "urgent" && t.date);
@@ -197,6 +249,10 @@ function findUpcomingUrgentDeadline(tasks) {
     });
 }
 
+
+/**
+ * Hides the main content by setting visibility to hidden
+ */
 function hideMainContent() {
     const content = document.querySelector('.content');
     if (content) {
@@ -204,6 +260,10 @@ function hideMainContent() {
     }
 }
 
+
+/**
+ * Shows the main content by setting visibility to visible
+ */
 function showMainContent() {
     const content = document.querySelector('.content');
     if (content) {
@@ -211,7 +271,11 @@ function showMainContent() {
     }
 }
 
-// Handle window resize to reset greeting state if needed
+
+/**
+ * Handle window resize to reset greeting state if needed
+ * Resets greeting state when switching from mobile to desktop view
+ */
 window.addEventListener('resize', () => {
     if (window.innerWidth > 1040) {
         isGreetingShown = false;
