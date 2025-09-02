@@ -175,7 +175,7 @@ function showOverlaySuccessful() {
         overlay.classList.remove('d-none');
         overlay.classList.add('overlay-successful');
         setTimeout(() => {
-            window.location.href = '../index.html?msg=You have successfully registered.';
+            window.location.href = '../index.html?';
         }, 1500);
     }
 }
