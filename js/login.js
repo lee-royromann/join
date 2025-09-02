@@ -1,11 +1,11 @@
 // ===================================================================
-// Globale Variablen und Initialisierung
+// Global Variables and Initialization
 // ===================================================================
 
 /**
- * Initialisiert die Seite bei jedem Laden. Holt URL-Parameter, um
- * Erfolgsmeldungen (z.B. nach der Registrierung) anzuzeigen und
- * startet eine kleine Animation für das Logo.
+ * Initializes the page on every load. Retrieves URL parameters to 
+ * display success messages (e.g., after registration) and 
+ * starts a small animation for the logo.
  */
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get('msg');
@@ -27,18 +27,18 @@ if (msg) {
 
 
 // ===================================================================
-// LOGIN-FUNKTIONEN
+// LOGIN FUNCTIONS
 // ===================================================================
 
 
 /**
- * Asynchrone Funktion zur Abwicklung des Benutzer-Logins.
- * Validiert die Eingaben, gleicht sie mit den geladenen Benutzerdaten ab
- * und speichert bei Erfolg die Benutzerinformationen im localStorage,
- * bevor eine Weiterleitung erfolgt.
+ * Asynchronous function to handle user login.
+ * Validates inputs, matches them against loaded user data,
+ * and stores user information in localStorage on success
+ * before redirecting.
  */
 async function login() {
-    // Stellt sicher, dass ein eventueller Gast-Status entfernt wird.
+    // Ensures that any guest status is removed.
     sessionStorage.removeItem('userMode');
 
     if (checkValueInput()) return;
@@ -56,7 +56,7 @@ async function login() {
         );
 
         if (user) {
-            // Erfolgreicher Login
+            // Successful login
             const username = `${user.prename || ''} ${user.surname || ''}`.trim();
             localStorage.setItem("username", username);
             localStorage.setItem("loggedIn", "true");
@@ -70,7 +70,7 @@ async function login() {
             displayErrorLogin();
         }
     } catch (error) {
-        console.error("Ein Fehler ist beim Login aufgetreten:", error);
+        console.error("An error occurred during login:", error);
         spinningLoaderEnd();
         displayErrorLogin();
     }
@@ -78,8 +78,8 @@ async function login() {
 
 
 /**
- * Zeigt eine allgemeine Fehlermeldung für einen fehlgeschlagenen Login an.
- * Hebt das Passwortfeld hervor und blendet eine entsprechende Nachricht ein.
+ * Displays a general error message for a failed login.
+ * Highlights the password field and shows a corresponding message.
  */
 function displayErrorLogin() {
     document.getElementById('labelPassword').classList.add('error-border');
@@ -89,13 +89,13 @@ function displayErrorLogin() {
 
 
 /**
- * Loggt einen Benutzer als Gast ein, indem ein Flag im sessionStorage gesetzt wird,
- * und leitet ihn dann zur Übersichtsseite weiter.
- * @param {Event} event - Das Klick-Event, um die Standard-Formularaktion zu verhindern.
+ * Logs in a user as guest by setting a flag in sessionStorage
+ * and then redirects to the overview page.
+ * @param {Event} event - The click event to prevent the default form action.
  */
 function guestLogin(event) {
     event.preventDefault();
-    // console.log("Gastmodus wird aktiviert...");
+    // console.log("Guest mode is being activated...");
     sessionStorage.setItem('userMode', 'guest');
 
     localStorage.removeItem("greetingShown");
@@ -105,13 +105,14 @@ function guestLogin(event) {
 
 
 // ===================================================================
-// HILFSFUNKTIONEN
+// HELPER FUNCTIONS
 // ===================================================================
 
 
 /**
- * Aktualisiert das Icon im Passwortfeld basierend auf dem Inhalt und Sichtbarkeitsstatus.
- * Zeigt ein Schloss-Icon bei leerem Feld, ansonsten ein Auge (sichtbar/unsichtbar).
+ * Updates the icon in the password field based on its content 
+ * and visibility status.
+ * Shows a lock icon for an empty field, otherwise an eye (visible/hidden).
  */
 function updatePasswdIcon() {
     const passwdInput = document.getElementById('password');
@@ -127,8 +128,8 @@ function updatePasswdIcon() {
 
 
 /**
- * Schaltet die Sichtbarkeit des Passworts im Eingabefeld um (Text vs. Passwort)
- * und aktualisiert das zugehörige Icon.
+ * Toggles the visibility of the password input (text vs. password)
+ * and updates the corresponding icon.
  */
 function togglePasswordVisibility() {
     const passwdInput = document.getElementById('password');
@@ -142,9 +143,9 @@ function togglePasswordVisibility() {
 
 
 /**
- * Prüft die Formulareingaben auf Gültigkeit. Wenn ein Fehler gefunden wird,
- * wird eine Fehlermeldung angezeigt.
- * @returns {boolean} `true`, wenn ein Eingabefehler vorliegt, andernfalls `false`.
+ * Checks form inputs for validity. If an error is found, 
+ * an error message is displayed.
+ * @returns {boolean} `true` if there is an input error, otherwise `false`.
  */
 function checkValueInput() {
     let input = checkValues();
@@ -157,8 +158,8 @@ function checkValueInput() {
 
 
 /**
- * Validiert die Werte aus den Eingabefeldern.
- * @returns {string|undefined} Den Namen des Feldes ("Email" oder "Password") bei einem Fehler, sonst `undefined`.
+ * Validates the values from the input fields.
+ * @returns {string|undefined} The name of the field ("Email" or "Password") if an error is found, otherwise `undefined`.
  */
 function checkValues() {
     let { email, password } = readsTheInputValues();
@@ -168,8 +169,8 @@ function checkValues() {
 
 
 /**
- * Liest die aktuellen Werte aus den E-Mail- und Passwort-Eingabefeldern.
- * @returns {object} Ein Objekt mit den Werten für `email` und `password`.
+ * Reads the current values from the email and password input fields.
+ * @returns {object} An object containing the values for `email` and `password`.
  */
 function readsTheInputValues() {
     return {
@@ -180,9 +181,9 @@ function readsTheInputValues() {
 
 
 /**
- * Überprüft, ob ein übergebener String leer oder nur aus Leerzeichen besteht.
- * @param {string} value - Der zu prüfende String.
- * @returns {boolean} `true`, wenn der String leer ist, sonst `false`.
+ * Checks whether a given string is empty or consists only of whitespace.
+ * @param {string} value - The string to check.
+ * @returns {boolean} `true` if the string is empty, otherwise `false`.
  */
 function checkEmptyInput(value) {
     return value.trim() === "";
@@ -190,8 +191,8 @@ function checkEmptyInput(value) {
 
 
 /**
- * Zeigt eine Fehlermeldung an und markiert das fehlerhafte Eingabefeld.
- * @param {string} inputLabel - Der Name des Feldes, das den Fehler verursacht hat (z.B. "Email").
+ * Displays an error message and marks the invalid input field.
+ * @param {string} inputLabel - The name of the field that caused the error (e.g., "Email").
  */
 function inputError(inputLabel) {
     let info = document.getElementById('poppin');
@@ -202,9 +203,9 @@ function inputError(inputLabel) {
 
 
 /**
- * Gibt eine vordefinierte Fehlermeldung basierend auf einem Schlüssel zurück.
- * @param {string} key - Der Schlüssel der Fehlermeldung ("Email" oder "Password").
- * @returns {string} Die entsprechende Fehlermeldung.
+ * Returns a predefined error message based on a key.
+ * @param {string} key - The error key ("Email" or "Password").
+ * @returns {string} The corresponding error message.
  */
 function errorMessage(key) {
     const messages = {
@@ -216,8 +217,8 @@ function errorMessage(key) {
 
 
 /**
- * Fügt einem Formular-Label eine CSS-Klasse hinzu, um es visuell als fehlerhaft zu markieren.
- * @param {string} inputLabel - Der Name des Labels (z.B. "Email"), das markiert werden soll.
+ * Adds a CSS class to a form label to visually mark it as invalid.
+ * @param {string} inputLabel - The name of the label (e.g., "Email") to be marked.
  */
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);

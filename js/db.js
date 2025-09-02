@@ -1,40 +1,38 @@
 /**
- * Die Basis-URL für die Firebase Realtime Database.
+ * The base URL for the Firebase Realtime Database.
  * @type {string}
  */
 const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 
-// Globale Variablen für den Fall, dass andere Skripte sie benötigen.
-// Es ist jedoch besser, wenn Funktionen die Daten direkt von den Ladefunktionen erhalten.
+// Global variables in case other scripts need them.
+// However, it is better if functions obtain the data directly from the loading functions.
 let usersFirebase = [];
 let contactsFirebase = [];
 
-
 // =================================================================================
-// GENERISCHE API-FUNKTION
+// GENERIC API FUNCTION
 // =================================================================================
-
 
 /**
- * Sendet eine Anfrage an die Firebase Realtime Database.
- * @param {string} path - Der Pfad zur Ressource (z.B. '/join/users').
- * @param {string} [method='GET'] - Die HTTP-Methode.
- * @param {Object|null} [body=null] - Der zu sendende Body (wird in JSON umgewandelt).
- * @returns {Promise<any>} Das Ergebnis der Anfrage.
+ * Sends a request to the Firebase Realtime Database.
+ * @param {string} path - The path to the resource (e.g. '/join/users').
+ * @param {string} [method='GET'] - The HTTP method.
+ * @param {Object|null} [body=null] - The body to send (will be converted to JSON).
+ * @returns {Promise<any>} The result of the request.
  */
 async function firebaseRequest(path, method = 'GET', body = null) {
-    // Die zentrale Firewall für den Gastmodus
-const isWriteOperation = method !== 'GET';
-const isCreatingContact = method === 'PUT' && path.startsWith('/join/contacts/');
-const isDeletingContact = method === 'DELETE' && path.startsWith('/join/contacts/');
+    // The central firewall for guest mode
+    const isWriteOperation = method !== 'GET';
+    const isCreatingContact = method === 'PUT' && path.startsWith('/join/contacts/');
+    const isDeletingContact = method === 'DELETE' && path.startsWith('/join/contacts/');
 
-/*if (isGuest() && isWriteOperation && !isCreatingContact && !isDeletingContact) {
-    // console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
-    // Die Anfrage wird hier gestoppt und erreicht Firebase nie.
-    return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
-}*/
+    /*if (isGuest() && isWriteOperation && !isCreatingContact && !isDeletingContact) {
+        // console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
+        // The request is stopped here and never reaches Firebase.
+        return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
+    }*/
 
-    // Stellt sicher, dass der Pfad nicht mit einem Slash beginnt...
+    // Ensures that the path does not start with a slash...
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
     const url = `${BASE_URL}${cleanPath}.json`;
 
@@ -51,46 +49,44 @@ const isDeletingContact = method === 'DELETE' && path.startsWith('/join/contacts
     try {
         const response = await fetch(url, options);
         if (!response.ok) {
-            // Wirft einen Fehler, wenn die Antwort nicht erfolgreich war.
+            // Throws an error if the response was not successful.
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        // Bei DELETE oder leerem Inhalt (204) null zurückgeben.
+        // Return null for DELETE or empty content (204).
         if (method === 'DELETE' || response.status === 204) {
             return null;
         }
-        // Versucht, die Antwort als JSON zu parsen.
+        // Attempts to parse the response as JSON.
         return await response.json();
     } catch (error) {
-        console.error(`Firebase-Anfrage an '${path}' fehlgeschlagen.`, error);
-        // Wirft den Fehler weiter, damit die aufrufende Funktion ihn behandeln kann.
+        console.error(`Firebase request to '${path}' failed.`, error);
+        // Rethrows the error so the calling function can handle it.
         throw error;
     }
 }
 
-
 // =================================================================================
-// ID-VERWALTUNG
+// ID MANAGEMENT
 // =================================================================================
-
 
 /**
- * Ermittelt die nächste freie numerische ID für einen gegebenen Pfad.
- * Diese Funktion ist robust und gibt im Fehlerfall einen sicheren Fallback-Wert zurück.
- * @param {string} path - Der Firebase-Pfad (z.B. '/join/users').
- * @returns {Promise<number>} Die nächste verfügbare ID.
+ * Determines the next available numeric ID for a given path.
+ * This function is robust and provides a safe fallback value in case of errors.
+ * @param {string} path - The Firebase path (e.g. '/join/users').
+ * @returns {Promise<number>} The next available ID.
  */
 async function getNextId(path) {
-    let nextId; // Variable, um das Ergebnis zu speichern
+    let nextId; // Variable to store the result
 
     try {
         const data = await firebaseRequest(path);
 
         if (!data) {
-            nextId = 0; // Wenn der Pfad nicht existiert, ist die erste ID 0
+            nextId = 0; // If the path does not exist, the first ID is 0
         } else {
             const items = Object.values(data);
             if (items.length === 0) {
-                nextId = 0; // Wenn der Pfad leer ist, ist die erste ID 0
+                nextId = 0; // If the path is empty, the first ID is 0
             } else {
                 const maxId = items.reduce((max, item) => {
                     if (typeof item === 'object' && item !== null && typeof item.id !== 'undefined') {
@@ -105,30 +101,28 @@ async function getNextId(path) {
             }
         }
     } catch (error) {
-        console.error(`Fehler beim Ermitteln der nächsten ID für '${path}':`, error);
-        nextId = 0; // Sicherer Fallback-Wert bei einem Fehler
+        console.error(`Error while determining the next ID for '${path}':`, error);
+        nextId = 0; // Safe fallback value in case of an error
     }
 
-    // FINALES SICHERHEITSNETZ: Stellt sicher, dass niemals 'undefined' zurückgegeben wird.
+    // FINAL SAFETY NET: Ensures that 'undefined' is never returned.
     if (nextId === undefined || nextId === null || isNaN(nextId)) {
-        const errorMsg = `FATAL: getNextId für Pfad '${path}' konnte keine gültige ID ermitteln. Ergebnis war: ${nextId}`;
+        const errorMsg = `FATAL: getNextId for path '${path}' could not determine a valid ID. Result was: ${nextId}`;
         console.error(errorMsg);
-        return 0; // Gibt einen absolut sicheren Wert zurück, um einen Absturz zu verhindern.
+        return 0; // Returns a guaranteed safe value to prevent a crash.
     }
 
-    // console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
+    // console.log(`[getNextId] Successfully determined ID for path '${path}': ${nextId}`);
     return nextId;
 }
 
-
 // =================================================================================
-// BENUTZER-FUNKTIONEN
+// USER FUNCTIONS
 // =================================================================================
-
 
 /**
- * Lädt alle Benutzer aus Firebase und speichert sie in einer globalen Variable.
- * @returns {Promise<Array<Object>>} Ein Array mit den Benutzerobjekten.
+ * Loads all users from Firebase and stores them in a global variable.
+ * @returns {Promise<Array<Object>>} An array with the user objects.
  */
 async function loadUsers() {
     try {
@@ -137,56 +131,53 @@ async function loadUsers() {
         usersFirebase = loadedUsers;
         return loadedUsers;
     } catch (error) {
-        console.error("Fehler beim Laden der Benutzer:", error);
+        console.error("Error while loading users:", error);
         usersFirebase = [];
         return [];
     }
 }
 
-
 /**
- * Fügt einen neuen Benutzer mit einer spezifischen ID hinzu.
- * Wirft einen Fehler, wenn die ID ungültig ist.
- * @param {Object} user - Das Benutzerobjekt.
- * @param {number|string} id - Die ID, unter der der Benutzer gespeichert wird.
- * @returns {Promise<any>} Das Ergebnis der Firebase-Anfrage.
+ * Adds a new user with a specific ID.
+ * Throws an error if the ID is invalid.
+ * @param {Object} user - The user object.
+ * @param {number|string} id - The ID under which the user will be saved.
+ * @returns {Promise<any>} The result of the Firebase request.
  */
 async function addUser(user, id) {
     if (id === undefined || id === null) {
-        const errorMsg = `FATAL: addUser wurde mit einer ungültigen ID aufgerufen: ${id}`;
+        const errorMsg = `FATAL: addUser was called with an invalid ID: ${id}`;
         console.error(errorMsg, user);
         throw new Error(errorMsg);
     }
     return firebaseRequest(`/join/users/${id}`, 'PUT', user);
 }
 
-
 // =================================================================================
-// KONTAKT-FUNKTIONEN
+// CONTACT FUNCTIONS
 // =================================================================================
-
 
 /**
- * Lädt alle Kontakte aus Firebase.
- * Im Gastmodus werden sensible Daten wie E-Mail und Telefonnummer maskiert.
- * @returns {Promise<Array<Object>>} Ein Array mit den aufbereiteten Kontaktobjekten.
+ * Loads all contacts from Firebase.
+ * In guest mode, sensitive data such as email and phone number will be masked.
+ * @returns {Promise<Array<Object>>} An array with the processed contact objects.
  */
 async function loadContacts() {
     try {
         const data = await firebaseRequest("/join/contacts");
         let loadedContacts = data ? Object.values(data) : [];
 
-        // Wenn der Gastmodus aktiv ist, die Daten maskieren
+        // If guest mode is active, mask the data
         /*
         if (isGuest()) {
             loadedContacts = loadedContacts.map(contact => {
-                if (!contact) return null; // Leere Einträge überspringen
+                if (!contact) return null; // Skip empty entries
                 return {
                     ...contact,
-                    email: 'gast@beispiel.de', // Gültiges, aber unbrauchbares Format
-                    phone: '0123 45678910' // Gültiges, aber unbrauchbares Format
+                    email: 'guest@example.com', // Valid but useless format
+                    phone: '0123 45678910' // Valid but useless format
                 };
-            }).filter(Boolean); // Entfernt eventuelle null-Einträge
+            }).filter(Boolean); // Removes possible null entries
         }
         */
         const contactsWithUsername = loadedContacts
@@ -200,33 +191,31 @@ async function loadContacts() {
         return contactsWithUsername;
 
     } catch (error) {
-        console.error("Fehler beim Laden der Kontakte:", error);
+        console.error("Error while loading contacts:", error);
         contactsFirebase = [];
         return [];
     }
 }
 
-
 /**
- * Fügt einen neuen Kontakt mit einer spezifischen ID hinzu.
- * Wirft einen Fehler, wenn die ID ungültig ist.
- * @param {Object} contactData - Das Kontaktobjekt.
- * @param {number|string} id - Die ID, unter der der Kontakt gespeichert wird.
- * @returns {Promise<any>} Das Ergebnis der Firebase-Anfrage.
+ * Adds a new contact with a specific ID.
+ * Throws an error if the ID is invalid.
+ * @param {Object} contactData - The contact object.
+ * @param {number|string} id - The ID under which the contact will be saved.
+ * @returns {Promise<any>} The result of the Firebase request.
  */
 async function addContact(contactData, id) {
     if (id === undefined || id === null) {
-        const errorMsg = `FATAL: addContact wurde mit einer ungültigen ID aufgerufen: ${id}`;
+        const errorMsg = `FATAL: addContact was called with an invalid ID: ${id}`;
         console.error(errorMsg, contactData);
         throw new Error(errorMsg);
     }
     return firebaseRequest(`/join/contacts/${id}`, 'PUT', contactData);
 }
 
-
 /**
- * Prüft, ob der Gastmodus im sessionStorage aktiv ist.
- * @returns {boolean} True, wenn der Benutzer ein Gast ist.
+ * Checks whether guest mode is active in sessionStorage.
+ * @returns {boolean} True if the user is a guest.
  */
 function isGuest() {
     return sessionStorage.getItem('userMode') === 'guest';

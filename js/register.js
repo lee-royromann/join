@@ -1,22 +1,22 @@
 // ===================================================================
-// HINWEIS:
-// Diese Datei benötigt Zugriff auf die Funktionen aus `db.js`.
-// Benötigte Funktionen: `loadUsers()`, `addUser()`, `addContact()`, `getNextId()`
+// NOTE:
+// This file requires access to functions from `db.js`.
+// Required functions: `loadUsers()`, `addUser()`, `addContact()`, `getNextId()`
 // ===================================================================
 
-let textPasswdError = "Ups! Your passwords don't match!";
+let textPasswdError = "Oops! Your passwords don't match!";
 let textEmailError = "The e-mail address already exists!";
 
 
 /**
- * Registriert einen neuen Benutzer asynchron.
- * Diese Funktion verarbeitet die Eingaben aus dem Registrierungsformular,
- * validiert die Daten, prüft auf doppelte E-Mail-Adressen, erstellt
- * einen neuen Benutzer sowie einen zugehörigen Kontakt und speichert
- * diese in der Datenbank.
+ * Registers a new user asynchronously.
+ * This function processes the inputs from the registration form,
+ * validates the data, checks for duplicate email addresses,
+ * creates a new user and a corresponding contact, and saves them
+ * in the database.
  */
 async function registerUser() {
-    // Verhindert, dass das Formular die Seite neu lädt
+    // Prevents the form from reloading the page
     if (event) {
         event.preventDefault();
     }
@@ -42,12 +42,12 @@ async function registerUser() {
             return;
         }
 
-        // Holt die nächste freie ID für Benutzer.
+        // Get the next available ID for users.
         const newUserId = await getNextId('/join/users');
         
-        // Finale Sicherheitsprüfung
+        // Final safety check
         if (newUserId === undefined || newUserId === null) {
-            console.error("Konnte keine gültige User-ID erhalten. Der Prozess wird abgebrochen.");
+            console.error("Could not retrieve a valid user ID. Process aborted.");
             spinningLoaderEnd();
             return;
         }
@@ -69,11 +69,11 @@ async function registerUser() {
 
         await addUser(newUser, newUserId);
 
-        // Dasselbe für den Kontakt-Eintrag
+        // Do the same for the contact entry
         const newContactId = await getNextId('/join/contacts');
         
         if (newContactId === undefined || newContactId === null) {
-            console.error("Konnte keine gültige Kontakt-ID erhalten. Der Prozess wird abgebrochen.");
+            console.error("Could not retrieve a valid contact ID. Process aborted.");
             spinningLoaderEnd();
             return;
         }
@@ -85,21 +85,21 @@ async function registerUser() {
         showOverlaySuccessful();
 
     } catch (error) {
-        console.error("Ein Fehler ist während des Registrierungsprozesses aufgetreten:", error);
+        console.error("An error occurred during the registration process:", error);
         spinningLoaderEnd();
     }
 }
 
 
 // ===================================================================
-// HILFSFUNKTIONEN 
+// HELPER FUNCTIONS 
 // ===================================================================
 
 
 /**
- * Generiert einen zufälligen, hellen Hex-Farbcode für Benutzer-Avatare.
- * Verwendet nur Zeichen, die zu helleren Farbtönen führen.
- * @returns {string} Ein Hex-Farbcode im Format '#RRGGBB'.
+ * Generates a random bright hex color code for user avatars.
+ * Uses only characters that lead to lighter shades.
+ * @returns {string} A hex color code in the format '#RRGGBB'.
  */
 function getUniqueAvatarColor() {
     const letters = '89ABCDEF';
@@ -112,8 +112,8 @@ function getUniqueAvatarColor() {
 
 
 /**
- * Sammelt die DOM-Elemente des Registrierungsformulars.
- * @returns {object} Ein Objekt, das die Referenzen auf die Formular-Input-Elemente enthält.
+ * Collects the DOM elements of the registration form.
+ * @returns {object} An object containing references to the form input elements.
  */
 function getFormElements() {
     return {
@@ -126,10 +126,10 @@ function getFormElements() {
 
 
 /**
- * Überprüft, ob zwei Passwörter übereinstimmen und aktualisiert die Benutzeroberfläche entsprechend.
- * @param {string} a - Das erste Passwort.
- * @param {string} b - Das zweite Passwort zur Bestätigung.
- * @returns {boolean} Gibt `true` zurück, wenn die Passwörter übereinstimmen, andernfalls `false`.
+ * Checks whether two passwords match and updates the UI accordingly.
+ * @param {string} a - The first password.
+ * @param {string} b - The second password for confirmation.
+ * @returns {boolean} Returns `true` if the passwords match, otherwise `false`.
  */
 function checkSamePasswd(a, b) {
     let labelPassw = document.getElementById('labelPasswordConf');
@@ -151,8 +151,8 @@ function checkSamePasswd(a, b) {
 
 
 /**
- * Zeigt eine Fehlermeldung im UI an, wenn die E-Mail-Adresse bereits existiert.
- * Hebt das E-Mail-Feld hervor und blendet eine entsprechende Nachricht ein.
+ * Displays an error message in the UI when the email address already exists.
+ * Highlights the email field and shows a corresponding message.
  */
 function showEmailExistsError() {
     const label = document.getElementById('labelEmailSignUp');
@@ -166,8 +166,8 @@ function showEmailExistsError() {
 
 
 /**
- * Zeigt ein Overlay für eine erfolgreiche Registrierung an und leitet
- * den Benutzer nach einer kurzen Verzögerung zur Startseite weiter.
+ * Displays an overlay for a successful registration and redirects
+ * the user to the start page after a short delay.
  */
 function showOverlaySuccessful() {
     let overlay = document.getElementById('success');

@@ -1,20 +1,19 @@
 /**
- * Verhindert die Event-Weitergabe in der Bubbling-Phase.
- * @param {Event} event Das Event-Objekt.
+ * Prevents event propagation during the bubbling phase.
+ * @param {Event} event The event object.
  */
 function eventBubbling(event) {
     event.stopPropagation();
 }
 
-
-/** Leert die Kontaktliste im HTML, um sie neu zu rendern. */
+/** Clears the contact list in the HTML to re-render it. */
 function cleanContactsList() {
     document.getElementById("contactList").innerHTML = "";
 }
 
-
-/** * Gruppiert die globale `contactsFirebase`-Liste nach dem Anfangsbuchstaben des Benutzernamens
- * und ruft dann die Funktion zum Erstellen des HTML auf.
+/** 
+ * Groups the global `contactsFirebase` list by the first letter of the username
+ * and then calls the function to create the HTML.
  */
 function groupInitials() {
     let group = {};
@@ -30,10 +29,9 @@ function groupInitials() {
     createHTML(group);
 }
 
-
 /**
- * Erstellt die HTML-Struktur für die gruppierte Kontaktliste.
- * @param {Object} list Ein Objekt, bei dem die Schlüssel die Initialen und die Werte Arrays von Kontakten sind.
+ * Creates the HTML structure for the grouped contact list.
+ * @param {Object} list An object where keys are initials and values are arrays of contacts.
  */
 function createHTML(list) {
     let containerList = document.getElementById("contactList");
@@ -48,23 +46,19 @@ function createHTML(list) {
         });
 }
 
-
 /**
- * Fügt die HTML-Darstellung der einzelnen Benutzer zu einer Buchstabensektion hinzu.
- * @param {Object} list Die gruppierte Kontaktliste.
- * @param {string} letter Der Buchstabe der aktuellen Gruppe.
- * @param {HTMLElement} section Das HTML-Element der Sektion, zu der die Kontakte hinzugefügt werden.
+ * Adds the HTML representation of individual users to a letter section.
+ * @param {Object} list The grouped contact list.
+ * @param {string} letter The current group's letter.
+ * @param {HTMLElement} section The HTML section element to add contacts to.
  */
 function userData(list, letter, section) {
     list[letter].forEach((contact) => {
-        // Teilt den Namen in einzelne Wörter
         const nameParts = contact.username.trim().split(' ').filter(Boolean);
         let initials = '';
 
         if (nameParts.length > 0) {
-            // Nimmt den ersten Buchstaben des ersten Wortes
             initials = nameParts[0].charAt(0).toUpperCase();
-            // Wenn es mehr als ein Wort gibt, wird der erste Buchstabe des letzten Wortes hinzugefügt
             if (nameParts.length > 1) {
                 initials += nameParts[nameParts.length - 1].charAt(0).toUpperCase();
             }
@@ -74,41 +68,37 @@ function userData(list, letter, section) {
 }
 
 /**
- * Hebt einen ausgewählten Kontakt in der Liste visuell hervor.
- * @param {string|number} id Die ID des zu markierenden Kontakts.
+ * Visually highlights a selected contact in the list.
+ * @param {string|number} id The ID of the contact to highlight.
  */
 function setClassChoooseContact(id) {
     document.getElementById(`contact${id}`)?.classList.add("choose-contact");
 }
 
-
-/** Entfernt die Hervorhebung von allen Kontakten in der Liste. */
+/** Removes the highlight from all contacts in the list. */
 function resetClassChooseContact() {
     document.querySelectorAll(".contact").forEach((element) => {
         element.classList.remove("choose-contact");
     });
 }
 
-
 /**
- * Findet ein Kontakt-Objekt im globalen `contactsFirebase`-Array anhand seiner ID.
- * @param {string|number} id Die ID des gesuchten Kontakts.
- * @returns {Object|undefined} Das gefundene Kontaktobjekt oder undefined.
+ * Finds a contact object in the global `contactsFirebase` array by ID.
+ * @param {string|number} id The ID of the contact to find.
+ * @returns {Object|undefined} The found contact object or undefined.
  */
 function findContact(id) {
     return contactsFirebase.find((c) => c.id == id);
 }
 
-
-/** Leert den Bereich, in dem die detaillierten Kontaktinformationen angezeigt werden. */
+/** Clears the area displaying detailed contact information. */
 function clearMainContact() {
     document.getElementById("contactInformation").innerHTML = "";
 }
 
-
 /**
- * Zeigt die Detailinformationen für einen ausgewählten Kontakt an.
- * @param {string|number} id Die ID des anzuzeigenden Kontakts.
+ * Displays detailed information for a selected contact.
+ * @param {string|number} id The ID of the contact to display.
  */
 function userInfo(id) {
     let individualContact = findContact(id);
@@ -116,14 +106,12 @@ function userInfo(id) {
     slideIn();
 }
 
-
-/** Startet die Animation zum Hereinschieben der Kontaktdetails. */
+/** Starts the slide-in animation for contact details. */
 function slideIn() {
     setTimeout(() => document.getElementById("slide")?.classList.add("active"), 10);
 }
 
-
-/** Öffnet das Kontakt-Overlay (für "Hinzufügen" oder "Bearbeiten") mit einer Animation. */
+/** Opens the contact overlay (for "Add" or "Edit") with an animation. */
 function openOverlay() {
     document.getElementById("overlayContact").classList.remove("d-none");
     const overlay = document.getElementById("overlay");
@@ -131,10 +119,9 @@ function openOverlay() {
     setTimeout(() => overlay.classList.add("slide"), 10);
 }
 
-
 /**
- * Schließt das Kontakt-Overlay mit einer Animation.
- * @param {Event} event Das auslösende Event, um die Standardaktion zu unterdrücken.
+ * Closes the contact overlay with an animation.
+ * @param {Event} event The triggering event to prevent default behavior.
  */
 function closeOverlay(event) {
     suppressActionEvent(event);
@@ -144,10 +131,9 @@ function closeOverlay(event) {
     setTimeout(() => document.getElementById("overlayContact").classList.add("d-none"), 100);
 }
 
-
 /**
- * Verhindert die Standardaktion eines Events (z.B. das Absenden eines Formulars).
- * @param {Event} event Das Event-Objekt.
+ * Prevents the default action of an event (e.g., form submission).
+ * @param {Event} event The event object.
  */
 function suppressActionEvent(event) {
     if (event) {
@@ -155,38 +141,33 @@ function suppressActionEvent(event) {
     }
 }
 
-
-/** Leert den Inhalt des Kontakt-Overlays. */
+/** Clears the content of the contact overlay. */
 function clerOverlay() {
     document.getElementById("overlayContact").innerHTML = "";
 }
 
-
-/** Zeigt das "Kontakt hinzufügen"-Formular im Overlay an. */
+/** Shows the "Add Contact" form in the overlay. */
 function openAddContact() {
     document.getElementById("overlayContact").innerHTML = showOverlayAddContact();
 }
 
-
 /**
- * Zeigt das "Kontakt bearbeiten"-Formular im Overlay an, vorausgefüllt mit den Daten des Kontakts.
- * @param {string|number} id Die ID des zu bearbeitenden Kontakts.
+ * Shows the "Edit Contact" form in the overlay, prefilled with contact data.
+ * @param {string|number} id The ID of the contact to edit.
  */
 function openEditContact(id) {
     let contact = findContact(id);
     document.getElementById("overlayContact").innerHTML = overlayEditContact(contact);
 }
 
-
-/** Zeigt das responsive "Kontakt hinzufügen"-Formular an. */
+/** Shows the responsive "Add Contact" form. */
 function openAddRespContact() {
     document.getElementById("overlayContact").innerHTML = showOverlayAddResp();
 }
 
-
 /**
- * Zeigt das responsive "Kontakt bearbeiten"-Formular an.
- * @param {string|number} id Die ID des zu bearbeitenden Kontakts.
+ * Shows the responsive "Edit Contact" form.
+ * @param {string|number} id The ID of the contact to edit.
  */
 function openEditRespContact(id) {
     let contact = findContact(id);
@@ -194,11 +175,11 @@ function openEditRespContact(id) {
 }
 
 // ===================================================================
-// NEUE VALIDIERUNGSFUNKTIONEN
+// NEW VALIDATION FUNCTIONS
 // ===================================================================
 
 /**
- * Erstellt einen neuen Kontakt, weist eine fortlaufende ID zu und speichert ihn in Firebase.
+ * Creates a new contact, assigns a sequential ID, and saves it in Firebase.
  */
 async function createNewContact() {
     if (checkValueInput()) return;
@@ -226,14 +207,14 @@ async function createNewContact() {
         successChange();
 
     } catch (error) {
-        console.error("Fehler beim Erstellen des neuen Kontakts:", error);
-        alert("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+        console.error("Error creating new contact:", error);
+        alert("An error occurred. Please try again.");
     }
 }
 
 /**
- * Validiert die Eingabefelder des Kontaktformulars.
- * @returns {Array<string>} Ein Array mit den Namen aller fehlerhaften Felder.
+ * Validates the input fields of the contact form.
+ * @returns {Array<string>} An array of the names of all invalid fields.
  */
 function validateContactInput() {
     const errors = [];
@@ -241,37 +222,27 @@ function validateContactInput() {
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
 
-    if (checkEmptyInput(name)) {
-        errors.push("Contactname");
-    }
-
-    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errors.push("Email");
-    }
-
-    if (checkEmptyInput(phone)) {
-        errors.push("Phone");
-    }
+    if (checkEmptyInput(name)) errors.push("Contactname");
+    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("Email");
+    if (checkEmptyInput(phone)) errors.push("Phone");
 
     return errors;
 }
 
 /**
- * Zeigt eine Liste von Fehlermeldungen an und markiert die entsprechenden Eingabefelder.
- * @param {Array<string>} errorLabels - Ein Array mit den Feldnamen, die Fehler enthalten.
+ * Displays a list of error messages and highlights the corresponding input fields.
+ * @param {Array<string>} errorLabels An array of field names with errors.
  */
 function displayAllContactErrors(errorLabels) {
     const info = document.getElementById('poppin');
-    const errorMessages = errorLabels.map(label => errorMessage(label)); // Alle Fehlermeldungen sammeln
-
-    errorLabels.forEach(label => errorInputField(label)); // Alle fehlerhaften Felder markieren
-
+    const errorMessages = errorLabels.map(label => errorMessage(label));
+    errorLabels.forEach(label => errorInputField(label));
     info.classList.remove('opacity');
-    info.innerHTML = errorMessages.join('<br>'); // Alle Meldungen anzeigen
+    info.innerHTML = errorMessages.join('<br>');
 }
 
 /**
- * Entfernt alle Fehlermarkierungen und leert die Fehlermeldungsanzeige.
+ * Removes all error highlights and clears the error message display.
  */
 function clearAllContactErrors() {
     const fields = ["Contactname", "Email", "Phone"];
@@ -279,9 +250,7 @@ function clearAllContactErrors() {
 
     fields.forEach(field => {
         const label = document.getElementById('label' + field);
-        if (label) {
-            label.classList.remove('error-border');
-        }
+        if (label) label.classList.remove('error-border');
     });
 
     if (info) {
@@ -291,22 +260,22 @@ function clearAllContactErrors() {
 }
 
 // ===================================================================
-// HILFSFUNKTIONEN (teilweise aus login.js wiederverwendet)
+// HELPER FUNCTIONS (partially reused from login.js)
 // ===================================================================
 
 /**
- * Überprüft, ob ein String leer ist.
- * @param {string} value - Der zu prüfende String.
- * @returns {boolean} - True, wenn der String leer ist.
+ * Checks if a string is empty.
+ * @param {string} value The string to check.
+ * @returns {boolean} True if the string is empty.
  */
 function checkEmptyInput(value) {
     return value.trim() === "";
 }
 
 /**
- * Gibt eine passende Fehlermeldung für ein bestimmtes Feld zurück.
- * @param {string} key - Der Name des Feldes ("Contactname", "Email", "Phone").
- * @returns {string} - Die Fehlermeldung.
+ * Returns an appropriate error message for a given field.
+ * @param {string} key The field name ("Contactname", "Email", "Phone").
+ * @returns {string} The error message.
  */
 function errorMessage(key) {
     const messages = {
@@ -319,23 +288,22 @@ function errorMessage(key) {
 }
 
 /**
- * Markiert ein Eingabefeld visuell als fehlerhaft.
- * @param {string} inputLabel - Der Name des Feldes (z.B. "Contactname").
+ * Visually marks an input field as having an error.
+ * @param {string} inputLabel The name of the field (e.g., "Contactname").
  */
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);
-    if (label) {
-        label.classList.add('error-border');
-    }
+    if (label) label.classList.add('error-border');
 }
 
 // ===================================================================
-// BESTEHENDE FUNKTIONEN (unverändert)
+// EXISTING FUNCTIONS (unchanged)
 // ===================================================================
 
+
 /**
- * Aktualisiert die Daten eines Kontakts im `contactsFirebase`-Array basierend auf den Formularfeldern.
- * @param {string|number} id Die ID des zu aktualisierenden Kontakts.
+ * Updates the data of a contact in the `contactsFirebase` array based on the form fields.
+ * @param {string|number} id The ID of the contact to update.
  */
 function updateUserData(id) {
     let contact = findContact(id);
@@ -350,36 +318,32 @@ function updateUserData(id) {
     }
 }
 
-
 /**
- * Ruft die Avatar-Farbe eines Kontakts anhand seiner ID ab.
- * @param {string|number} id Die ID des Kontakts.
- * @returns {string} Die Farbe als Hex-String oder 'brown' als Standardwert.
+ * Retrieves a contact's avatar color by their ID.
+ * @param {string|number} id The contact's ID.
+ * @returns {string} The color as a hex string or 'brown' as a default.
  */
 function getContactColorById(id) {
     const contact = contactsFirebase.find((c) => c.id === id);
     return contact ? contact.color : "brown";
 }
 
-
 /**
- * Löscht einen Kontakt aus dem lokalen `contactsFirebase`-Array anhand seiner ID.
- * @param {number} id Die ID des zu löschenden Kontakts.
+ * Deletes a contact from the local `contactsFirebase` array by ID.
+ * @param {number} id The ID of the contact to delete.
  */
 function deleteUserData(id) {
     contactsFirebase = contactsFirebase.filter((user) => user.id !== id);
 }
 
-
-/** Ordnet die IDs aller Kontakte im Array neu, um sie sequenziell zu halten (z.B. nach dem Löschen). */
+/** Reassigns sequential IDs to all contacts in the array (e.g., after deletion). */
 function reSortUser() {
     contactsFirebase.forEach((user, index) => {
         user.id = index;
     });
 }
 
-
-/** Erstellt ein neues Kontaktobjekt aus den Formularfeldern und fügt es zum `contactsFirebase`-Array hinzu. */
+/** Creates a new contact object from form fields and adds it to the `contactsFirebase` array. */
 function pushNewContact() {
     let nameValue = document.getElementById("contactname").value;
     let nameParts = nameValue.trim().split(/\s+/);
@@ -395,8 +359,7 @@ function pushNewContact() {
     contactsFirebase.push(newContact);
 }
 
-
-/** Führt die Animation für eine Erfolgsmeldung aus (z.B. "Kontakt erstellt"). */
+/** Runs the animation for a success message (e.g., "Contact created"). */
 function successChange() {
     setTimeout(() => {
         let success = document.getElementById("success");
@@ -412,38 +375,32 @@ function successChange() {
     }, 500);
 }
 
-
-/** Leert den Container für Erfolgsmeldungen. */
+/** Clears the container for success messages. */
 function clearSuccessfulContainer() {
     document.getElementById("success").innerHTML = "";
 }
 
-
-/** Zeigt eine Erfolgsmeldung für das Erstellen eines Kontakts an. */
+/** Displays a success message for creating a contact. */
 function successfulAddContact() {
     document.getElementById("success").innerHTML = showSuccessfulCreated();
 }
 
-
-/** Zeigt eine Erfolgsmeldung für das Löschen eines Kontakts an. */
+/** Displays a success message for deleting a contact. */
 function successfulDeleteContact() {
     document.getElementById("success").innerHTML = showSuccessfulDeleted();
 }
 
-
-/** Leert den Container für den responsiven Button. */
+/** Clears the container for the responsive button. */
 function cleanContainerBtn() {
     document.getElementById("addBtnResp").innerHTML = "";
 }
 
-
-/** Ändert den responsiven Button zu einem "Mehr"-Button (z.B. für weitere Optionen). */
+/** Changes the responsive button to a "More" button (e.g., for additional options). */
 function changeOfMoreBtn() {
     document.getElementById("addBtnResp").innerHTML = changeBtnMore();
 }
 
-
-/** Öffnet das responsive Tools-Overlay (Menü für mobile Ansicht). */
+/** Opens the responsive tools overlay (menu for mobile view). */
 function openToolsResp() {
     let toolOverlay = document.getElementById("toolsRespContainer");
     let toolcontainer = document.getElementById("toolsResp");
@@ -452,8 +409,7 @@ function openToolsResp() {
     setTimeout(() => toolcontainer.classList.add("tools-resp-active"), 10);
 }
 
-
-/** Schließt das responsive Tools-Overlay. */
+/** Closes the responsive tools overlay. */
 function closeToolsresp() {
     let toolcontainer = document.getElementById("toolsResp");
     if (toolcontainer) {
@@ -465,28 +421,24 @@ function closeToolsresp() {
     }
 }
 
-
-/** Zeigt den responsiven "Zurück"-Button an. */
+/** Shows the responsive "Back" button. */
 function setBackBtn() {
     document.querySelector(".back-btn-resp").classList.add("d-opacity");
 }
 
-
-/** Versteckt den responsiven "Zurück"-Button. */
+/** Hides the responsive "Back" button. */
 function removeBackBtn() {
     document.querySelector(".back-btn-resp").classList.remove("d-opacity");
 }
 
-
-/** Ändert den Button-Text zu "Person hinzufügen". */
+/** Changes the button text to "Add Person". */
 function changeOfAddPersoneBtn() {
     document.getElementById("addBtnResp").innerHTML = changeAddBtnPerson();
 }
 
-
 /**
- * Wählt eine zufällige Farbe aus einer vordefinierten Liste für Avatare.
- * @returns {string} Ein Hex-Farbcode als String.
+ * Selects a random color from a predefined list for avatars.
+ * @returns {string} A hex color code as a string.
  */
 function getUniqueAvatarColor() {
     const colors = ["#FF7A00", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B"];
