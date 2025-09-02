@@ -207,15 +207,15 @@
         flex-direction: row;
         gap: 16px;
         overflow-x: auto; 
-        overflow-y: auto;
+        overflow-y: hidden;
         padding-bottom: 8px; 
         -webkit-overflow-scrolling: touch; 
+        scrollbar-width: 8px;
         max-width: 100vw;
         min-height: 230px;
     }
 
     .kanban__grid-wrapper,
-    .kanban__column,
     .overlay__content {
         scrollbar-width: none;
     }
@@ -230,23 +230,6 @@
         top: auto;
         z-index: auto;
     }
-
-    /* .card {
-        min-width: 180px; 
-        max-width: 200px; 
-        flex-shrink: 0; 
-        margin-bottom: 0; 
-        display: flex;
-        flex-direction: column;
-    } */
-/* 
-    .card__content {
-        gap: 8px;
-        display: flex;
-        flex-direction: column;
-        flex: 1;          
-        min-height: 0;    
-    } */
 
     .card__burger-menu {
        width: 160px !important;
@@ -304,5 +287,12 @@
 
     .sidebar__logo-image {
         width: 60px;
+    }
+}
+
+
+@media (hover: none) {
+    .kanban__column {
+        scrollbar-width: none;
     }
 }

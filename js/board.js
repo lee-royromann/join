@@ -174,21 +174,15 @@ function getCategoryInfo(category) {
  * Compute subtask progress stats.
  * @param {Task} task
  * @returns {{ total: number, done: number, percent: number }}
- * KORRIGIERTE VERSION
  */
 function getSubtaskProgress(task) {
-    // Prüft sicher, ob Subtasks existieren und ein Array sind.
     if (!task.subtask || !Array.isArray(task.subtask) || task.subtask.length === 0) {
         return { total: 0, done: 0, percent: 0 };
     }
-
-    // Filtert den "_empty" Platzhalter sicher heraus.
     const actualSubtasks = task.subtask.filter(st => st && st !== "_empty");
-
     const total = actualSubtasks.length;
     const done = actualSubtasks.filter(st => st.done).length;
     const percent = total > 0 ? (done / total) * 100 : 0;
-    
     return { total, done, percent };
 }
 

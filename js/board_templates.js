@@ -9,6 +9,17 @@ function getTaskTemplate(task) {
     const priorityIcon = getPriorityIcon(task.priority);
     const assignedAvatar = renderAssignedAvatars(task, 4);
     const moveTaskTemplate = getMoveTaskTemplate(task);
+    const subtasksHtml = total > 0 ? `
+    <div class="card__subtasks">
+      <div class="card__subtasks-bar">
+        <div class="card__subtasks-progress"
+             id="progress-bar-${task.id}"
+             role="progressbar"
+             style="width: ${Math.round(percent)}%;"></div>
+      </div>
+      <div class="card__subtasks-text">${done}/${total} Subtasks</div>
+    </div>
+  ` : ''; // nichts rendern, wenn keine Subtasks
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
                                 <div class="card__content">
@@ -28,12 +39,7 @@ function getTaskTemplate(task) {
                                         <div class="card__header--title">${task.title}</div>
                                         <div class="card__header--description">${task.description}</div>
                                     </div>
-                                    <div class="card__subtasks">
-                                        <div class="card__subtasks-bar">
-                                            <div class="card__subtasks-progress" id="progress-bar" role="progressbar"style="width: ${percent}%;"></div>
-                                        </div>
-                                        <div class="card__subtasks-text">${done}/${total} Subtasks</div>
-                                    </div>
+                                     ${subtasksHtml}
                                     <div class="card__footer">
                                         <div class="card__credentials">
                                             ${assignedAvatar}
@@ -214,7 +220,6 @@ function getEditTemplate(task) {
                 <div class="edit__group">
                     <label class="edit__label" for="edit-description">Description</label>
                     <textarea class="edit__textarea" id="edit-description" placeholder="Enter a description">${task.description}</textarea>
-                    <div class="edit__required-note"></div>
                 </div>
                 <div class="edit__group">
                     <label class="edit__label" for="edit-due-date">Due date</label>

@@ -274,3 +274,9 @@
         gap: 8px;
     }
 }
+
+@media (hover: none) {
+    .card__upanddown-icon { 
+        display: flex !important; 
+    }
+}

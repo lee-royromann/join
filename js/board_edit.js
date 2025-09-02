@@ -358,11 +358,9 @@ function addEditSubtask () {
  */
 function validateEditForm() {
     const titleInput = document.getElementById("edit-title");
-    const descriptionInput = document.getElementById("edit-description");
     const dateInput = document.getElementById("edit-due-date");
     let isValid = true;
     if (!checkField(titleInput)) isValid = false;
-    if (!checkField(descriptionInput)) isValid = false;
     if (!checkField(dateInput)) isValid = false;
     return isValid;
 }

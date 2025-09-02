@@ -197,26 +197,12 @@ body {
     height: 32px;
     fill: #FFFFFF;   
 }
-/* 
-.kanban__grid-wrapper {
-    position: relative;
-    flex: 1;
-    height: 0;
-    max-width: 1440px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
-    padding: 0 80px 16px 80px;
-    overflow: hidden;
-} */
 
 .kanban__grid-wrapper {
     position: relative;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    /* flex: 1; */
-    /* height: 0; */
     max-width: 1440px;
     width: 100%;
     gap: 28px;
