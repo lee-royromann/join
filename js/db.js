@@ -116,7 +116,7 @@ async function getNextId(path) {
         return 0; // Gibt einen absolut sicheren Wert zurück, um einen Absturz zu verhindern.
     }
 
-    console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
+    // console.log(`[getNextId] Erfolgreich ID für Pfad '${path}' ermittelt: ${nextId}`);
     return nextId;
 }
 
