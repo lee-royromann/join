@@ -102,6 +102,27 @@ main::-webkit-scrollbar-thumb,
     height: 6px;
 }
 
+@media (max-width: 1100px) {
+    .kanban__column::-webkit-scrollbar {
+        height: 4px; 
+    }
+
+    .kanban__column::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .kanban__column::-webkit-scrollbar-thumb {
+        background-color: #A8A8A8;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    .kanban__column::-webkit-scrollbar-thumb:hover {
+        background: #888888;
+    }
+}
+
 @media (max-width: 556px) {
   .kanban__grid-wrapper::-webkit-scrollbar,
   .kanban__column::-webkit-scrollbar,
