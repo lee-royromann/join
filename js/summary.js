@@ -202,7 +202,41 @@ function updateDeadlineDisplay(tasks) {
     }
 }
 
+/**
+ * Calculates the number of tasks in different categories.
+ * @param {Array<Object>} tasks - Array of all tasks.
+ * @returns {Object} - Object containing the counts of different task types.
+ */
+function calculateTaskCounts(tasks) {
+    const counts = {
+        todo: 0,
+        done: 0,
+        urgent: 0,
+        all: tasks.length,
+        inProgress: 0,
+        feedback: 0
+    };
 
+    tasks.forEach(task => {
+        // Zähle Aufgaben nach Status
+        if (task.status === 'todo') {
+            counts.todo++;
+        } else if (task.status === 'done') {
+            counts.done++;
+        } else if (task.status === 'inProgress') {
+            counts.inProgress++;
+        } else if (task.status === 'feedback') {
+            counts.feedback++;
+        }
+
+        // Zähle dringende Aufgaben
+        if (task.priority === 'urgent') {
+            counts.urgent++;
+        }
+    });
+
+    return counts;
+}
 /**
  * Updates all dashboard counters and deadline display
  * @param {Array<Object>} tasks - Array of all loaded tasks from Firebase
