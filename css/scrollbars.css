@@ -103,23 +103,18 @@ main::-webkit-scrollbar-thumb,
 }
 
 @media (max-width: 1100px) {
-    .kanban__column::-webkit-scrollbar {
-        height: 4px; 
+    .kanban__column::-webkit-scrollbar {  
+      height: 6px; 
+      width: 0;
     }
 
     .kanban__column::-webkit-scrollbar-track {
-        background: transparent;
+        background: #ffffff00;
     }
 
     .kanban__column::-webkit-scrollbar-thumb {
-        background-color: #A8A8A8;
-        border-radius: 8px;
-        border: 2px solid transparent;
-        background-clip: content-box;
-    }
-
-    .kanban__column::-webkit-scrollbar-thumb:hover {
-        background: #888888;
+        background-color: #ccccccaa;
+        border-radius: 4px;
     }
 }
 
