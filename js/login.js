@@ -148,9 +148,9 @@ function togglePasswordVisibility() {
  * @returns {boolean} `true` if there is an input error, otherwise `false`.
  */
 function checkValueInput() {
-    let input = checkValues();
-    if (input) {
-        inputError(input);
+    let errors = checkValues();
+    if (errors.length > 0) {
+        inputError(errors);
         return true;
     }
     return false;
@@ -159,12 +159,19 @@ function checkValueInput() {
 
 /**
  * Validates the values from the input fields.
- * @returns {string|undefined} The name of the field ("Email" or "Password") if an error is found, otherwise `undefined`.
+ * @returns {Array<string>} An array of field names ("Email" or "Password") that have errors.
  */
 function checkValues() {
     let { email, password } = readsTheInputValues();
-    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Email";
-    if (checkEmptyInput(password)) return "Password";
+    const errors = [];
+
+    if (checkEmptyInput(email) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.push("Email");
+    }
+    if (checkEmptyInput(password)) {
+        errors.push("Password");
+    }
+    return errors;
 }
 
 
@@ -191,14 +198,19 @@ function checkEmptyInput(value) {
 
 
 /**
- * Displays an error message and marks the invalid input field.
- * @param {string} inputLabel - The name of the field that caused the error (e.g., "Email").
+ * Displays an error message and marks the invalid input fields.
+ * @param {Array<string>} inputLabels - The names of the fields that caused the error (e.g., ["Email", "Password"]).
  */
-function inputError(inputLabel) {
+function inputError(inputLabels) {
     let info = document.getElementById('poppin');
     info.classList.remove('opacity');
-    info.innerHTML = errorMessage(inputLabel);
-    errorInputField(inputLabel);
+    
+    let errorMessages = inputLabels.map(label => errorMessage(label)).join('<br>');
+    info.innerHTML = errorMessages;
+
+    inputLabels.forEach(label => {
+        errorInputField(label);
+    });
 }
 
 
