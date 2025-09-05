@@ -160,14 +160,14 @@ function markLegalPrivacyActiveLink() {
 /**
  * Akzeptiert Cookies, speichert den Zeitstempel der Annahme im localStorage,
  * blendet das Cookie-Banner aus und aktiviert die Anmelde-Buttons.
- */
+ 
 function acceptCookies() {
     let now = new Date().getTime();
     localStorage.setItem("cookiesAcceptedAt", now);
     document.getElementById("cookieBanner").classList.add("d-none");
     enableLogin();
     enableLoginButtons();
-}
+}*/
 
 
 /**

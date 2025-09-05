@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    gap: 32px;
+    gap: 60px;
     padding: 48px 88px;
     position: relative;
 }
@@ -24,7 +24,7 @@
 
 
 .input-container-sgup {
-    gap: 16px;
+    gap: 32px;
 }
 
 
