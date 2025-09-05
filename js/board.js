@@ -265,18 +265,26 @@ function renderAssignedAvatars(task, max = 4) {
       getCardBadgeTemplate(initials, color, `${contact.prename} ${contact.surname}`),
     {
       limit: max,
-      limitByRendered: true,          // << hier!
-      overflow: (extra) => getCardOverflowText(extra) // oder +n
+      limitByRendered: true,         
+      overflow: (extra) => getCardOverflowText(extra) 
     }
   );
 }
 
 
+/**
+ * Render Card BadgesTemplate for assigned contacts.
+ */
 function getCardBadgeTemplate(text, color, title = '') {
   return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
 }
 
-
+/**
+ * Render overflow text in case of more than 4 assigned contacts.
+ * @param {number} extra - Number of additional contacts not shown.
+ * @param {boolean} showCount - Whether to show the count of extra contacts.
+ * @returns {string} HTML string for overflow indicator.
+ */
 function getCardOverflowText(extra, showCount = false) {
   const label = showCount ? `+${extra}` : '…';
   return `<span class="card__more" title="+${extra} weitere" aria-label="+${extra} weitere">${label}</span>`;
@@ -369,8 +377,6 @@ function findTaskById(id) {
  * Function to show a notification when a task is successfully edited or deleted.
  */
 function showBoardTaskNotification(origin) {
-    console.log('showBoardTaskNotification called with origin:', origin);
-
     const notificationContainer = document.getElementById('taskNotification');
     let notificationMessage = document.getElementById('taskNotificationMessage');
     if (origin === 'delete') {

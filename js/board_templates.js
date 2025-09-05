@@ -19,7 +19,7 @@ function getTaskTemplate(task) {
       </div>
       <div class="card__subtasks-text">${done}/${total} Subtasks</div>
     </div>
-  ` : ''; // nichts rendern, wenn keine Subtasks
+  ` : ''; 
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
                                 <div class="card__content">
@@ -172,24 +172,20 @@ function getOverflowTemplate(label = '…') {
  * @param {Subtask[]|undefined} subtasks
  * @param {string|number} taskId
  * @returns {string|undefined} HTML string or undefined if no subtasks.
- * KORRIGIERTE VERSION
  */
 function getSubtask(subtasks, taskId) {
-  // Sichere Prüfung: Gibt es Subtasks? Wenn nicht, zeige eine Nachricht an.
-  if (!subtasks || !Array.isArray(subtasks) || subtasks.length === 0 || subtasks[0] === "_empty") {
+    if (!subtasks || !Array.isArray(subtasks) || subtasks.length === 0 || subtasks[0] === "_empty") {
     return `
         <p style="padding: 12px 16px; font-size: 16px; color: #888;">This task has no subtasks.</p>
-    `;
-  }
-
-  // Wenn Subtasks existieren, werden sie hier gerendert.
-  return subtasks.map((sub, index) => `
-    <div class="overlay__subtask" data-index="${index}">
-      <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
-      <img src="../assets/img/icon/checkbox.svg" class="${sub.done ? 'd-none' : ''}" alt="unchecked" id="uncheck-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
-      <span>${sub.title}</span>
-    </div>
-  `).join("");
+        `;
+    }
+    return subtasks.map((sub, index) => `
+        <div class="overlay__subtask" data-index="${index}">
+        <img src="../assets/img/icon/checkbox_checked.svg" class="${sub.done ? '' : 'd-none'}" alt="checked" id="check-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
+        <img src="../assets/img/icon/checkbox.svg" class="${sub.done ? 'd-none' : ''}" alt="unchecked" id="uncheck-${taskId}-${index}" onclick="toggleSubtaskStatus(${index}, '${taskId}')">
+        <span>${sub.title}</span>
+        </div>
+    `).join("");
 }
 
 

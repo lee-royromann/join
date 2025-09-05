@@ -117,7 +117,6 @@ async function boardInit() {
  */
 async function saveTaskToFirebase(task) {
     if (!task || task.id == null) {
-        console.warn("saveTaskToFirebase: task oder task.id fehlt");
         return;
     }
     const url = `${BASE_URL}join/tasks/${encodeURIComponent(String(task.id))}.json`;
@@ -170,9 +169,7 @@ async function handleDeleteTask(taskId) {
         closeOverlay();                       
         renderTasks();
         showBoardTaskNotification('delete');
-    } catch (error) {
-        console.error("Fehler beim Löschen der Aufgabe:", error);
-    }
+    } 
 }
 
 
@@ -205,8 +202,7 @@ async function moveTo(status) {
 async function toggleSubtaskStatus(index, taskId) {
     const task = tasksFirebase.find(t => t.id === taskId);
     if (!task || !task.subtask || !task.subtask[index]) {
-        console.warn("Task oder Subtask nicht gefunden");
-        return;
+       return;
     }
     task.subtask[index].done = !task.subtask[index].done;
     const checkEl = document.getElementById(`check-${taskId}-${index}`);

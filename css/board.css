@@ -24,7 +24,6 @@ body {
 
 .board-page {
     position: relative;
-    /* max-width: 1920px; */
     height: 100%;
     width: 100%;
     display: flex;
@@ -294,4 +293,3 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.16);  
 }
-
