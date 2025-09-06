@@ -10,46 +10,46 @@ function getTaskTemplate(task) {
     const assignedAvatar = renderAssignedAvatars(task, 4);
     const moveTaskTemplate = getMoveTaskTemplate(task);
     const subtasksHtml = total > 0 ? `
-    <div class="card__subtasks">
-      <div class="card__subtasks-bar">
-        <div class="card__subtasks-progress"
-             id="progress-bar-${task.id}"
-             role="progressbar"
-             style="width: ${Math.round(percent)}%;"></div>
-      </div>
-      <div class="card__subtasks-text">${done}/${total} Subtasks</div>
-    </div>
-  ` : ''; 
+        <div class="card__subtasks">
+        <div class="card__subtasks-bar">
+            <div class="card__subtasks-progress"
+                id="progress-bar-${task.id}"
+                role="progressbar"
+                style="width: ${Math.round(percent)}%;"></div>
+        </div>
+        <div class="card__subtasks-text">${done}/${total} Subtasks</div>
+        </div>
+    ` : ''; 
     return `
         <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
-                                <div class="card__content">
-                                    <div class="card__badgeline">
-                                        <div class="card__badge ${categoryInfo.className}">
-                                            <span>${categoryInfo.name}</span>
-                                        </div>
-                                        <div class="card__upanddown-icon" onclick="toggleBoardTaskMenu(event, '${task.id}')">
-                                            <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
-                                        </div>
-                                        <div class="card__burger-menu" id="card-menu-${task.id}">
-                                            <div><strong>Move to</strong></div>
-                                            ${moveTaskTemplate}
-                                        </div>
-                                    </div>
-                                    <div class="card__header">
-                                        <div class="card__header--title">${task.title}</div>
-                                        <div class="card__header--description">${task.description}</div>
-                                    </div>
-                                     ${subtasksHtml}
-                                    <div class="card__footer">
-                                        <div class="card__credentials">
-                                            ${assignedAvatar}
-                                        </div>
-                                        <div class="card__priority">
-                                            <img src="${priorityIcon}" alt="priority-icon">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="card__content">
+                <div class="card__badgeline">
+                    <div class="card__badge ${categoryInfo.className}">
+                        <span>${categoryInfo.name}</span>
+                    </div>
+                    <div class="card__upanddown-icon" onclick="toggleBoardTaskMenu(event, '${task.id}')">
+                        <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
+                    </div>
+                    <div class="card__burger-menu" id="card-menu-${task.id}">
+                        <div><strong>Move to</strong></div>
+                        ${moveTaskTemplate}
+                    </div>
+                </div>
+                <div class="card__header">
+                    <div class="card__header--title">${task.title}</div>
+                    <div class="card__header--description">${task.description}</div>
+                </div>
+                    ${subtasksHtml}
+                <div class="card__footer">
+                    <div class="card__credentials">
+                        ${assignedAvatar}
+                    </div>
+                    <div class="card__priority">
+                        <img src="${priorityIcon}" alt="priority-icon">
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
 }
 

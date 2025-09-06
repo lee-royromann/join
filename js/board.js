@@ -279,6 +279,7 @@ function getCardBadgeTemplate(text, color, title = '') {
   return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
 }
 
+
 /**
  * Render overflow text in case of more than 4 assigned contacts.
  * @param {number} extra - Number of additional contacts not shown.

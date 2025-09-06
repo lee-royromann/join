@@ -100,37 +100,27 @@ function populateContactsToDropdown(contacts) {
 
 /**
  * Function to move the logged-in user to the top of the contacts array.
- * It searches through the contact list for a contact match (pre- & fullname)
- * If no logged-in contact is found, it does nothing and returns the original array.
- * If logged-in user found and not at index 0, it moves the contact to the beginning of the array and returns reordered array.
  * @param {Array} contacts - The array of contact objects.
  * @param {string} loggedInUser - The full name of the logged-in user.
- * @returns {Array} - The reordered array with the logged-in user at the top.
+ * @returns {Array} - The reordered array or the original if no change is needed.
  */
 function moveLoggedInUserToTop(contacts, loggedInUser) {
-    let index = -1;
-    for (let i = 0; i < contacts.length; i++) {
-        let fullName = contacts[i].prename + " " + contacts[i].surname;
-        if (fullName === loggedInUser) {
-            index = i;
-            break;
-        }
-    }
+    const index = contacts.findIndex(contact => 
+        `${contact.prename} ${contact.surname}` === loggedInUser
+    );
     if (index <= 0) {
         return contacts;
     }
-    let reordered = [];
-    reordered.push(contacts[index]);
-    for (let i = 0; i < contacts.length; i++) {
-        if (i !== index) {
-            reordered.push(contacts[i]);
-        }
-    }
-    return reordered;
+    const userContact = contacts[index];
+    return [
+        userContact, 
+        ...contacts.slice(0, index), 
+        ...contacts.slice(index + 1)
+    ];
 }
 
 
-/** 
+/**
  * Function to populate the categories to the category dropdown list.
  * This function will finally interact with data from the Firebase DB. (coming soon..)
  * At the moment this function is using a local test array.

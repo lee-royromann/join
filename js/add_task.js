@@ -76,20 +76,14 @@ async function loadFirebaseContacts() {
 async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
-    if (!validation.isValid) {
-        return;
-    }
+    if (!validation.isValid) {return;}
     try {
         const task = await getTaskData(taskStatus);
         await addTaskToDB(task);
-    } catch (error) {
-    }
+    } catch (error) {}
     if (origin === 'board-page') {
         closeTaskOverlay();
         showBoardTaskNotification('add');
-        // window.location.reload();
-    } else {
-        // window.location.href = './board.html';
     }
 }
 
@@ -252,19 +246,14 @@ async function addTaskToDB(task) {
     try {
         const response = await fetch(`${FIREBASE_URL}/join/tasks/${task.id}.json`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(task)
-            }
-        );
-        if (!response.ok) {
-            throw new Error(`Serverfehler: ${response.status}`);
-        }
+        });
+        if (!response.ok) {throw new Error(`Serverfehler: ${response.status}`);}
         showTaskNotification();
         clearForm();
     } catch (error) {
-        console.error("Failes to add the task to the Firebase DB:", error.message);
+        console.error("Failed to add the task to the Firebase DB:", error.message);
     }
 }
 
@@ -286,8 +275,8 @@ function showTaskNotification() {
 
 
 /**
- * Schliesst das AddTask-Overlay, wenn auf den Hintergrund geklickt wird.
- * Verhält sich wie der Klick auf das 'X'-Icon.
+ * Closes the AddTask-Overlay when clicking on the background.
+ * Behaves like clicking the 'X' icon.
  */
 function closeTaskOverlayOnClick(event) {
     if (event.target.id === 'task__overlay') {
