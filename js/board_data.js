@@ -162,14 +162,12 @@ async function deleteTaskFromFirebase(taskId) {
  * @returns {Promise<void>}
  */
 async function handleDeleteTask(taskId) {
-    try {
         await deleteTaskFromFirebase(taskId); 
         tasksFirebase = []; 
         await loadTasksFromFirebase();        
         closeOverlay();                       
         renderTasks();
         showBoardTaskNotification('delete');
-    } 
 }
 
 
