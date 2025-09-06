@@ -254,15 +254,15 @@ function getEditTemplate(task) {
                     </div>
                 </div>
                 <div class="edit__group">
-                    <label class="edit__label" for="contact-search">Assigned to</label>
+                    <label class="edit__label">Assigned to</label>
                     <div>
                         <div class="edit__wrapper-assignee" id="contact-edit-selector">
                             <input
                                 type="text"
                                 class="form__input"
                                 id="edit-contact-search"
-                                onclick="toggleEditDropdown(event, 'edit-contact-list', 'edit-contact-arrow-icon')"
-                                oninput="filterDropdown('contact-search', '#edit-contact-list .form__contact')"
+                                onclick="toggleEditDropdown(event, 'edit-contact-list-wrapper', 'edit-contact-arrow-icon')"
+                                oninput="filterDropdown('edit-contact-search', '#edit-contact-list .form__contact')"
                                 placeholder="Select contacts to assign"
                             />
                             <div class="edit__icon-contact" onclick="toggleEditDropdown(event, 'edit-contact-list-wrapper', 'edit-contact-arrow-icon')">

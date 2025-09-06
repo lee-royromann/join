@@ -415,7 +415,7 @@ function clearForm() {
     removeAllContactBadges();
     resetAllCounters();
     deleteAllSubtasks();
-    choosenPriority = "";
+    choosenPriority = "medium";
     clearHighlightetRequiredFields();
     if (form) {
         form.reset();

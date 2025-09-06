@@ -380,17 +380,22 @@ function showBoardTaskNotification(origin) {
     const notificationContainer = document.getElementById('taskNotification');
     let notificationMessage = document.getElementById('taskNotificationMessage');
     if (origin === 'delete') {
-        const deleteMessage = "Task deleted";
-        notificationMessage.innerHTML = deleteMessage;
+        showBoardTaskSpecificNotification(notificationMessage, "Task deleted");
     } else if (origin === 'edit') {
-        const editMessage = "Task edited";
-        notificationMessage.innerHTML = editMessage;
+        showBoardTaskSpecificNotification(notificationMessage, "Changes saved");
     } else if (origin === 'add') {
-        const addMessage = "Task added";
-        notificationMessage.innerHTML = addMessage;
+        showBoardTaskSpecificNotification(notificationMessage, "Task added");
     }
     notificationContainer.classList.add('form__notification--show');
     setTimeout(() => {
         notificationContainer.classList.remove('form__notification--show');
     }, 1000);
+}
+
+
+/**
+ * Update the notification message content.
+ */
+function showBoardTaskSpecificNotification(notificationMessage, message) {
+    notificationMessage.innerHTML = message;
 }
