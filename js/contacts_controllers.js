@@ -255,7 +255,7 @@ function checkValues() {
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
         errors.push("Contactname");
     }
-    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+    if (checkEmptyInput(e) || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e)) {
         errors.push("Email");
     }
     if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p) || p.length > 15) {
@@ -271,7 +271,7 @@ function checkEditValues() {
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
         errors.push("Contactname");
     }
-    if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+    if (checkEmptyInput(e) || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e)) {
         errors.push("Email");
     }
     if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p) || p.length > 15) {
