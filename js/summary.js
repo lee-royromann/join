@@ -135,7 +135,6 @@ async function loadTasksFromFirebase() {
     }
 }
 
-
 /**
  * Initializes the greeting text based on current time and user
  * Sets greeting message and username in the DOM elements
@@ -162,8 +161,6 @@ function initGreeting() {
     if (username) username.textContent = name;
 }
 
-
-
 /**
  * Updates the counter elements in the DOM
  * @param {Object} counts - Object containing task counts
@@ -185,7 +182,6 @@ function updateCounterElements(counts) {
         }
     });
 }
-
 
 /**
  * Updates the upcoming deadline display
@@ -237,6 +233,7 @@ function calculateTaskCounts(tasks) {
 
     return counts;
 }
+
 /**
  * Updates all dashboard counters and deadline display
  * @param {Array<Object>} tasks - Array of all loaded tasks from Firebase
@@ -304,7 +301,6 @@ function showMainContent() {
         content.style.visibility = 'visible';
     }
 }
-
 
 /**
  * Handle window resize to reset greeting state if needed

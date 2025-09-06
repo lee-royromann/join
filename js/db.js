@@ -26,11 +26,6 @@ async function firebaseRequest(path, method = 'GET', body = null) {
     const isCreatingContact = method === 'PUT' && path.startsWith('/join/contacts/');
     const isDeletingContact = method === 'DELETE' && path.startsWith('/join/contacts/');
 
-    /*if (isGuest() && isWriteOperation && !isCreatingContact && !isDeletingContact) {
-        // console.log(`%c[GUEST MODE] Blocked a "${method}" request to "${path}".`, 'color: orange; font-weight: bold;');
-        // The request is stopped here and never reaches Firebase.
-        return Promise.resolve({ success: false, reason: "Guest mode is read-only" });
-    }*/
 
     // Ensures that the path does not start with a slash...
     const cleanPath = path.startsWith('/') ? path.substring(1) : path;
@@ -112,7 +107,7 @@ async function getNextId(path) {
         return 0; // Returns a guaranteed safe value to prevent a crash.
     }
 
-    // console.log(`[getNextId] Successfully determined ID for path '${path}': ${nextId}`);
+   
     return nextId;
 }
 
@@ -167,19 +162,6 @@ async function loadContacts() {
         const data = await firebaseRequest("/join/contacts");
         let loadedContacts = data ? Object.values(data) : [];
 
-        // If guest mode is active, mask the data
-        /*
-        if (isGuest()) {
-            loadedContacts = loadedContacts.map(contact => {
-                if (!contact) return null; // Skip empty entries
-                return {
-                    ...contact,
-                    email: 'guest@example.com', // Valid but useless format
-                    phone: '0123 45678910' // Valid but useless format
-                };
-            }).filter(Boolean); // Removes possible null entries
-        }
-        */
         const contactsWithUsername = loadedContacts
             .filter(contact => contact)
             .map(contact => ({

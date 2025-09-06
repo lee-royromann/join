@@ -53,7 +53,6 @@ function getTaskTemplate(task) {
     `;
 }
 
-
 /**
  * Rendering empty card when no cases are available.
  * @param {TaskStatus} status
@@ -68,7 +67,6 @@ function getEmptyColumnTemplate(status) {
   };
   return `<div class="card--notasks"><p>No task ${statusLabels[status]}</p></div>`;
 }
-
 
 /**
  * Build the read-only overlay HTML for a task.
@@ -135,7 +133,6 @@ function getOverlayTemplate(task) {
     `;
 }
 
-
 /**
  * Avatar + name row for overlay assignee list.
  * @param {Contact} contact
@@ -152,7 +149,6 @@ function getContactTemplate(contact, initials, color) {
   `;
 }
 
-
 /**
  * Overflow-Element („…“) is added for more than 4 assigned contacts.
  * @param {string} [label="…"]
@@ -165,7 +161,6 @@ function getOverflowTemplate(label = '…') {
     </div>
   `;
 }
-
 
 /**
  * Render subtask list inside the overlay for a given task.
@@ -187,7 +182,6 @@ function getSubtask(subtasks, taskId) {
         </div>
     `).join("");
 }
-
 
 /**
  * Build the edit overlay HTML for a task (form fields, priority, assignees, subtasks).
@@ -300,7 +294,6 @@ function getEditTemplate(task) {
     `;
 }
 
-
 /**
  * Build a selectable contact list item for the edit dropdown.
  * @param {Contact} contact
@@ -342,7 +335,6 @@ function getEditContactListItem(contact, you, isAssigned) {
     `;
 }
 
-
 /**
  * Build a single subtask list item for the edit overlay.
  * @param {Subtask} subtask
@@ -373,7 +365,6 @@ function getSubtaskTemplate(subtask, id) {
   `;
 }
 
-
 /**
  * Build the "editing" version of a subtask list item (inline input & actions).
  * @param {number} id - Original subtask index.
@@ -403,7 +394,6 @@ function getOverlaySubtaskEditTemplate(id, text) {
       </div>
     </li>`;
 }
-
 
 /**
  * Build the "Move to ..." menu items for a task, excluding its current status.
