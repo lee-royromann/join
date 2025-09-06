@@ -198,7 +198,7 @@ function getPriorityIcon(priority) {
         medium: "../assets/img/icon/medium_yellow.svg",
         urgent: "../assets/img/icon/urgent_red.svg"
     };
-    return iconMap[priority];
+    return iconMap[priority] ?? "";
 }
 
 
