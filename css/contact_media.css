@@ -176,12 +176,7 @@
         right: 28px;
     }
 
-    /* 
-    .user-container {
-        width: 428px;
-    } */
-
-    .list-header {
+      .list-header {
         width: 428px;
     }
 
@@ -311,37 +306,7 @@
     }
 }
 
-/* @media (max-width: 1120px) {
-    .header__wrapper {
-        padding-left: 20px;
-    }
 
-    .contact {
-        gap: 18px;
-    }
-
-    .content-contact {
-        padding-left: 30px;
-        padding-right: 30px;
-        height: 100vh;
-    }
-
-    .add-contact-container {
-        margin-left: 18px;
-    }
-
-    .user-container {
-        width: 360px;
-    }
-
-    .list-header {
-        width: 320px;
-    }
-
-    .tab {
-        width: 300px;
-    }
-} */
 
 @media (max-width: 835px) {
     .overlay-contact {

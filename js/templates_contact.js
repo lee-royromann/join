@@ -103,7 +103,7 @@ function showOverlayAddContact() {
                         </label>
                         <label id="labelPhone" class="input-field">
                             <div class="input-content">
-                                <input id="phone" type="tel" placeholder="Phone" onkeyup="removeErrorText()">
+                                <input id="phone" type="tel" placeholder="Phone max. 15 characters" onkeyup="removeErrorText()">
                                 <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
                             </div>
                         </label>
@@ -158,7 +158,7 @@ function overlayEditContact(individualUser) {
                         </label>
                        <label id="labelPhone" class="input-field">
                             <div class="input-content">
-                                <input id="phone" type="tel" value="${individualUser.phone}" placeholder="Phone" onkeyup="removeErrorText()">
+                                <input id="phone" type="tel" value="${individualUser.phone}" placeholder="Phone max. 15 characters" onkeyup="removeErrorText()">
                                 <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
                             </div>
                         </label>

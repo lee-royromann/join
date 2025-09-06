@@ -227,14 +227,7 @@ function removeErrorText() {
     });
 }
 
-function errorMessage(key) {
-    const messages = {
-        "Contactname": "Please check your name entry!",
-        "Email": "Please check your email entry!",
-        "Phone": "Please check your phonenumber entry!"
-    };
-    return messages[key] || "Unknown error!";
-}
+
 
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);
@@ -259,13 +252,13 @@ function checkValues() {
     let { n, e, p } = readsTheInputValues();
     const errors = [];
 
-    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) {
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
         errors.push("Contactname");
     }
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
         errors.push("Email");
     }
-    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) {
+    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p) || p.length > 15) {
         errors.push("Phone");
     }
     return errors;
@@ -275,13 +268,13 @@ function checkEditValues() {
     let { n, e, p } = readsTheInputValues();
     const errors = [];
 
-    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s]+$/.test(n)) {
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
         errors.push("Contactname");
     }
     if (checkEmptyInput(e) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
         errors.push("Email");
     }
-    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p)) {
+    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p) || p.length > 15) {
         errors.push("Phone");
     }
     return errors;
