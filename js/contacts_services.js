@@ -281,7 +281,7 @@ function errorMessage(key) {
     const messages = {
         "Contactname": "Please enter a name.",
         "Email": "Please provide a valid email.",
-        "Phone": "Please enter a phone number.",
+        "Phone": "Please enter a valid phone number.",
         "Password": "Please check your password!"
     };
     return messages[key] || "An unknown error occurred.";
