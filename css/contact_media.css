@@ -164,6 +164,11 @@
     .overlay-cover {
         padding: 45px 24px;
     }
+
+    .close-container {
+        top: 40px;
+        right: 20px;
+    }
 }
 
 @media (max-width: 1120px) {
@@ -251,9 +256,12 @@
         height: 40px;
     }
 
-    .dpl-fl-colu,
-    .submit-container {
+    .dpl-fl-colu {
         margin-top: 0px;
+    }
+
+    .submit-container {
+        margin-top: 10px;
     }
 
     .overlay-cover,
@@ -263,7 +271,12 @@
     }
 
     .overlay-content-container form {
-        margin-top: 40px;
+        margin-top: 20px;
+    }
+
+    .input-container {
+        gap: 10px;
+        justify-content: center;
     }
 
     .close-container {
@@ -343,7 +356,7 @@
     }
 } */
 
-@media (max-width: 835px) {
+@media (max-width: 851px) {
     .overlay-contact {
         flex-direction: column;
     }
@@ -352,6 +365,10 @@
     .overlay-main-container {
         max-width: 400px;
         width: 100%;
+    }
+
+    .overlay-main-container {
+        height: 380px;
     }
 
     .overlay-cover {
@@ -401,6 +418,8 @@
 
     .input-container {
         gap: 20px;
+        height: 250px;
+        justify-content: center;
     }
 
     .close-container:hover {
@@ -703,7 +722,7 @@
     }
 
     .overlay-main-container {
-        height: 320px;
+        height: 380px;
     }
 
     .profil-img-container,
@@ -737,7 +756,7 @@
 
     .submit-container {
         gap: 35px;
-        margin-top: 0;
+        margin-top: 10px;
     }
 
     .overlay-main-container {
@@ -748,6 +767,6 @@
     }
 
     .input-container {
-        height: 205px;
+        height: 250px;
     }
 }
