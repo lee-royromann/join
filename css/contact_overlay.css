@@ -211,6 +211,7 @@ label:hover {
     margin-top: 80px;
     gap: 20px;
     height: 262px;
+    justify-content: center;
 }
 
 .input-field {
