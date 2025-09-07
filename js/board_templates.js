@@ -268,7 +268,7 @@ function getEditTemplate(task) {
                             </ul>
                         </div>
                     </div>
-                    <div class="edit__contact-badges">
+                    <div class="edit__contact-badges" id="edit-assigned-contacts">
                         ${assignedAvatar}
                     </div>
                 </div>

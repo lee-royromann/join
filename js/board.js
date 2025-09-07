@@ -238,18 +238,18 @@ function renderSubtask(task) {
  * @returns {string} Concatenated HTML for up to `limit` contacts plus optional overflow.
  */
 function mapAssignedContacts(task, renderFn, options={}) {
-    const {limit=Infinity, overflow}=options;
-    const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
-    let html='', shown=0, total=0;
-    for (const id of ids){
-        const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
-        total++;
-        if(shown<limit){
-            const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
-            html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
-        }
+  const {limit=5, overflow=(n)=>`<div class="form__contact-badge more-badge">+${n}</div>`}=options;
+  const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
+  let html='', shown=0, total=0;
+  for (const id of ids){
+    const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
+    total++;
+    if(shown<limit){
+      const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
+      html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
     }
-    return total>limit&&overflow?html+overflow(total-limit):html;
+  }
+  return total>limit?html+overflow(total-limit):html;
 }
 
 
