@@ -61,14 +61,11 @@
     .form__button-prio {
         max-width: 100px;
     }
-    .form__button-prio svg {
-        display: none;
-    }
 }
 
 @media (max-width: 755px) {
     .form__button-prio {
-        max-width: 90px;
+        max-width: 91px;
     }
 }
 

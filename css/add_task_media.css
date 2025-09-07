@@ -27,21 +27,33 @@
         max-width: 120px;
     }
 
-    .form__button-prio svg {
+    /* .form__button-prio svg {
         display: none;
-    }
+    } */
 }
 
 @media (max-width: 1140px) {
+    .content {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
     .form__button-prio {
-        max-width: 100px;
+        max-width: 115px;
+    }
+
+    .form__separator {
+        margin: 0 10px;
     }
 }
 
 @media (max-width: 1010px) {
     .form__button-prio {
         font-size: 18px;
-        max-width: 90px;
+    }
+
+    .form__button-prio {
+        max-width: 110px;
     }
 }
 
