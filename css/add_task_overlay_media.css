@@ -133,8 +133,8 @@
 
 @media (max-width: 460px) {
     .task__overlay-content {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
         padding-top: 20px;
     }
 
@@ -143,35 +143,20 @@
     }
 }
 
-@media (max-width: 420px) {
-    .form__button-prio svg {
-        display: none;
-    }
-    
+@media (max-width: 420px) {    
     .form__button-prio {
         max-width: 110px;
     }
 }
 
-@media (max-width: 390px) {
+@media (max-width: 370px) {
     .form__button-prio {
         max-width: 100px;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 335px) {
     .form__button-prio {
-        max-width: 90px;
-    }
-}
-
-@media (max-width: 325px) {
-    .form__button-prio {
-        max-width: 83px;
-    }
-
-    .form__button-clear svg,
-    .form__button-create img {
-        display: none;
+        max-width: 95px;
     }
 }

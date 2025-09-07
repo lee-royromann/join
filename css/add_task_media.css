@@ -222,8 +222,8 @@
     }
 
     .content {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .form__group label,
@@ -267,39 +267,21 @@
     }
 }
 
-@media (max-width: 425px) {
-    .form__button-prio svg {
-        display: none;
-    }
-    
-    .form__button-prio {
-        max-width: 110px;
-    }
-}
-
 @media (max-width: 400px) {
-
-}
-
-@media (max-width: 390px) {
     .form__button-prio {
         max-width: 100px;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 330px) {
     .form__button-prio {
-        max-width: 90px;
+        max-width: 95px;
     }
 }
 
-@media (max-width: 325px) {
-    .form__button-prio {
-        max-width: 85px;
-    }
-
-    .form__button-clear svg,
-    .form__button-create img {
-        display: none;
+@media (max-width: 335px) {
+    .content {
+        padding-left: 8px;
+        padding-right: 8px;
     }
 }
