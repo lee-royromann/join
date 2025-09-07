@@ -11,13 +11,12 @@ async function initSummary() {
     try {
         await loadTasksFromFirebase();
         
-        // Check if we're on mobile and should show greeting first
         if (shouldShowMobileGreeting()) {
-            // Hide main content initially on mobile
+            
             hideMainContent();
             showMobileGreeting();
         } else {
-            // Desktop behavior - show dashboard immediately
+
             showMainContent();
             updateDashboardCounters(tasksFirebase);
             initGreeting();
@@ -214,7 +213,7 @@ function calculateTaskCounts(tasks) {
     };
 
     tasks.forEach(task => {
-        // Zähle Aufgaben nach Status
+       
         if (task.status === 'to-do') {
             counts.todo++;
         } else if (task.status === 'done') {
@@ -225,7 +224,6 @@ function calculateTaskCounts(tasks) {
             counts.feedback++;
         }
 
-        // Zähle dringende Aufgaben
         if (task.priority === 'urgent') {
             counts.urgent++;
         }
