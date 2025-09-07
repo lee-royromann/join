@@ -16,7 +16,7 @@ let textEmailError = "The e-mail address already exists!";
  * in the database.
  */
 async function registerUser() {
-    // Prevents the form from reloading the page
+   
     if (event) {
         event.preventDefault();
     }
@@ -42,10 +42,8 @@ async function registerUser() {
             return;
         }
 
-        // Get the next available ID for users.
         const newUserId = await getNextId('/join/users');
         
-        // Final safety check
         if (newUserId === undefined || newUserId === null) {
             console.error("Could not retrieve a valid user ID. Process aborted.");
             spinningLoaderEnd();
@@ -69,7 +67,6 @@ async function registerUser() {
 
         await addUser(newUser, newUserId);
 
-        // Do the same for the contact entry
         const newContactId = await getNextId('/join/contacts');
         
         if (newContactId === undefined || newContactId === null) {

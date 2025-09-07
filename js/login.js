@@ -38,7 +38,7 @@ if (msg) {
  * before redirecting.
  */
 async function login() {
-    // Ensures that any guest status is removed.
+
     sessionStorage.removeItem('userMode');
 
     if (checkValueInput()) return;
@@ -56,7 +56,7 @@ async function login() {
         );
 
         if (user) {
-            // Successful login
+            
             const username = `${user.prename || ''} ${user.surname || ''}`.trim();
             localStorage.setItem("username", username);
             localStorage.setItem("loggedIn", "true");

@@ -1,12 +1,12 @@
-/** getUniqueAvatarColor() Überall bei color brown , html änderung hinzufügen avatar_colors.js */
+/** getUniqueAvatarColor() Everywhere with color brown, add HTML change avatar_colors.js */
 /**
- * @file Ein Modul zur Verwaltung und Zuweisung einzigartiger Avatar-Farben.
- * Verwendet eine vordefinierte Palette, um sicherzustellen, dass die Farben ästhetisch ansprechend sind
- * und sich nicht wiederholen, bis der Pool erschöpft ist.
+ * @file A module for managing and assigning unique avatar colors.
+ * Uses a predefined palette to ensure that the colors are visually appealing
+ * and do not repeat until the pool is exhausted.
  */
 
 /**
- * Eine vordefinierte Liste von ansprechenden und gut lesbaren Farben für Avatare.
+ * A predefined list of appealing and easily readable colors for avatars.
  * @type {string[]}
  */
 const AVATAR_COLORS = [
@@ -16,41 +16,38 @@ const AVATAR_COLORS = [
 ];
 
 /**
- * Ein Set, das die bereits verwendeten Farben in der aktuellen Sitzung speichert,
- * um Duplikate zu vermeiden.
+ * A set that stores the colors already used in the current session
+ * to avoid duplicates.
  * @type {Set<string>}
  */
 let usedColors = new Set();
 
 /**
- * Wählt eine einzigartige und zufällige Farbe aus der globalen Palette.
- * Wenn alle Farben aus der Palette verwendet wurden, wird der Pool zurückgesetzt und von vorn begonnen.
+ * Selects a unique and random color from the global palette.
+ * If all colors from the palette have been used, the pool is reset and restarted.
  *
- * @returns {string} Ein hexadezimaler Farbcode (z.B. '#FF7A00').
+ * @returns {string} A hexadecimal color code (e.g. '#FF7A00').
  */
 function getUniqueAvatarColor() {
-  // Filtere die Farben heraus, die noch nicht verwendet wurden.
+ 
   let availableColors = AVATAR_COLORS.filter(color => !usedColors.has(color));
 
-  // Wenn alle Farben aus der Palette bereits verwendet wurden, setze den Pool zurück.
   if (availableColors.length === 0) {
     resetUsedColors();
-    availableColors = [...AVATAR_COLORS]; // Kopiere die volle Palette erneut
+    availableColors = [...AVATAR_COLORS]; 
   }
 
-  // Wähle eine zufällige Farbe aus den verfügbaren Farben.
   const randomIndex = Math.floor(Math.random() * availableColors.length);
   const chosenColor = availableColors[randomIndex];
 
-  // Markiere die gewählte Farbe als "verwendet".
   usedColors.add(chosenColor);
 
   return chosenColor;
 }
 
 /**
- * Setzt den Pool der verwendeten Farben zurück.
- * Dies kann nützlich sein, wenn eine Seite oder eine Komponentenliste neu gerendert wird.
+ * Resets the pool of used colors.
+ * This can be useful when a page or a component list is re-rendered.
  */
 function resetUsedColors() {
   usedColors.clear();
