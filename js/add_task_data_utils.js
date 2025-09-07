@@ -1,112 +1,139 @@
 /**
- * Function to update the visual state and badge logic for a contact,
- * based on it's actual selection state (checked or not).
+ * =====================================================================================
+ * NEW: Global variable to store the selected contacts
+ * =====================================================================================
+ */
+let assignedContacts = [];
+
+
+/**
+ * =====================================================================================
+ * ADJUSTED: This function now controls the logic and calls the new render function.
+ * =====================================================================================
+ *
+ * Updates the selection state of a contact and redraws the badges.
  * @param {string} id - The ID of the contact.
- * @param {HTMLElement} checkbox - The checkbox element for the contact.
- * @param {HTMLElement} listItem - The list item element for the contact.
- * @param {boolean} isSelected - The selection state of the contact.
+ * @param {HTMLElement} checkbox - The checkbox element.
+ * @param {HTMLElement} listItem - The list item element.
+ * @param {boolean} isSelected - The new selection state.
  */
 function updateContactSelectionState(id, checkbox, listItem, isSelected) {
-    const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
-    const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
-    iconChecked.classList.toggle('d_none', !isSelected);
-    iconUnchecked.classList.toggle('d_none', isSelected);
-    if (isSelected) {
-        highlightContact(checkbox);
-        displayBadgeOfSelectedContact(id);
-    } else {
-        unhighlightContact(checkbox);
-        deleteContactBadge(id);
+  const iconChecked = listItem.querySelector('.form__contact-checkbox-icon-checked');
+  const iconUnchecked = listItem.querySelector('.form__contact-checkbox-icon-unchecked');
+  iconChecked.classList.toggle('d_none', !isSelected);
+  iconUnchecked.classList.toggle('d_none', isSelected);
+
+  if (isSelected) {
+    highlightContact(checkbox);
+    // Finds the complete contact object from your global contact list
+    const contact = firebaseContacts.find(c => c && c.id == id);
+    // Adds the contact to the array if it is not already present
+    if (contact && !assignedContacts.some(ac => ac.id == id)) {
+      assignedContacts.push(contact);
     }
+  } else {
+    unhighlightContact(checkbox);
+    // Removes the contact from the array based on its ID
+    assignedContacts = assignedContacts.filter(contact => contact.id != id);
+  }
+
+  // After EVERY change, the badges are completely redrawn
+  renderContactBadges();
 }
 
 
 /**
- * Function to display the badge of a selected contact.
- * Appends the corresponding badge using the rendered template.
- * @param {string} id - The ID of the contact to display the badge for.
- * @returns {void}
+ * =====================================================================================
+ * NEW: This function handles the entire display of the badges.
+ * =====================================================================================
+ *
+ * Redraws all badges of the assigned contacts.
+ * Displays a maximum of 3 badges and summarizes the rest in a "+X" badge.
  */
-function displayBadgeOfSelectedContact(id) {
-    let contactBadgesRef = document.getElementById("contact-badges");
-    for (let index = 0; index < firebaseContacts.length; index++) {
-        const contact = firebaseContacts[index];
-        if (contact == null) {
-            continue;
-        }
-        if (contact.id == id) {
-            let contactBadgeTemplate = getSelectedContactBadge(contact);
-            contactBadgesRef.innerHTML += contactBadgeTemplate;
-            return;
-        }
-    }
-};
+function renderContactBadges() {
+  const container = document.getElementById("contact-badges");
+  if (!container) {
+    console.error("Badge container with ID 'contact-badges' was not found.");
+    return;
+  }
+
+  container.innerHTML = ''; // Container is cleared before redrawing
+  const maxVisibleBadges = 3;
+  const totalContacts = assignedContacts.length;
+
+  // The first 3 (or fewer) badges are displayed
+  for (let i = 0; i < Math.min(totalContacts, maxVisibleBadges); i++) {
+    const contact = assignedContacts[i];
+    // Your existing template function is used here
+    container.innerHTML += getSelectedContactBadge(contact);
+  }
+
+  // If more than 3 contacts are selected, the "+X" badge is added
+  if (totalContacts > maxVisibleBadges) {
+    const remainingCount = totalContacts - maxVisibleBadges;
+    // Creates a simple div to display the remaining count
+    container.innerHTML += `<div class="form__contact-badge more-badge">+${remainingCount}</div>`;
+  }
+}
 
 
 /**
- * Function to remove the badge of a deselected contact.
- * Searches for the badge element by contact ID and removes it from the DOM.
- * Logs a warning in the console if the badge element is not found.
- * @param {string} id - The ID of the contact to remove the badge for.
+ * =====================================================================================
+ * DELETED: The following two functions are no longer necessary and have been removed.
+ * - displayBadgeOfSelectedContact(id)
+ * - deleteContactBadge(id)
+ * =====================================================================================
  */
-function deleteContactBadge(id) {
-    const badge = document.getElementById(`contact-badge-${id}`);   
-    if (badge) {
-        badge.remove();
-    } else {
-        console.warn(`Badge mit ID contact-badge-${id} nicht gefunden.`);
-    }
-}
 
 
 /**
  * Function to visually highlight a selected contact.
- * Adds a CSS class to the parent element of the given checkbox, to indicate the selected state.
+ * Adds a CSS class to the parent element of the given checkbox to indicate the selected state.
  * @param {HTMLElement} checkbox - The checkbox element for the contact.
  */
 function highlightContact(checkbox) {
-    if (checkbox) {
-        checkbox.parentElement.classList.add('form__contact-checkbox--checked');
-    }
+  if (checkbox) {
+    checkbox.parentElement.classList.add('form__contact-checkbox--checked');
+  }
 }
 
 
 /**
  * Function to remove the visual highlight from a deselected contact.
- * Removes the CSS class from the parent element of the given checkbox, to indicate the unselected state.
+ * Removes the CSS class from the parent element of the given checkbox to indicate the unselected state.
  * @param {HTMLElement} checkbox - The checkbox element for the contact.
  */
 function unhighlightContact(checkbox) {
-    if (checkbox) {
-        checkbox.parentElement.classList.remove('form__contact-checkbox--checked');
-    }
+  if (checkbox) {
+    checkbox.parentElement.classList.remove('form__contact-checkbox--checked');
+  }
 }
 
 
 /**
  * Function to add a subtask when the "Enter" key is pressed inside the input field.
- * It prevents default behavior to avoid form submission, when key is pressed down.
+ * It prevents default behavior to avoid form submission when the key is pressed down.
  * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
  */
-function handleEnterToAddSubtask(event) {   
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        addSubtask();
-    }
+function handleEnterToAddSubtask(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    addSubtask();
+  }
 };
 
 
 /**
- * Function to save a edited subtask when the "Enter" key is pressed inside the input field in edit-mode.
- * It prevents default behavior to avoid form submission, when key is pressed down.
+ * Function to save an edited subtask when the "Enter" key is pressed inside the input field in edit-mode.
+ * It prevents default behavior to avoid form submission when the key is pressed down.
  * @param {KeyboardEvent} event - The keyboard event triggered by the key press.
  * @param {number} id - The ID of the subtask being edited.
  */
 function handleEnterToSaveEditedSubtask(event, id) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        saveSubtask(id);
-    }
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    saveSubtask(id);
+  }
 }
 
 
@@ -119,9 +146,9 @@ function handleEnterToSaveEditedSubtask(event, id) {
  * @returns {HTMLElement} - The resulting DOM element.
  */
 function convertHtmlStringToDomElement(htmlString) {
-    const template = document.createElement('template');
-    template.innerHTML = htmlString.trim();
-    return template.content.firstElementChild;
+  const template = document.createElement('template');
+  template.innerHTML = htmlString.trim();
+  return template.content.firstElementChild;
 }
 
 
@@ -130,7 +157,7 @@ function convertHtmlStringToDomElement(htmlString) {
  * Should be called whenever a new subtask is added to keep the subtask count in sync.
  */
 function increaseSubtaskCount() {
-    subtaskCount++;
+  subtaskCount++;
 }
 
 
@@ -138,9 +165,9 @@ function increaseSubtaskCount() {
  * Function to decrease the subtask count by one, but not below zero.
  */
 function decreaseSubtaskCount() {
-    if (subtaskCount > 0) {
-        subtaskCount--;
-    }
+  if (subtaskCount > 0) {
+    subtaskCount--;
+  }
 }
 
 
@@ -150,57 +177,52 @@ function decreaseSubtaskCount() {
  * Should be called after creating a new subtask.
  */
 function increaseSubtaskIdCount() {
-    subtaskIdCount++;
-}
-
-
- /**
- * Function to collect all assigned contact ID's and pushes them to the array.
- * The Array will be returned to the calling function.
- * @returns {Array} - An array of selected contact IDs.
- */
-function getSelectedContactIds() {
-    const contactBadges = document.querySelectorAll('#contact-badges .form__contact-badge');
-    const contactIDs = [];
-    contactBadges.forEach(badge => {
-        const idString = badge.dataset.id;
-        const id = parseInt(idString, 10);
-        if (!isNaN(id)) {
-            contactIDs.push(id);
-        }
-    });
-    return contactIDs;
+  subtaskIdCount++;
 }
 
 
 /**
- * Function to collect all created subtasks below the subtask inputfield.
- * The Array will be returned to the calling function.
- * @returns {Array} - An array of subtask objects, each containing a title and done status.
+ * Function to collect all assigned contact IDs.
+ * The array will be returned to the calling function.
+ * @returns {Array<string>} - An array of selected contact IDs.
+ */
+function getSelectedContactIds() {
+  // This function now reads the IDs from our new array
+  return assignedContacts.map(contact => contact.id);
+}
+
+
+/**
+ * Function to collect all created subtasks from below the subtask input field.
+ * The array will be returned to the calling function.
+ * @returns {Array<Object>} - An array of subtask objects, each containing a title and done status.
  */
 function getSubtasks() {
-    const listItems = document.querySelectorAll('#subtask-list .form__subtask-item');
-    const subtasks = [];
-    listItems.forEach(subtask => {
-        const title = subtask.dataset.text?.trim();
-        const done = false;
-        if (title) {
-            subtasks.push({title, done});
-        }
-    });
-    return subtasks;
+  const listItems = document.querySelectorAll('#subtask-list .form__subtask-item');
+  const subtasks = [];
+  listItems.forEach(subtask => {
+    const title = subtask.dataset.text?.trim();
+    const done = false;
+    if (title) {
+      subtasks.push({
+        title,
+        done
+      });
+    }
+  });
+  return subtasks;
 }
 
 
 /**
  * Function to convert the selected category name into the database format.
  * Example: Technical Task -> technical-task
- * It uses a regualar expression to convert the string.
+ * It uses a regular expression to convert the string.
  * @param {string} category - The category name to convert.
  * @returns {string} - The converted category name in database format.
  */
 function convertCategoryTextToDbFormat(category) {
-    return category.toLowerCase().replace(/\s+/g, '-');
+  return category.toLowerCase().replace(/\s+/g, '-');
 };
 
 
@@ -212,47 +234,50 @@ function convertCategoryTextToDbFormat(category) {
  * @returns {string} - The last task ID as a string, or "-1" if not found.
  */
 function getLastFirebaseTaskId(data) {
-    if (!data || typeof data !== "object") {
-        return "-1";
-    }
-    const numericKeys = Object.keys(data)
-        .map(key => parseInt(key, 10))
-        .filter(id => !isNaN(id));
-    if (numericKeys.length === 0) {
-        return "-1";
-    }
-    const maxId = Math.max(...numericKeys);
-    return maxId.toString();
+  if (!data || typeof data !== "object") {
+    return "-1";
+  }
+  const numericKeys = Object.keys(data)
+    .map(key => parseInt(key, 10))
+    .filter(id => !isNaN(id));
+  if (numericKeys.length === 0) {
+    return "-1";
+  }
+  const maxId = Math.max(...numericKeys);
+  return maxId.toString();
 }
 
 
 /**
- * Function to selected all contacts in the dropdown list.
- * Resets each contact's checkbox state, removes visual highlighting, switches the checkbox icons back to the unchecked.
+ * Function to deselect all contacts in the dropdown list.
+ * Resets each contact's checkbox state, removes visual highlighting, and switches the checkbox icons back to unchecked.
  */
 function uncheckAllContacts() {
-    const contactItems = document.querySelectorAll('.form__contact');
-    contactItems.forEach((item) => {
-        const checkbox = item.querySelector('.form__contact-checkbox');
-        const iconChecked = item.querySelector('.form__contact-checkbox-icon-checked');
-        const iconUnchecked = item.querySelector('.form__contact-checkbox-icon-unchecked');
-        if (checkbox && checkbox.checked) {
-            checkbox.checked = false;
-            item.classList.remove('form__contact-checkbox--checked');
-            iconChecked.classList.add('d_none');
-            iconUnchecked.classList.remove('d_none');
-        }
-    });
+  const contactItems = document.querySelectorAll('.form__contact');
+  contactItems.forEach((item) => {
+    const checkbox = item.querySelector('.form__contact-checkbox');
+    const iconChecked = item.querySelector('.form__contact-checkbox-icon-checked');
+    const iconUnchecked = item.querySelector('.form__contact-checkbox-icon-unchecked');
+    if (checkbox && checkbox.checked) {
+      checkbox.checked = false;
+      item.classList.remove('form__contact-checkbox--checked');
+      iconChecked.classList.add('d_none');
+      iconUnchecked.classList.remove('d_none');
+    }
+  });
+  // Important: Also reset the array and the display
+  assignedContacts = [];
+  renderContactBadges();
 }
 
 
-/** 
- * Function to set the default priority button. 
+/**
+ * Function to set the default priority button.
  */
 function setDefaultTaskPriority() {
-    const defaultPriority = 'medium';
-    resetPriorityButtons();
-    setPriority(defaultPriority);
+  const defaultPriority = 'medium';
+  resetPriorityButtons();
+  setPriority(defaultPriority);
 }
 
 
@@ -261,12 +286,12 @@ function setDefaultTaskPriority() {
  * Removes any applied priority-specific modifier classes from each button.
  */
 function resetPriorityButtons() {
-    const buttons = document.querySelectorAll('.form__button-prio');
-    buttons.forEach(button => {
-        priorities.forEach(prio => {
-            button.classList.remove(`form__button-prio--${prio}`);
-        });
+  const buttons = document.querySelectorAll('.form__button-prio');
+  buttons.forEach(button => {
+    priorities.forEach(prio => {
+      button.classList.remove(`form__button-prio--${prio}`);
     });
+  });
 }
 
 
@@ -275,18 +300,20 @@ function resetPriorityButtons() {
  * Clears the inner HTML of the badge container.
  */
 function removeAllContactBadges() {
-    let contactBadgesRef = document.getElementById("contact-badges");
-    contactBadgesRef.innerHTML = "";
+  let contactBadgesRef = document.getElementById("contact-badges");
+  contactBadgesRef.innerHTML = "";
+  // Also clear the global array
+  assignedContacts = [];
 }
 
 
 /**
  * Function to reset the subtask count and the subtask ID counter to zero.
- * Used to clear or reinitialize the form to ensure all counter are set to default.
+ * Used to clear or reinitialize the form to ensure all counters are set to default.
  */
 function resetAllCounters() {
-    subtaskCount = 0;
-    subtaskIdCount = 0;
+  subtaskCount = 0;
+  subtaskIdCount = 0;
 }
 
 
@@ -294,29 +321,29 @@ function resetAllCounters() {
  * Function to remove all subtasks from the subtask list in the DOM.
  */
 function deleteAllSubtasks() {
-    let subtasks = document.getElementById("subtask-list");
-    subtasks.innerHTML = "";
+  let subtasks = document.getElementById("subtask-list");
+  subtasks.innerHTML = "";
 }
 
 
 /**
- * Function to fetch specific data from the server base by the choosen path.
+ * Function to fetch specific data from the server based on the chosen path.
  * @param {string} path - The path to the specific data in the Firebase database.
  * @returns {Promise<Object|null>} - A promise that resolves to the fetched data or null if not found.
  */
 async function getDataFromServer(path) {
-    try {
-        let response = await fetch(FIREBASE_URL + path + ".json");
-        if (response.ok) {
-            return await response.json();
-        } else {
-            console.error("Could not fetch data from:", path);
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return null;
+  try {
+    let response = await fetch(FIREBASE_URL + path + ".json");
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.error("Could not fetch data from:", path);
+      return null;
     }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
 }
 
 
@@ -327,20 +354,20 @@ async function getDataFromServer(path) {
  * @returns {Promise<Object>} - A promise that resolves to the task data object.
  */
 async function getTaskData(status) {
-    const inputs = collectFormInputs();
-    const processedData = processFormData(inputs);
-    const id = await generateTaskId();
-    return {
-        title: processedData.title,
-        description: processedData.description,
-        date: processedData.date,
-        category: processedData.category,
-        priority: processedData.priority,
-        assignedTo: processedData.assignedTo,
-        subtask: processedData.subtask,
-        status: status,
-        id: id
-    };
+  const inputs = collectFormInputs();
+  const processedData = processFormData(inputs);
+  const id = await generateTaskId();
+  return {
+    title: processedData.title,
+    description: processedData.description,
+    date: processedData.date,
+    category: processedData.category,
+    priority: processedData.priority,
+    assignedTo: processedData.assignedTo,
+    subtask: processedData.subtask,
+    status: status,
+    id: id
+  };
 }
 
 
@@ -349,65 +376,65 @@ async function getTaskData(status) {
  * @returns {Object} - An object containing the collected form inputs.
  */
 function collectFormInputs() {
-    return {
-        title: document.getElementById("task-title").value.trim(),
-        description: document.getElementById("description").value.trim(),
-        date: document.getElementById("task-due-date").value,
-        category: document.getElementById("category-input").value,
-        priority: choosenPriority,
-        rawAssignedTo: getSelectedContactIds(),
-        rawSubtasks: getSubtasks()
-    };
+  return {
+    title: document.getElementById("task-title").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    date: document.getElementById("task-due-date").value,
+    category: document.getElementById("category-input").value,
+    priority: choosenPriority,
+    rawAssignedTo: getSelectedContactIds(),
+    rawSubtasks: getSubtasks()
+  };
 }
 
 
 /**
  * Function to preprocess raw form data.
- * It converts the selected category to the team internal defined format.
- * It makes sure, that empty arrays have a defaul text -> _empty.
- * Firebase DB is not saving empty arrays for some reason.
- * Its using ternary operators to keep the function size small
+ * It converts the selected category to the team's internal defined format.
+ * It makes sure that empty arrays have a default text -> "_empty".
+ * The Firebase DB does not save empty arrays for some reason.
+ * It uses ternary operators to keep the function size small.
  * Uses the object spread operator (...inputs) to include all input fields and overrides specific keys with normalized values.
  * @param {Object} inputs - The raw form data collected from the input fields.
  * @returns {Object} - An object containing the processed form data with normalized values.
  */
 function processFormData(inputs) {
-    const categoryRaw = inputs.category ? convertCategoryTextToDbFormat(inputs.category) : "no category";
-    const assignedTo = Array.isArray(inputs.rawAssignedTo) && inputs.rawAssignedTo.length > 0 ? inputs.rawAssignedTo : ["_empty"];
-    const subtask = Array.isArray(inputs.rawSubtasks) && inputs.rawSubtasks.length > 0 ? inputs.rawSubtasks : ["_empty"];
-    return {
-        ...inputs,
-        category: categoryRaw,
-        assignedTo,
-        subtask
-    };
+  const categoryRaw = inputs.category ? convertCategoryTextToDbFormat(inputs.category) : "no category";
+  const assignedTo = Array.isArray(inputs.rawAssignedTo) && inputs.rawAssignedTo.length > 0 ? inputs.rawAssignedTo : ["_empty"];
+  const subtask = Array.isArray(inputs.rawSubtasks) && inputs.rawSubtasks.length > 0 ? inputs.rawSubtasks : ["_empty"];
+  return {
+    ...inputs,
+    category: categoryRaw,
+    assignedTo,
+    subtask
+  };
 }
 
 
 /**
  * Function to generate the next available Task ID.
- * It checks the ID of the last added task and is taking the next higher id.
+ * It checks the ID of the last added task and takes the next higher ID.
  * If there is no task so far, it will start with id -> 0.
  * @returns {Promise<string>} - A promise that resolves to the new task ID as a string.
  */
 async function generateTaskId() {
-    const data = await getDataFromServer("/join/tasks");
-    const lastId = getLastFirebaseTaskId(data);
-    const numericId = parseInt(lastId, 10);
-    const newId = isNaN(numericId) ? "0" : (numericId + 1).toString();
-    if (!newId) {
-        throw new Error("newId could not be identified!");
-    }
-    return newId;
+  const data = await getDataFromServer("/join/tasks");
+  const lastId = getLastFirebaseTaskId(data);
+  const numericId = parseInt(lastId, 10);
+  const newId = isNaN(numericId) ? "0" : (numericId + 1).toString();
+  if (!newId) {
+    throw new Error("newId could not be identified!");
+  }
+  return newId;
 }
 
 
 /**
- * Function to handle a unsuccessfully added task -> error.
+ * Function to handle an unsuccessfully added task -> error.
  * It logs a message to the console so far.
- * Next step will be to implement some visible user feedback.
+ * The next step will be to implement some visible user feedback.
  * @param {Error} error - The error object containing error details.
  */
 function handleTaskCreationError(error) {
-    console.error("Fehler beim Hinzufügen der Aufgabe:", error.message);
+  console.error("Error adding the task:", error.message);
 }

@@ -104,3 +104,11 @@
     font-weight: 400;
     font-size: 20px;
 }
+.more-badge {
+    background-color: #ffffff; /* Dunkle Farbe für Kontrast */
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
