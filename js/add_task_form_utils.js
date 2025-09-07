@@ -223,32 +223,50 @@ function rotateArrowIcon(arrowIconId) {
 
 
 /**
- * Function to toggle the visibility of a dropdown menu and rotate its arrow icon.
- * If another dropdown is currently open, it will be closed before opening the new one.
- * Keeps track of the currently open dropdown to ensure only one is open at a time.
- * @param {Event} event - The event object from the click event.
- * @param {string} dropdownId - The ID of the dropdown menu to toggle.
- * @param {string} arrowIconId - The ID of the arrow icon to rotate.
+ * Schließt ein Dropdown und setzt den Zustand zurück.
+ * @param {string} dropdownId - ID des Dropdowns
+ * @param {string} arrowIconId - ID des Pfeil-Icons
+ */
+function closeDropdown(dropdownId, arrowIconId) {
+    hideElement(dropdownId);
+    rotateArrowIcon(arrowIconId);
+    currentOpenDropdown = null;
+}
+
+
+/**
+ * Öffnet ein Dropdown und schließt ggf. das bisher offene.
+ * @param {string} dropdownId - ID des Dropdowns
+ * @param {string} arrowIconId - ID des Pfeil-Icons
+ */
+function openDropdown(dropdownId, arrowIconId) {
+    if (currentOpenDropdown) {
+        currentOpenDropdown.dropdown.classList.add('d_none');
+        currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
+    }
+    showElement(dropdownId);
+    rotateArrowIcon(arrowIconId);
+    const dropdown = document.getElementById(dropdownId);
+    const arrow = document.getElementById(arrowIconId);
+    currentOpenDropdown = { dropdown, arrow };
+}
+
+
+/**
+ * Hauptfunktion zum Umschalten eines Dropdowns.
  */
 function toggleDropdown(event, dropdownId, arrowIconId) {
     event.stopPropagation();
     const dropdown = document.getElementById(dropdownId);
-    const arrow = document.getElementById(arrowIconId);
     const isOpen = !dropdown.classList.contains('d_none');
+
     if (isOpen) {
-        hideElement(dropdownId);
-        rotateArrowIcon(arrowIconId);
-        currentOpenDropdown = null;
+        closeDropdown(dropdownId, arrowIconId);
     } else {
-        if (currentOpenDropdown) {
-            currentOpenDropdown.dropdown.classList.add('d_none');
-            currentOpenDropdown.arrow.classList.remove('arrow-icon-rotated');
-        }
-        showElement(dropdownId);
-        rotateArrowIcon(arrowIconId);
-        currentOpenDropdown = { dropdown, arrow };
+        openDropdown(dropdownId, arrowIconId);
     }
 }
+
 
 
 /**
@@ -373,7 +391,6 @@ function highlightRequiredFields(inputId, value) {
 function clearHighlightetRequiredFields() {
     const inputs = document.querySelectorAll('.required-frame');
     inputs.forEach(input => input.classList.remove('required-frame'));
-
     const hints = document.querySelectorAll('.required-hint');
     hints.forEach(hint => hint.classList.add('d_none'));
 }

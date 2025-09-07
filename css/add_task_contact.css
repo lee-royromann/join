@@ -104,9 +104,11 @@
     font-weight: 400;
     font-size: 20px;
 }
+
 .more-badge {
-    background-color: #ffffff; /* Dunkle Farbe für Kontrast */
-    color: rgb(0, 0, 0);
+    background-color: #ffffff00;
+    border: 2px solid #d3d3d3;
+    color: rgba(0, 0, 0, 0.611);
     font-weight: bold;
     display: flex;
     justify-content: center;
