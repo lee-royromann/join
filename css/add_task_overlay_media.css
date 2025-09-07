@@ -15,7 +15,7 @@
         font-size: 40px;
     }
 
-    .form__group label,
+    .form__group .form__label,
     .form__input,
     .form__input::placeholder,
     .form__textarea,

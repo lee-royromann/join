@@ -238,7 +238,7 @@
         padding-right: 10px;
     }
 
-    .form__group label,
+    .form__group .form__label,
     .form__input,
     .form__input::placeholder,
     .form__textarea,

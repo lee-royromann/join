@@ -177,7 +177,7 @@ function getAddTaskOverlayTemplate(status) {
 
                         <!-- Priority -->
                         <fieldset class="form__group">
-                            <label class="form__label">Priority</label>
+                            <div class="form__label">Priority</div>
                             <div class="form__wrapper-priority">
                                 <button type="button" class="form__button-prio" id="btn-urgent" data-prio="urgent" onclick="setPriority('urgent')">
                                     <span>Urgent</span>

@@ -167,7 +167,7 @@
 
                             <!-- Priority -->
                             <fieldset class="form__group">
-                                <label class="form__label">Priority</label>
+                                <div class="form__label">Priority</div>
                                 <div class="form__wrapper-priority">
                                     <button type="button" class="form__button-prio" id="btn-urgent" data-prio="urgent" onclick="setPriority('urgent')">
                                         <span>Urgent</span>
@@ -195,7 +195,7 @@
 
                             <!-- Assigned To -->
                             <fieldset class="form__group">
-                                <label class="form__label" for="contact-search">Assigned to</label>
+                                <div class="form__label">Assigned to</div>
                                 <div>
                                     <div class="form__wrapper-assignee" id="contact-selector">
                                         <input type="text" class="form__input" id="contact-search" onclick="toggleDropdown(event, 'contact-list', 'contact-arrow-icon')" oninput="filterDropdown('contact-search', '#contact-list .form__contact')" placeholder="Select contacts to assign"/>
@@ -212,7 +212,7 @@
 
                             <!-- Category -->
                             <fieldset class="form__group">
-                                <label class="form__label" for="category-input">Category<span class="required-asterisk">*</span></label>
+                                <div class="form__label">Category<span class="required-asterisk">*</span></div>
                                 <div>
                                     <!-- Dropdown Input -->
                                     <div class="form__wrapper-category" id="category-selector">
