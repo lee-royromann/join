@@ -215,13 +215,13 @@ function calculateTaskCounts(tasks) {
 
     tasks.forEach(task => {
         // Zähle Aufgaben nach Status
-        if (task.status === 'todo') {
+        if (task.status === 'to-do') {
             counts.todo++;
         } else if (task.status === 'done') {
             counts.done++;
-        } else if (task.status === 'inProgress') {
+        } else if (task.status === 'in-progress') {
             counts.inProgress++;
-        } else if (task.status === 'feedback') {
+        } else if (task.status === 'await-feedback') {
             counts.feedback++;
         }
 
