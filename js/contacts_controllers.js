@@ -88,7 +88,7 @@ async function saveContact(id) {
         clearSuccessfulContainer();
         successfulAddContact();
         successChange();
-
+        setTimeout(() => { window.location.reload(); }, 2000);
     } catch (error) {
         console.error("Error saving the contact:", error);
         alert("The contact could not be saved. Please try again.");
