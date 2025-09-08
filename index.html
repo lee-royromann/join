@@ -34,20 +34,32 @@
         <form onsubmit="login(); return false" class="dpl-fl-colu login-content">
             <h2>Log in</h2>
             <div class="dpl-fl-colu input-container">
-                <label id="labelEmail" class="input-field">
+
+                <!-- Email -->
+                <div>
+                    <label id="labelEmail" class="input-field">
                     <div class="input-content">
-                        <input id="email" type="text" placeholder="E-mail" onkeyup="correctedInput('labelEmail', 'email')" onblur="finishTheCorrection('labelEmail')">
+                        <input id="email" type="text" placeholder="E-mail"
+                            onkeyup="correctedInput('labelEmail', 'email')"
+                            onblur="finishTheCorrection('labelEmail')">
                         <img class="input-icon" src="./assets/img/icon/mail.svg" alt="">
                     </div>
-                </label>
-                <div class="dpl-fl-colu gap-small">
-                    <label id="labelPassword" class="input-field">
-                        <div class="input-content">
-                            <input id="password" type="password" placeholder="Password" oninput="updatePasswdIcon()" onkeyup="correctedInput('labelPassword', 'password')" onblur="finishTheCorrection('labelPassword')">
-                            <img id="passwdIcon" class="input-icon" src="./assets/img/icon/lock.svg" alt="" onclick="togglePasswordVisibility()">
-                        </div>
                     </label>
-                    <p id="poppin" class="poppins opacity"></p>
+                    <div class="input-error-msg"></div> <!-- NEU -->
+                 </div>
+
+                <!-- Password -->
+                <div>
+                    <label id="labelPassword" class="input-field">
+                    <div class="input-content">
+                        <input id="password" type="password" placeholder="Password"
+                            oninput="updatePasswdIcon()"
+                            onkeyup="correctedInput('labelPassword', 'password')"
+                            onblur="finishTheCorrection('labelPassword')">
+                        <img id="passwdIcon" class="input-icon" src="./assets/img/icon/lock.svg" alt="" onclick="togglePasswordVisibility()">
+                    </div>
+                    </label>
+                    <div class="input-error-msg"></div> <!-- statt <p id="poppin"> -->
                 </div>
             </div>
             <div id="loginArea" class="submit-container d-none">

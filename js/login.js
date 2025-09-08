@@ -2,6 +2,7 @@
 // Global Variables and Initialization
 // ===================================================================
 
+
 /**
  * Initializes the page on every load. Retrieves URL parameters to 
  * display success messages (e.g., after registration) and 
@@ -9,18 +10,17 @@
  */
 const urlParams = new URLSearchParams(window.location.search);
 const msg = urlParams.get('msg');
-let info = document.getElementById('poppin');
-let isPasswordVisible = false;
+const info = document.getElementById('poppin'); // kann null sein
 
 setTimeout(() => {
     document.getElementById('logoImg').classList.remove('d-none');
 }, 1060);
 
-if (msg) {
+if (info && msg) {
     info.classList.remove('opacity');
     info.classList.add('poppins-success');
     info.innerHTML = msg;
-} else {
+} else if (info) {
     info.classList.add('opacity');
     info.classList.remove('poppins-success');
 }
@@ -38,41 +38,51 @@ if (msg) {
  * before redirecting.
  */
 async function login() {
+    const clientErrors = checkLoginValues();
+    if (clientErrors.length > 0) {
+        inputErrorLogin(clientErrors);
+        return;
+    }
 
-    sessionStorage.removeItem('userMode');
-
-    if (checkValueInput()) return;
     spinningLoaderStart();
-
-    let emailInput = document.getElementById('email');
-    let passwordInput = document.getElementById('password');
-
     try {
-        const users = await loadUsers();
-        spinningLoaderEnd();
+        const usersFromFn = await loadUsers();
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
 
-        let user = users.find(
-            u => u && u.email === emailInput.value && u.password === passwordInput.value
+        const email = (emailInput && emailInput.value ? emailInput.value : '').trim().toLowerCase();
+        const password = (passwordInput && passwordInput.value ? passwordInput.value : '');
+
+        const list = Array.isArray(usersFromFn) ? usersFromFn
+                  : (Array.isArray(window.usersFirebase) ? window.usersFirebase : []);
+
+        const user = list.find(u =>
+            u &&
+            typeof u.email === 'string' &&
+            typeof u.password === 'string' &&
+            u.email.toLowerCase() === email &&
+            u.password === password
         );
 
-        if (user) {
-            
-            const username = `${user.prename || ''} ${user.surname || ''}`.trim();
-            localStorage.setItem("username", username);
-            localStorage.setItem("loggedIn", "true");
-            localStorage.setItem("currentUserEmail", user.email);
-            localStorage.setItem("currentUserId", user.id);
-
-            localStorage.removeItem("greetingShown");
-
-            window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
-        } else {
-            displayErrorLogin();
+        if (!user) {
+            inputErrorLogin(['Credentials']);
+            return;
         }
-    } catch (error) {
-        console.error("An error occurred during login:", error);
+
+        clearLoginErrors();
+        const username = `${user.prename || ''} ${user.surname || ''}`.trim();
+        if (username) localStorage.setItem("username", username);
+        localStorage.setItem("loggedIn", "true");
+        if (user.email) localStorage.setItem("currentUserEmail", user.email);
+        if (user.id !== undefined && user.id !== null) localStorage.setItem("currentUserId", user.id);
+        localStorage.removeItem("greetingShown");
+
+        window.location.href = `html/summary.html?name=${encodeURIComponent(username)}&login=true`;
+    } catch (e) {
+        console.error('Login error:', e);
+        inputErrorLogin(['Credentials']);
+    } finally {
         spinningLoaderEnd();
-        displayErrorLogin();
     }
 }
 
@@ -82,9 +92,7 @@ async function login() {
  * Highlights the password field and shows a corresponding message.
  */
 function displayErrorLogin() {
-    document.getElementById('labelPassword').classList.add('error-border');
-    info.classList.remove('opacity');
-    info.innerHTML = "Check your e-mail and password.<br> Please try again.";
+    inputErrorLogin(['Credentials']); // zeigt "Invalid email or password." am Passwort-Feld
 }
 
 
@@ -115,15 +123,12 @@ function guestLogin(event) {
  * Shows a lock icon for an empty field, otherwise an eye (visible/hidden).
  */
 function updatePasswdIcon() {
-    const passwdInput = document.getElementById('password');
-    const passwdIcon = document.getElementById('passwdIcon');
-    if (passwdInput.value.length > 0) {
-        passwdIcon.src = isPasswordVisible
-            ? '../assets/img/icon/visibility.svg'
-            : '../assets/img/icon/visibility_off.svg';
-    } else {
-        passwdIcon.src = '../assets/img/icon/lock.svg';
-    }
+    const input = document.getElementById('password');
+    const icon  = document.getElementById('passwdIcon');
+    if (!input || !icon) return;
+    if (input.value.length === 0) {icon.src = './assets/img/icon/lock.svg'; return;}
+    const visible = input.type === 'text';
+    icon.src = visible ? './assets/img/icon/visibility.svg' : './assets/img/icon/visibility_off.svg';
 }
 
 
@@ -132,13 +137,10 @@ function updatePasswdIcon() {
  * and updates the corresponding icon.
  */
 function togglePasswordVisibility() {
-    const passwdInput = document.getElementById('password');
-    const passwdIcon = document.getElementById('passwdIcon');
-    isPasswordVisible = !isPasswordVisible;
-    passwdInput.type = isPasswordVisible ? 'text' : 'password';
-    passwdIcon.src = isPasswordVisible
-        ? '../assets/img/icon/visibility.svg'
-        : '../assets/img/icon/visibility_off.svg';
+    const input = document.getElementById('password');
+    if (!input) return;
+    input.type = (input.type === 'password') ? 'text' : 'password';
+    updatePasswdIcon();
 }
 
 
@@ -237,4 +239,82 @@ function errorInputField(inputLabel) {
     if (label) {
         label.classList.add('error-border');
     }
+}
+
+
+/**
+ * Clears login field errors without removing containers.
+ */
+function clearLoginErrors() {
+    document.querySelectorAll('#labelEmail, #labelPassword').forEach(label => label.classList.remove('error-border'));
+    document.querySelectorAll('.input-error-msg').forEach(el => {
+        el.textContent = '';
+        el.classList.remove('is-visible');
+    });
+}
+
+
+/** 
+ * Ensures the error container for a given label (inside label first, then sibling).
+ */
+function ensureLoginErrorContainer(labelId) {
+    const label = document.getElementById(labelId);
+    if (!label) return null;
+    let container = label.querySelector('.input-error-msg');
+    if (container) return container;
+    if (label.nextElementSibling && label.nextElementSibling.classList?.contains('input-error-msg')) {
+        return label.nextElementSibling;
+    }
+    container = document.createElement('div');
+    container.className = 'input-error-msg';
+    label.insertAdjacentElement('afterend', container);
+    return container;
+}
+
+
+/** 
+ * Displays field-specific login errors and marks the label.
+ */
+function inputErrorLogin(keys) {
+    clearLoginErrors();
+    keys.forEach(key => {
+    const labelId = key === 'Email' ? 'labelEmail' : 'labelPassword';
+    const container = ensureLoginErrorContainer(labelId);
+    if (container) {
+        container.textContent = errorMessageLogin(key);
+        container.classList.add('is-visible');
+    }
+    const label = document.getElementById(labelId);
+    if (label) label.classList.add('error-border');
+    });
+}
+
+
+/** 
+ * Returns login-specific error messages. 
+ */
+function errorMessageLogin(key) {
+    const messages = {
+        Email: 'Please check your email entry!',
+        Password: 'Please use 6 - 15 characters!',
+        Credentials: 'Invalid email or password.'
+    };
+    return messages[key] || 'Unknown error!';
+}
+
+
+/** 
+ * Validates login inputs and returns array of invalid keys. 
+ */
+function checkLoginValues() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errors = [];
+    if (email.trim() === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.push('Email');
+    }
+    if (password.trim() === '' || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(password)) {
+        errors.push('Password');
+    }
+    return errors;
 }
