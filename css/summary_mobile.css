@@ -316,7 +316,7 @@
 
 @media (max-width: 480px) {
   .header {
-    padding-left: 32px;
+    padding-left: 20px;
     height: 80px;
   }
 
@@ -341,19 +341,6 @@
     transform: none;
     margin-bottom: 0;
   }
-
-  /* .sidebar__menu {
-    max-width: 100%;
-  }
-
-  .sidebar__text {
-    font-size: 10px;
-  }
-
-  .sidebar__icon {
-    width: 20px;
-    height: 20px;
-  } */
 
   .dashboard__header {
     margin-bottom: -10px;
@@ -476,28 +463,6 @@
 }
 
 @media (max-width: 400px) {
-  /* .layout-page {
-    height: 100vh;
-    max-width: none;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-  }
-
-  .layout-page__card {
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    max-height: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .content {
-    width: 100%;
-    height: 100%;
-  } */
-
   .main {
     padding: 0;
     margin: 0;
@@ -508,140 +473,9 @@
   .dashboard {
     gap: 20px;
   }
-
-
-  /*
-  .dashboard__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 30px;
-  }
-
-  .dashboard__title {
-    order: 1;
-    font-size: 42px;
-    margin-bottom: 0;
-  }
-
-  .dashboard__subtitle {
-    order: 2;
-    font-size: 18px;
-    margin-bottom: 16px;
-    position: static;
-    bottom: auto;
-  }
-
-  .dashboard__seperator {
-    order: 3;
-    width: 80px;
-    height: 3px;
-    background-color: #29ABE2;
-    position: static;
-    top: auto;
-    margin: 0;
-  }
-
-  .card {
-    width: 190px;
-    height: 130px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    justify-content: center;
-  }
-
-  .card__icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .card__icon img {
-    width: 20px;
-    height: 16px;
-  }
-
-  .card__number {
-    font-size: 42px;
-  }
-
-  .card__label {
-    font-size: 14px;
-  }
-
-  .card__urgent {
-    width: 400px;
-    height: 130px;
-    padding: 14px;
-  }
-
-  .card__urgent-left {
-    padding-left: 30px;
-  }
-
-  .card__urgent-content {
-    gap: 10px;
-  }
-
-  .card__urgent-icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .card__urgent-icon img {
-    width: 20px;
-    height: 16px;
-  }
-
-  .card__urgent-number-label .card__number {
-    font-size: 42px;
-  }
-
-  .card__urgent-number-label .card__label {
-    font-size: 14px;
-  }
-
-  .card__urgent-seperator {
-    height: 80%;
-    width: 2px;
-    background-color: #D1D1D1;
-    margin: 0 10px;
-  }
-
-  .card__urgent-right {
-    margin-right: 30px;
-    gap: 8px;
-  }
-
-  .card__date {
-    font-size: 16px;
-  }
-
-  .card__deadline {
-    font-size: 12px;
-  }
-
-  .card__overview {
-    width: 120px;
-    height: 120px;
-    padding: 14px;
-  }
-
-  .card__overview .card__number {
-    font-size: 42px;
-  }
-
-  .card__overview .card__label {
-    font-size: 14px;
-  }
-
-  .card__greeting {
-    display: none;
-  } */
 }
 
 @media (max-width: 360px) {
-
   .main {
     padding: 0;
   }
