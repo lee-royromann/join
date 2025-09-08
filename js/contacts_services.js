@@ -416,7 +416,8 @@ function closeToolsresp() {
         toolcontainer.classList.remove("tools-resp-active");
         setTimeout(() => {
             toolcontainer.classList.add("d-none");
-            document.getElementById("toolsRespContainer").classList.add("d-none");
+            // Korrigierte Zeile:
+            toolcontainer.parentElement.classList.add("d-none"); 
         }, 200);
     }
 }

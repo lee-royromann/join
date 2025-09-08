@@ -117,9 +117,9 @@ async function deleteContact(event, contactId) {
         clearMainContact();
         successfulDeleteContact();
         successChange();
-
+        setTimeout(() => {window.location.reload(); }, 2000);S
     } catch (error) {
-        console.error('FATAL ERROR in deleteContact process:', error);
+        /*console.error('FATAL ERROR in deleteContact process:', error);*/
     }
 }
 
