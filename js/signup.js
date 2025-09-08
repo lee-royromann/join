@@ -82,26 +82,70 @@ document.getElementById('signup').addEventListener("submit", function (event) {
 });
 
 
+/** 
+ * Clears all error states globally (does not remove elements, just hides them).
+ */
+function clearAllErrors() {
+    const info = document.getElementById('errorPoppin');
+    if (info) {
+        info.classList.add('opacity');
+        info.innerHTML = '';
+    }
+    document.querySelectorAll('.error-border').forEach(el => el.classList.remove('error-border'));
+    document.querySelectorAll('.input-error-msg').forEach(el => {
+        el.textContent = '';
+        el.classList.remove('is-visible');
+    });
+}
+
+
+/** 
+ * Ensures that an error container exists for a given label.
+ * Prefers a container inside the label, otherwise looks for a sibling element.
+ * Creates a new one inside the label if none exists.
+ */
+function ensureErrorContainer(labelId) {
+    const label = document.getElementById(labelId);
+    if (!label) return null;
+    let container = label.querySelector('.input-error-msg');
+    if (container) return container;
+    if (label.nextElementSibling && label.nextElementSibling.classList?.contains('input-error-msg')) {
+    return label.nextElementSibling;
+    }
+    container = document.createElement('div');
+    container.className = 'input-error-msg';
+    label.appendChild(container);
+    return container;
+}
+
+
 /**
- * Displays error messages and highlights all input fields with an error.
- * @param {Array<string>} inputLabels - The keys identifying the input fields with errors.
+ * Displays field-specific error messages and handles password mismatch messaging.
+ * @param {Array<string>} inputLabels
  */
 function inputError(inputLabels) {
-    let info = document.getElementById('errorPoppin');
-    info.classList.remove('opacity');
-    
-    let errorMessages = inputLabels.map(label => errorMessage(label)).join('<br>');
-    info.innerHTML = errorMessages;
-
-    inputLabels.forEach(label => {
-        errorInputField(label);
-    });
+  clearAllErrors();
+  inputLabels.forEach(key => {
+    const labelId = 'label' + key;
+    const container = ensureErrorContainer(labelId);
+    if (container) {
+      let msg = errorMessage(key);
+      if (key === "PasswordConf") {
+        const p1 = document.getElementById('passwordReg').value;
+        const p2 = document.getElementById('passwordConf').value;
+        if (p1 !== p2) msg = "Passwords do not match.";
+      }
+      container.textContent = msg;
+      container.classList.add('is-visible');
+    }
+    errorInputField(key);
+  });
 }
 
 
 /**
  * Returns a specific error message based on the input key.
- * * @param {string} key - The key identifying the input type.
+ * @param {string} key - The key identifying the input type.
  * @returns {string} - The corresponding error message.
  */
 function errorMessage(key) {
@@ -175,12 +219,14 @@ function checkValues() {
     if (checkEmptyInput(passwdConf) || !/^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,15}$/.test(passwdConf)) {
         errors.push("PasswordConf");
     }
+    if (!checkEmptyInput(passwdReg) && !checkEmptyInput(passwdConf) && passwdReg !== passwdConf) {
+        errors.push("PasswordConf");
+    }
     if (checkBox !== "true") {
         errors.push("Checkbox");
     }
     return errors;
 }
-
 
 
 /**

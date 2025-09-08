@@ -8,7 +8,6 @@
  */
 function getContactListItem(contact, you) {   
     if (!contact || !contact.prename || !contact.surname) {
-        // console.warn('Incomplete Contact:', contact);
         return '';
     }
 

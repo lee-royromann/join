@@ -6,10 +6,7 @@ let currentOpenDropdown = null;
 let subtaskCount = 0;
 let subtaskIdCount = 0;
 let choosenPriority = "";
-const categories = [
-    "technical-task",
-    "user-story"
-];
+const categories = ["technical-task", "user-story"];
 let flatpickrInstance = null;
 
 
