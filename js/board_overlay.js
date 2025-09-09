@@ -58,3 +58,4 @@ function renderOverlayTask(taskId) {
     contentRef.innerHTML = '';
     contentRef.innerHTML = getOverlayTemplate(task);
 }
+

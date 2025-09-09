@@ -25,6 +25,12 @@
     gap: 15px;
 }
 
+.sidebar__menu--active {
+  background-color: #091931;
+  opacity: 1 !important;
+  border-radius: 8px;
+}
+
 .sidebar__item {
     display: flex;
     align-items: center;
