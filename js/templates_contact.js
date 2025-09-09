@@ -1,11 +1,12 @@
+// It´s me Danny 
+
 /**
- * Generates a contact list item shown on the contacts page.
- * Uses prename and surname for display.
+ * Generates a contact list item for the contacts page.
  * @param {Object} contact - The contact object.
- * @param {string} initials - Initials to show in the avatar.
+ * @param {string} initials - Calculated initials for the avatar.
  * @returns {string} - HTML string for the contact list entry.
  */
-function showUserInformation(contact, initials) {
+function getContactListEntryTemplate(contact, initials) {
     return /*html*/`
         <div class="contact" id="contact${contact.id}" onclick="chooseContact(${contact.id}); showRespUserInfo()">
             <div class="avatar flex-box-center-center" style="background-color: ${contact.color}">${initials}</div>
@@ -19,14 +20,12 @@ function showUserInformation(contact, initials) {
 
 
 /**
- * Displays the full contact details panel.
- * Uses prename and surname for display and initials.
+ * Generates the full contact details panel.
  * @param {Object} individualContact - The selected contact object.
+ * @param {string} initials - Calculated initials for the avatar.
  * @returns {string} - HTML string for the contact detail panel.
  */
-function showContact(individualContact) {
-    const initials = (individualContact.prename.charAt(0) + (individualContact.surname ? individualContact.surname.charAt(0) : '')).toUpperCase();
-
+function getContactDetailTemplate(individualContact, initials) {
     return /*html*/`
         <div id="slide" class="user-slide-in">
             <div class="user-info-header">
@@ -66,11 +65,10 @@ function showContact(individualContact) {
 
 
 /**
- * Returns the HTML for the overlay used to add a new contact.
- * This version uses the custom validation system.
+ * Returns the HTML for the overlay to add a new contact.
  * @returns {string} - HTML string for the add contact overlay.
  */
-function showOverlayAddContact() {
+function getOverlayAddContactTemplate() {
     return /*html*/`
         <div id="overlay" class="overlay-contact flex-box-center-center d-none" onclick="eventBubbling(event)">
             <div class="close-container" onclick="closeOverlay(event)">
@@ -86,7 +84,6 @@ function showOverlayAddContact() {
             </div>
             <div class="overlay-main-container flex-box-center-center">
                 <div class="profil-img-container flex-box-center-center"><img class="profil-img" src="../assets/img/icon/person.svg" alt=""></div>
-                
                 <form onsubmit="createNewContact(); return false"> 
                     <div class="dpl-fl-colu input-container">
                         <label id="labelContactname" class="input-field">
@@ -121,13 +118,11 @@ function showOverlayAddContact() {
 
 /**
  * Generates the overlay HTML template to edit a specific contact.
- * This version uses the custom validation system.
  * @param {Object} individualUser - The contact object to edit.
+ * @param {string} initials - The calculated initials for the contact.
  * @returns {string} - HTML string for the edit contact overlay.
  */
-function overlayEditContact(individualUser) {
-    const initials = (individualUser.prename.charAt(0) + (individualUser.surname ? individualUser.surname.charAt(0) : '')).toUpperCase();
-    
+function getOverlayEditContactTemplate(individualUser, initials) {
     return /*html*/`
         <div id="overlay" class="overlay-contact flex-box-center-center d-none" onclick="eventBubbling(event)">
             <div class="close-container" onclick="closeOverlay(event)">
@@ -178,8 +173,8 @@ function overlayEditContact(individualUser) {
  * Displays a message when a contact is successfully created.
  * @returns {string} - HTML feedback message.
  */
-function showSuccessfulCreated() {
-    return `<p>Contact successfully created </p>`;
+function getSuccessCreatedTemplate() {
+    return `<p>Contact successfully created</p>`;
 }
 
 
@@ -187,8 +182,8 @@ function showSuccessfulCreated() {
  * Displays a message when a contact is successfully deleted.
  * @returns {string} - HTML feedback message.
  */
-function showSuccessfulDeleted() {
-    return `<p>Contact successfully deleted </p>`;
+function getSuccessDeletedTemplate() {
+    return `<p>Contact successfully deleted</p>`;
 }
 
 
@@ -196,7 +191,7 @@ function showSuccessfulDeleted() {
  * Returns a button with a vertical dot icon to open the responsive tools menu.
  * @returns {string} - HTML string for the responsive menu button.
  */
-function changeBtnMore() {
+function getMoreButtonTemplate() {
     return /*html*/`
         <div class="add-btn-resp" onclick="openToolsResp()">
             <img class="contact-img" src="../assets/img/icon/more_vert.svg" alt="">
@@ -208,7 +203,7 @@ function changeBtnMore() {
  * Returns a button with a person add icon to open the responsive contact form.
  * @returns {string} - HTML string for the add contact button.
  */
-function changeAddBtnPerson() {
+function getAddPersonButtonTemplate() {
     return /*html*/`
         <div class="add-btn-resp" onclick="addRespContact()">
             <img class="contact-img" src="../assets/img/icon/person_add.svg" alt="">
@@ -220,94 +215,93 @@ function changeAddBtnPerson() {
  * Returns the overlay HTML for adding a contact in responsive view.
  * @returns {string} - HTML string for the add contact overlay (responsive).
  */
-function showOverlayAddResp() {
+function getOverlayAddRespTemplate() {
     return /*html*/`
     <div id="overlay" class="overlay-contact overlay-contact-resp d-none" onclick="eventBubbling(event)">
-            <div class="overlay-cover-resp">
-                <div class="close-resp-overlay" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close_white.svg" alt=""></div>    
-                <div class="card-title">
-                    <h5>Add contact</h5>
-                    <p class="motivation-text">Tasks are better with a Team!</p>
+        <div class="overlay-cover-resp">
+            <div class="close-resp-overlay" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close_white.svg" alt=""></div>    
+            <div class="card-title">
+                <h5>Add contact</h5>
+                <p class="motivation-text">Tasks are better with a Team!</p>
+            </div>
+        </div>
+        <div class="overlay-main-container-resp">
+            <div class="profil-img-container flex-box-center-center profil-img-resp"><img class="profil-img" src="../assets/img/icon/person.svg" alt=""></div>
+            <form onsubmit="createNewContact(); return false">
+                <div class="dpl-fl-colu input-container-resp">
+                    <label id="labelContactname" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="contactname" type="text" placeholder="Name" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
+                        </div>
+                    </label>
+                    <label id="labelEmail" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="email" type="text" placeholder="E-mail" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
+                        </div>
+                    </label>
+                    <label id="labelPhone" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="phone" type="tel" placeholder="Phone" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
+                        </div>
+                    </label>
+                    <p id="errorPoppin" class="poppins opacity"></p>
                 </div>
-            </div>
-            <div class="overlay-main-container-resp">
-                <div class="profil-img-container flex-box-center-center profil-img-resp"><img class="profil-img" src="../assets/img/icon/person.svg" alt=""></div>
-                <form onsubmit="createNewContact(); return false">
-                    <div class="dpl-fl-colu input-container-resp">
-                        <label id="labelContactname" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="contactname" type="text" placeholder="Name" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
-                            </div>
-                        </label>
-                        <label id="labelEmail" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="email" type="text" placeholder="E-mail" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
-                            </div>
-                        </label>
-                        <label id="labelPhone" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="phone" type="tel" placeholder="Phone" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
-                            </div>
-                        </label>
-                        <p id="errorPoppin" class="poppins opacity"></p>
-                    </div>
-                    <div class="submit-container submit-container-resp">    
-                        <button class="white-blue-btn white-blue-btn-resp">Create contact</button>
-                    </div>
-                </form>
-            </div>
-        </div>`;
+                <div class="submit-container submit-container-resp">    
+                    <button class="white-blue-btn white-blue-btn-resp">Create contact</button>
+                </div>
+            </form>
+        </div>
+    </div>`;
 }
 
 
 /**
  * Returns the overlay HTML for editing a contact in responsive view.
  * @param {Object} individualContact - The contact object to edit.
+ * @param {string} initials - The calculated initials for the contact.
  * @returns {string} - HTML string for the edit contact overlay (responsive).
  */
-function showOverlayEditResp(individualContact) {
-    const initials = (individualContact.prename.charAt(0) + (individualContact.surname ? individualContact.surname.charAt(0) : '')).toUpperCase();
-
+function getOverlayEditRespTemplate(individualContact, initials) {
     return /*html*/`
     <div id="overlay" class="overlay-contact overlay-contact-resp" onclick="eventBubbling(event)">
-            <div class="overlay-cover-resp">
-                <div class="close-resp-overlay" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close_white.svg" alt=""></div>    
-                <div class="card-title">
-                    <h5>Edit contact</h5>
+        <div class="overlay-cover-resp">
+            <div class="close-resp-overlay" onclick="closeOverlay(event)"><img class="close-btn" src="../assets/img/icon/close_white.svg" alt=""></div>    
+            <div class="card-title">
+                <h5>Edit contact</h5>
+            </div>
+        </div>
+        <div class="overlay-main-container-resp">
+            <div class="profil-img-container flex-box-center-center profil-img-resp" style="background-color: ${individualContact.color}">${initials}</div>
+            <form onsubmit="saveContact(${individualContact.id}); return false" onkeydown="return event.key != 'Enter';">
+                <div class="dpl-fl-colu input-container-resp">
+                    <label id="labelContactname" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="contactname" type="text" value="${individualContact.prename} ${individualContact.surname}" placeholder="Name" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
+                        </div>
+                    </label>
+                    <label id="labelEmail" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="email" type="text" value="${individualContact.email}" placeholder="E-mail" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
+                        </div>
+                    </label>
+                    <label id="labelPhone" class="input-field input-field-resp">
+                        <div class="input-content-resp">
+                            <input id="phone" type="tel" value="${individualContact.phone}" placeholder="Phone" onkeyup="removeErrorText()">
+                            <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
+                        </div>
+                    </label>
+                    <p id="errorPoppin" class="poppins opacity"></p>
                 </div>
-            </div>
-            <div class="overlay-main-container-resp">
-                <div class="profil-img-container flex-box-center-center profil-img-resp" style="background-color: ${individualContact.color}">${initials}</div>
-                <form onsubmit="saveContact(${individualContact.id}); return false" onkeydown="return event.key != 'Enter';">
-                    <div class="dpl-fl-colu input-container-resp">
-                        <label id="labelContactname" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="contactname" type="text" value="${individualContact.prename} ${individualContact.surname}" placeholder="Name" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/person.svg" alt="">
-                            </div>
-                        </label>
-                        <label id="labelEmail" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="email" type="text" value="${individualContact.email}" placeholder="E-mail" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/mail.svg" alt="">
-                            </div>
-                        </label>
-                        <label id="labelPhone" class="input-field input-field-resp">
-                            <div class="input-content-resp">
-                                <input id="phone" type="tel" value="${individualContact.phone}" placeholder="Phone" onkeyup="removeErrorText()">
-                                <img class="input-icon" src="../assets/img/icon/call.svg" alt="">
-                            </div>
-                        </label>
-                        <p id="errorPoppin" class="poppins opacity"></p>
-                    </div>
-                    <div class="submit-container submit-container-resp">
-                        <button class="blue-white-btn" type="button" onclick="deleteContact(event, ${individualContact.id}); closeOverlay()">Delete</button>
-                        <button class="white-blue-btn white-blue-btn-resp">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>`;
+                <div class="submit-container submit-container-resp">
+                    <button class="blue-white-btn" type="button" onclick="deleteContact(event, ${individualContact.id}); closeOverlay()">Delete</button>
+                    <button class="white-blue-btn white-blue-btn-resp">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>`;
 }

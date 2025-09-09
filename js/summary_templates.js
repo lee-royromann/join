@@ -11,7 +11,7 @@ function loadSummaryTemplate() {
               <p class="dashboard__subtitle">Key Metrics at a Glance</p>
             </div>
 
-            <!-- First Row: To-do & Done -->
+          
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card">
@@ -42,7 +42,7 @@ function loadSummaryTemplate() {
               </a>
             </div>
 
-            <!-- Second Row: Urgent & Greeting -->
+            
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card__urgent card__urgent-inline">
@@ -73,7 +73,7 @@ function loadSummaryTemplate() {
               </div>
             </div>
 
-            <!-- Third Row: Overview Cards -->
+            
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card__overview">
