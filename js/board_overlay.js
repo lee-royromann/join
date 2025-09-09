@@ -58,3 +58,33 @@ function renderOverlayTask(taskId) {
     contentRef.innerHTML = '';
     contentRef.innerHTML = getOverlayTemplate(task);
 }
+
+
+/**
+ * /** Precomputes all values the overlay template needs (no DOM manipulation here).
+ */
+export function createOverlayView(task) {
+  const { className, name } = getCategoryInfo(task.category);
+  return {
+    id: task.id,
+    title: task.title,
+    description: task.description,
+    date: task.date,
+    categoryClass: className,
+    categoryName: name,
+    priorityLabel: cap(task.priority),
+    priorityIcon: getPriorityIcon(task.priority),
+    contactsHtml: renderAssignedContacts(task),
+    subtasksHtml: getSubtask(task.subtask, task.id)
+  };
+}
+
+
+import { createOverlayView } from './overlay.view.js';
+import { overlayTemplate }   from './overlay.template.js';
+
+export function renderOverlay(task) {
+  const v = createOverlayView(task);
+  return overlayTemplate(v); // ergibt der reine HTML-String
+}
+

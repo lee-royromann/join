@@ -8,6 +8,8 @@ let currentTask;
 let idToKey = {};
 const searchInput = document.getElementById("search-task");
 const noResults = document.getElementById("no-results");
+const cap = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+
 
 
 /**
