@@ -454,3 +454,34 @@ function showBoardTaskNotification(origin) {
 function showBoardTaskSpecificNotification(notificationMessage, message) {
     notificationMessage.innerHTML = message;
 }
+// NEU: in join/js/board.js hinzufügen
+
+/**
+ * Renders a single task card and appends it to the correct status column.
+ * This function is used for optimistic UI updates.
+ * @param {object} task - The new task object to render.
+ */
+function renderSingleTask(task) {
+    // 1. Die richtige Spalte basierend auf dem Task-Status finden
+    const column = document.getElementById(task.status);
+    if (!column) {
+        console.error(`Column with ID "${task.status}" not found!`);
+        return;
+    }
+
+    // 2. Prüfen, ob die Spalte leer war (und einen Platzhalter anzeigt)
+    const emptyPlaceholder = column.querySelector('.empty-column');
+    if (emptyPlaceholder) {
+        column.innerHTML = ''; // Platzhalter entfernen
+    }
+
+    // 3. Den HTML-Code für die neue Task-Karte holen
+    const taskCardHTML = getTaskTemplate(task); 
+    
+    // 4. Die neue Karte in die Spalte einfügen
+    column.innerHTML += taskCardHTML;
+
+    // 5. Den neuen Task auch zum globalen Array hinzufügen,
+    // damit die Suche und andere Funktionen ihn sofort finden.
+    tasksFirebase.push(task);
+}

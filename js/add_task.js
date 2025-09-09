@@ -1,4 +1,3 @@
-// Global variables
 const FIREBASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 let firebaseContacts = [];
 const priorities = ['urgent', 'medium', 'low'];
@@ -73,14 +72,27 @@ async function loadFirebaseContacts() {
 async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
-    if (!validation.isValid) {return;}
-    try {
-        const task = await getTaskData(taskStatus);
-        await addTaskToDB(task);
-    } catch (error) {}
+    if (!validation.isValid) { return; }
+
+    // 1. Task-Datenobjekt wie gewohnt erstellen
+    const task = await getTaskData(taskStatus);
+
     if (origin === 'board-page') {
+        // 2. SOFORT die Task-Karte auf dem Board anzeigen
+        renderSingleTask(task); // Diese Funktion erstellen wir gedanklich in board.js
+
+        // 3. Overlay schließen und Benachrichtigung anzeigen
         closeTaskOverlay();
         showBoardTaskNotification('add');
+    }
+
+    try {
+        // 4. Task im Hintergrund in der Datenbank speichern
+        await addTaskToDB(task);
+    } catch (error) {
+        console.error("Speichern fehlgeschlagen:", error);
+        // Hier könnte man den optimistisch hinzugefügten Task wieder entfernen
+        // und dem Nutzer eine Fehlermeldung anzeigen.
     }
 }
 
@@ -265,9 +277,7 @@ function showTaskNotification() {
     setTimeout(() => {
         notification.classList.remove('form__notification--show');
     }, 800);
-    setTimeout(() => {
-        window.location.href = './board.html';
-    }, 950);
+
 }
 
 
