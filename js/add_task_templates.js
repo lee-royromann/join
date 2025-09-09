@@ -1,28 +1,33 @@
 /**
- * Generates an HTML template string for a single contact list item.
- * The function expects preprocessed contact data such as the formatted first name,
- * formatted last name, initials, color, and ID. It then returns a string of HTML markup
- * representing the contact, including badge, name, checkbox, and icons.
- * @param {string} prenameFull - The formatted full first name of the contact (capitalized).
- * @param {string} surnameFull - The formatted full last name of the contact (capitalized).
- * @param {string} initials - The initials of the contact, derived from the prename and surname.
- * @param {string} contactColor - The color associated with the contact (used for the badge background).
- * @param {number|string} contactId - The unique identifier of the contact.
- * @param {string} user - A string suffix to indicate if the contact is the current user (e.g., " (You)").
- * @returns {string} The HTML template string for the contact list item.
+ * Function to generate a contact list item HTML template.
+ * It formats the contact's prename and surname, creates initials,
+ * and returns a list item with the contact's details.
+ * @param {Object} contact - The contact object containing id, prename, surname, color.
+ * @param {string} you - A string to indicate if the contact is "you" (e.g., " (You)" for the current logged in user).
+ * @returns {string} - The HTML template for the contact list item.
  */
-function getContactListItem(prenameFull, surnameFull, initials, contactColor, contactId, user) {
+function getContactListItem(contact, you) {   
+    if (!contact || !contact.prename || !contact.surname) {
+        return '';
+    }
+
+    const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
+    const surnameInitial = contact.surname.charAt(0).toUpperCase();
+    const prenameInitial = contact.prename.charAt(0).toUpperCase();
+    const surnameFull = surnameInitial + contact.surname.slice(1);
+    const initials = prenameInitial + surnameInitial;
+
     return `
         <li class="form__contact"
-            id="contact-id-${contactId}"
-            data-id="${contactId}"
+            id="contact-id-${contact.id}"
+            data-id="${contact.id}"
             data-shortname="${initials}"
             data-fullname="${prenameFull} ${surnameFull}"
-            data-color="${contactColor}"
-            onclick="selectContact(${contactId}); emptySearchField('contact-search', '#contact-list .form__contact')">
-            <span class="form__contact-badge" style="background-color:${contactColor};">${initials}</span>
-            <span class="form__contact-name">${prenameFull} ${surnameFull} ${user}</span>
-            <input class="form__contact-checkbox" id="contact-checkbox-${contactId}" type="checkbox" onclick="selectContact(${contactId})" hidden/>
+            data-color="${contact.color}"
+            onclick="selectContact(${contact.id}); emptySearchField('contact-search', '#contact-list .form__contact')">
+            <span class="form__contact-badge" style="background-color:${contact.color};">${initials}</span>
+            <span class="form__contact-name">${prenameFull} ${surnameFull} ${you}</span>
+            <input class="form__contact-checkbox" id="contact-checkbox-${contact.id}" type="checkbox" onclick="selectContact(${contact.id})" hidden/>
             <svg class="form__contact-checkbox-icon-unchecked" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect stroke="currentColor" stroke-width="2" x="1" y="1" width="16" height="16" rx="3"/>
             </svg>
@@ -118,26 +123,39 @@ function getSubtaskEditTemplate(id, text) {
  */
 function getAddTaskOverlayTemplate(status) {
     return `
+        <!-- Content -->
         <section class="task__overlay-content">
+
+            <!-- Header -->
             <div class="task__overlay-header">
                 <h2 class="task__overlay-title">Add Task</h2>
                 <div class="task__overlay-close" onclick="closeTaskOverlay()">
                     <img src="../assets/img/icon/close.svg" alt="Close Overlay Add Task">
                 </div>
             </div>
+
+            <!-- Form -->
             <form class="task__overlay-form" id="form-add-task">
                 <div class="form__columns">
+
+                    <!-- Column Left -->
                     <section class="form__column">
+
+                        <!-- Title -->
                         <fieldset class="form__group">
                             <label class="form__label" for="task-title">Title<span class="required-asterisk">*</span></label>
                             <input class="form__input" id="task-title" type="text" name="title" placeholder="Enter a title" required/>
                             <p class="required-hint d_none">This field is required</p>
                         </fieldset>
+
+                        <!-- Description -->
                         <fieldset class="form__group">
                             <label class="form__label" for="description">Description</label>
                             <textarea class="form__textarea" id="description" placeholder="Enter a Description"></textarea>
                             <img src="../assets/img/icon/resize_textarea.svg" alt="Resize Icon für Description" class="form__description-icon">
                         </fieldset>
+
+                        <!-- Due Date -->
                         <fieldset class="form__group">
                             <label class="form__label" for="task-due-date">Due date<span class="required-asterisk">*</span></label>
                             <div class="form__wrapper-date">
@@ -149,8 +167,14 @@ function getAddTaskOverlayTemplate(status) {
                             <p class="required-hint d_none">This field is required</p>
                         </fieldset>
                     </section>
+
+                    <!-- Column Separator -->
                     <div class="form__separator"></div>
+
+                    <!-- Column Right -->
                     <section class="form__column">
+
+                        <!-- Priority -->
                         <fieldset class="form__group">
                             <div class="form__label">Priority</div>
                             <div class="form__wrapper-priority">
@@ -177,6 +201,8 @@ function getAddTaskOverlayTemplate(status) {
                                 </button>
                             </div>
                         </fieldset>
+
+                        <!-- Assigned To -->
                         <fieldset class="form__group">
                             <label class="form__label" for="contact-search">Assigned to</label>
                             <div>
@@ -199,30 +225,44 @@ function getAddTaskOverlayTemplate(status) {
                             </div>
                             <div class="form__contact-badges" id="contact-badges"></div>
                         </fieldset>
+
+                        <!-- Category -->
                         <fieldset class="form__group">
                             <label class="form__label" for="category-input">Category<span class="required-asterisk">*</span></label>
                             <div>
+                                <!-- Dropdown Input -->
                                 <div class="form__wrapper-category" id="category-selector">
                                     <input type="text" class="form__input" id="category-input" onclick="toggleDropdown(event, 'category-list', 'category-arrow-icon')" placeholder="Select task category" readonly/>
                                     <div class="form__icon-category" onclick="toggleDropdown(event, 'category-list', 'category-arrow-icon')">
                                         <img id="category-arrow-icon" src="../assets/img/icon/arrow_drop_down.svg" alt="Dropdown Arrow to open category list">
                                     </div>                                    
                                 </div>
+
+                                <!-- Dropdown List -->
                                 <div class="form__wrapper-list d_none" id="category-list">
                                     <ul id="category-list-ul"></ul>
                                 </div>
                             </div>
                             <p class="required-hint d_none">This field is required</p>
                         </fieldset>
+
+                        <!-- Subtasks -->
                         <fieldset class="form__group">
                             <label class="form__label" for="subtask-input">Subtasks</label>
+
+                            <!-- Subtasks Input -->
                             <div class="form__wrapper-input">
+
                                 <input type="text" class="form__input" id="subtask-input" placeholder="Add new subtask" onkeydown="handleEnterToAddSubtask(event)"/>
+
+                                <!-- Subtask plus icon -->
                                 <div class="form__wrapper-subtask-icons" id="task-subtask-icons-1">
                                     <div class="form__icon-subtask" onclick="addSubtask()">
                                         <img src="../assets/img/icon/plus.svg" alt="Subtask icon to add new subtask">
                                     </div>
                                 </div>
+
+                                <!-- Subtask delte / check icons -->
                                 <div class="form__wrapper-subtask-icons d_none" id="task-subtask-icons-2">
                                     <div class="form__icon-subtask">
                                         <img src="../assets/img/icon/close.svg" alt="Subtask icon to delete subtask">
@@ -233,6 +273,8 @@ function getAddTaskOverlayTemplate(status) {
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Subtask List -->
                             <div class="form__wrapper-subtasks">
                                 <ul class="form__subtask-list" id="subtask-list">
                                 </ul>
@@ -240,6 +282,8 @@ function getAddTaskOverlayTemplate(status) {
                         </fieldset>
                     </section>
                 </div>
+
+                <!-- Action Buttons -->
                 <footer class="task__overlay-footer">
                     <span class="required-text"><span class="required-asterisk">* </span>This field is required</span>
                     <div class="form__action-buttons">

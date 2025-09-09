@@ -1,5 +1,3 @@
-// join/js/contacts_controllers.js
-
 // it´s me Danny Focke 
 
 // ===================================================================
@@ -7,6 +5,7 @@
 // This file has been adapted to work with the new, clean `db.js`.
 // It requires access to: `loadContacts()`, `addContact()`, `getNextId()`
 // ===================================================================
+
 
 /**
  * Initializes the contacts page by loading contact data from the database
@@ -17,6 +16,7 @@ async function initContactsPage() {
     await renderContacts();
 }
 
+
 /**
  * Renders all contacts into the contact list, grouped by their first initial.
  * It first clears the existing list to prevent duplicates.
@@ -25,6 +25,7 @@ async function renderContacts() {
     cleanContactsList();
     groupInitials();
 }
+
 
 /**
  * Creates a new contact, validates the input, assigns a unique sequential ID,
@@ -50,7 +51,7 @@ async function createNewContact() {
         await addContact(newContact, newContactId);
         await loadContacts();
 
-        await renderContacts();
+        renderContacts();
         closeOverlay();
         clearSuccessfulContainer();
         successfulAddContact();
@@ -61,6 +62,7 @@ async function createNewContact() {
         alert("An error occurred. Please try again.");
     }
 }
+
 
 /**
  * Saves changes to an existing contact after validating the input fields.
@@ -86,14 +88,18 @@ async function saveContact(id) {
         clearSuccessfulContainer();
         successfulAddContact();
         successChange();
+        setTimeout(() => { window.location.reload(); }, 2000);
     } catch (error) {
         console.error("Error saving the contact:", error);
         alert("The contact could not be saved. Please try again.");
     }
 }
 
+
 /**
- * Deletes a contact from the Firebase database.
+ * Deletes a contact from the Firebase database. If the contact's email matches
+ * the logged-in user's email, it also deletes the user's account and logs them out.
+ * Otherwise, it shows a success message and reloads the page to display the updated list.
  * @param {Event} event - The triggering event object to prevent default actions.
  * @param {string} contactId - The unique ID of the contact to delete.
  */
@@ -122,10 +128,12 @@ async function deleteContact(event, contactId) {
         clearMainContact();
         successfulDeleteContact();
         successChange();
+        setTimeout(() => { window.location.reload(); }, 2000);
     } catch (error) {
-        console.error('FATAL ERROR in deleteContact process:', error);
+        /*console.error('FATAL ERROR in deleteContact process:', error);*/
     }
 }
+
 
 /**
  * Retrieves the email of the currently logged-in user from local storage.
@@ -135,27 +143,24 @@ function getLoggedInUserEmail() {
     return localStorage.getItem('currentUserEmail');
 }
 
+
+// ===================================================================
+// Remaining UI and validation functions
+// ===================================================================
+
+
 /**
  * Handles the click event on a contact. It highlights the selected contact,
- * and then displays the full information for that contact.
+ * clears the main details view, and then displays the full information for that contact.
  * @param {string|number} id - The unique ID of the chosen contact.
  */
 function chooseContact(id) {
-    const contact = findContact(id);
-    if (!contact) return;
-
     resetClassChooseContact();
     setClassChoooseContact(id);
     clearMainContact();
-
-    // LOGIC: Calculate initials
-    const initials = (contact.prename.charAt(0) + (contact.surname ? contact.surname.charAt(0) : '')).toUpperCase();
-
-    // RENDER: Use the template
-    const infoContainer = document.getElementById('contactInfoContainer');
-    infoContainer.innerHTML = getContactDetailTemplate(contact, initials);
-    slideIn();
+    userInfo(id);
 }
+
 
 /**
  * Opens the 'Add New Contact' dialog by rendering the corresponding
@@ -164,63 +169,50 @@ function chooseContact(id) {
 function openNewContactDialog() {
     const overlayContainer = document.getElementById('overlayContact');
     if (!overlayContainer) return;
-    overlayContainer.innerHTML = getOverlayAddContactTemplate();
+    overlayContainer.innerHTML = showOverlayAddContact();
     openOverlay();
 }
 
+
 /**
- * Opens the 'Edit Contact' dialog for a specific contact.
+ * Opens the 'Edit Contact' dialog for a specific contact. It clears any previous
+ * overlay content, injects the edit form, and displays the overlay.
  * @param {string|number} id - The unique ID of the contact to edit.
  */
 function editContact(id) {
-    const individualUser = findContact(id);
-    if (!individualUser) return;
-    
     clerOverlay();
-
-    // LOGIC: Calculate initials
-    const initials = (individualUser.prename.charAt(0) + (individualUser.surname ? individualUser.surname.charAt(0) : '')).toUpperCase();
-    
-    // RENDER: Use the template
-    const overlayContainer = document.getElementById('overlayContact');
-    overlayContainer.innerHTML = getOverlayEditContactTemplate(individualUser, initials);
-    
+    openEditContact(id);
     openOverlay();
 }
+
 
 /**
  * Opens the responsive version of the 'Add New Contact' dialog.
  */
 function addRespContact() {
     clerOverlay();
-    const overlayContainer = document.getElementById('overlayContact');
-    overlayContainer.innerHTML = getOverlayAddRespTemplate();
+    openAddRespContact();
     openOverlay();
 }
 
+
 /**
- * Opens the responsive version of the 'Edit Contact' dialog.
+ * Opens the responsive version of the 'Edit Contact' dialog and closes
+ * the responsive tools menu.
  * @param {string|number} id - The unique ID of the contact to edit.
  */
 function editRespContact(id) {
-    const individualUser = findContact(id);
-    if (!individualUser) return;
-    
     clerOverlay();
-
-    // LOGIC: Calculate initials for responsive view
-    const initials = (individualUser.prename.charAt(0) + (individualUser.surname ? individualUser.surname.charAt(0) : '')).toUpperCase();
-    
-    // RENDER: Use the responsive template
-    const overlayContainer = document.getElementById('overlayContact');
-    overlayContainer.innerHTML = getOverlayEditRespTemplate(individualUser, initials);
-
+    openEditRespContact(id);
     openOverlay();
     closeToolsresp();
 }
 
+
 /**
  * Adjusts the UI for responsive view when a user's information is displayed.
+ * It hides the contact list and shows the details view, updating buttons accordingly.
+ * This is triggered on smaller screen sizes (<= 900px).
  */
 function showRespUserInfo() {
     if (window.innerWidth <= 900) {
@@ -232,8 +224,10 @@ function showRespUserInfo() {
     }
 }
 
+
 /**
  * Reverts the UI from the responsive details view back to the contact list view.
+ * This is typically triggered by a 'back' button on mobile.
  */
 function showRespContactList() {
     let container = document.getElementById('contactContainer');
@@ -245,8 +239,10 @@ function showRespContactList() {
     changeOfAddPersoneBtn();
 }
 
+
 /**
- * Validates the input fields for a new contact.
+ * Validates the input fields for a new contact. If any errors are found,
+ * it triggers the error display function.
  * @returns {boolean} `true` if there are validation errors, otherwise `false`.
  */
 function checkValueInput() {
@@ -258,26 +254,31 @@ function checkValueInput() {
     return false;
 }
 
+
 /**
- * Displays validation error messages to the user.
+ * Displays validation error messages to the user and highlights the invalid fields.
  * @param {Array<string>} inputLabels - An array of field names that have errors.
  */
 function inputError(inputLabels) {
-    let info = document.getElementById('errorPoppin');
+    let info = document.getElementById('errorPoppin'); // CHANGED ID
     info.classList.remove('opacity');
+
     let errorMessages = inputLabels.map(label => errorMessage(label)).join('<br>');
     info.innerHTML = errorMessages;
+
     inputLabels.forEach(label => {
         errorInputField(label);
     });
 }
 
+
 /**
- * Clears all displayed error messages.
+ * Clears all displayed error messages and removes the error styling
+ * from the input fields.
  */
 function removeErrorText() {
     const labels = ["Contactname", "Email", "Phone"];
-    const info = document.getElementById('errorPoppin');
+    const info = document.getElementById('errorPoppin'); // CHANGED ID
     if (info) {
         info.classList.add('opacity');
         info.innerHTML = "";
@@ -290,9 +291,10 @@ function removeErrorText() {
     });
 }
 
+
 /**
  * Adds a visual error border to a specified input field's container.
- * @param {string} inputLabel - The name of the field to highlight.
+ * @param {string} inputLabel - The name of the field to highlight (e.g., "Contactname").
  */
 function errorInputField(inputLabel) {
     const label = document.getElementById('label' + inputLabel);
@@ -301,18 +303,20 @@ function errorInputField(inputLabel) {
     }
 }
 
+
 /**
- * Checks if a given string value is empty.
+ * Checks if a given string value is empty after trimming whitespace.
  * @param {string} value - The string to check.
- * @returns {boolean} `true` if the string is empty.
+ * @returns {boolean} `true` if the string is empty, otherwise `false`.
  */
 function checkEmptyInput(value) {
     return value.trim() === "";
 }
 
+
 /**
  * Reads the current values from the contact form input fields.
- * @returns {{n: string, e: string, p: string}} An object with name, email, and phone.
+ * @returns {{n: string, e: string, p: string}} An object containing the name, email, and phone.
  */
 function readsTheInputValues() {
     return {
@@ -322,6 +326,7 @@ function readsTheInputValues() {
     };
 }
 
+
 /**
  * Performs validation checks on the contact form fields.
  * @returns {Array<string>} An array of field names that failed validation.
@@ -329,6 +334,7 @@ function readsTheInputValues() {
 function checkValues() {
     let { n, e, p } = readsTheInputValues();
     const errors = [];
+
     if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
         errors.push("Contactname");
     }
@@ -341,17 +347,31 @@ function checkValues() {
     return errors;
 }
 
+
 /**
  * Performs validation checks specifically for the edit contact form.
  * @returns {Array<string>} An array of field names that failed validation.
  */
 function checkEditValues() {
-    return checkValues(); // The validation logic is the same, so we reuse the function.
+    let { n, e, p } = readsTheInputValues();
+    const errors = [];
+
+    if (checkEmptyInput(n) || !/^[a-zA-ZäöüÄÖÜß\s-]+$/.test(n)) {
+        errors.push("Contactname");
+    }
+    if (checkEmptyInput(e) || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(e)) {
+        errors.push("Email");
+    }
+    if (checkEmptyInput(p) || !/^[\d\s()+-]+$/.test(p) || p.length > 15) {
+        errors.push("Phone");
+    }
+    return errors;
 }
+
 
 /**
  * Checks the form input for validity when editing. Shows errors if found.
- * @returns {boolean} `true` if there are input errors.
+ * @returns {boolean} `true` if there are input errors, otherwise `false`.
  */
 function checkEditValueInput() {
     let errors = checkEditValues();

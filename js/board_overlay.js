@@ -6,7 +6,7 @@
 function openOverlay(taskId) {
     const overlay = document.getElementById("overlay");
     const story = document.getElementById("story");
-    overlay.classList.remove("d-none");
+    overlay.style.display = "flex";
     overlay.classList.add("overlay--visible");
     setTimeout(() => {
         overlay.classList.add('overlay--slide-in');
@@ -40,7 +40,7 @@ function hideOverlay(overlay) {
         setTimeout(resolve, 200);
     }).then(() => {
         overlay.classList.remove('overlay--visible');
-        overlay.classList.add('d-none');
+        overlay.style.display = 'none';
         document.body.style.overflow = '';
     });
 }
@@ -58,4 +58,3 @@ function renderOverlayTask(taskId) {
     contentRef.innerHTML = '';
     contentRef.innerHTML = getOverlayTemplate(task);
 }
-

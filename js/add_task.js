@@ -1,3 +1,4 @@
+// Global variables
 const FIREBASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 let firebaseContacts = [];
 const priorities = ['urgent', 'medium', 'low'];
@@ -72,27 +73,14 @@ async function loadFirebaseContacts() {
 async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
-    if (!validation.isValid) { return; }
-    const task = await getTaskData(taskStatus);
-    
+    if (!validation.isValid) {return;}
+    try {
+        const task = await getTaskData(taskStatus);
+        await addTaskToDB(task);
+    } catch (error) {}
     if (origin === 'board-page') {
-        // --- ANFANG DER KORREKTUR ---
-        // Fügt die neue Aufgabe zum lokalen Array hinzu
-        if (typeof tasksFirebase !== 'undefined' && Array.isArray(tasksFirebase)) {
-            tasksFirebase.push(task);
-        }
-        // Rendert das Board neu, um die neue Aufgabe anzuzeigen
-        if (typeof renderTasks === 'function') {
-            renderTasks();
-        }
-        // --- ENDE DER KORREKTUR ---
         closeTaskOverlay();
         showBoardTaskNotification('add');
-    }
-    try {
-        await addTaskToDB(task);
-    } catch (error) {
-        console.error("Saving the task failed:", error);
     }
 }
 
@@ -277,7 +265,9 @@ function showTaskNotification() {
     setTimeout(() => {
         notification.classList.remove('form__notification--show');
     }, 800);
-
+    setTimeout(() => {
+        window.location.href = './board.html';
+    }, 950);
 }
 
 
@@ -290,31 +280,4 @@ function closeTaskOverlayOnClick(event) {
         event.stopPropagation();
         closeTaskOverlay();
     }
-}
-
-
-/**
- * Preprocesses a contact object and generates the HTML template for a contact list item.
- * This function formats the contact's first name (prename) and last name (surname),
- * generates the full display names and initials, and then delegates the creation
- * of the final HTML template to `getContactListItem`.
- * @param {Object} contact - The contact object containing identifying and display information.
- * @param {number|string} contact.id - The unique identifier of the contact.
- * @param {string} contact.prename - The first name of the contact.
- * @param {string} contact.surname - The last name of the contact.
- * @param {string} contact.color - The color associated with the contact (used for the badge).
- * @param {string} user - A string suffix to indicate if the contact represents the current user (e.g., " (You)").
- * @returns {string} The HTML template string for the contact list item, or an empty string if required fields are missing.
- */
-function preprocessContactListItem(contact, user) {   
-    if (!contact || !contact.prename || !contact.surname) {
-        return '';
-    }
-    const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
-    const surnameInitial = contact.surname.charAt(0).toUpperCase();
-    const prenameInitial = contact.prename.charAt(0).toUpperCase();
-    const surnameFull = surnameInitial + contact.surname.slice(1);
-    const initials = prenameInitial + surnameInitial;
-    const contactTemplate = getContactListItem(prenameFull, surnameFull, initials, contact.color, contact.id, user);
-    return contactTemplate;
 }

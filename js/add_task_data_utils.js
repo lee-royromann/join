@@ -312,22 +312,18 @@ async function getDataFromServer(path) {
 async function getTaskData(status) {
     const inputs = collectFormInputs();
     const processedData = processFormData(inputs);
-    try {
-        const id = await generateTaskId();
-        return {
-            title: processedData.title,
-            description: processedData.description,
-            date: processedData.date,
-            category: processedData.category,
-            priority: processedData.priority,
-            assignedTo: processedData.assignedTo,
-            subtask: processedData.subtask,
-            status: status,
-            id: id,
-        };
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    }
+    const id = await generateTaskId();
+    return {
+        title: processedData.title,
+        description: processedData.description,
+        date: processedData.date,
+        category: processedData.category,
+        priority: processedData.priority,
+        assignedTo: processedData.assignedTo,
+        subtask: processedData.subtask,
+        status: status,
+        id: id,
+    };
 }
 
 

@@ -300,6 +300,77 @@ header {
   line-height: 120%;
 }
 
+/* @media (max-width: 900px) {
+  main {
+    width: 100%;
+    margin-bottom: 80px;
+    margin-top: 96px;
+  }
+
+  .logo-small {
+    display: inherit;
+  }
+
+  .header-left-side {
+    display: none;
+  }
+
+  header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .burger-menu {
+    position: fixed;
+  }
+
+  .navbar-section {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 80px;
+    width: 100%;
+    min-height: unset;
+  }
+
+  .navbar-logo {
+    display: none;
+  }
+
+  .navbar-links {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .navbar-link {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    width: 80px;
+    height: 80px;
+    padding: 0;
+  }
+
+  .navbar-link img {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+
+  .policy-section {
+    display: none;
+  }
+
+  .active-menu {
+    border-radius: 20px;
+  }
+} */
+
 .board-page {
     position: relative;
     max-width: 1920px;
