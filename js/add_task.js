@@ -69,13 +69,37 @@ async function loadFirebaseContacts() {
  * @param {string} origin - The origin of the task creation (e.g., "board-page", "modal").
  * @returns {Promise<void>}
  */
+/**
+ * Function to create a new task.
+ * It validates the inputs and adds the task to DB if everything is valid.
+ * It also checks the origin, where the function get called from.
+ * -> When function call comes from the board-page, then it will close the overlay
+ * and reloads the page, to display the new added task.
+ * -> When the funtction call comes from another page than board-page it redirects to the board-page.
+ * OPTIMIZATION: Maybee better to refresh the page by fetching tasks from DB instead of reloading the page.
+ * @param {Event} event - The event object from the form submission.
+ * @param {string} taskStatus - The status of the task (e.g., "todo", "in-progress", "done").
+ * @param {string} origin - The origin of the task creation (e.g., "board-page", "modal").
+ * @returns {Promise<void>}
+ */
 async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
     if (!validation.isValid) { return; }
     const task = await getTaskData(taskStatus);
+    
     if (origin === 'board-page') {
         renderSingleTask(task);
+        // --- ANFANG DER KORREKTUR ---
+        // Fügt die neue Aufgabe zum lokalen Array hinzu
+        if (typeof tasksFirebase !== 'undefined' && Array.isArray(tasksFirebase)) {
+            tasksFirebase.push(task);
+        }
+        // Rendert das Board neu, um die neue Aufgabe anzuzeigen
+        if (typeof renderTasks === 'function') {
+            renderTasks();
+        }
+        // --- ENDE DER KORREKTUR ---
         closeTaskOverlay();
         showBoardTaskNotification('add');
     }
