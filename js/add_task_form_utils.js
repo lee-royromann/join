@@ -92,7 +92,7 @@ function populateContactsToDropdown(contacts) {
     for (let i = 0; i < sortedContacts.length; i++) {
         const contact = sortedContacts[i];
         const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
-        const contactTemplate = getContactListItem(contact, isLoggedIn ? "(You)" : "");
+        const contactTemplate = preprocessContactListItem(contact, isLoggedIn ? "(You)" : "");
         contactsRef.innerHTML += contactTemplate;
     }
 }

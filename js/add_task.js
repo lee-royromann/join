@@ -73,26 +73,16 @@ async function createTask(event, taskStatus, origin) {
     event.preventDefault();
     const validation = validateFormData();
     if (!validation.isValid) { return; }
-
-    // 1. Task-Datenobjekt wie gewohnt erstellen
     const task = await getTaskData(taskStatus);
-
     if (origin === 'board-page') {
-        // 2. SOFORT die Task-Karte auf dem Board anzeigen
-        renderSingleTask(task); // Diese Funktion erstellen wir gedanklich in board.js
-
-        // 3. Overlay schließen und Benachrichtigung anzeigen
+        renderSingleTask(task);
         closeTaskOverlay();
         showBoardTaskNotification('add');
     }
-
     try {
-        // 4. Task im Hintergrund in der Datenbank speichern
         await addTaskToDB(task);
     } catch (error) {
-        console.error("Speichern fehlgeschlagen:", error);
-        // Hier könnte man den optimistisch hinzugefügten Task wieder entfernen
-        // und dem Nutzer eine Fehlermeldung anzeigen.
+        console.error("Saving the task failed:", error);
     }
 }
 
@@ -290,4 +280,31 @@ function closeTaskOverlayOnClick(event) {
         event.stopPropagation();
         closeTaskOverlay();
     }
+}
+
+
+/**
+ * Preprocesses a contact object and generates the HTML template for a contact list item.
+ * This function formats the contact's first name (prename) and last name (surname),
+ * generates the full display names and initials, and then delegates the creation
+ * of the final HTML template to `getContactListItem`.
+ * @param {Object} contact - The contact object containing identifying and display information.
+ * @param {number|string} contact.id - The unique identifier of the contact.
+ * @param {string} contact.prename - The first name of the contact.
+ * @param {string} contact.surname - The last name of the contact.
+ * @param {string} contact.color - The color associated with the contact (used for the badge).
+ * @param {string} user - A string suffix to indicate if the contact represents the current user (e.g., " (You)").
+ * @returns {string} The HTML template string for the contact list item, or an empty string if required fields are missing.
+ */
+function preprocessContactListItem(contact, user) {   
+    if (!contact || !contact.prename || !contact.surname) {
+        return '';
+    }
+    const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
+    const surnameInitial = contact.surname.charAt(0).toUpperCase();
+    const prenameInitial = contact.prename.charAt(0).toUpperCase();
+    const surnameFull = surnameInitial + contact.surname.slice(1);
+    const initials = prenameInitial + surnameInitial;
+    const contactTemplate = getContactListItem(prenameFull, surnameFull, initials, contact.color, contact.id, user);
+    return contactTemplate;
 }
