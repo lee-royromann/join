@@ -300,12 +300,6 @@ header {
   line-height: 120%;
 }
 
-.active-menu {
-  background-color: #091931; /* Ein dunkles Blau */
-  opacity: 1 !important;
-  border-radius: 8px; /* Optional: für abgerundete Ecken */
-}
-
 .board-page {
     position: relative;
     max-width: 1920px;
