@@ -35,14 +35,68 @@ function clearAllColumns() {
  */
 function renderAllTasks() {
     const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
-    tasksFirebase.forEach(task => {
-        const column = document.getElementById(task.status);
-        if (column) {
-            column.innerHTML += getTaskTemplate(task); 
-            counts[task.status]++;
-        }
-    });
+    for (const task of tasksFirebase) {
+        const col = document.getElementById(task.status);
+        if (!col) continue;
+        col.insertAdjacentHTML('beforeend', taskCardTemplate(createTaskView(task)));
+        counts[task.status]++;
+    }
     return counts;
+}
+
+
+/** * Convert task category to display name and CSS class.
+ * @param {string} c - Category string from task.
+ * @returns {{categoryClass: string|undefined, categoryName: string}}
+ */
+const toCategory = (c) => {
+  const i = getCategoryInfo(c);
+  return { categoryClass: i.className, categoryName: i.name };
+};
+
+
+/** * Convert task subtasks to progress stats and HTML snippet.
+ * @param {Task} t
+ * @returns {{ total: number, done: number, percent: number, html: string }}
+ */
+const toSubtasks = (t) => {
+    const s = getSubtaskProgress(t), p = Math.round(s.percent);
+    const html = s.total
+        ? `<div class="card__subtasks"><div class="card__subtasks-bar"><div class="card__subtasks-progress" id="progress-bar-${t.id}" role="progressbar" style="width:${p}%;"></div></div><div class="card__subtasks-text">${s.done}/${s.total} Subtasks</div></div>`
+        : '';
+    return { total: s.total, done: s.done, percent: p, html };
+};
+
+
+/** Create a view model for a task with all derived properties for rendering.
+ * @param {Task} t
+ * @returns {TaskView} View model for templating.
+ */
+function createTaskView(t) {
+    return {
+        id: t.id, status: t.status, title: t.title, description: t.description,
+        ...toCategory(t.category),
+        priorityIcon: getPriorityIcon(t.priority),
+        assignedAvatarHtml: renderAssignedAvatars(t, 4),
+        moveTaskHtml: getMoveTaskTemplate(t),
+        subtasks: toSubtasks(t),
+    };
+}
+
+
+/**
+ * Rendering empty card when no cases are available.
+ * @param {TaskStatus} status
+ * @returns {string} HTML string.
+ */
+function getEmptyColumnTemplate(status) {
+    const statusLabels = {
+        "to-do": "To Do",
+        "in-progress": "In Progress",
+        "await-feedback": "Await Feedback",
+        "done": "Done"
+        };
+    return `<div class="card--notasks"><p>No task ${statusLabels[status]}</p></div>`;
 }
 
 
@@ -238,18 +292,18 @@ function renderSubtask(task) {
  * @returns {string} Concatenated HTML for up to `limit` contacts plus optional overflow.
  */
 function mapAssignedContacts(task, renderFn, options={}) {
-  const {limit=5, overflow=(n)=>`<div class="form__contact-badge more-badge">+${n}</div>`}=options;
-  const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
-  let html='', shown=0, total=0;
-  for (const id of ids){
-    const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
-    total++;
-    if(shown<limit){
-      const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
-      html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+    const {limit=5, overflow=(n)=>`<div class="form__contact-badge more-badge">+${n}</div>`}=options;
+     const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
+    let html='', shown=0, total=0;
+    for (const id of ids){
+        const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
+        total++;
+        if(shown<limit){
+            const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
+            html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+        }
     }
-  }
-  return total>limit?html+overflow(total-limit):html;
+    return total>limit?html+overflow(total-limit):html;
 }
 
 

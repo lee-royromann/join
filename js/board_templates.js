@@ -3,70 +3,34 @@
  * @param {Task} task
  * @returns {string} HTML string.
  */
-function getTaskTemplate(task) {
-    const { total, done, percent } = getSubtaskProgress(task);
-    const categoryInfo = getCategoryInfo(task.category);
-    const priorityIcon = getPriorityIcon(task.priority);
-    const assignedAvatar = renderAssignedAvatars(task, 4);
-    const moveTaskTemplate = getMoveTaskTemplate(task);
-    const subtasksHtml = total > 0 ? `
-        <div class="card__subtasks">
-        <div class="card__subtasks-bar">
-            <div class="card__subtasks-progress"
-                id="progress-bar-${task.id}"
-                role="progressbar"
-                style="width: ${Math.round(percent)}%;"></div>
+function taskCardTemplate(v) {
+  return `
+    <div id="${v.id}" class="card" draggable="true"
+         ondragstart="startDragging('${v.id}')" onclick="openOverlay('${v.id}')">
+      <div class="card__content">
+        <div class="card__badgeline">
+          <div class="card__badge ${v.categoryClass}"><span>${v.categoryName}</span></div>
+          <div class="card__upanddown-icon" onclick="toggleBoardTaskMenu(event, '${v.id}')">
+            <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
+          </div>
+          <div class="card__burger-menu" id="card-menu-${v.id}">
+            <div><strong>Move to</strong></div>
+            ${v.moveTaskHtml}
+          </div>
         </div>
-        <div class="card__subtasks-text">${done}/${total} Subtasks</div>
+        <div class="card__header">
+          <div class="card__header--title">${v.title}</div>
+          <div class="card__header--description">${v.description}</div>
         </div>
-    ` : ''; 
-    return `
-        <div id="${task.id}" class="card" draggable="true" ondragstart="startDragging('${task.id}')" onclick="openOverlay('${task.id}')">
-            <div class="card__content">
-                <div class="card__badgeline">
-                    <div class="card__badge ${categoryInfo.className}">
-                        <span>${categoryInfo.name}</span>
-                    </div>
-                    <div class="card__upanddown-icon" onclick="toggleBoardTaskMenu(event, '${task.id}')">
-                        <img src="../assets/img/icon/up_and_down_arrow.svg" alt="updown-icon">
-                    </div>
-                    <div class="card__burger-menu" id="card-menu-${task.id}">
-                        <div><strong>Move to</strong></div>
-                        ${moveTaskTemplate}
-                    </div>
-                </div>
-                <div class="card__header">
-                    <div class="card__header--title">${task.title}</div>
-                    <div class="card__header--description">${task.description}</div>
-                </div>
-                    ${subtasksHtml}
-                <div class="card__footer">
-                    <div class="card__credentials">
-                        ${assignedAvatar}
-                    </div>
-                    <div class="card__priority">
-                        <img src="${priorityIcon}" alt="priority-icon">
-                    </div>
-                </div>
-            </div>
+        ${v.subtasks.html}
+        <div class="card__footer">
+          <div class="card__credentials">${v.assignedAvatarHtml}</div>
+          <div class="card__priority"><img src="${v.priorityIcon}" alt="priority-icon"></div>
         </div>
-    `;
+      </div>
+    </div>`;
 }
 
-/**
- * Rendering empty card when no cases are available.
- * @param {TaskStatus} status
- * @returns {string} HTML string.
- */
-function getEmptyColumnTemplate(status) {
-  const statusLabels = {
-    "to-do": "To Do",
-    "in-progress": "In Progress",
-    "await-feedback": "Await Feedback",
-    "done": "Done"
-  };
-  return `<div class="card--notasks"><p>No task ${statusLabels[status]}</p></div>`;
-}
 
 /**
  * Build the read-only overlay HTML for a task.
@@ -161,6 +125,7 @@ function getOverflowTemplate(label = '…') {
     </div>
   `;
 }
+
 
 /**
  * Render subtask list inside the overlay for a given task.
