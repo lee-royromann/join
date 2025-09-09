@@ -32,66 +32,70 @@ function taskCardTemplate(v) {
 }
 
 
-/** @param {ReturnType<typeof import('./overlay.view.js').createOverlayView>} v */
-export function overlayTemplate(v) {
-  return `
-    <div class="overlay__badgeframe">
-      <div class="overlay__badge ${v.categoryClass}">
-        <span>${v.categoryName}</span>
-      </div>
-      <div class="overlay__close--button" onclick="closeOverlay()">
-        <img src="../assets/img/icon/close.svg" alt="close-icon">
-      </div>
-    </div>
+/**
+ * Build the read-only overlay HTML for a task.
+ * @param {Task} task
+ * @returns {string} HTML string.
+ */
+function getOverlayTemplate(task) {
+    const categoryInfo = getCategoryInfo(task.category);
+    const priorityIcon = getPriorityIcon(task.priority);
+    return `
+        <div class="overlay__badgeframe">
+            <div class="overlay__badge ${categoryInfo.className}">
+                <span>${categoryInfo.name}</span>
+            </div>
+            <div class="overlay__close--button" onclick="closeOverlay()">
+                <img src="../assets/img/icon/close.svg" alt="close-icon">
+            </div>
+        </div>
+        <div class="overlay__title">${task.title}</div>
+        <div class="overlay__description">${task.description}</div>
 
-    <div class="overlay__title">${v.title}</div>
-    <div class="overlay__description">${v.description}</div>
+        <div class="overlay__parameters">
+            <span>Due date:</span>
+            <div>${task.date}</div>
+        </div>
 
-    <div class="overlay__parameters">
-      <span>Due date:</span>
-      <div>${v.date}</div>
-    </div>
+        <div class="overlay__parameters">
+            <span>Priority:</span>
+            <div class="overlay__priority--status">
+                <span>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+                <img src="${priorityIcon}" alt="priority-icon">
+            </div>
+        </div>
 
-    <div class="overlay__parameters">
-      <span>Priority:</span>
-      <div class="overlay__priority--status">
-        <span>${v.priorityLabel}</span>
-        <img src="${v.priorityIcon}" alt="priority-icon">
-      </div>
-    </div>
+        <div class="overlay__assigned">
+            <span>Assigned to:</span>
+            <div class="overlay__credentials">
+                    ${renderAssignedContacts(task)}
+            </div>
+        </div>
 
-    <div class="overlay__assigned">
-      <span>Assigned to:</span>
-      <div class="overlay__credentials">
-        ${v.contactsHtml}
-      </div>
-    </div>
+        <div class="overlay__subtasks">
+            <span>Subtasks</span>
+            <div class="overlay__subtasks--frame" id="subtaskFrame">
+                ${getSubtask(task.subtask, task.id)}
+            </div>
+        </div>
 
-    <div class="overlay__subtasks">
-      <span>Subtasks</span>
-      <div class="overlay__subtasks--frame" id="subtaskFrame">
-        ${v.subtasksHtml}
-      </div>
-    </div>
-
-    <div class="overlay__action">
-      <div class="overlay__action--activate" onclick="handleDeleteTask('${v.id}')">
-        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 18C2.45 18 1.97917 17.8042 1.5875 17.4125C1.19583 17.0208 1 16.55 1 16V3C0.716667 3 0.479167 2.90417 0.2875 2.7125C0.0958333 2.52083 0 2.28333 0 2C0 1.71667 0.0958333 1.47917 0.2875 1.2875C0.479167 1.09583 0.716667 1 1 1H5C5 0.716667 5.09583 0.479167 5.2875 0.2875C5.47917 0.0958333 5.71667 0 6 0H10C10.2833 0 10.5208 0.0958333 10.7125 0.2875C10.9042 0.479167 11 0.716667 11 1H15C15.2833 1 15.5208 1.09583 15.7125 1.2875C15.9042 1.47917 16 1.71667 16 2C16 2.28333 15.9042 2.52083 15.7125 2.7125C15.5208 2.90417 15.2833 3 15 3V16C15 16.55 14.8042 17.0208 14.4125 17.4125C14.0208 17.8042 13.55 18 13 18H3ZM3 3V16H13V3H3ZM5 13C5 13.2833 5.09583 13.5208 5.2875 13.7125C5.47917 13.9042 5.71667 14 6 14C6.28333 14 6.52083 13.9042 6.7125 13.7125C6.90417 13.5208 7 13.2833 7 13V6C7 5.71667 6.90417 5.47917 6.7125 5.2875C6.52083 5.09583 6.28333 5 6 5C5.71667 5 5.47917 5.09583 5.2875 5.2875C5.09583 5.47917 5 5.71667 5 6V13ZM9 13C9 13.2833 9.09583 13.5208 9.2875 13.7125C9.47917 13.9042 9.71667 14 10 14C10.2833 14 10.5208 13.9042 10.7125 13.7125C10.9042 13.5208 11 13.2833 11 13V6C11 5.71667 10.9042 5.47917 10.7125 5.2875C10.5208 5.09583 10.2833 5 10 5C9.71667 5 9.47917 5.09583 9.2875 5.2875C9.09583 5.47917 9 5.71667 9 6V13Z" fill="#2A3647"/>
-        </svg>
-        <span>Delete</span>
-      </div>
-      <div class="overlay__action--separator"></div>
-      <div class="overlay__action--activate" onclick="openEditOverlay('${v.id}')">
-        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.68213 16.3967H4.08213L12.7071 7.77173L11.3071 6.37173L2.68213 14.9967V16.3967ZM16.9821 6.32173L12.7321 2.12173L14.1321 0.721729C14.5155 0.338395 14.9863 0.146729 15.5446 0.146729C16.103 0.146729 16.5738 0.338395 16.9571 0.721729L18.3571 2.12173C18.7405 2.50506 18.9405 2.96756 18.9571 3.50923C18.9738 4.0509 18.7905 4.5134 18.4071 4.89673L16.9821 6.32173ZM15.5321 7.79673L4.93213 18.3967H0.682129V14.1467L11.2821 3.54673L15.5321 7.79673Z" fill="#2A3647"/>
-        </svg>
-        <span>Edit</span>
-      </div>
-    </div>
-  `;
+        <div class="overlay__action">
+            <div class="overlay__action--activate" onclick="handleDeleteTask('${task.id}')">
+                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 18C2.45 18 1.97917 17.8042 1.5875 17.4125C1.19583 17.0208 1 16.55 1 16V3C0.716667 3 0.479167 2.90417 0.2875 2.7125C0.0958333 2.52083 0 2.28333 0 2C0 1.71667 0.0958333 1.47917 0.2875 1.2875C0.479167 1.09583 0.716667 1 1 1H5C5 0.716667 5.09583 0.479167 5.2875 0.2875C5.47917 0.0958333 5.71667 0 6 0H10C10.2833 0 10.5208 0.0958333 10.7125 0.2875C10.9042 0.479167 11 0.716667 11 1H15C15.2833 1 15.5208 1.09583 15.7125 1.2875C15.9042 1.47917 16 1.71667 16 2C16 2.28333 15.9042 2.52083 15.7125 2.7125C15.5208 2.90417 15.2833 3 15 3V16C15 16.55 14.8042 17.0208 14.4125 17.4125C14.0208 17.8042 13.55 18 13 18H3ZM3 3V16H13V3H3ZM5 13C5 13.2833 5.09583 13.5208 5.2875 13.7125C5.47917 13.9042 5.71667 14 6 14C6.28333 14 6.52083 13.9042 6.7125 13.7125C6.90417 13.5208 7 13.2833 7 13V6C7 5.71667 6.90417 5.47917 6.7125 5.2875C6.52083 5.09583 6.28333 5 6 5C5.71667 5 5.47917 5.09583 5.2875 5.2875C5.09583 5.47917 5 5.71667 5 6V13ZM9 13C9 13.2833 9.09583 13.5208 9.2875 13.7125C9.47917 13.9042 9.71667 14 10 14C10.2833 14 10.5208 13.9042 10.7125 13.7125C10.9042 13.5208 11 13.2833 11 13V6C11 5.71667 10.9042 5.47917 10.7125 5.2875C10.5208 5.09583 10.2833 5 10 5C9.71667 5 9.47917 5.09583 9.2875 5.2875C9.09583 5.47917 9 5.71667 9 6V13Z" fill="#2A3647"/>
+                </svg>
+                <span>Delete</span>
+            </div>
+            <div class="overlay__action--separator"></div>
+            <div class="overlay__action--activate" onclick="openEditOverlay('${task.id}')">
+                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.68213 16.3967H4.08213L12.7071 7.77173L11.3071 6.37173L2.68213 14.9967V16.3967ZM16.9821 6.32173L12.7321 2.12173L14.1321 0.721729C14.5155 0.338395 14.9863 0.146729 15.5446 0.146729C16.103 0.146729 16.5738 0.338395 16.9571 0.721729L18.3571 2.12173C18.7405 2.50506 18.9405 2.96756 18.9571 3.50923C18.9738 4.0509 18.7905 4.5134 18.4071 4.89673L16.9821 6.32173ZM15.5321 7.79673L4.93213 18.3967H0.682129V14.1467L11.2821 3.54673L15.5321 7.79673Z" fill="#2A3647"/>
+                </svg>
+                <span>Edit</span>
+            </div>
+        </div>
+    `;
 }
-
 
 /**
  * Avatar + name row for overlay assignee list.
