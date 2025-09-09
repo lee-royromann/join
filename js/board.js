@@ -192,10 +192,11 @@ function renderFilteredTasks(filteredTasks) {
     clearAllColumns();
     const counts = { "to-do": 0, "in-progress": 0, "await-feedback": 0, "done": 0 };
     Object.values(filteredTasks).forEach(task => {
-    const column = document.getElementById(task.status);
+        const column = document.getElementById(task.status);
         if (column) {
-          column.innerHTML += getTaskTemplate(task);
-          counts[task.status]++;
+            // Dies ist die korrigierte Zeile:
+            column.innerHTML += taskCardTemplate(createTaskView(task));
+            counts[task.status]++;
         }
     });
     renderEmptyColumns(counts);
