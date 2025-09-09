@@ -220,7 +220,7 @@ function getSubtaskIcon(status) {
  * @returns {void}
  */
 function renderSubtask(task) {
-    const container = document.getElementById("subtaskFrame"); // z.B. <div id="subtaskFrame"></div>
+    const container = document.getElementById("subtaskFrame"); 
     container.innerHTML = getSubtask(task.subtask);
 }
 
@@ -310,7 +310,7 @@ function renderAssignedContacts(task) {
  */
 function startDragging(id) {
     currentDraggedID = String(id);  
-    document.getElementById(id).classList.add("card-transform")  // achtung muss noch irgendwo removed werden
+    document.getElementById(id).classList.add("card-transform")  
 }
 
 

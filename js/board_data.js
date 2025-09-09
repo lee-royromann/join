@@ -141,7 +141,7 @@ async function saveTaskToFirebase(task) {
  * @throws {Error} If the DELETE request fails.
  */
 async function deleteTaskFromFirebase(taskId) {
-    const key = idToKey[String(taskId)] || String(taskId); // Altfall abfangen
+    const key = idToKey[String(taskId)] || String(taskId); 
     const url = `${BASE_URL}join/tasks/${encodeURIComponent(key)}.json`;
     const res = await fetch(url, { method: "DELETE" });
     if (!res.ok) {
