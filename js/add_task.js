@@ -74,8 +74,18 @@ async function createTask(event, taskStatus, origin) {
     const validation = validateFormData();
     if (!validation.isValid) { return; }
     const task = await getTaskData(taskStatus);
+    
     if (origin === 'board-page') {
-        renderSingleTask(task);
+        // --- ANFANG DER KORREKTUR ---
+        // Fügt die neue Aufgabe zum lokalen Array hinzu
+        if (typeof tasksFirebase !== 'undefined' && Array.isArray(tasksFirebase)) {
+            tasksFirebase.push(task);
+        }
+        // Rendert das Board neu, um die neue Aufgabe anzuzeigen
+        if (typeof renderTasks === 'function') {
+            renderTasks();
+        }
+        // --- ENDE DER KORREKTUR ---
         closeTaskOverlay();
         showBoardTaskNotification('add');
     }
