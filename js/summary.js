@@ -121,6 +121,7 @@ async function loadTasksFromFirebase() {
     }
 }
 
+
 /**
  * Initializes the greeting text based on current time and user
  * Sets greeting message and username in the DOM elements
@@ -129,7 +130,6 @@ function initGreeting() {
     const now = new Date();
     const hours = now.getHours();
     let greeting = "Hello";
-
     if (hours >= 5 && hours < 12) {
         greeting = "Good morning,";
     } else if (hours >= 12 && hours < 18) {
@@ -137,15 +137,13 @@ function initGreeting() {
     } else {
         greeting = "Good evening,";
     }
-
     const greetingText = document.getElementById("greeting-text");
     const username = document.getElementById("greeting-username");
-
     if (greetingText) greetingText.textContent = greeting;
-
     const name = localStorage.getItem("username") || "Guest";
     if (username) username.textContent = name;
 }
+
 
 /**
  * Updates the counter elements in the DOM
@@ -160,7 +158,6 @@ function updateCounterElements(counts) {
         'count-progress': counts.inProgress,
         'count-feedback': counts.feedback
     };
-
     Object.entries(elements).forEach(([id, value]) => {
         const element = document.getElementById(id);
         if (element) {
@@ -168,6 +165,7 @@ function updateCounterElements(counts) {
         }
     });
 }
+
 
 /**
  * Updates the upcoming deadline display
@@ -184,40 +182,24 @@ function updateDeadlineDisplay(tasks) {
     }
 }
 
+
 /**
  * Calculates the number of tasks in different categories.
  * @param {Array<Object>} tasks - Array of all tasks.
  * @returns {Object} - Object containing the counts of different task types.
  */
 function calculateTaskCounts(tasks) {
-    const counts = {
-        todo: 0,
-        done: 0,
-        urgent: 0,
-        all: tasks.length,
-        inProgress: 0,
-        feedback: 0
-    };
-
+    const counts = {todo: 0, done: 0, urgent: 0, all: tasks.length, inProgress: 0, feedback: 0};
     tasks.forEach(task => {
-       
-        if (task.status === 'to-do') {
-            counts.todo++;
-        } else if (task.status === 'done') {
-            counts.done++;
-        } else if (task.status === 'in-progress') {
-            counts.inProgress++;
-        } else if (task.status === 'await-feedback') {
-            counts.feedback++;
-        }
-
-        if (task.priority === 'urgent') {
-            counts.urgent++;
-        }
+        if (task.status === 'to-do') {counts.todo++;}
+        else if (task.status === 'done') {counts.done++;}
+        else if (task.status === 'in-progress') {counts.inProgress++;}
+        else if (task.status === 'await-feedback') {counts.feedback++;}
+        if (task.priority === 'urgent') {counts.urgent++;}
     });
-
     return counts;
 }
+
 
 /**
  * Updates all dashboard counters and deadline display
@@ -228,7 +210,6 @@ function updateDashboardCounters(tasks) {
         console.warn("Keine Tasks verfügbar für Dashboard-Update");
         return;
     }
-
     const counts = calculateTaskCounts(tasks);
     updateCounterElements(counts);
     updateDeadlineDisplay(tasks);
@@ -242,21 +223,13 @@ function updateDashboardCounters(tasks) {
  */
 function findUpcomingUrgentDeadline(tasks) {
     const urgentTasks = tasks.filter(t => t.priority === "urgent" && t.date);
-    
     if (urgentTasks.length === 0) return null;
-
     const dates = urgentTasks.map(task => {
         const [day, month, year] = task.date.split('.');
-        return {
-            date: new Date(year, month - 1, day),
-            original: task.date
-        };
+        return {date: new Date(year, month - 1, day), original: task.date};
     }).filter(d => d.date >= new Date());
-
     if (dates.length === 0) return null;
-
     dates.sort((a, b) => a.date - b.date);
-    
     const nextDate = dates[0].date;
     return nextDate.toLocaleDateString('en-US', { 
         year: 'numeric', 
@@ -287,6 +260,7 @@ function showMainContent() {
     }
 }
 
+
 /**
  * Handle window resize to reset greeting state if needed
  * Resets greeting state when switching from mobile to desktop view
@@ -298,6 +272,11 @@ window.addEventListener('resize', () => {
 });
 
 
+/**
+ * Preprocess the summary template for the dashboard
+ * Loads and appends the dashboard summary template into the given container element.
+ * @returns {string} - The HTML template for the summary dashboard
+ */
 function preprocessSummaryTemplate() {
     const container = document.querySelector('.content');
     if (!container) return;
