@@ -48,5 +48,7 @@ document.addEventListener('click', (event) => {
 });
 
 
-// Initialize the header with the username initials
+/**
+ * Initializes the header with the username initials
+ */
 getUsernameInitals();
