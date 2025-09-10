@@ -503,6 +503,9 @@
         align-items: center;
         padding-left: 14px;
         padding-right: 14px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        gap: 6px;
     }
 
     .sidebar__item {
@@ -510,7 +513,8 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        height: 76px;
+        border-radius: 6px;
+        height: 100%;
         width: 80px;
         padding: 0;
         gap: 6px;
@@ -518,6 +522,7 @@
 
     .sidebar__icon {
         height: 24px;
+        width: 24px;
     }
 
     .sidebar__text {
