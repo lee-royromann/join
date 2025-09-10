@@ -75,11 +75,18 @@ async function createTask(event, taskStatus, origin) {
     if (!validation.isValid) {return;}
     try {
         const task = await getTaskData(taskStatus);
-        await addTaskToDB(task);
-    } catch (error) {}
-    if (origin === 'board-page') {
-        closeTaskOverlay();
-        showBoardTaskNotification('add');
+        await addTaskToDB(task); 
+
+        if (origin === 'board-page') {
+            tasksFirebase.push(task);
+            renderTasks();
+            closeTaskOverlay();
+            showBoardTaskNotification('add'); 
+        } else {
+            showTaskNotification(); 
+        }
+    } catch (error) {
+        console.error("Task could not be created:", error);
     }
 }
 
@@ -246,7 +253,7 @@ async function addTaskToDB(task) {
             body: JSON.stringify(task)
         });
         if (!response.ok) {throw new Error(`Serverfehler: ${response.status}`);}
-        showTaskNotification();
+        // showTaskNotification(); // WIRD ENTFERNT
         clearForm();
     } catch (error) {
         console.error("Failed to add the task to the Firebase DB:", error.message);
