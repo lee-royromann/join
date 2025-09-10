@@ -1,4 +1,3 @@
-// Global variables
 const FIREBASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
 let firebaseContacts = [];
 const priorities = ['urgent', 'medium', 'low'];
@@ -281,3 +280,43 @@ function closeTaskOverlayOnClick(event) {
         closeTaskOverlay();
     }
 }
+
+
+/**
+ * Preprocesses a contact object and generates the HTML template for a contact list item.
+ * This function formats the contact's first name (prename) and last name (surname),
+ * generates the full display names and initials, and then delegates the creation
+ * of the final HTML template to `getContactListItem`.
+ * @param {Object} contact - The contact object containing identifying and display information.
+ * @param {number|string} contact.id - The unique identifier of the contact.
+ * @param {string} contact.prename - The first name of the contact.
+ * @param {string} contact.surname - The last name of the contact.
+ * @param {string} contact.color - The color associated with the contact (used for the badge).
+ * @param {string} user - A string suffix to indicate if the contact represents the current user (e.g., " (You)").
+ * @returns {string} The HTML template string for the contact list item, or an empty string if required fields are missing.
+ */
+function preprocessContactListItem(contact, user) {   
+    if (!contact || !contact.prename || !contact.surname) {
+        return '';
+    }
+    const prenameFull = contact.prename.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join('-');
+    const surnameInitial = contact.surname.charAt(0).toUpperCase();
+    const prenameInitial = contact.prename.charAt(0).toUpperCase();
+    const surnameFull = surnameInitial + contact.surname.slice(1);
+    const initials = prenameInitial + surnameInitial;
+    const contactTemplate = getContactListItem(prenameFull, surnameFull, initials, contact.color, contact.id, user);
+    return contactTemplate;
+}
+
+
+/**
+ * Function to preprocess a category list item HTML template.
+ * It formats the category string by capitalizing the first letter of each word,
+ * and returns a list item with the category name.
+ * @param {number} id - The unique identifier for the category.
+ * @param {string} category - The category name.
+ */
+function preprocessCategoryListItem(id, category) {
+    const categoryFromated = category.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');        
+    return getCategoryListItem(id, categoryFromated);
+};

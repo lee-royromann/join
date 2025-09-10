@@ -92,7 +92,7 @@ function populateContactsToDropdown(contacts) {
     for (let i = 0; i < sortedContacts.length; i++) {
         const contact = sortedContacts[i];
         const isLoggedIn = `${contact.prename} ${contact.surname}` === loggedInUser;
-        const contactTemplate = getContactListItem(contact, isLoggedIn ? "(You)" : "");
+        const contactTemplate = preprocessContactListItem(contact, isLoggedIn ? "(You)" : "");
         contactsRef.innerHTML += contactTemplate;
     }
 }
@@ -130,7 +130,7 @@ function populateCategoriesToDropdown() {
     categoriesRef.innerHTML = "";
     for (let index = 0; index < categories.length; index++) {
         const category = categories[index];
-        let categoryTemplate = getCategoryListItem(index, category);
+        let categoryTemplate = preprocessCategoryListItem(index, category);
         categoriesRef.innerHTML += categoryTemplate;
     }
 };

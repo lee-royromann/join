@@ -1,7 +1,13 @@
-function loadSummaryTemplate() {
-    const container = document.querySelector('.content');
-    if (!container) return;
-
+/**
+ * Loads and appends the dashboard summary template into the given container element.
+ * - Displays key metrics placeholders such as "To-do", "Done", "Urgent", "Upcoming Deadline",
+ *   and task statistics (board, progress, feedback).
+ * - Includes sections for greeting the user with a dynamic username and greeting text.
+ * - Uses placeholder values (`0`, default date, "Guest") that are expected to be updated dynamically.
+ * - Provides navigation via links (`board.html`) from each metric card.
+ * @param {HTMLElement} container - The DOM element where the summary template will be appended.
+ */
+function loadSummaryTemplate(container) {
     container.innerHTML += `
         <main class="main">
           <section class="dashboard">
@@ -10,8 +16,6 @@ function loadSummaryTemplate() {
               <div class="dashboard__seperator"></div>
               <p class="dashboard__subtitle">Key Metrics at a Glance</p>
             </div>
-
-         
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card">
@@ -26,7 +30,6 @@ function loadSummaryTemplate() {
                   </div>
                 </div>
               </a>
-
               <a href="board.html" class="card__link">
                 <div class="card">
                   <div class="card__header">
@@ -41,8 +44,6 @@ function loadSummaryTemplate() {
                 </div>
               </a>
             </div>
-
-            
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card__urgent card__urgent-inline">
@@ -64,7 +65,6 @@ function loadSummaryTemplate() {
                   </div>
                 </div>
               </a>
-
               <div class="card__greeting card__greeting-inline">
                 <div>
                   <p class="card__greetings-text" id="greeting-text">Good morning,</p>
@@ -72,8 +72,6 @@ function loadSummaryTemplate() {
                 </div>
               </div>
             </div>
-
-            
             <div class="card__row">
               <a href="board.html" class="card__link">
                 <div class="card__overview">
@@ -81,14 +79,12 @@ function loadSummaryTemplate() {
                   <p class="card__label">Tasks in Board</p>
                 </div>
               </a>
-
               <a href="board.html" class="card__link">
                 <div class="card__overview">
                   <p class="card__number" id="count-progress">0</p>
                   <p class="card__label">Tasks In Progress</p>
                 </div>
               </a>
-
               <a href="board.html" class="card__link">
                 <div class="card__overview">
                   <p class="card__number" id="count-feedback">0</p>

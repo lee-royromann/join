@@ -10,13 +10,10 @@ let isGreetingShown = false;
 async function initSummary() {
     try {
         await loadTasksFromFirebase();
-        
         if (shouldShowMobileGreeting()) {
-            
             hideMainContent();
             showMobileGreeting();
         } else {
-
             showMainContent();
             updateDashboardCounters(tasksFirebase);
             initGreeting();
@@ -44,19 +41,15 @@ function shouldShowMobileGreeting() {
 function showMobileGreeting() {
     const username = localStorage.getItem("username") || "Guest";
     const isGuest = !username || username === "Guest";
-    
     const greetingOverlay = createMobileGreetingOverlay(username, isGuest);
     document.body.appendChild(greetingOverlay);
-    
     localStorage.setItem("greetingShown", "true");
-    
     if (isGuest) {
         setTimeout(() => {
             hideMobileGreeting(greetingOverlay);
         }, 2000);
         return;
     }
-    
     setTimeout(() => {
         hideMobileGreeting(greetingOverlay);
     }, 3000);
@@ -72,10 +65,8 @@ function showMobileGreeting() {
 function createMobileGreetingOverlay(username, isGuest) {
     const overlay = document.createElement('div');
     overlay.className = 'mobile-greeting-overlay';
-    
     const greetingText = getGreetingText();
     overlay.innerHTML = getMobileGreetingTemplate(greetingText, username, isGuest);
-    
     return overlay;
 }
 
@@ -89,9 +80,7 @@ function hideMobileGreeting(overlay) {
     showMainContent();
     updateDashboardCounters(tasksFirebase);
     initGreeting();
-    
     overlay.classList.add('fade-out');
-    
     setTimeout(() => {
         overlay.remove();
     }, 500);
@@ -107,7 +96,6 @@ function getGreetingText() {
     const hours = now.getHours();
     const username = localStorage.getItem("username") || "Guest";
     const isGuest = !username || username === "Guest";
-    
     if (hours >= 5 && hours < 12) {
         return isGuest ? "Good morning" : "Good morning,";
     } else if (hours >= 12 && hours < 18) {
@@ -126,7 +114,6 @@ async function loadTasksFromFirebase() {
     const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
     let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
-    
     if (responseToJson) {
         tasksFirebase = Object.values(responseToJson).filter(task => task != null);
     } else {
@@ -309,3 +296,10 @@ window.addEventListener('resize', () => {
         isGreetingShown = false;
     }
 });
+
+
+function preprocessSummaryTemplate() {
+    const container = document.querySelector('.content');
+    if (!container) return;
+    return loadSummaryTemplate(container);
+}
