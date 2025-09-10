@@ -220,7 +220,7 @@ function getSubtaskIcon(status) {
  * @returns {void}
  */
 function renderSubtask(task) {
-    const container = document.getElementById("subtaskFrame"); // z.B. <div id="subtaskFrame"></div>
+    const container = document.getElementById("subtaskFrame"); 
     container.innerHTML = getSubtask(task.subtask);
 }
 
@@ -238,17 +238,17 @@ function renderSubtask(task) {
  * @returns {string} Concatenated HTML for up to `limit` contacts plus optional overflow.
  */
 function mapAssignedContacts(task, renderFn, options={}) {
-  const {limit=5, overflow=(n)=>`<div class="form__contact-badge more-badge">+${n}</div>`}=options;
-  const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
-  let html='', shown=0, total=0;
-  for (const id of ids){
-    const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
-    total++;
-    if(shown<limit){
-      const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
-      html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+    const {limit=5, overflow=(n)=>`<div class="form__contact-badge more-badge">+${n}</div>`}=options;
+    const ids=Array.isArray(task.assignedTo)?task.assignedTo:[];
+    let html='', shown=0, total=0;
+    for (const id of ids){
+        const c=contactsFirebase.find(x=>x.id===id); if(!c) continue;
+        total++;
+        if(shown<limit){
+        const p=c.prename?.[0]?.toUpperCase()||'', s=c.surname?.[0]?.toUpperCase()||'';
+        html+=renderFn(c, `${p}${s}`, c.color||'#ccc'); shown++;
+        }
     }
-  }
   return total>limit?html+overflow(total-limit):html;
 }
 
@@ -276,7 +276,7 @@ function renderAssignedAvatars(task, max = 4) {
  * Render Card BadgesTemplate for assigned contacts.
  */
 function getCardBadgeTemplate(text, color, title = '') {
-  return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
+    return `<div class="card__credential" title="${title}" aria-label="${title}" style="background:${color};">${text}</div>`;
 }
 
 
@@ -310,7 +310,7 @@ function renderAssignedContacts(task) {
  */
 function startDragging(id) {
     currentDraggedID = String(id);  
-    document.getElementById(id).classList.add("card-transform")  // achtung muss noch irgendwo removed werden
+    document.getElementById(id).classList.add("card-transform") 
 }
 
 
