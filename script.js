@@ -176,7 +176,7 @@ function acceptCookies() {
  * @returns {boolean} Always returns true to bypass the cookie check.
  */
 function cookiesStillValid() {
-    return true; // <-- ÄNDERUNG: Gibt immer 'true' zurück, um die Cookie-Abfrage zu umgehen.
+    return true;
 }
 
 
