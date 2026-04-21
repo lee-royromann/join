@@ -1,7 +1,7 @@
 # Join
 
 <p align="center">
-  <img src="./assets/img/logo/join_2.svg" alt="Join Logo" width="160">
+  <img src="./assets/img/readme/join.webp" alt="Vorschau der Join Anwendung" width="960">
 </p>
 
 Join ist eine browserbasierte Kanban Anwendung für Teams und Einzelpersonen, die Aufgaben klar strukturieren, Zuständigkeiten sichtbar machen und Arbeitsstände direkt im Board nachvollziehen wollen. Die App deckt den kompletten Weg von Login und Registrierung bis zur Verwaltung von Kontakten, Aufgaben und Statuswechseln ab.
