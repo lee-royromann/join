@@ -1,4 +1,4 @@
-const FIREBASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+const FIREBASE_URL = "https://join-lee-roy-default-rtdb.europe-west1.firebasedatabase.app/";
 let firebaseContacts = [];
 const priorities = ['urgent', 'medium', 'low'];
 let currentOpenDropdown = null;

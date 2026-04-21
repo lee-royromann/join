@@ -111,7 +111,7 @@ function getGreetingText() {
  * Fetches task data and filters out null values
  */
 async function loadTasksFromFirebase() {
-    const BASE_URL = "https://join472-86183-default-rtdb.europe-west1.firebasedatabase.app/";
+    const BASE_URL = "https://join-lee-roy-default-rtdb.europe-west1.firebasedatabase.app/";
     let response = await fetch(BASE_URL + "join/tasks.json");
     let responseToJson = await response.json();
     if (responseToJson) {
